@@ -13,9 +13,9 @@
 * Write the commits in the imperative mood
 # Workflow
 * To work on a feature:
-⋅⋅1. pull from origin/main (git pull origin main)
-..2. create/switch to the feature branch (git checkout -b [feature_id])
-..3. commit/push into the feature branch (git add [files] ; git commit ; git push -u origin [feature_id])
-..4. repeat step.3 until you are done working on the feature
-..4. create a pull request
-..5. make sure your PR passes CI
+1. pull from origin/main (git pull origin main)
+2. create/switch to the feature branch (git checkout -b [feature_id])
+3. commit/push into the feature branch (git add [files] ; git commit ; git push -u origin [feature_id])
+4. repeat step.3 until you are done working on the feature
+4. create a pull request
+5. make sure your PR passes CI
