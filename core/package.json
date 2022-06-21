@@ -1,0 +1,8 @@
+{
+  "name": "schala-core",
+  "version": "1.0.0",
+  "description": "Core functionality of Schala",
+  "main": "index.js",
+  "author": "Wisteria Team",
+  "license": "GNU GPLv3"
+}
