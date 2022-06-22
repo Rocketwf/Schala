@@ -24,32 +24,28 @@
 </template>
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
-import { ref } from 'vue';
-import { storeToRefs } from 'pinia';
+import { ref, Ref } from 'vue';
 import { searchResultsStore } from 'stores/searchResultsPageStore';
 
 
 // Attributes
-const searchString = ref('');
+const searchString: Ref<string> = ref('');
+const router: Router = useRouter();
 
 // Methods
-const getSearchString = () => {
+const getSearchString = (): string => {
   return searchString.value;
 }
-const handleSearch = () => {
-  let searchString = getSearchString()
-  console.log(searchString)
-}
-const getSearchResultsStore = () => {
-  return storeToRefs(searchResultsStore());
-}
 
-
-const router = useRouter()
-let onSubmit = async () => {
+const handleSearch = (): void => {
+  let searchString = getSearchString();
+  getSearchPageResultsStore().setSearchString(searchString);
   router.push({ path: '/profile/search'});
 }
 
+const getSearchPageResultsStore = (): Store  => {
+  return searchResultsStore();
+}
 </script>
 <style type="text/css" media="screen" scoped>
 #butn {
