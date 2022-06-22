@@ -3,7 +3,7 @@ import { BasicProfile, FullProfile } from '../../../core/models/profile/Profile'
 import { ProfileFactory } from '../../../core/factories/ProfileFactory'
 import { ProfileRepresentation } from '../../../core/representations/ProfileRepresentation'
 
-export const useCounterStore = defineStore('profilePage', () => {
+export const profilePageStore = defineStore('profilePage', () => {
   
     let profileId = ''
     //create a BasicProfile with id "000000000" after it is implemented

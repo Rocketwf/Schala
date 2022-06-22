@@ -10,6 +10,7 @@
 <script setup lang="ts">
 import SearchComponent from './SearchComponent.vue'
 
+
 </script>
 <style type="text/css" media="screen" scoped>
 #mainPageContainer {
