@@ -8,7 +8,7 @@
 * Split larger changes into smaller commits
 * Commit message should be written with care, and with proper punctuation.
 * Commit message shouldn't exceed 80 characters
-* First line of the commit should include the todo ID e.g., S21, which is a reference to the TODO with a title that begins with (S): #21
+* First line of the commit should include the todo ID e.g., S21, which is a reference to the TODO with a title that begins with (S21)
 * Following lines can provide more details about the commit
 * Write the commits in the imperative mood
 # Workflow
