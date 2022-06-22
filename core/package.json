@@ -4,5 +4,8 @@
   "description": "Core functionality of Schala",
   "main": "index.js",
   "author": "Wisteria Team",
-  "license": "GNU GPLv3"
+  "license": "GNU GPLv3",
+  "devDependencies": {
+    "jest": "^28.1.1"
+  }
 }
