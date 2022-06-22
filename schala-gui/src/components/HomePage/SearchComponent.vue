@@ -16,7 +16,6 @@
       </q-input>
     </q-form>
 
-    </div>
     <div>
       <q-btn id="butn" label="Search" class="float-right" type="submit" color="primary"/>
     </div>
@@ -25,9 +24,6 @@
 
 import { ref } from 'vue' 
 import { useRouter } from 'vue-router' 
-import { FullProfile } from '@core/test.ts'
-
-new FullProfile()
 
 
 

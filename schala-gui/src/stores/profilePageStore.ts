@@ -1,15 +1,13 @@
 import { defineStore } from 'pinia';
 import { BasicProfile, FullProfile } from '../../../core/models/profile/Profile'
-import { HIndex } from '../../../core/models/profile/HIndex'
-import { I10Index } from '../../../core/models/profile/I10Index'
-import { ProfileFactory } from '../../../core/factory/profileFactory'
+import { ProfileFactory } from '../../../core/factories/ProfileFactory'
 import { ProfileRepresentation } from '../../../core/representations/ProfileRepresentation'
 
 export const useCounterStore = defineStore('profilePage', () => {
   
     let profileId = ''
     //create a BasicProfile with id "000000000" after it is implemented
-    let fullProfile: FullProfile = new FullProfile(new BasicProfile(), new HIndex(0, 0), new I10Index(0, 0))
+    let fullProfile: FullProfile = {} as FullProfile;
     const profileFactory: ProfileFactory = new ProfileFactory()
     const profileRepresentation: ProfileRepresentation = new ProfileRepresentation()
 
@@ -38,7 +36,7 @@ export const useCounterStore = defineStore('profilePage', () => {
         getProfileRepresentation().renderProfile(getFullProfile())
       } else {
         profileId = newId
-        fullProfile = getProfileFactory().build(getProfileId())
+        fullProfile = getProfileFactory().build(getProfileId())[0]
         getProfileRepresentation().renderProfile(getFullProfile())
       }
     }
@@ -46,6 +44,7 @@ export const useCounterStore = defineStore('profilePage', () => {
     return {
       getProfileId,
       getFullProfile,
+      getBasicProfile,
       getProfileFactory,
       getProfileRepresentation,
       setProfileId
