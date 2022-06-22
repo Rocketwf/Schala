@@ -1,5 +1,3 @@
-import { HIndex } from '../profile/HIndex'
-import { I10Index } from '../profile/I10Index'
 
 export interface Profile {}
 export class BasicProfile implements Profile {
@@ -54,5 +52,39 @@ export class FullProfile{
 
     public get i10Index(): I10Index {
         return this._i10Index;
+    }
+}
+export class HIndex {
+    private _hIndex: number
+    private _hIndexWithoutSelfCitations: number
+
+    constructor(hIndex: number, hIndexWithoutSelfCitations: number) {
+        this._hIndex = hIndex;
+        this._hIndexWithoutSelfCitations = hIndexWithoutSelfCitations;
+    }
+
+    public get hIndex(): number {
+        return this._hIndex;
+    }
+
+    public get hIndexWithoutSelfCitations(): number {
+        return this._hIndexWithoutSelfCitations;
+    }
+}
+export class I10Index {
+    private _i10Index: number
+    private _i10IndexWithoutSelfCitations: number
+
+    constructor(i10Index: number, i10IndexWithoutSelfCitations: number) {
+        this._i10Index = i10Index;
+        this._i10IndexWithoutSelfCitations = i10IndexWithoutSelfCitations;
+    }
+
+    public get i10Index(): number {
+        return this._i10Index;
+    }
+
+    public get i10IndexWithoutSelfCitations(): number {
+        return this._i10IndexWithoutSelfCitations;
     }
 }
