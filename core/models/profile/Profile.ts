@@ -1,8 +1,38 @@
 import { HIndex } from '../profile/HIndex'
 import { I10Index } from '../profile/I10Index'
 
-export class Profile{}
-export class BasicProfile{}
+export interface Profile {}
+export class BasicProfile implements Profile {
+
+  private _id: number;
+  private _name: string;
+  private _affiliation: string;
+  private _totalCitations: number;
+
+  constructor(_id: number, _name: string, _affiliation: string, _totalCitations: number) {
+    this._id = _id;
+    this._name = _name;
+    this._affiliation = _affiliation;
+    this._totalCitations = _totalCitations;
+  }
+
+  public get id(): number {
+    return this._id;
+  }
+
+  public get name(): string {
+    return this._name;
+  }
+
+  public get affiliation(): string {
+    return this._affiliation;
+  }
+
+  public get totalCitations(): number {
+    return this._totalCitations;
+  }
+
+}
 export class FullProfile{
     private _basicProfile: BasicProfile;
     private _hIndex: HIndex;
