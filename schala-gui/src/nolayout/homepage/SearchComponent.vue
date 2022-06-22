@@ -1,5 +1,6 @@
 <template>
 
+  <div id="searchBox">
     <q-form
       @submit="onSubmit"
       class="q-gutter-md"
@@ -19,17 +20,16 @@
     <div>
       <q-btn id="butn" label="Search" class="float-right" type="submit" color="primary"/>
     </div>
+  </div>
 </template>
 <script setup lang="ts">
 
-import { ref } from 'vue' 
 import { useRouter } from 'vue-router' 
 
 
 
 const router = useRouter()
 
-let model = ref('')
 
 let onSubmit = async () => {
   router.push({ path: '/profile/search'})
