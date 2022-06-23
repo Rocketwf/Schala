@@ -1,3 +1,4 @@
+import { Article } from '../models'
 import { FullProfile } from '../models/profile/Profile'
 import { HIndex } from '../models/profile/Profile'
 import { I10Index } from '../models/profile/Profile'
@@ -21,5 +22,9 @@ export class ProfileFactory {
 
     calculateIndirectSelfCitations(): number {
         return 0
+    }
+
+    getArticles(): Article[] {
+        return null
     }
 }
