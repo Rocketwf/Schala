@@ -1,4 +1,4 @@
-import { BasicProfile } from "../models/profile/Profile";
+import { BasicProfile } from '../models/profile/Profile';
 
 // TODO: Implement SearchResultsFactory
 export class SearchResultsFactory {
