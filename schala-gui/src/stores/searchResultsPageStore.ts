@@ -3,7 +3,18 @@ import { SearchResultsFactory } from '../../../core/factories/SearchResultsFacto
 import { SearchResultsModel } from '../../../core/models/searchresultsmodel/SearchResultsModel'
 import { defineStore } from 'pinia';
 
-export const searchResultsStore = defineStore('searchResultsPage', () => {
+interface ISearchResultsPageStore {
+    setSearchString: (passedSearchString: string) => void;
+    getSearchString: () => string;
+    getSearchResultsFactory: () => SearchResultsFactory;
+    getSearchResultsShowingModel: () => SearchResultsModel;
+    setSearchResultsShowingModel: (model: SearchResultsModel) => void;
+    getSearchResultsCachedModel: () => SearchResultsModel;
+    setSearchResultsCachedModel: (model: SearchResultsModel) => void;
+    resetFromCache: () => void;
+    applyAllFilters: () => void;
+}
+export const searchResultsStore = defineStore<string, ISearchResultsPageStore>('searchResultsPage', () => {
   let searchString = '';
   const searchResultsFactory:SearchResultsFactory = {} as SearchResultsFactory;
   let searchResultsShowingModel: SearchResultsModel = {} as SearchResultsModel;
@@ -15,6 +26,7 @@ export const searchResultsStore = defineStore('searchResultsPage', () => {
   // TODO: Fix setSearchString after SearchResultsModel and deepCopy are implemented
   function setSearchString(passedSearchString: string):void {
     searchString = passedSearchString;
+    console.log(searchString)
     const profile: Array<BasicProfile> = getSearchResultsFactory().build(passedSearchString);
     searchResultsCachedModel = new SearchResultsModel(profile);
     searchResultsShowingModel = searchResultsShowingModel.deepCopy();

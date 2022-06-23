@@ -23,7 +23,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
+import { useRouter, Router } from 'vue-router';
 import { ref, Ref } from 'vue';
 import { searchResultsStore } from 'stores/searchResultsPageStore';
 
@@ -43,7 +43,7 @@ const handleSearch = (): void => {
   router.push({ path: '/profile/search'});
 }
 
-const getSearchPageResultsStore = (): Store  => {
+const getSearchPageResultsStore = () => {
   return searchResultsStore();
 }
 </script>

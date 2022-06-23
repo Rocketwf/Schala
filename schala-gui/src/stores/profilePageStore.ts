@@ -9,7 +9,7 @@ export const profilePageStore = defineStore('profilePage', () => {
     //create a BasicProfile with id "000000000" after it is implemented
     let fullProfile: FullProfile = {} as FullProfile;
     const profileFactory: ProfileFactory = new ProfileFactory()
-    const profileRepresentation: ProfileRepresentation = new ProfileRepresentation()
+    const profileRepresentation: ProfileRepresentation = new ProfileRepresentation(fullProfile)
 
     function getProfileId() {
       return profileId
@@ -33,11 +33,12 @@ export const profilePageStore = defineStore('profilePage', () => {
 
     function setProfileId(newId: string) {
       if (newId === getProfileId()) {
-        getProfileRepresentation().renderProfile(getFullProfile())
+        getProfileRepresentation().renderProfile()
       } else {
         profileId = newId
         fullProfile = getProfileFactory().build(getProfileId())[0]
-        getProfileRepresentation().renderProfile(getFullProfile())
+        getProfileRepresentation().fullProfile = fullProfile
+        getProfileRepresentation().renderProfile()
       }
     }
 
