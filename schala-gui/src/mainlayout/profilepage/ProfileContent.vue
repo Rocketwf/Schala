@@ -18,7 +18,7 @@ const props = defineProps<{
 }>()
 
 // Methods
-const getProfileRepresentation = () => {
+const getProfileRepresentation = ():ProfileRepresentation => {
   return props.profileRepr;
 }
 

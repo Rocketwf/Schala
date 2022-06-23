@@ -43,7 +43,7 @@ const props = defineProps<{
 }>()
 
 // Methods
-const getFullProfile = () => {
+const getFullProfile = (): FullProfile => {
   return props.profile;
 }
 
@@ -51,7 +51,7 @@ const getComparePageStore = () => {
   return comparePageStore();
 }
 
-function handleActionButton(){
+const handleActionButton = ():void => {
       getComparePageStore().addProfile(ID);
 
 }
