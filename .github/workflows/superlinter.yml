@@ -2,13 +2,14 @@ name: Super-Linter
 
 on: push
 
-env:
-  TYPESCRIPT_STANDARD_TSCONFIG_FILE: tsconfig.eslint.json
+
 
 jobs:
   super-lint:
     name: Lint code base
     runs-on: ubuntu-latest
+    env:
+      TYPESCRIPT_STANDARD_TSCONFIG_FILE: tsconfig.eslint.json
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
