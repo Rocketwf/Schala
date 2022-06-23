@@ -1,3 +1,1 @@
-export class ChartOptionsModel {
-    
-}
+export class ChartOptionsModel {}

@@ -1,3 +1,1 @@
-export abstract class ArticlesFilter<S> {
-
-}
+export abstract class ArticlesFilter<S> {}

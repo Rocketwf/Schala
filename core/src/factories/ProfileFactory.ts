@@ -1,9 +1,8 @@
-import { FullProfile } from '../models/profile/Profile'
+import { FullProfile } from '../models/profile/Profile';
 
 export class ProfileFactory {
-
-    build(authorId: string):  FullProfile[] {
+    build(authorId: string): FullProfile[] {
         authorId;
-        return {} as FullProfile[]
+        return {} as FullProfile[];
     }
 }

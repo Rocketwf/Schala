@@ -1,3 +1,1 @@
-export abstract class ObjectSeriesFilter<S> {
-    
-}
+export abstract class ObjectSeriesFilter<S> {}

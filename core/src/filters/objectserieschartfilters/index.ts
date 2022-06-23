@@ -1,1 +1,1 @@
-export { ObjectSeriesFilter } from './ObjectSeriesFilter'
+export { ObjectSeriesFilter } from './ObjectSeriesFilter';

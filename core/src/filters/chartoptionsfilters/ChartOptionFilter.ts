@@ -1,3 +1,1 @@
-export abstract class ChartOptionFilter<S> {
-    
-}
+export abstract class ChartOptionFilter<S> {}

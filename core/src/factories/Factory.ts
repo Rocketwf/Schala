@@ -1,3 +1,1 @@
-export abstract class Factory {
-    
-}
+export abstract class Factory {}

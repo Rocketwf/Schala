@@ -1,2 +1,2 @@
-export { DataSource } from './DataSource'
-export { SemanticScholarSource } from './SemanticScholarSource'
+export { DataSource } from './DataSource';
+export { SemanticScholarSource } from './SemanticScholarSource';

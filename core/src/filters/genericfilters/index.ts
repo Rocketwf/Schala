@@ -1,1 +1,1 @@
-export { PaginationFilter } from './PaginationFilter'
+export { PaginationFilter } from './PaginationFilter';

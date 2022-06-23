@@ -17,5 +17,5 @@ jobs:
         working-directory: core
 
       - name: Run linter
-        run: yarn eslint . --ext .js,.jsx,.ts,.tsx --fix
+        run: yarn eslint . --ext .js,.jsx,.ts,.tsx
         working-directory: core

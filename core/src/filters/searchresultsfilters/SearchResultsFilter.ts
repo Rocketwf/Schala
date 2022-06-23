@@ -1,3 +1,1 @@
-export abstract class SearchResultsFilter<S> {
-    
-}
+export abstract class SearchResultsFilter<S> {}

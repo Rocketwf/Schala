@@ -1,3 +1,1 @@
-export abstract class PaginationFilter {
-    
-}
+export abstract class PaginationFilter {}
