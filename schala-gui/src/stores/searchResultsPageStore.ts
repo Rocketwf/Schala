@@ -1,4 +1,4 @@
-import { BasicProfile } from 'app/../core/models/profile/Profile';
+import { BasicProfile } from 'schala-core/src/models/profile/Profile';
 import { SearchResultsFactory } from '../../../core/factories/SearchResultsFactory'
 import { SearchResultsModel } from '../../../core/models/searchresultsmodel/SearchResultsModel'
 import { defineStore } from 'pinia';

@@ -11,7 +11,7 @@
       filled
       placeholder="Search for a name or an ID"
       >
-        <template v-slot:append>
+        <template #append>
           <q-icon name="search" />
         </template>
       </q-input>
