@@ -64,5 +64,10 @@ export class SemanticScholarSource implements DataSource {
       return data.data[0].name
     })
   }
+  async fetchAffiliation(authorId: string): Promise<string[]> {
+    return await this.idAPIAuthorMapping.get(authorId)!.then(data => {
+      return data.data[0].affiliations
+    })
+  }
 
 }
