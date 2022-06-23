@@ -1,4 +1,4 @@
-export interface Profile {}
+export abstract class Profile {}
 export class BasicProfile implements Profile {
     private _id: string;
     private _name: string;
