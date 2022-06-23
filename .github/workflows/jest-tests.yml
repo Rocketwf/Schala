@@ -1,0 +1,22 @@
+name: jest-core
+
+on:
+  push
+
+jobs:
+  run-linters:
+    name: Run test core units
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Install core dependencies
+        run: yarn
+        working-directory: core
+
+      - name: Run tests
+        run: yarn test
+        working-directory: core
+
