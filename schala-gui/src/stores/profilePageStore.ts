@@ -1,7 +1,5 @@
 import { defineStore } from 'pinia';
-import { BasicProfile, FullProfile } from '../../../core/models/profile/Profile'
-import { ProfileFactory } from '../../../core/factories/ProfileFactory'
-import { ProfileRepresentation } from '../../../core/representations/ProfileRepresentation'
+import { BasicProfile, FullProfile, ProfileFactory, ProfileRepresentation } from 'schala-core'
 
 export const profilePageStore = defineStore('profilePage', () => {
   
