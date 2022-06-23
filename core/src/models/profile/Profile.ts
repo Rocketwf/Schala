@@ -2,19 +2,19 @@
 export interface Profile {}
 export class BasicProfile implements Profile {
 
-  private _id: number;
+  private _id: string;
   private _name: string;
   private _affiliation: string;
   private _totalCitations: number;
 
-  constructor(_id: number, _name: string, _affiliation: string, _totalCitations: number) {
+  constructor(_id: string, _name: string, _affiliation: string, _totalCitations: number) {
     this._id = _id;
     this._name = _name;
     this._affiliation = _affiliation;
     this._totalCitations = _totalCitations;
   }
 
-  public get id(): number {
+  public get id(): string {
     return this._id;
   }
 
