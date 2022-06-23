@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import { useRouter, Router } from 'vue-router';
 import { ref, Ref } from 'vue';
-import { searchResultsStore } from 'stores/searchResultsPageStore';
+import { searchResultsStore } from '../../stores/searchResultsPageStore';
 
 
 // Attributes

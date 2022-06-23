@@ -49,7 +49,23 @@
 <script lang = "ts">
 
 import { ref, defineComponent } from 'vue'
-import {} from '../../sharedcomponents/ProfileSummary.vue'
-import { profilePageStore } from '../../stores/profilePageStore'
+import { profileSummary } from '../../sharedcomponents/ProfileSummary.vue'
+import { comparePageStore } from '../../stores/comparePageStore'
+import { compareContent } from '../comparepage/CompareContent.vue'
+
+
+const getComparePageStore = () => {
+  return comparePageStore();
+}
+
+const getProfileSummary = () => {
+  return profileSummary();
+}
+
+const getProfileContent = () => {
+  return compareContent();
+}
+
+
 
 </script>
