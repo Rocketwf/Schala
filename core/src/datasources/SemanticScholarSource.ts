@@ -1,4 +1,4 @@
-mport { Article } from "../models/articles/Article";
+import { Article } from "../models/articles/Article";
 import { APIAuthor, GetUsersResponse } from "../models/api/API";
 import { DataSource } from "./DataSource";
 import axios from 'axios';
