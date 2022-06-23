@@ -53,6 +53,7 @@ export class SemanticScholarSource implements DataSource {
             return data.data[0].hIndex;
         });
     }
+
     fetchI10Index(authorId: string): Promise<number> {
         authorId;
         return {} as Promise<number>;
@@ -66,34 +67,19 @@ export class SemanticScholarSource implements DataSource {
         authorId;
         return {} as Promise<boolean>;
     }
-  }
-  async fetchHIndex(authorId: string): Promise<number> {
-    return await this.idAPIAuthorMapping.get('1679754')!.then(data => {
-      return data.data[0].hIndex
-    })
-  }
-  fetchI10Index(authorId: string): Promise<number> {
-    return {} as Promise<number>
-  }
-  fetchArticles(authorId: string): Promise<Article[]> {
-    return {} as Promise<Article[]>
-  }
-  hasSelfCitation(article: Article, authorId: string): Promise<boolean> {
-    return {} as Promise<boolean>
-  }
-  async fetchName(authorId: string): Promise<string> {
-    return await this.idAPIAuthorMapping.get(authorId)!.then(data => {
-      return data.data[0].name
-    })
-  }
-  async fetchAffiliation(authorId: string): Promise<string[]> {
-    return await this.idAPIAuthorMapping.get(authorId)!.then(data => {
-      return data.data[0].affiliations
-    })
-  }
-  async fetchCitation(authorId: string): Promise<string> {
-    return await this.idAPIAuthorMapping.get(authorId)!.then(data => {
-      return data.data[0].citationCount
-    })
-  }
+    async fetchName(authorId: string): Promise<string> {
+        return await this.idAPIAuthorMapping.get(authorId).then((data) => {
+            return data.data[0].name;
+        });
+    }
+    async fetchAffiliation(authorId: string): Promise<string[]> {
+        return await this.idAPIAuthorMapping.get(authorId).then((data) => {
+            return data.data[0].affiliations;
+        });
+    }
+    async fetchCitation(authorId: string): Promise<string> {
+        return await this.idAPIAuthorMapping.get(authorId).then((data) => {
+            return data.data[0].citationCount;
+        });
+    }
 }
