@@ -1,11 +1,11 @@
 export interface APIJournal {
-  volume?: string;
-  pages?: string;
-  name?: string;
+    volume?: string;
+    pages?: string;
+    name?: string;
 }
 interface APICoAuthor {
-  authorId: string;
-  name: string;
+    authorId: string;
+    name: string;
 }
 export interface APIArticle {
     paperId: string;
@@ -21,25 +21,25 @@ export interface APIArticle {
     publicationTypes?: string[];
     publicationDate?: string;
     journal?: APIJournal[];
-    authors?: APICoAuthor[]
+    authors?: APICoAuthor[];
 }
 
 export interface APIAuthor {
-  authorId: string;
-  url: string;
-  name: string;
-  aliases: string[];
-  affiliations: string[];
-  homepage: string;
-  paperCount: string;
-  citationCount: string;
-  hIndex: number;
-  papers: APIArticle[];
-};
+    authorId: string;
+    url: string;
+    name: string;
+    aliases: string[];
+    affiliations: string[];
+    homepage: string;
+    paperCount: string;
+    citationCount: string;
+    hIndex: number;
+    papers: APIArticle[];
+}
 
 export interface GetUsersResponse {
-  total: number;
-  offset: number;
-  next: number;
-  data: APIAuthor[];
-};
+    total: number;
+    offset: number;
+    next: number;
+    data: APIAuthor[];
+}

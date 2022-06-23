@@ -1,1 +1,1 @@
-export { ArticlesModel } from './ArticlesModel'
+export { ArticlesModel } from './ArticlesModel';

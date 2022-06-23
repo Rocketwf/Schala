@@ -1,3 +1,1 @@
-export interface Factory {
-    
-}
+export abstract class Factory {}

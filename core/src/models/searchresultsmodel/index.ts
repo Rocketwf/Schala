@@ -1,1 +1,1 @@
-export { SearchResultsModel } from './SearchResultsModel'
+export { SearchResultsModel } from './SearchResultsModel';

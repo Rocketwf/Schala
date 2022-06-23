@@ -1,1 +1,1 @@
-export { ChartOptionsModel } from './ChartOptionsModel'
+export { ChartOptionsModel } from './ChartOptionsModel';

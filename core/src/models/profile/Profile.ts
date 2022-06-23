@@ -1,37 +1,34 @@
-
-export interface Profile {}
+export abstract class Profile {}
 export class BasicProfile implements Profile {
+    private _id: string;
+    private _name: string;
+    private _affiliation: string;
+    private _totalCitations: number;
 
-  private _id: string;
-  private _name: string;
-  private _affiliation: string;
-  private _totalCitations: number;
+    constructor(_id: string, _name: string, _affiliation: string, _totalCitations: number) {
+        this._id = _id;
+        this._name = _name;
+        this._affiliation = _affiliation;
+        this._totalCitations = _totalCitations;
+    }
 
-  constructor(_id: string, _name: string, _affiliation: string, _totalCitations: number) {
-    this._id = _id;
-    this._name = _name;
-    this._affiliation = _affiliation;
-    this._totalCitations = _totalCitations;
-  }
+    public get id(): string {
+        return this._id;
+    }
 
-  public get id(): string {
-    return this._id;
-  }
+    public get name(): string {
+        return this._name;
+    }
 
-  public get name(): string {
-    return this._name;
-  }
+    public get affiliation(): string {
+        return this._affiliation;
+    }
 
-  public get affiliation(): string {
-    return this._affiliation;
-  }
-
-  public get totalCitations(): number {
-    return this._totalCitations;
-  }
-
+    public get totalCitations(): number {
+        return this._totalCitations;
+    }
 }
-export class FullProfile{
+export class FullProfile {
     private _basicProfile: BasicProfile;
     private _hIndex: HIndex;
     private _i10Index: I10Index;
@@ -55,8 +52,8 @@ export class FullProfile{
     }
 }
 export class HIndex {
-    private _hIndex: number
-    private _hIndexWithoutSelfCitations: number
+    private _hIndex: number;
+    private _hIndexWithoutSelfCitations: number;
 
     constructor(hIndex: number, hIndexWithoutSelfCitations: number) {
         this._hIndex = hIndex;
@@ -72,8 +69,8 @@ export class HIndex {
     }
 }
 export class I10Index {
-    private _i10Index: number
-    private _i10IndexWithoutSelfCitations: number
+    private _i10Index: number;
+    private _i10IndexWithoutSelfCitations: number;
 
     constructor(i10Index: number, i10IndexWithoutSelfCitations: number) {
         this._i10Index = i10Index;
