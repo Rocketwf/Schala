@@ -1,0 +1,9 @@
+{
+  "preset": "ts-jest",
+  "testEnvironment": "node",
+  "transform": {
+      "^.+\\.(t|j)sx?$": "ts-jest"
+  },
+  "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"],
+  "modulePathIgnorePatterns": ["dist/"]
+}

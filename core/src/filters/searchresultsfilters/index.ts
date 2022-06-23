@@ -1,0 +1,1 @@
+export { SearchResultsFilter } from './SearchResultsFilter'

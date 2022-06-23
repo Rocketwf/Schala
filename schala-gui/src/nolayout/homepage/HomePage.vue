@@ -9,9 +9,9 @@
 </template>
 <script setup lang="ts">
 import SearchComponent from './SearchComponent.vue'
-import SemanticScholarSource from '../../../../core/datasources/SemanticScholarSource'
+import { SemanticScholarSource } from 'schala-core'
 
-/*SemanticScholarSource.getInstance().fetchHIndex('1679754').then(data => {console.log(data)})*/
+SemanticScholarSource.getInstance().fetchHIndex('1679754').then(data => {console.log(data)})
 
 
 </script>

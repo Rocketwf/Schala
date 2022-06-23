@@ -1,6 +1,4 @@
-import { BasicProfile } from 'app/../core/models/profile/Profile';
-import { SearchResultsFactory } from '../../../core/factories/SearchResultsFactory'
-import { SearchResultsModel } from '../../../core/models/searchresultsmodel/SearchResultsModel'
+import { BasicProfile, SearchResultsFactory, SearchResultsModel } from 'schala-core';
 import { defineStore } from 'pinia';
 
 interface ISearchResultsPageStore {
