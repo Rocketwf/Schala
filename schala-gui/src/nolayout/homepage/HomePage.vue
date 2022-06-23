@@ -1,14 +1,16 @@
 <template>
   <div id="mainPageContainer">
-    
+
     <div id="logoSearch">
       <img src="../../assets/logo.png" />
     </div>
     <search-component />
+
 </div>
 </template>
 <script setup lang="ts">
 import SearchComponent from './SearchComponent.vue'
+
 import SemanticScholarSource from '../../../../core/datasources/SemanticScholarSource'
 
 /*SemanticScholarSource.getInstance().fetchHIndex('1679754').then(data => {console.log(data)})*/
