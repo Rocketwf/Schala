@@ -9,7 +9,31 @@ export class ProfileFactory {
     }
 
     calculateHIndex(): HIndex {
-        return null
+        
+        let copy = JSON.parse(JSON.stringify(this.getArticles))
+        //Sorting the articles of the scholar by the number of citations
+        copy.sort((a: Article, b: Article) => (a.citation > b.citation ? -1 : 1))
+        //Calculating the hIndex of the scholar
+        let hIndex: number = 0;
+        copy.forEach((articles: Article, index: number) => {
+            if(articles.citation < index) {
+                return
+            }
+            hIndex++
+        });
+        
+        //Sorting the articles of the scholar by the number of citations without self citations
+        copy.sort((a: Article, b: Article) => ((a.citation - a.selfCitation) > (b.citation - b.selfCitation) ? -1 : 1))
+        //Calculating the hIndex without self citations of the scholar
+        let hIndexWithoutSelfCitations: number = 0
+        copy.forEach((articles: Article, index: number) => {
+            if((articles.citation - articles.selfCitation) < index) {
+                return
+            }
+            hIndexWithoutSelfCitations++
+        });
+
+        return new HIndex(hIndex, hIndexWithoutSelfCitations);
     }
 
     calculateI10Index(): I10Index {
