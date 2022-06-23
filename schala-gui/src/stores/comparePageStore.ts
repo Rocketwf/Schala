@@ -11,7 +11,7 @@ export const comparePageStore = defineStore('comparePage', () => {
     }
     
     function isBeingCompared(profileId: string) {
-        return true //TODO: Implement this
+        return false //TODO: Implement this
     }
 
     return {
