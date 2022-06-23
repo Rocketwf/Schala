@@ -15,9 +15,5 @@ const getProfilePageStore = () => {
   return profilePageStore();
 }
 
-const routerView = () => {
-      //TODO: Implement routerView
-
-}
 
 </script>

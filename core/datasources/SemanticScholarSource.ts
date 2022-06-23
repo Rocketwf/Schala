@@ -46,7 +46,7 @@ export default class SemanticScholarSource implements DataSource {
     }
   }
   async fetchHIndex(authorId: string): Promise<number> {
-    return await this.idAPIAuthorMapping.get('1679754').then(data => {
+    return await this.idAPIAuthorMapping.get('1679754')!.then(data => {
       return data.data[0].hIndex
     })
   }
@@ -58,6 +58,9 @@ export default class SemanticScholarSource implements DataSource {
   }
   hasSelfCitation(article: Article, authorId: string): Promise<boolean> {
     return {} as Promise<boolean>
+  }
+  fetchAuthorIds(query: string): Promise<string[]> {
+    return {} as Promise<string[]>
   }
   
 
