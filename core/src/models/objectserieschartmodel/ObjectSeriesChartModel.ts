@@ -1,3 +1,1 @@
-export class ObjectSeriesChartModel {
-    
-}
+export class ObjectSeriesChartModel {}

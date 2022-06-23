@@ -1,1 +1,1 @@
-export { ProfileRepresentation } from './ProfileRepresentation'
+export { ProfileRepresentation } from './ProfileRepresentation';

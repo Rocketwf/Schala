@@ -1,1 +1,1 @@
-export { ChartOptionFilter } from './ChartOptionFilter'
+export { ChartOptionFilter } from './ChartOptionFilter';

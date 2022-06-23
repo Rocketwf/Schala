@@ -1,1 +1,1 @@
-export { SearchResultsFilter } from './SearchResultsFilter'
+export { SearchResultsFilter } from './SearchResultsFilter';

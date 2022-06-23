@@ -1,18 +1,18 @@
-import { FullProfile } from '../models/profile/Profile'
+import { FullProfile } from '../models/profile/Profile';
 
 export class ProfileRepresentation {
     private _fullProfile: FullProfile;
     constructor(_fullProfile: FullProfile) {
-      this._fullProfile = _fullProfile;
+        this._fullProfile = _fullProfile;
     }
     renderProfile(): void {
-      return null;
+        return null;
     }
-    
-    public get fullProfile() : FullProfile {
-      return this._fullProfile;
+
+    public get fullProfile(): FullProfile {
+        return this._fullProfile;
     }
     public set fullProfile(fullProfile: FullProfile) {
-      this._fullProfile = fullProfile;
+        this._fullProfile = fullProfile;
     }
 }
