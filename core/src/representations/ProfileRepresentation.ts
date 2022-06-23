@@ -5,7 +5,7 @@ export class ProfileRepresentation {
     constructor(_fullProfile: FullProfile) {
       this._fullProfile = _fullProfile;
     }
-    renderProfile() {
+    renderProfile(): void {
       return null;
     }
     

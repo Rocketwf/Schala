@@ -1,3 +1,3 @@
-export default class Article {
+export class Article {
 
 }
