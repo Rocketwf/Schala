@@ -1,4 +1,4 @@
-import Filterable from '../../filters/Filterable'
+import { Filterable } from '../../filters/Filterable'
 import { BasicProfile } from "../profile/Profile";
 export class SearchResultsModel implements Filterable<SearchResultsModel> {
 
