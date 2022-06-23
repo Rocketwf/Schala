@@ -37,7 +37,30 @@ export class ProfileFactory {
     }
 
     calculateI10Index(): I10Index {
-        return null
+        let copy = JSON.parse(JSON.stringify(this.getArticles))
+        //Sorting the articles of the scholar by the number of citations
+        copy.sort((a: Article, b: Article) => (a.citation > b.citation ? -1 : 1))
+        //Calculating the hIndex of the scholar
+        let i10Index: number = 0
+        copy.forEach((articles: Article, index: number) => {
+            if(articles.citation < 10) {
+                return
+            }
+            i10Index++
+        });
+        
+        //Sorting the articles of the scholar by the number of citations without self citations
+        copy.sort((a: Article, b: Article) => ((a.citation - a.selfCitation) > (b.citation - b.selfCitation) ? -1 : 1))
+        //Calculating the i10 index without self citations of the scholar
+        let i10IndexWithoutSelfCitations: number = 0
+        copy.forEach((articles: Article, index: number) => {
+            if((articles.citation - articles.selfCitation) < index) {
+                return
+            }
+            i10IndexWithoutSelfCitations++
+        });
+
+        return new I10Index(i10Index, i10IndexWithoutSelfCitations)
     }
 
     calculateSelfCitations(): number {
