@@ -1,0 +1,23 @@
+name: Lint
+
+on:
+  push
+
+jobs:
+  run-linters:
+    name: Run linters
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Install core dependencies
+        run: yarn install --frozen-lockfile
+        working-directory: core
+
+      - name: Run linters
+        uses: wearerequired/lint-action@v2
+        with:
+          eslint: true
+          prettier: true
