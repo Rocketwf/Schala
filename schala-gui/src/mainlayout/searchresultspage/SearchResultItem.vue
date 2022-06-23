@@ -3,16 +3,16 @@
 
     <q-item-section top class="q-ml-sm">
       <q-item-label class="q-mt-sm" @click = "handleClick">
-        {{props.profile.name}}
+        {{getBasicProfile().id}}
       </q-item-label>
       <q-item-label caption lines="2">
-        {{props.profile.id}}
+        {{getBasicProfile().name}}
       </q-item-label>
       <q-item-label caption lines="2">
-        @{{props.profile.affiliation}}
+        @{{getBasicProfile().affiliation}}
       </q-item-label>
       <q-item-label caption lines="2">
-        {{props.profile.totalCitations}}
+        {{getBasicProfile().totalCitations}}
       </q-item-label>
     </q-item-section>
 
@@ -49,7 +49,7 @@ import { BasicProfile } from '../../../../core/models/profile/Profile';
         return compareStore.isBeingCompared(props.profile.id);
     });
 
-    function handleAdd() {
+    function handleAdd(): void {
         if (compareStore.isBeingCompared(props.profile.id)) {
             getComparePageStore().removeProfile(props.profile.id)
         } else {
@@ -57,7 +57,7 @@ import { BasicProfile } from '../../../../core/models/profile/Profile';
         }
     }
 
-    function handleClick() {
+    function handleClick(): void {
         getProfileStore().setProfileId(props.profile.id)
         router.push({ path: '/profile/show'});
     }
