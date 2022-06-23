@@ -1,8 +1,77 @@
-import { FullProfile } from '../models/profile/Profile';
-
+import { Article } from '../models'
+import { FullProfile } from '../models/profile/Profile'
+import { HIndex } from '../models/profile/Profile'
+import { I10Index } from '../models/profile/Profile'
 export class ProfileFactory {
     build(authorId: string): FullProfile[] {
         authorId;
         return {} as FullProfile[];
+    }
+
+    calculateHIndex(): HIndex {
+        
+        let copy = JSON.parse(JSON.stringify(this.getArticles))
+        //Sorting the articles of the scholar by the number of citations
+        copy.sort((a: Article, b: Article) => (a.citation > b.citation ? -1 : 1))
+        //Calculating the hIndex of the scholar
+        let hIndex: number = 0;
+        copy.forEach((articles: Article, index: number) => {
+            if(articles.citation < index) {
+                return
+            }
+            hIndex++
+        });
+        
+        //Sorting the articles of the scholar by the number of citations without self citations
+        copy.sort((a: Article, b: Article) => ((a.citation - a.selfCitation) > (b.citation - b.selfCitation) ? -1 : 1))
+        //Calculating the hIndex without self citations of the scholar
+        let hIndexWithoutSelfCitations: number = 0
+        copy.forEach((articles: Article, index: number) => {
+            if((articles.citation - articles.selfCitation) < index) {
+                return
+            }
+            hIndexWithoutSelfCitations++
+        });
+
+        return new HIndex(hIndex, hIndexWithoutSelfCitations);
+    }
+
+    calculateI10Index(): I10Index {
+        let copy = JSON.parse(JSON.stringify(this.getArticles))
+        //Sorting the articles of the scholar by the number of citations
+        copy.sort((a: Article, b: Article) => (a.citation > b.citation ? -1 : 1))
+        //Calculating the hIndex of the scholar
+        let i10Index: number = 0
+        copy.forEach((articles: Article, index: number) => {
+            if(articles.citation < 10) {
+                return
+            }
+            i10Index++
+        });
+        
+        //Sorting the articles of the scholar by the number of citations without self citations
+        copy.sort((a: Article, b: Article) => ((a.citation - a.selfCitation) > (b.citation - b.selfCitation) ? -1 : 1))
+        //Calculating the i10 index without self citations of the scholar
+        let i10IndexWithoutSelfCitations: number = 0
+        copy.forEach((articles: Article, index: number) => {
+            if((articles.citation - articles.selfCitation) < index) {
+                return
+            }
+            i10IndexWithoutSelfCitations++
+        });
+
+        return new I10Index(i10Index, i10IndexWithoutSelfCitations)
+    }
+
+    calculateSelfCitations(): number {
+        return 0
+    }
+
+    calculateIndirectSelfCitations(): number {
+        return 0
+    }
+
+    getArticles(): Article[] {
+        return null
     }
 }
