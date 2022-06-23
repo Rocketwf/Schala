@@ -1,4 +1,4 @@
-import Article from '../models/articles/Article'
+import { Article } from '../models/articles/Article'
 export interface DataSource {
   fetchHIndex(authorId: string): Promise<number>
   fetchI10Index(authorId: string): Promise<number>
