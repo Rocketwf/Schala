@@ -59,6 +59,10 @@ export class SemanticScholarSource implements DataSource {
   hasSelfCitation(article: Article, authorId: string): Promise<boolean> {
     return {} as Promise<boolean>
   }
-  
+  async fetchName(authorId: string): Promise<string> {
+    return await this.idAPIAuthorMapping.get(authorId)!.then(data => {
+      return data.data[0].name
+    })
+  }
 
 }
