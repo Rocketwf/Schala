@@ -96,12 +96,12 @@ export class SemanticScholarSource implements DataSource {
             },
         );
     }
-    async fetchCitation(authorId: string): Promise<string> {
+    async fetchCitation(authorId: string): Promise<number> {
         return await Promise.all(Array.from(this.queryResultsMapping.values())).then(
             (arrayOfResolvedPromisses: APIAuthor[][]) => {
                 for (const apiAuthors of arrayOfResolvedPromisses) {
                     for (const apiAuthor of apiAuthors) {
-                        if (apiAuthor.authorId === authorId) return apiAuthor.citationCount;
+                        if (apiAuthor.authorId === authorId) return +apiAuthor.citationCount;
                     }
                 }
             },

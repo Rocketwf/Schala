@@ -15,4 +15,11 @@ describe('findOrCreate method', () => {
                 expect(data).toBe(39);
             });
     });
+    it('HIndex of tichy should be 3', async () => {
+        await SemanticScholarSource.getInstance()
+            .fetchName('1679754')
+            .then((data: string) => {
+                expect(data).toBe('W. Tichy');
+            });
+    });
 });

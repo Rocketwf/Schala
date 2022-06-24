@@ -1,14 +1,20 @@
 import { SemanticScholarSource } from '../datasources';
 import { Article } from '../models';
-import { FullProfile, HIndex, I10Index } from '../models/profile';
+import { FullProfile, HIndex, I10Index, BasicProfile } from '../models/profile';
 
 export class ProfileFactory {
     //TODO: Fix Promise
-    build(authorId: string): FullProfile[] {
-        const semantic: SemanticScholarSource = SemanticScholarSource.getInstance();
-        const authorIds: Promise<string[]> = semantic.fetchAuthorIds(authorId);
-        authorIds;
-        return {} as FullProfile[];
+    async build(authorId: string): Promise<FullProfile[]> {
+        return await Promise.all([
+            SemanticScholarSource.getInstance().fetchName(authorId),
+            SemanticScholarSource.getInstance().fetchAffiliations(authorId),
+            SemanticScholarSource.getInstance().fetchHIndex(authorId),
+            SemanticScholarSource.getInstance().fetchCitation(authorId),
+        ]).then((values: [string, string[], number, number]) => {
+            const basicProfile: BasicProfile = new BasicProfile(authorId, values[0], values[1], values[3]);
+            const hIndexObj: HIndex = new HIndex(values[2]);
+            return Array.of(new FullProfile(basicProfile, hIndexObj, null));
+        });
     }
 
     calculateHIndex(): HIndex {

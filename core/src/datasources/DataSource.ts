@@ -5,7 +5,7 @@ export interface DataSource {
     fetchName(authorId: string): Promise<string>;
     fetchHIndex(authorId: string): Promise<number>;
     fetchAffiliations(authorId: string): Promise<string[]>;
-    fetchCitation(authorId: string): Promise<string>;
+    fetchCitation(authorId: string): Promise<number>;
 
     fetchI10Index(authorId: string): Promise<number>;
     fetchArticles(authorId: string): Promise<Article[]>;
