@@ -15,7 +15,7 @@ gui_deps:
 deps: core_deps gui_deps
 
 core_prepare:
-	(cd core; tsc)
+	(cd core; tsc -b --verbose)
 
 core: core_prepare gui_deps
 
