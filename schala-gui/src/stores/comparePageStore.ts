@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia';
-import { FullProfile } from 'schala-core';
+import { FullProfile, ComparisonRepresentation } from 'schala-core';
 // import { profilePageStore } from './profilePageStore';
 
 
 export const comparePageStore = defineStore('comparePage', () => {
 
   let fullProfiles: FullProfile[] = [];
-  // const comparisonRepresentation: ComparisonRepresentation = new ComparisonRepresentation({} as FullProfile);
+  const comparisonRepresentation: ComparisonRepresentation = new ComparisonRepresentation({} as FullProfile);
   // const profilePageStore: ProfilePageStore = new ProfilePageStore();
 
 
@@ -39,9 +39,9 @@ export const comparePageStore = defineStore('comparePage', () => {
     return fullProfiles;
   }
 
-  // function getComparisonRepresentation() : ComparisonRepresentation {
-  //   return comparisonRepresentation;
-  // }
+   function getComparisonRepresentation() : ComparisonRepresentation {
+     return comparisonRepresentation;
+   }
 
   // function getProfilePageStore() : ProfilePageStore {
   //   return profilePageStore;
@@ -52,7 +52,7 @@ export const comparePageStore = defineStore('comparePage', () => {
     addProfile,
     removeProfile,
     getFullProfiles,
-    // getComparisonRepresentation,
+    getComparisonRepresentation,
     // getProfilePageStore
   }
 });
