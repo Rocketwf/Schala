@@ -34,7 +34,7 @@ core_test:
 	(cd core;tsc -b --verbose; yarn test)
 
 build_skip_test: core_deps core gui_deps update_core_in_gui
-	(cd schala-gui; quasar build)
+	(cd schala-gui; yarn build)
 	
 
 all: core_deps core core_test gui_deps gui

@@ -12,5 +12,8 @@ jobs:
       - name: Check out Git repository
         uses: actions/checkout@v2
 
+      - name: Install Quasar/CLI
+        run: yarn global add @quasar/cli
+
       - name: Build (no tests)
         run: make build_skip_test
