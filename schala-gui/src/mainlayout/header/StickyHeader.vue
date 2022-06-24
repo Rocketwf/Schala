@@ -3,7 +3,7 @@
       <q-toolbar>
         <q-toolbar-title>
           <q-avatar>
-            <img src="../assets/wisteria_Background_only_plant.png">
+            <img src="../../assets/wisteria_Background_only_plant.png">
           </q-avatar>
           schala
         </q-toolbar-title>

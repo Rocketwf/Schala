@@ -1,18 +1,18 @@
 <template>
-  <profile-summary />
+  <profile-smmary />
 </template>
 
-<script lang = "ts">
-import ProfileSummary from '../../sharedcomponents/ProfileSummary.vue'
-import comparePageStore from '../../stores/'
-import MainLayoutVue from '../MainLayout.vue'
+
+<script lang = "ts" setup>
+import ProfileSummary from '../../sharedcomponents/ProfileSummary.vue';
+import CompareContent from './CompareContent.vue';
+import { comparePageStore } from '../../stores/comparePageStore'
 
 const getComparePageStore = () => {
   return comparePageStore;
 }
 
 const getProfileSummary = () => {
-  return ProfileSummary
-;
+  return ProfileSummary;
 }
 </script>
