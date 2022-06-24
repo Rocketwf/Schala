@@ -1,0 +1,16 @@
+name: build
+
+on:
+  push
+
+jobs:
+  run-linters:
+    name: Build spa
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Build (no tests)
+        run: make build_skip_test
