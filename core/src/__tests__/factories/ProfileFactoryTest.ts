@@ -1,6 +1,6 @@
 import { ProfileFactory } from '../../index';
 
-describe('profile factory build test with tichy', () => {
+describe('builds Tichy`s profile correctly', () => {
     it('Tichy`s profile must be built correctly', async () => {
         const testFactory = new ProfileFactory();
         const tichyProfile = testFactory.build('1679754')[0];
