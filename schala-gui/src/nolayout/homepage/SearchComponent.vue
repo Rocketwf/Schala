@@ -38,8 +38,7 @@ const getSearchString = (): string => {
 }
 
 const handleSearch = (): void => {
-  let searchString = getSearchString();
-  getSearchPageResultsStore().setSearchString(searchString);
+  getSearchPageResultsStore().setSearchString(getSearchString());
   router.push({ path: '/profile/search'});
 }
 

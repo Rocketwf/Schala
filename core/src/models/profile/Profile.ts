@@ -2,14 +2,11 @@ export abstract class Profile {}
 export class BasicProfile implements Profile {
     private _id: string;
     private _name: string;
-    private _affiliation: string;
+    private _affiliation: string[];
     private _totalCitations: number;
 
-    constructor(_id: string, _name: string, _affiliation: string, _totalCitations: number) {
+    constructor(_id: string) {
         this._id = _id;
-        this._name = _name;
-        this._affiliation = _affiliation;
-        this._totalCitations = _totalCitations;
     }
 
     public get id(): string {
@@ -20,12 +17,24 @@ export class BasicProfile implements Profile {
         return this._name;
     }
 
-    public get affiliation(): string {
+    public set name(name: string) {
+        this._name = name;
+    }
+
+    public get affiliation(): string[] {
         return this._affiliation;
+    }
+
+    public set affiliation(affiliation: string[]) {
+        this._affiliation = affiliation;
     }
 
     public get totalCitations(): number {
         return this._totalCitations;
+    }
+
+    public set totalCitations(totalCitations: number) {
+        this._totalCitations = totalCitations;
     }
 }
 export class FullProfile {
