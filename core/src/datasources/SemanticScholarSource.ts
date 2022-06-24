@@ -1,7 +1,7 @@
 import { Article } from '../models/articles/Article';
 import { GetUsersResponse } from '../models/api/API';
 import { DataSource } from './DataSource';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 export class SemanticScholarSource implements DataSource {
     //private queryResultsMapping : Map<string, string>;
@@ -25,7 +25,7 @@ export class SemanticScholarSource implements DataSource {
 
     private async getUsers(query: string): Promise<GetUsersResponse> {
         try {
-            const { data } = await axios.get<GetUsersResponse>(
+            const { data }: AxiosResponse<GetUsersResponse, object> = await axios.get<GetUsersResponse>(
                 'https://api.semanticscholar.org/graph/v1/author/search?query=' +
                     query +
                     '&fields=authorId,url,name,aliases,affiliations,homepage,paperCount,citationCount,hIndex,papers.paperId,papers.url,papers.title,papers.abstract,papers.venue,papers.year,papers.referenceCount,papers.citationCount,papers.isOpenAccess,papers.fieldsOfStudy,papers.publicationTypes,papers.publicationDate,papers.journal,papers.authors&limit=5',
@@ -53,7 +53,7 @@ export class SemanticScholarSource implements DataSource {
     }
     async fetchHIndex(authorId: string): Promise<number> {
         authorId;
-        return await this.idAPIAuthorMapping.get('1679754').then((data) => {
+        return await this.idAPIAuthorMapping.get('1679754').then((data: GetUsersResponse) => {
             return data.data[0].hIndex;
         });
     }
@@ -72,17 +72,17 @@ export class SemanticScholarSource implements DataSource {
         return {} as Promise<boolean>;
     }
     async fetchName(authorId: string): Promise<string> {
-        return await this.idAPIAuthorMapping.get(authorId).then((data) => {
+        return await this.idAPIAuthorMapping.get(authorId).then((data: GetUsersResponse) => {
             return data.data[0].name;
         });
     }
     async fetchAffiliation(authorId: string): Promise<string[]> {
-        return await this.idAPIAuthorMapping.get(authorId).then((data) => {
+        return await this.idAPIAuthorMapping.get(authorId).then((data: GetUsersResponse) => {
             return data.data[0].affiliations;
         });
     }
     async fetchCitation(authorId: string): Promise<number> {
-        return await this.idAPIAuthorMapping.get(authorId).then((data) => {
+        return await this.idAPIAuthorMapping.get(authorId).then((data: GetUsersResponse) => {
             return +data.data[0].citationCount;
         });
     }
