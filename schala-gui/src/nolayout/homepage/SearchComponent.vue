@@ -52,4 +52,3 @@ const getSearchPageResultsStore = () => {
   margin-top: 10px;
 }
 </style>
-
