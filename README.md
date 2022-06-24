@@ -21,7 +21,8 @@
 5. make sure your PR passes CI
 ## Development
 ### Prerequisites
-Make sure you have all the following dependencies
+Make sure you have all the following dependencies <br />
+On Debian based systems e.g., Ubuntu and WSL: <br />
 First, update your local repos:
 ```console
 sudo apt update
@@ -31,7 +32,6 @@ It's also recommended to upgrade your system:
 sudo apt upgrade
 ```
 #### NodeJS >=18
-On Debian based systems e.g., Ubuntu and WSL:
 ```console
 curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 sudo apt install nodejs npm

@@ -1,7 +1,7 @@
 .PHONY: clean_all clean core_deps gui_deps deps core_prepare core run all
 
 clean:
-	rm -rf ./core/src
+	rm -rf ./core/dist
 
 clean_all: clean
 	rm -rf ./{core,schala-gui}/node_modules
