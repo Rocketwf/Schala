@@ -81,9 +81,9 @@ export class SemanticScholarSource implements DataSource {
             return data.data[0].affiliations;
         });
     }
-    async fetchCitation(authorId: string): Promise<string> {
+    async fetchCitation(authorId: string): Promise<number> {
         return await this.idAPIAuthorMapping.get(authorId).then((data) => {
-            return data.data[0].citationCount;
+            return +data.data[0].citationCount;
         });
     }
 }

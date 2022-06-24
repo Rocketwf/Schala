@@ -12,6 +12,9 @@ core_deps:
 gui_deps:
 	(cd schala-gui; yarn)
 
+update_core_in_gui:
+	(cd schala-gui; yarn add ../core)
+
 deps: core_deps gui_deps
 
 core_prepare:
@@ -22,7 +25,7 @@ core: core_prepare gui_deps
 gui:
 	(cd schala-gui; quasar dev)
 
-run: core_deps core gui_deps gui
+run: core_deps core gui_deps update_core_in_gui gui
 
 lint:
 	(cd core; yarn eslint ./src/ --ext .js,.jsx,.ts,.tsx --fix)

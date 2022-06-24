@@ -24,8 +24,7 @@ export const searchResultsStore = defineStore<string, ISearchResultsPageStore>('
   // TODO: Fix setSearchString after SearchResultsModel and deepCopy are implemented
   function setSearchString(passedSearchString: string):void {
     searchString = passedSearchString;
-    console.log(searchString)
-    const profile: Array<BasicProfile> = getSearchResultsFactory().build(passedSearchString);
+    const profile: Array<BasicProfile> = getSearchResultsFactory().build(searchString);
     searchResultsCachedModel = new SearchResultsModel(profile);
     searchResultsShowingModel = searchResultsShowingModel.deepCopy();
   }
