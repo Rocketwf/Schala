@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
 
-import { ProfileRepresentation } from "../../../../core/representations/ProfileRepresentation";
+import { ProfileRepresentation } from "../../../../core/src/representations/ProfileRepresentation";
 import PageRow from "src/sharedcomponents/PageRow.vue";
 
 
