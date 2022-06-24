@@ -7,6 +7,9 @@ export class BasicProfile implements Profile {
 
     constructor(_id: string, _name?: string, _affiliation?: string[], _totalCitations?: number) {
         this._id = _id;
+        this._name = _name;
+        this._affiliation = _affiliation;
+        this._totalCitations = _totalCitations;
     }
 
     public get id(): string {
