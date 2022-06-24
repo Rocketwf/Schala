@@ -11,7 +11,7 @@
       filled
       placeholder="Search for a name or an ID"
       >
-        <template v-slot:append>
+        <template #append>
           <q-icon name="search" />
         </template>
       </q-input>
@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import { useRouter, Router } from 'vue-router';
 import { ref, Ref } from 'vue';
-import { searchResultsStore } from '../../stores/searchResultsPageStore';
+import { searchResultsStore } from 'stores/searchResultsPageStore';
 
 
 // Attributes
@@ -52,4 +52,3 @@ const getSearchPageResultsStore = () => {
   margin-top: 10px;
 }
 </style>
-
