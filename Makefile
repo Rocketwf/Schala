@@ -29,6 +29,7 @@ run: core_deps core gui_deps update_core_in_gui gui
 
 lint:
 	(cd core; yarn eslint ./src/ --ext .js,.jsx,.ts,.tsx --fix)
+	(cd schala-gui; yarn lint --fix)
 
 core_test:
 	(cd core;tsc -b --verbose; yarn test)
