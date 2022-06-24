@@ -55,4 +55,5 @@ export const comparePageStore = defineStore('comparePage', () => {
     getComparisonRepresentation,
     // getProfilePageStore
   }
+
 });

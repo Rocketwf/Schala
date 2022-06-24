@@ -45,5 +45,21 @@ module.exports = {
         // allow debugger during development only
         'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
         'tsdoc/syntax': 'warn',
+        '@typescript-eslint/typedef': [
+            'error',
+            {
+                arrayDestructuring: true,
+                arrowCallSignature: true,
+                arrowParameter: true,
+                callSignature: true,
+                memberVariableDeclaration: true,
+                parameter: true,
+                propertyDeclaration: true,
+                objectDestructuring: true,
+                variableDeclaration: true,
+                variableDeclarationIgnoreFunction: true,
+            },
+        ],
+        '@typescript-eslint/no-inferrable-types': 0,
     },
 };

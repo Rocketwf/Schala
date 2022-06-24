@@ -16,6 +16,14 @@ jobs:
         run: yarn
         working-directory: core
 
-      - name: Run linter
+      - name: Run linter core
         run: yarn eslint . --ext .js,.jsx,.ts,.tsx
         working-directory: core
+
+      - name: Install gui dependencies
+        run: yarn
+        working-directory: schala-gui
+
+      - name: Run linter gui
+        run: yarn lint
+        working-directory: schala-gui

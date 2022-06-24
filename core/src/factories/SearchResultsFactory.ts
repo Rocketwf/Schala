@@ -8,32 +8,32 @@ export class SearchResultsFactory {
 
         SemanticScholarSource.getInstance()
             .fetchAuthorIds(query)
-            .then((authorIds) => {
-                authorIds.forEach((authorId) => {
+            .then((authorIds: string[]) => {
+                authorIds.forEach((authorId: string) => {
                     const basicProfile: BasicProfile = new BasicProfile(authorId);
                     basicProfiles.push(basicProfile);
                 });
             })
             .then(() => {
-                basicProfiles.forEach((basicProfile) => {
+                basicProfiles.forEach((basicProfile: BasicProfile) => {
                     SemanticScholarSource.getInstance()
                         .fetchName(basicProfile.id)
-                        .then((name) => {
+                        .then((name: string) => {
                             basicProfile.name = name;
                         });
                     SemanticScholarSource.getInstance()
-                        .fetchAffiliation(basicProfile.id)
-                        .then((affiliation) => {
+                        .fetchAffiliations(basicProfile.id)
+                        .then((affiliation: string[]) => {
                             basicProfile.affiliation = affiliation;
                         });
                     SemanticScholarSource.getInstance()
                         .fetchCitation(basicProfile.id)
-                        .then((totalCitations) => {
+                        .then((totalCitations: number) => {
                             basicProfile.totalCitations = totalCitations;
                         });
                     SemanticScholarSource.getInstance()
                         .fetchName(basicProfile.id)
-                        .then((name) => {
+                        .then((name: string) => {
                             basicProfile.name = name;
                         });
                 });

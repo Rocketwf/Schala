@@ -31,7 +31,11 @@ lint:
 	(cd core; yarn eslint ./src/ --ext .js,.jsx,.ts,.tsx --fix)
 
 core_test:
-	(cd core; yarn test)
+	(cd core;tsc -b --verbose; yarn test)
+
+build_skip_test: core_deps core gui_deps update_core_in_gui
+	(cd schala-gui; yarn build)
+	
 
 all: core_deps core core_test gui_deps gui
 
