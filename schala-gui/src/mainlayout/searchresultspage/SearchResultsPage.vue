@@ -38,4 +38,6 @@ const handleAffiliationFilter = (): void =>  {
 const getAffiliationFilter = (): string =>  {
     return 'a'; //TODO:
 }
+getAffiliationFilter;
+handleAffiliationFilter;
 </script>

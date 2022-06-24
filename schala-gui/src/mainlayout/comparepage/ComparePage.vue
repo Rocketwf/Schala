@@ -14,4 +14,6 @@ const getComparePageStore = () => {
 const getProfileSummary = () => {
     return ProfileSummary;
 };
+getProfileSummary;
+getComparePageStore;
 </script>
