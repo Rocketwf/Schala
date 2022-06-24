@@ -8,7 +8,6 @@ export class ProfileFactory {
         const semantic: SemanticScholarSource = SemanticScholarSource.getInstance();
         const authorIds: Promise<string[]> = semantic.fetchAuthorIds(authorId);
         authorIds;
-
         return {} as FullProfile[];
     }
 

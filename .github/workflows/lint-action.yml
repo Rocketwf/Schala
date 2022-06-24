@@ -1,0 +1,21 @@
+name: Lint
+
+on:
+  push
+
+jobs:
+  run-linters:
+    name: Run linters
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Install core dependencies
+        run: yarn
+        working-directory: core
+
+      - name: Run linter
+        run: yarn eslint . --ext .js,.jsx,.ts,.tsx
+        working-directory: core

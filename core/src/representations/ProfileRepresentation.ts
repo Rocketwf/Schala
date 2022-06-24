@@ -18,7 +18,6 @@ export class ProfileRepresentation {
     public set fullProfile(fullProfile: FullProfile) {
         this._fullProfile = fullProfile;
     }
-
     public get rowModels(): RowModel[] {
         return this._rowModels;
     }

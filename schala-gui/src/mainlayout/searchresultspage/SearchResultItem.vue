@@ -33,7 +33,7 @@ import { useRouter } from 'vue-router';
 import {useQuasar} from 'quasar';
 import { comparePageStore } from '../../stores/comparePageStore';
 import { profilePageStore } from '../../stores/profilePageStore';
-import { BasicProfile } from '../../../../core/models/profile/Profile';
+import { BasicProfile } from 'schala-core';
 
     const props = defineProps<{
         profile: BasicProfile
