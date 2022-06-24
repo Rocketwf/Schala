@@ -1,1 +1,1 @@
-export { Profile, BasicProfile, FullProfile } from './Profile';
+export { Profile, BasicProfile, FullProfile, HIndex, I10Index } from './Profile';

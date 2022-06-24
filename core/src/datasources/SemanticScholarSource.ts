@@ -47,6 +47,10 @@ export class SemanticScholarSource implements DataSource {
             }
         }
     }
+    async fetchAuthorIds(query: string): Promise<string[]> {
+        query;
+        return {} as Promise<string[]>;
+    }
     async fetchHIndex(authorId: string): Promise<number> {
         authorId;
         return await this.idAPIAuthorMapping.get('1679754').then((data) => {

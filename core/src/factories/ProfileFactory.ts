@@ -1,10 +1,13 @@
+import { SemanticScholarSource } from '../datasources';
 import { Article } from '../models';
-import { FullProfile } from '../models/profile/Profile';
-import { HIndex } from '../models/profile/Profile';
-import { I10Index } from '../models/profile/Profile';
+import { FullProfile, HIndex, I10Index } from '../models/profile';
+
 export class ProfileFactory {
+    //TODO: Fix Promise
     build(authorId: string): FullProfile[] {
-        authorId;
+        const semantic: SemanticScholarSource = SemanticScholarSource.getInstance();
+        const authorIds: Promise<string[]> = semantic.fetchAuthorIds(authorId);
+        authorIds;
         return {} as FullProfile[];
     }
 
