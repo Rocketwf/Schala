@@ -77,8 +77,6 @@ export class ProfileFactory {
             JSON.stringify(this.semantic.fetchArticlesCiting(this.authorId)),
         );
         //Calculating the number of self-citations by iterating over all the articles of the scholar
-
-        //Calculating the number of self-citations by iterating over all the articles of the scholar
         let numberOfSelfCitations: number = 0;
         for (const [, citingArticles] of authorPublications) {
             for (const article of citingArticles) {
