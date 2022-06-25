@@ -77,16 +77,19 @@ export class ProfileFactory {
             JSON.stringify(this.semantic.fetchArticlesCiting(this.authorId)),
         );
         //Calculating the number of self-citations by iterating over all the articles of the scholar
+
+        //Calculating the number of self-citations by iterating over all the articles of the scholar
         let numberOfSelfCitations: number = 0;
-        authorPublications.forEach((citingArticles: Article[]) => {
-            citingArticles.forEach((article: Article) => {
-                article.coAuthors.forEach((author: CoAuthor) => {
+        for (const [, citingArticles] of authorPublications) {
+            for (const article of citingArticles) {
+                for (const author of article.coAuthors) {
                     if (author.id === this.authorId) {
                         numberOfSelfCitations++;
+                        break;
                     }
-                });
-            });
-        });
+                }
+            }
+        }
         return numberOfSelfCitations;
     }
 
