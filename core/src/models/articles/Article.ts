@@ -17,7 +17,7 @@ export class Article {
         _bibTex: string,
         _url: string,
         _venue: string,
-        _coAuthors: CoAuthor[]
+        _coAuthors: CoAuthor[],
     ) {
         this._title = _title;
         this._year = _year;
