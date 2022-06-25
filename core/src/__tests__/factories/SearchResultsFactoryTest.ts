@@ -1,10 +1,18 @@
 import { SearchResultsFactory, BasicProfile } from '../../index';
 
-describe('builds Tichy`s profile correctly', () => {
+describe('must find profiles for query walter tichy correctly', () => {
     it('must find profiles for query walter tichy correctly', async () => {
-        const walterTichy: BasicProfile = new BasicProfile('1679754', 'W. Tichy', [], 7903);
         const testFactory: SearchResultsFactory = new SearchResultsFactory();
         const basicProfiles: BasicProfile[] = await testFactory.build('walter tichy');
-        expect(basicProfiles).toContainEqual(walterTichy);
+        let basicProfile: BasicProfile;
+        let exist: boolean = false;
+        for (basicProfile of basicProfiles) {
+            exist =
+                basicProfile.name === 'W. Tichy' &&
+                basicProfile.affiliation.length === 0 &&
+                basicProfile.totalCitations === 7903;
+            if (exist) break;
+        }
+        expect(exist).toBe(true);
     });
 });
