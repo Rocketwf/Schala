@@ -1,5 +1,5 @@
 import { Article } from '../models/articles/Article';
-import { APIArticle, GetUsersResponse } from '../models/api/API';
+import { APIAuthor, GetUsersResponse } from '../models/api/API';
 import { DataSource } from './DataSource';
 import axios, { AxiosResponse } from 'axios';
 
@@ -85,11 +85,5 @@ export class SemanticScholarSource implements DataSource {
         return await this.idAPIAuthorMapping.get(authorId).then((data: GetUsersResponse) => {
             return +data.data[0].citationCount;
         });
-    }
-
-    //TODO: Implement ArticlesCiting
-    async fetchArticlesCiting(authorId: string): Promise<Map<Article, Article[]>> {
-        authorId;
-        return {} as Promise<Map<Article, Article[]>>;
     }
 }
