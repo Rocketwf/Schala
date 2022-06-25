@@ -1,6 +1,6 @@
 <template>
     <q-item clickable :class="inComparison ? 'bg-accent' : ''">
-        <q-item-section avatar center>
+        <q-item-section avatar center @click="handleClick">
             <q-avatar size="66px" rounded>
                 <img src="https://www.seekpng.com/png/detail/966-9665317_placeholder-image-person-jpg.png" />
             </q-avatar>
@@ -52,6 +52,7 @@ const handleAdd = () => {
 
 const handleClick = () => {
     getProfileStore().setProfileId(props.profile.id);
+    console.log(props.profile.id);
     router.push({ path: '/profile/show' });
 };
 

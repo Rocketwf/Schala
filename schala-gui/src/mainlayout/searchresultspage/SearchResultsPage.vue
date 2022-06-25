@@ -6,7 +6,7 @@
 
             <q-list bordered class="rounded-borders q-mt-lg">
                 <q-item-label header>Matching profiles</q-item-label>
-                <search-results-item v-for="profile in getBasicProfiles()" :key="profile.id" :profile="profile" />
+                <search-results-item v-for="profile in strippedArray" :key="profile.id" :profile="profile as BasicProfile" />
             </q-list>
             <div class="q-pa-lg flex flex-center">
                 <!-- TODO: Pagination -->
@@ -18,7 +18,9 @@
 <script setup charset="utf-8" lang="ts">
 import { searchResultsStore } from '../../stores/searchResultsPageStore';
 import SearchResultsItem from './SearchResultItem.vue';
-import { storeToRefs } from 'pinia';
+import { BasicProfile } from 'schala-core';
+import { computed } from 'vue';
+BasicProfile;
 
 const searchStore = searchResultsStore();
 //const pagination = ... TODO: Add Pagination
@@ -39,5 +41,6 @@ const getBasicProfiles = () => {
   return getSearchResultsPageStore().searchResultsCachedModel.basicProfiles;
 }
 
+const strippedArray = computed(()=>getBasicProfiles().slice(0, 10));
 
 </script>

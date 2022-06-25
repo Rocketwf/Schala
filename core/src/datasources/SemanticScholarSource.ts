@@ -24,7 +24,7 @@ export class SemanticScholarSource implements DataSource {
             const { data }: AxiosResponse<GetUsersResponse, object> = await axios.get<GetUsersResponse>(
                 'https://api.semanticscholar.org/graph/v1/author/search?query=' +
                     query +
-                    '&fields=authorId,url,name,aliases,affiliations,homepage,paperCount,citationCount,hIndex,papers.paperId,papers.url,papers.title,papers.abstract,papers.venue,papers.year,papers.referenceCount,papers.citationCount,papers.isOpenAccess,papers.fieldsOfStudy,papers.publicationTypes,papers.publicationDate,papers.journal,papers.authors&limit=10',
+                    '&fields=authorId,url,name,aliases,affiliations,homepage,paperCount,citationCount,hIndex,papers.paperId,papers.url,papers.title,papers.abstract,papers.venue,papers.year,papers.referenceCount,papers.citationCount,papers.isOpenAccess,papers.fieldsOfStudy,papers.publicationTypes,papers.publicationDate,papers.journal,papers.authors&limit=100',
                 {
                     headers: {
                         Accept: 'application/json',
@@ -78,7 +78,10 @@ export class SemanticScholarSource implements DataSource {
             (arrayOfResolvedPromisses: APIAuthor[][]) => {
                 for (const apiAuthors of arrayOfResolvedPromisses) {
                     for (const apiAuthor of apiAuthors) {
-                        if (apiAuthor.authorId === authorId) return apiAuthor.name;
+                        if (apiAuthor.authorId === authorId) {
+                            if (apiAuthor.aliases) return apiAuthor.aliases[apiAuthor.aliases.length - 1];
+                            return apiAuthor.name;
+                        }
                     }
                 }
             },
