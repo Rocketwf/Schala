@@ -88,8 +88,8 @@ export class SemanticScholarSource implements DataSource {
     }
 
     //TODO: Implement ArticlesCiting
-    async fetchArticlesCiting(paperId: string): Promise<Article[]> {
-        paperId;
-        return {} as Promise<Article[]>;
+    async fetchArticlesCiting(authorId: string): Promise<Map<Article, Article[]>> {
+        authorId;
+        return {} as Promise<Map<Article, Article[]>>;
     }
 }

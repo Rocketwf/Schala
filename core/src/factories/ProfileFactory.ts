@@ -88,6 +88,22 @@ export class ProfileFactory {
     }
 
     calculateIndirectSelfCitations(): number {
-        return 0;
+        const citationMap: Map<Article, Article[]> = JSON.parse(
+            JSON.stringify(this.semantic.fetchArticlesCiting(this.authorId)),
+        );
+        let numberOfIndirectSelfCitations: number = 0;
+        citationMap.forEach((articlesValue: Article[], articleKey: Article) => {
+            articlesValue.forEach((article: Article) => {
+                article.coAuthors.forEach((author: CoAuthor) => {
+                    articleKey.coAuthors.forEach((articleAuthor: CoAuthor) => {
+                        if (author.id === articleAuthor.id) {
+                            //TODO: Finish this abomination
+                            numberOfIndirectSelfCitations++;
+                        }
+                    });
+                });
+            });
+        });
+        return numberOfIndirectSelfCitations;
     }
 }
