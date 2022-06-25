@@ -96,17 +96,23 @@ export class ProfileFactory {
             JSON.stringify(this.semantic.fetchArticlesCiting(this.authorId)),
         );
         let numberOfIndirectSelfCitations: number = 0;
-        citationMap.forEach((articlesValue: Article[], articleKey: Article) => {
-            articlesValue.forEach((article: Article) => {
-                article.coAuthors.forEach((author: CoAuthor) => {
-                    articleKey.coAuthors.forEach((articleAuthor: CoAuthor) => {
-                        if (author.id === articleAuthor.id) {
+        let lastNumberOfIndirectSelfCitations: number = 0;
+        for (const [citedArticle, citingArticle] of citationMap) {
+            for (const currentArticle of citingArticle) {
+                for (const citingPaperCoauthor of currentArticle.coAuthors) {
+                    for (const citedPaperCoauthors of citedArticle.coAuthors) {
+                        if (citingPaperCoauthor.id === citedPaperCoauthors.id) {
                             numberOfIndirectSelfCitations++;
                         }
-                    });
-                });
-            });
-        });
+                    }
+                    //needed to break out of the loop of coauthors and move on to the next article to not have duplicate indirect self citations count
+                    if (numberOfIndirectSelfCitations != lastNumberOfIndirectSelfCitations) {
+                        lastNumberOfIndirectSelfCitations = numberOfIndirectSelfCitations;
+                        break;
+                    }
+                }
+            }
+        }
         return numberOfIndirectSelfCitations;
     }
 }
