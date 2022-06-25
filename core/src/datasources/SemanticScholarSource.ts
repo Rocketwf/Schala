@@ -1,5 +1,5 @@
 import { Article } from '../models/articles/Article';
-import { GetUsersResponse } from '../models/api/API';
+import { APIArticle, GetUsersResponse } from '../models/api/API';
 import { DataSource } from './DataSource';
 import axios, { AxiosResponse } from 'axios';
 
@@ -58,15 +58,15 @@ export class SemanticScholarSource implements DataSource {
         });
     }
 
-    fetchI10Index(authorId: string): Promise<number> {
+    async fetchI10Index(authorId: string): Promise<number> {
         authorId;
         return {} as Promise<number>;
     }
-    fetchArticles(authorId: string): Promise<Article[]> {
+    async fetchArticles(authorId: string): Promise<Article[]> {
         authorId;
         return {} as Promise<Article[]>;
     }
-    hasSelfCitation(article: Article, authorId: string): Promise<boolean> {
+    async hasSelfCitation(article: Article, authorId: string): Promise<boolean> {
         article;
         authorId;
         return {} as Promise<boolean>;
@@ -85,5 +85,11 @@ export class SemanticScholarSource implements DataSource {
         return await this.idAPIAuthorMapping.get(authorId).then((data: GetUsersResponse) => {
             return +data.data[0].citationCount;
         });
+    }
+
+    //TODO: Implement ArticlesCiting
+    async fetchArticlesCiting(paperId: string): Promise<Article[]> {
+        paperId;
+        return {} as Promise<Article[]>;
     }
 }
