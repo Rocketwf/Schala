@@ -73,15 +73,18 @@ export class ProfileFactory {
     }
 
     calculateSelfCitations(): number {
-        const authorPublications: Article[] = JSON.parse(JSON.stringify(this.semantic.fetchArticles(this.authorId)));
-
+        const authorPublications: Map<Article, Article[]> = JSON.parse(
+            JSON.stringify(this.semantic.fetchArticlesCiting(this.authorId)),
+        );
         //Calculating the number of self-citations by iterating over all the articles of the scholar
         let numberOfSelfCitations: number = 0;
-        authorPublications.forEach((article: Article) => {
-            article.coAuthors.forEach((author: CoAuthor) => {
-                if (this.authorId === author.id) {
-                    numberOfSelfCitations++;
-                }
+        authorPublications.forEach((citingArticles: Article[]) => {
+            citingArticles.forEach((article: Article) => {
+                article.coAuthors.forEach((author: CoAuthor) => {
+                    if (author.id === this.authorId) {
+                        numberOfSelfCitations++;
+                    }
+                });
             });
         });
         return numberOfSelfCitations;
@@ -97,7 +100,6 @@ export class ProfileFactory {
                 article.coAuthors.forEach((author: CoAuthor) => {
                     articleKey.coAuthors.forEach((articleAuthor: CoAuthor) => {
                         if (author.id === articleAuthor.id) {
-                            //TODO: Finish this abomination
                             numberOfIndirectSelfCitations++;
                         }
                     });
