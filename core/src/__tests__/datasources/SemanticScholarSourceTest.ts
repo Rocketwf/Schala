@@ -1,4 +1,5 @@
 import { SemanticScholarSource } from '../../datasources';
+import { Article } from '../../models';
 
 describe('findOrCreate method', () => {
     it('fetches author ids', async () => {
@@ -22,4 +23,26 @@ describe('findOrCreate method', () => {
                 expect(data).toBe('W. Tichy');
             });
     });
+});
+
+test('Fetching the correct first paper', async () => {
+    await SemanticScholarSource.getInstance()
+        .fetchArticles('1679754')
+        .then((data: Article[]) => {
+            expect(data[0].title).toBe('Software Architectures (Dagstuhl Seminar 9508)');
+        });
+});
+test('Fetching the correct citation count', async () => {
+    await SemanticScholarSource.getInstance()
+        .fetchCitation('1679754')
+        .then((data: number) => {
+            expect(data).toBe(7903);
+        });
+});
+test('Fetching the correct h-Index', async () => {
+    await SemanticScholarSource.getInstance()
+        .fetchCitation('1679754')
+        .then((data: number) => {
+            expect(data).toBe(39);
+        });
 });
