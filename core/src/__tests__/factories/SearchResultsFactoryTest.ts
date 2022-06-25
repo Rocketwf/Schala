@@ -8,7 +8,7 @@ describe('must find profiles for query walter tichy correctly', () => {
         let exist: boolean = false;
         for (basicProfile of basicProfiles) {
             exist =
-                basicProfile.name === 'W. Tichy' &&
+                basicProfile.name === 'Walter F Tichy' &&
                 basicProfile.affiliation.length === 0 &&
                 basicProfile.totalCitations === 7903;
             if (exist) break;

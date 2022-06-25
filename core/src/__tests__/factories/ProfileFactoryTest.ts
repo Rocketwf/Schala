@@ -10,7 +10,7 @@ describe('builds Tichy`s profile correctly', () => {
         testFactory.build('1679754').then((fullProfiles: FullProfile[]) => {
             const tichyProfile: FullProfile = fullProfiles[0];
             expect(tichyProfile.hIndex.hIndex).toBe(39);
-            expect(tichyProfile.basicProfile.name).toBe('W. Tichy');
+            expect(tichyProfile.basicProfile.name).toBe('Walter F Tichy');
             expect(tichyProfile.basicProfile.id).toBe('1679754');
             expect(tichyProfile.basicProfile.totalCitations).toBe(7903);
         });

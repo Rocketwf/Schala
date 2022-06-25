@@ -4,7 +4,8 @@ import { DataSource } from './DataSource';
 import axios, { AxiosResponse } from 'axios';
 
 export class SemanticScholarSource implements DataSource {
-    private queryResultsMapping: Map<string, Promise<Array<APIAuthor>>>;
+    private queryResultsMapping: Map<string, string[]>;
+    private authorIdApiAuthor: Map<string, APIAuthor>;
 
     private static instance: SemanticScholarSource;
 
@@ -16,7 +17,8 @@ export class SemanticScholarSource implements DataSource {
     }
 
     private constructor() {
-        this.queryResultsMapping = new Map<string, Promise<Array<APIAuthor>>>();
+        this.queryResultsMapping = new Map<string, string[]>();
+        this.authorIdApiAuthor = new Map<string, APIAuthor>();
     }
 
     private async getAuthors(query: string): Promise<APIAuthor[]> {
@@ -45,83 +47,44 @@ export class SemanticScholarSource implements DataSource {
     }
 
     async fetchAuthorIds(query: string): Promise<string[]> {
-        const latestResponse: Promise<APIAuthor[]> = this.getAuthors(query);
-        const promise: Promise<string[]> = new Promise<string[]>(
-            (resolve: (value: string[] | PromiseLike<string[]>) => void) => {
-                const authorIds: Array<string> = new Array<string>();
-                latestResponse.then((apiAuthors: APIAuthor[]) => {
-                    apiAuthors.forEach((apiAuthor: APIAuthor) => {
-                        authorIds.push(apiAuthor.authorId);
-                    });
-                    resolve(authorIds);
-                });
-            },
-        );
+        const latestResponse: APIAuthor[] = await this.getAuthors(query);
+        const authorIds: Array<string> = new Array<string>();
+        for (const apiAuthor of latestResponse) {
+            authorIds.push(apiAuthor.authorId);
+            this.authorIdApiAuthor.set(apiAuthor.authorId, apiAuthor);
+        }
 
-        this.queryResultsMapping.set(query, latestResponse);
-        return await promise;
+        this.queryResultsMapping.set(query, authorIds);
+        return authorIds;
     }
 
-    async fetchHIndex(authorId: string): Promise<number> {
-        return await Promise.all(Array.from(this.queryResultsMapping.values())).then(
-            (arrayOfResolvedPromisses: APIAuthor[][]) => {
-                for (const apiAuthors of arrayOfResolvedPromisses) {
-                    for (const apiAuthor of apiAuthors) {
-                        if (apiAuthor.authorId === authorId) return apiAuthor.hIndex;
-                    }
-                }
-            },
-        );
+    fetchHIndex(authorId: string): number {
+        return this.authorIdApiAuthor.get(authorId).hIndex;
     }
-    async fetchName(authorId: string): Promise<string> {
-        return await Promise.all(Array.from(this.queryResultsMapping.values())).then(
-            (arrayOfResolvedPromisses: APIAuthor[][]) => {
-                for (const apiAuthors of arrayOfResolvedPromisses) {
-                    for (const apiAuthor of apiAuthors) {
-                        if (apiAuthor.authorId === authorId) {
-                            if (apiAuthor.aliases) return apiAuthor.aliases[apiAuthor.aliases.length - 1];
-                            return apiAuthor.name;
-                        }
-                    }
-                }
-            },
-        );
+    fetchName(authorId: string): string {
+        return this.authorIdApiAuthor.get(authorId).aliases
+            ? this.authorIdApiAuthor.get(authorId).aliases[this.authorIdApiAuthor.get(authorId).aliases.length - 1]
+            : this.authorIdApiAuthor.get(authorId).name;
     }
 
-    async fetchAffiliations(authorId: string): Promise<string[]> {
-        return await Promise.all(Array.from(this.queryResultsMapping.values())).then(
-            (arrayOfResolvedPromisses: APIAuthor[][]) => {
-                for (const apiAuthors of arrayOfResolvedPromisses) {
-                    for (const apiAuthor of apiAuthors) {
-                        if (apiAuthor.authorId === authorId) return apiAuthor.affiliations;
-                    }
-                }
-            },
-        );
+    fetchAffiliations(authorId: string): string[] {
+        return this.authorIdApiAuthor.get(authorId).affiliations;
     }
-    async fetchCitation(authorId: string): Promise<number> {
-        return await Promise.all(Array.from(this.queryResultsMapping.values())).then(
-            (arrayOfResolvedPromisses: APIAuthor[][]) => {
-                for (const apiAuthors of arrayOfResolvedPromisses) {
-                    for (const apiAuthor of apiAuthors) {
-                        if (apiAuthor.authorId === authorId) return +apiAuthor.citationCount;
-                    }
-                }
-            },
-        );
+    fetchCitation(authorId: string): number {
+        return +this.authorIdApiAuthor.get(authorId).citationCount;
     }
 
-    fetchI10Index(authorId: string): Promise<number> {
+    fetchI10Index(authorId: string): number {
         authorId;
-        return {} as Promise<number>;
+        return {} as number;
     }
-    fetchArticles(authorId: string): Promise<Article[]> {
+    fetchArticles(authorId: string): Article[] {
         authorId;
-        return {} as Promise<Article[]>;
+        return {} as Article[];
     }
-    hasSelfCitation(article: Article, authorId: string): Promise<boolean> {
+    hasSelfCitation(article: Article, authorId: string): boolean {
         article;
         authorId;
-        return {} as Promise<boolean>;
+        return {} as boolean;
     }
 }

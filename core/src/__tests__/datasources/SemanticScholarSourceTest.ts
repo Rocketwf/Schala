@@ -9,17 +9,13 @@ describe('findOrCreate method', () => {
             });
     });
     it('HIndex of tichy should be 3', async () => {
-        await SemanticScholarSource.getInstance()
-            .fetchHIndex('1679754')
-            .then((data: number) => {
-                expect(data).toBe(39);
-            });
+        expect(SemanticScholarSource.getInstance().fetchHIndex('1679754')).toBe(39);
     });
-    it('HIndex of tichy should be 3', async () => {
-        await SemanticScholarSource.getInstance()
-            .fetchName('1679754')
-            .then((data: string) => {
-                expect(data).toBe('W. Tichy');
-            });
-    });
+    //it('HIndex of tichy should be 3', async () => {
+    //await SemanticScholarSource.getInstance()
+    //.fetchName('1679754')
+    //.then((data: string) => {
+    //expect(data).toBe('W. Tichy');
+    //});
+    //});
 });
