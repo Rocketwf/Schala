@@ -18,7 +18,7 @@ export class ProfileFactory {
     }
 
     calculateHIndex(): HIndex {
-        const copy: Article[] = JSON.parse(JSON.stringify(this.getArticles));
+        const copy: Article[] = JSON.parse(JSON.stringify(this.semantic.fetchArticles(this.authorId)));
         //Sorting the articles of the scholar by the number of citations
         copy.sort((a: Article, b: Article) => (a.citation > b.citation ? -1 : 1));
         //Calculating the hIndex of the scholar
@@ -45,7 +45,7 @@ export class ProfileFactory {
     }
 
     calculateI10Index(): I10Index {
-        const copy: Article[] = JSON.parse(JSON.stringify(this.getArticles));
+        const copy: Article[] = JSON.parse(JSON.stringify(this.semantic.fetchArticles(this.authorId)));
         //Sorting the articles of the scholar by the number of citations
         copy.sort((a: Article, b: Article) => (a.citation > b.citation ? -1 : 1));
         //Calculating the hIndex of the scholar
@@ -89,9 +89,5 @@ export class ProfileFactory {
 
     calculateIndirectSelfCitations(): number {
         return 0;
-    }
-
-    getArticles(): Article[] {
-        return null;
     }
 }
