@@ -1,6 +1,5 @@
 import { SemanticScholarSource } from '../datasources';
 import { Article } from '../models';
-import { CoAuthor } from '../models/articles/Article';
 import { FullProfile, HIndex, I10Index } from '../models/profile';
 
 export class ProfileFactory {
