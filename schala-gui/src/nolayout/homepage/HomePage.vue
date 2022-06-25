@@ -8,13 +8,6 @@
 </template>
 <script setup lang="ts">
 import SearchComponent from './SearchComponent.vue';
-import { SemanticScholarSource } from 'schala-core';
-
-SemanticScholarSource.getInstance()
-    .fetchHIndex('1679754')
-    .then((data: number) => {
-        console.log(data);
-    });
 </script>
 <style type="text/css" media="screen" scoped>
 #mainPageContainer {

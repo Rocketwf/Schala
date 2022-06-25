@@ -1,44 +1,17 @@
 import { SemanticScholarSource } from '../datasources';
 import { BasicProfile } from '../models/profile/Profile';
+import { Factory } from './Factory';
 
-// TODO: Implement SearchResultsFactory
-export class SearchResultsFactory {
-    build(query: string): Array<BasicProfile> {
+export class SearchResultsFactory implements Factory {
+    async build(query: string): Promise<Array<BasicProfile>> {
+        const authorIds: string[] = await SemanticScholarSource.getInstance().fetchAuthorIds(query);
         const basicProfiles: Array<BasicProfile> = new Array<BasicProfile>();
-
-        SemanticScholarSource.getInstance()
-            .fetchAuthorIds(query)
-            .then((authorIds: string[]) => {
-                authorIds.forEach((authorId: string) => {
-                    const basicProfile: BasicProfile = new BasicProfile(authorId);
-                    basicProfiles.push(basicProfile);
-                });
-            })
-            .then(() => {
-                basicProfiles.forEach((basicProfile: BasicProfile) => {
-                    SemanticScholarSource.getInstance()
-                        .fetchName(basicProfile.id)
-                        .then((name: string) => {
-                            basicProfile.name = name;
-                        });
-                    SemanticScholarSource.getInstance()
-                        .fetchAffiliations(basicProfile.id)
-                        .then((affiliation: string[]) => {
-                            basicProfile.affiliation = affiliation;
-                        });
-                    SemanticScholarSource.getInstance()
-                        .fetchCitation(basicProfile.id)
-                        .then((totalCitations: number) => {
-                            basicProfile.totalCitations = totalCitations;
-                        });
-                    SemanticScholarSource.getInstance()
-                        .fetchName(basicProfile.id)
-                        .then((name: string) => {
-                            basicProfile.name = name;
-                        });
-                });
-            });
-
+        for (const authorId of authorIds) {
+            const name: string = await SemanticScholarSource.getInstance().fetchName(authorId);
+            const affiliation: string[] = await SemanticScholarSource.getInstance().fetchAffiliations(authorId);
+            const totalCitations: number = await SemanticScholarSource.getInstance().fetchCitation(authorId);
+            basicProfiles.push(new BasicProfile(authorId, name, affiliation, totalCitations));
+        }
         return basicProfiles;
     }
 }

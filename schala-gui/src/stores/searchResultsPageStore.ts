@@ -1,65 +1,42 @@
 import { BasicProfile, SearchResultsFactory, SearchResultsModel } from 'schala-core';
 import { defineStore } from 'pinia';
 
-interface ISearchResultsPageStore {
-    setSearchString: (passedSearchString: string) => void;
-    getSearchString: () => string;
-    getSearchResultsFactory: () => SearchResultsFactory;
-    getSearchResultsShowingModel: () => SearchResultsModel;
-    setSearchResultsShowingModel: (model: SearchResultsModel) => void;
-    getSearchResultsCachedModel: () => SearchResultsModel;
-    setSearchResultsCachedModel: (model: SearchResultsModel) => void;
-    resetFromCache: () => void;
-    applyAllFilters: () => void;
-}
-export const searchResultsStore = defineStore<string, ISearchResultsPageStore>('searchResultsPage', () => {
-    let searchString = '';
-    const searchResultsFactory: SearchResultsFactory = {} as SearchResultsFactory;
-    let searchResultsShowingModel: SearchResultsModel = {} as SearchResultsModel;
-    let searchResultsCachedModel: SearchResultsModel = {} as SearchResultsModel;
-
-    function getSearchString(): string {
-        return searchString;
-    }
-    // TODO: Fix setSearchString after SearchResultsModel and deepCopy are implemented
-    function setSearchString(passedSearchString: string): void {
-        searchString = passedSearchString;
-        const profile: Array<BasicProfile> = getSearchResultsFactory().build(searchString);
-        searchResultsCachedModel = new SearchResultsModel(profile);
-        searchResultsShowingModel = searchResultsShowingModel.deepCopy();
-    }
-    function getSearchResultsFactory(): SearchResultsFactory {
-        return searchResultsFactory;
-    }
-    function getSearchResultsShowingModel(): SearchResultsModel {
-        return searchResultsShowingModel;
-    }
-    function setSearchResultsShowingModel(model: SearchResultsModel) {
-        searchResultsShowingModel = model;
-    }
-    function getSearchResultsCachedModel(): SearchResultsModel {
-        return searchResultsCachedModel;
-    }
-    function setSearchResultsCachedModel(model: SearchResultsModel) {
-        searchResultsCachedModel = model;
-    }
-    // TODO: Implement resetFromCache
-    function resetFromCache(): void {
-        return;
-    }
-    // TODO: Implement applyAllFilters
-    function applyAllFilters(): void {
-        return;
-    }
-    return {
-        setSearchString,
-        getSearchString,
-        getSearchResultsFactory,
-        getSearchResultsShowingModel,
-        setSearchResultsShowingModel,
-        getSearchResultsCachedModel,
-        setSearchResultsCachedModel,
-        resetFromCache,
-        applyAllFilters,
-    };
+export const searchResultsStore = defineStore({
+    id: 'searchResultsPage',
+    state: () => ({
+        searchString: '',
+        searchResultsFactory: new SearchResultsFactory(),
+        searchResultsShowingModel: {} as SearchResultsModel,
+        searchResultsCachedModel: new SearchResultsModel(new Array<BasicProfile>()),
+    }),
+    actions: {
+        getSearchString(): string {
+            return this.searchString;
+        },
+        // TODO: Fix setSearchString after SearchResultsModel and deepCopy are implemented
+        async setSearchString(passedSearchString: string) {
+            this.searchString = passedSearchString;
+            await this.searchResultsFactory
+                .build(this.searchString)
+                .then((basicProfiles: BasicProfile[]) => {
+                      console.log(basicProfiles.length);
+                    this.searchResultsCachedModel.basicProfiles = basicProfiles;
+                    console.log(this.searchResultsCachedModel.basicProfiles);
+                });
+        },
+        setSearchResultsShowingModel(model: SearchResultsModel) {
+            this.searchResultsShowingModel = model;
+        },
+        setSearchResultsCachedModel(model: SearchResultsModel) {
+            this.searchResultsCachedModel = model;
+        },
+        // TODO: Implement resetFromCache
+        resetFromCache(): void {
+            return;
+        },
+        // TODO: Implement applyAllFilters
+        applyAllFilters(): void {
+            return;
+        },
+    },
 });
