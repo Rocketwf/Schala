@@ -47,3 +47,20 @@ export class Article {
         return this._venue;
     }
 }
+
+export class CoAuthor {
+    private _id: string;
+    private _name: string;
+    private _coauthoredCount: number;
+
+    public get id(): string {
+        return this._id;
+    }
+
+    public get name(): string {
+        return this._name;
+    }
+    public get coAuthoredCount(): number {
+        return this._coauthoredCount;
+    }
+}
