@@ -1,12 +1,18 @@
 import { SemanticScholarSource } from '../datasources';
 import { Article } from '../models';
+import { CoAuthor } from '../models/articles/Article';
 import { FullProfile, HIndex, I10Index } from '../models/profile';
 
 export class ProfileFactory {
     //TODO: Fix Promise
+
+    private semantic: SemanticScholarSource = null;
+    private authorId: string; //The current scholar being added
+
     build(authorId: string): FullProfile[] {
         const semantic: SemanticScholarSource = SemanticScholarSource.getInstance();
         const authorIds: Promise<string[]> = semantic.fetchAuthorIds(authorId);
+        //TODO: Initialize and set authorID to the right value
         authorIds;
         return {} as FullProfile[];
     }
@@ -67,7 +73,18 @@ export class ProfileFactory {
     }
 
     calculateSelfCitations(): number {
-        return 0;
+        const authorPublications: Article[] = JSON.parse(JSON.stringify(this.semantic.fetchArticles(this.authorId)));
+
+        //Calculating the number of self-citations by iterating over all the articles of the scholar
+        let numberOfSelfCitations: number = 0;
+        authorPublications.forEach((article: Article) => {
+            article.coAuthors.forEach((author: CoAuthor) => {
+                if (this.authorId === author.id) {
+                    numberOfSelfCitations++;
+                }
+            });
+        });
+        return numberOfSelfCitations;
     }
 
     calculateIndirectSelfCitations(): number {
