@@ -18,6 +18,7 @@ export const searchResultsStore = defineStore({
             this.searchString = passedSearchString;
             await this.searchResultsFactory.build(this.searchString).then((basicProfiles: BasicProfile[]) => {
                 console.log(basicProfiles.length);
+                console.log(basicProfiles);
                 this.searchResultsCachedModel.basicProfiles = basicProfiles;
                 this.searchResultsShowingModel = this.searchResultsCachedModel.deepCopy();
             });

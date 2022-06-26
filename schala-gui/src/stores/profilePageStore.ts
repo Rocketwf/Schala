@@ -6,8 +6,6 @@ export const profilePageStore = defineStore({
     id : 'profilePage',
     state: () => ({
       profileId : '',
-      //create a BasicProfile with id "000000000" after it is implemented
-      profileFactory:  new ProfileFactory(),
       profileRepresentation: {} as ProfileRepresentation,
    }),
     actions: {
@@ -21,7 +19,7 @@ export const profilePageStore = defineStore({
             this.profileRepresentation.renderProfile();
         } else {
             this.profileId = newId;
-            const profile: FullProfile[] = await this.profileFactory.build(this.profileId);
+            const profile: FullProfile[] = await new ProfileFactory().build(this.profileId);
             
                 
             this.profileRepresentation.fullProfile = profile[0];

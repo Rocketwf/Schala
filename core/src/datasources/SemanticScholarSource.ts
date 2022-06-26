@@ -26,7 +26,7 @@ export class SemanticScholarSource implements DataSource {
             const { data }: AxiosResponse<GetUsersResponse, object> = await axios.get<GetUsersResponse>(
                 'https://api.semanticscholar.org/graph/v1/author/search?query=' +
                     query +
-                    '&fields=authorId,url,name,aliases,affiliations,homepage,paperCount,citationCount,hIndex,papers.paperId,papers.url,papers.title,papers.abstract,papers.venue,papers.year,papers.referenceCount,papers.citationCount,papers.isOpenAccess,papers.fieldsOfStudy,papers.publicationTypes,papers.publicationDate,papers.journal,papers.authors&limit=100',
+                    '&fields=authorId,name,aliases,affiliations,paperCount,citationCount&limit=1000',
                 {
                     headers: {
                         Accept: 'application/json',
