@@ -1,6 +1,6 @@
 <template>
     <div id="headerLogo">
-        <q-form @submit="redirectHome"></q-form>
+        <q-form @click="redirectHome"></q-form>
         <img src="../../assets/wisteria_Background_only_plant.png" />
     </div> 
 </template>
