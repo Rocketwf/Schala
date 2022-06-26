@@ -17,6 +17,7 @@ export {
     ArticlesModel,
     ChartOptionsModel,
     Input,
+    PopupEditButton,
     ObjectSeriesChartModel,
     Profile,
     BasicProfile,
