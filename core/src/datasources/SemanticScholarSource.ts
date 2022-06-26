@@ -1,11 +1,10 @@
 import { Article } from '../models/articles/Article';
-import { GetUsersResponse } from '../models/api/API';
+import { GetUsersResponse, APIAuthor } from '../models/api/API';
 import { DataSource } from './DataSource';
 import axios, { AxiosResponse } from 'axios';
 
 export class SemanticScholarSource implements DataSource {
-    //private queryResultsMapping : Map<string, string>;
-    private idAPIAuthorMapping: Map<string, Promise<GetUsersResponse>>;
+    private queryResultsMapping: Map<string, Promise<Array<APIAuthor>>>;
 
     private static instance: SemanticScholarSource;
 
@@ -17,13 +16,10 @@ export class SemanticScholarSource implements DataSource {
     }
 
     private constructor() {
-        //this.queryResultsMapping = new Map<string, string>();
-        this.idAPIAuthorMapping = new Map<string, Promise<GetUsersResponse>>();
-        const promise: Promise<GetUsersResponse> = this.getUsers('walter tichy');
-        this.idAPIAuthorMapping.set('1679754', promise);
+        this.queryResultsMapping = new Map<string, Promise<Array<APIAuthor>>>();
     }
 
-    private async getUsers(query: string): Promise<GetUsersResponse> {
+    private async getAuthors(query: string): Promise<APIAuthor[]> {
         try {
             const { data }: AxiosResponse<GetUsersResponse, object> = await axios.get<GetUsersResponse>(
                 'https://api.semanticscholar.org/graph/v1/author/search?query=' +
@@ -36,7 +32,7 @@ export class SemanticScholarSource implements DataSource {
                 },
             );
 
-            return data;
+            return data.data;
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 console.log('error message: ', error.message);
@@ -47,15 +43,69 @@ export class SemanticScholarSource implements DataSource {
             }
         }
     }
+
     async fetchAuthorIds(query: string): Promise<string[]> {
-        query;
-        return {} as Promise<string[]>;
+        const latestResponse: Promise<APIAuthor[]> = this.getAuthors(query);
+        const promise: Promise<string[]> = new Promise<string[]>(
+            (resolve: (value: string[] | PromiseLike<string[]>) => void) => {
+                const authorIds: Array<string> = new Array<string>();
+                latestResponse.then((apiAuthors: APIAuthor[]) => {
+                    apiAuthors.forEach((apiAuthor: APIAuthor) => {
+                        authorIds.push(apiAuthor.authorId);
+                    });
+                    resolve(authorIds);
+                });
+            },
+        );
+
+        this.queryResultsMapping.set(query, latestResponse);
+        return await promise;
     }
+
     async fetchHIndex(authorId: string): Promise<number> {
-        authorId;
-        return await this.idAPIAuthorMapping.get('1679754').then((data: GetUsersResponse) => {
-            return data.data[0].hIndex;
-        });
+        return await Promise.all(Array.from(this.queryResultsMapping.values())).then(
+            (arrayOfResolvedPromisses: APIAuthor[][]) => {
+                for (const apiAuthors of arrayOfResolvedPromisses) {
+                    for (const apiAuthor of apiAuthors) {
+                        if (apiAuthor.authorId === authorId) return apiAuthor.hIndex;
+                    }
+                }
+            },
+        );
+    }
+    async fetchName(authorId: string): Promise<string> {
+        return await Promise.all(Array.from(this.queryResultsMapping.values())).then(
+            (arrayOfResolvedPromisses: APIAuthor[][]) => {
+                for (const apiAuthors of arrayOfResolvedPromisses) {
+                    for (const apiAuthor of apiAuthors) {
+                        if (apiAuthor.authorId === authorId) return apiAuthor.name;
+                    }
+                }
+            },
+        );
+    }
+
+    async fetchAffiliations(authorId: string): Promise<string[]> {
+        return await Promise.all(Array.from(this.queryResultsMapping.values())).then(
+            (arrayOfResolvedPromisses: APIAuthor[][]) => {
+                for (const apiAuthors of arrayOfResolvedPromisses) {
+                    for (const apiAuthor of apiAuthors) {
+                        if (apiAuthor.authorId === authorId) return apiAuthor.affiliations;
+                    }
+                }
+            },
+        );
+    }
+    async fetchCitation(authorId: string): Promise<number> {
+        return await Promise.all(Array.from(this.queryResultsMapping.values())).then(
+            (arrayOfResolvedPromisses: APIAuthor[][]) => {
+                for (const apiAuthors of arrayOfResolvedPromisses) {
+                    for (const apiAuthor of apiAuthors) {
+                        if (apiAuthor.authorId === authorId) return +apiAuthor.citationCount;
+                    }
+                }
+            },
+        );
     }
 
     async fetchI10Index(authorId: string): Promise<number> {
@@ -70,20 +120,5 @@ export class SemanticScholarSource implements DataSource {
         article;
         authorId;
         return {} as Promise<boolean>;
-    }
-    async fetchName(authorId: string): Promise<string> {
-        return await this.idAPIAuthorMapping.get(authorId).then((data: GetUsersResponse) => {
-            return data.data[0].name;
-        });
-    }
-    async fetchAffiliation(authorId: string): Promise<string[]> {
-        return await this.idAPIAuthorMapping.get(authorId).then((data: GetUsersResponse) => {
-            return data.data[0].affiliations;
-        });
-    }
-    async fetchCitation(authorId: string): Promise<number> {
-        return await this.idAPIAuthorMapping.get(authorId).then((data: GetUsersResponse) => {
-            return +data.data[0].citationCount;
-        });
     }
 }

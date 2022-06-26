@@ -5,8 +5,11 @@ export class BasicProfile implements Profile {
     private _affiliation: string[];
     private _totalCitations: number;
 
-    constructor(_id: string) {
+    constructor(_id: string, _name?: string, _affiliation?: string[], _totalCitations?: number) {
         this._id = _id;
+        this._name = _name;
+        this._affiliation = _affiliation;
+        this._totalCitations = _totalCitations;
     }
 
     public get id(): string {
@@ -64,17 +67,23 @@ export class HIndex {
     private _hIndex: number;
     private _hIndexWithoutSelfCitations: number;
 
-    constructor(hIndex: number, hIndexWithoutSelfCitations: number) {
+    constructor(hIndex?: number, hIndexWithoutSelfCitations?: number) {
         this._hIndex = hIndex;
         this._hIndexWithoutSelfCitations = hIndexWithoutSelfCitations;
     }
-
     public get hIndex(): number {
         return this._hIndex;
     }
 
+    public set hIndex(value: number) {
+        this._hIndex = value;
+    }
+
     public get hIndexWithoutSelfCitations(): number {
         return this._hIndexWithoutSelfCitations;
+    }
+    public set hIndexWithoutSelfCitations(value: number) {
+        this._hIndexWithoutSelfCitations = value;
     }
 }
 export class I10Index {

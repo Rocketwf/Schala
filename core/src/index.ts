@@ -24,4 +24,4 @@ export {
     SearchResultsModel,
     Tab,
 } from './models';
-export { ProfileRepresentation } from './representations';
+export { ProfileRepresentation, ComparisonRepresentation } from './representations';

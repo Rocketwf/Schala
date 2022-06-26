@@ -22,7 +22,7 @@ export class SearchResultsFactory {
                             basicProfile.name = name;
                         });
                     SemanticScholarSource.getInstance()
-                        .fetchAffiliation(basicProfile.id)
+                        .fetchAffiliations(basicProfile.id)
                         .then((affiliation: string[]) => {
                             basicProfile.affiliation = affiliation;
                         });

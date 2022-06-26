@@ -14,6 +14,7 @@ import ProfileContent from './ProfileContent.vue';
 const getProfilePageStore = () => {
   return profilePageStore();
 }
+getProfilePageStore;
 
 
 </script>

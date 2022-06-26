@@ -1,0 +1,19 @@
+name: build
+
+on:
+  push
+
+jobs:
+  run-linters:
+    name: Build spa
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Install Quasar/CLI
+        run: yarn global add @quasar/cli
+
+      - name: Build (no tests)
+        run: make build_skip_test

@@ -5,7 +5,7 @@ on:
 
 jobs:
   run-linters:
-    name: Run test core units
+    name: Run core test units
     runs-on: ubuntu-latest
 
     steps:

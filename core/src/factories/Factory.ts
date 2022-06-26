@@ -1,1 +1,5 @@
-export abstract class Factory {}
+import { Profile } from '../models/profile';
+
+export interface Factory {
+    build(query: string): Profile[];
+}
