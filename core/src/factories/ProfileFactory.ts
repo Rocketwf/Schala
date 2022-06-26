@@ -8,25 +8,17 @@ export class ProfileFactory {
     private authorId: string; //The current scholar being added
 
     async build(authorId: string): Promise<FullProfile[]> {
-        return await Promise.all([
-            SemanticScholarSource.getInstance().fetchName(authorId),
-            SemanticScholarSource.getInstance().fetchAffiliations(authorId),
-            SemanticScholarSource.getInstance().fetchHIndex(authorId),
-            SemanticScholarSource.getInstance().fetchCitation(authorId),
-        ]).then((values: [string, string[], number, number]) => {
-            const basicProfile: BasicProfile = new BasicProfile(authorId, values[0], values[1], values[3]);
-            const hIndexObj: HIndex = new HIndex(values[2]);
-            return Array.of(new FullProfile(basicProfile, hIndexObj, null));
-        });
+        const name: string = SemanticScholarSource.getInstance().fetchName(authorId);
+        const affiliations: string[] = SemanticScholarSource.getInstance().fetchAffiliations(authorId);
+        const hIndex: number = SemanticScholarSource.getInstance().fetchHIndex(authorId);
+        const citation: number = SemanticScholarSource.getInstance().fetchCitation(authorId);
+        const basicProfile: BasicProfile = new BasicProfile(authorId, name, affiliations, citation);
+        const hIndexObj: HIndex = new HIndex(hIndex);
+        return Array.of(new FullProfile(basicProfile, hIndexObj, null));
     }
 
     calculateHIndex(): HIndex {
-        let fetchedHIndex: number;
-        SemanticScholarSource.getInstance()
-            .fetchHIndex(this.authorId)
-            .then((data: number) => {
-                fetchedHIndex = data;
-            });
+        const fetchedHIndex: number = SemanticScholarSource.getInstance().fetchHIndex(this.authorId);
 
         let hIndex: number;
         //TODO: Make this Object Oriented
@@ -65,12 +57,7 @@ export class ProfileFactory {
     }
 
     calculateI10Index(): I10Index {
-        let fetchedI10Index: number;
-        SemanticScholarSource.getInstance()
-            .fetchI10Index(this.authorId)
-            .then((data: number) => {
-                fetchedI10Index = data;
-            });
+        const fetchedI10Index: number = SemanticScholarSource.getInstance().fetchI10Index(this.authorId);
         let i10Index: number;
         const copy: Article[] = JSON.parse(
             JSON.stringify(SemanticScholarSource.getInstance().fetchArticles(this.authorId)),

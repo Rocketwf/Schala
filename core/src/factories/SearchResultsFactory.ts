@@ -7,9 +7,9 @@ export class SearchResultsFactory implements Factory {
         const authorIds: string[] = await SemanticScholarSource.getInstance().fetchAuthorIds(query);
         const basicProfiles: Array<BasicProfile> = new Array<BasicProfile>();
         for (const authorId of authorIds) {
-            const name: string = await SemanticScholarSource.getInstance().fetchName(authorId);
-            const affiliation: string[] = await SemanticScholarSource.getInstance().fetchAffiliations(authorId);
-            const totalCitations: number = await SemanticScholarSource.getInstance().fetchCitation(authorId);
+            const name: string = SemanticScholarSource.getInstance().fetchName(authorId);
+            const affiliation: string[] = SemanticScholarSource.getInstance().fetchAffiliations(authorId);
+            const totalCitations: number = SemanticScholarSource.getInstance().fetchCitation(authorId);
             basicProfiles.push(new BasicProfile(authorId, name, affiliation, totalCitations));
         }
         return basicProfiles;
