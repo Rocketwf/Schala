@@ -6,4 +6,8 @@ export abstract class Filter<S, T extends Filterable<T>> {
     public set value(newValue: S) {
         this._value = newValue;
     }
+
+    public get value(): S {
+        return this._value;
+    }
 }
