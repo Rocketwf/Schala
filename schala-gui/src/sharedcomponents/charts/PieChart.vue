@@ -1,11 +1,12 @@
 <template>
     <div id="chart">
-        <apexchart type="pie" width="370" :options="chartOptions" :series="series"></apexchart>
+        <apexchart :passed-labels = "chartOptions.dataLabels" :passsed-series="chartOptions.series"></apexchart>
     </div>
 </template>
 <script setup charset="utf-8" lang="ts">
 import { ref } from 'vue';
-
+import { PieChartModel } from '../../../../core/src/models/simplecardmodel/PieChartModel' // created and updated indexes but doesn't work with import ... from 'schala-core' idk why 
+let pieChart: PieChartModel = new PieChartModel();
 const props = defineProps<{
     passedLabels: Array<string>;
     passedSeries: Array<string>;
@@ -14,19 +15,11 @@ const props = defineProps<{
 const series = ref(props.passedSeries);
 const labels = ref(props.passedLabels);
 
-
-
 let chartOptions = {
           dataLabels: {
-            enabled: true,
-            enabledOnSeries: undefined,
-            formatter: function(value:number, { seriesIndex, _fix, w }: ) {
-              _fix;
-              return w.config.series[seriesIndex] + ' (' + Number(value).toFixed(2) + '%)'
-            }
           },
           chart: {
-            width: 380,
+            width: pieChart.colWidth,
             type: 'pie',
             toolbar: {
               offsetX: -52,
@@ -37,19 +30,15 @@ let chartOptions = {
               },
             },
           },
-          labels: labels.value,
                   
           legend: {
               show: true,
               position: 'bottom',
               fontSize: '13px',
           },
-          plotOptions: {
-            pie: {
-              dataLabels: {
-                offset: -20,
-              },
-           }
-         }
+          
+          series: {
+            series,
+          }
         }
-
+</script>

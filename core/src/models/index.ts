@@ -6,4 +6,5 @@ export { Input } from './inputs';
 export { ObjectSeriesChartModel } from './objectserieschartmodel';
 export { Profile, BasicProfile, FullProfile } from './profile';
 export { SearchResultsModel } from './searchresultsmodel';
+export { SimpleCardModel, PieChartModel } from './simplecardmodel';
 export { Tab } from './viewmodels';
