@@ -11,6 +11,7 @@ interface ISearchResultsPageStore {
     setSearchResultsCachedModel: (model: SearchResultsModel) => void;
     resetFromCache: () => void;
     applyAllFilters: () => void;
+    setAffiliationFilter: (affiliationFilter: string) => void;
 }
 export const searchResultsStore = defineStore<string, ISearchResultsPageStore>('searchResultsPage', () => {
     let searchString = '';
@@ -51,6 +52,9 @@ export const searchResultsStore = defineStore<string, ISearchResultsPageStore>('
     function applyAllFilters(): void {
         return;
     }
+    function setAffiliationFilter(affiliationFilter: string): void {
+        return; //TODO: Implement me
+    }
     return {
         setSearchString,
         getSearchString,
@@ -61,5 +65,6 @@ export const searchResultsStore = defineStore<string, ISearchResultsPageStore>('
         setSearchResultsCachedModel,
         resetFromCache,
         applyAllFilters,
+        setAffiliationFilter,
     };
 });

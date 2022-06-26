@@ -2,7 +2,14 @@
     <div class="row justify-center">
         <div class="col-xs-12 col-md-8">
             <!-- <q-page padding>          Add this after implementing main layout -->
-            <!--  <filter-affiliation labelText="Filter affiliations" />           TODO:Filter Affiliation -->
+            <q-input rounded standout bottom-slots v-model="affiliationFilter" label="Filter by Affiliation" @update:model-value="handleAffiliationFilter">
+                <template v-slot:prepend>
+                    <q-icon name="school" />
+                </template>
+                <template v-slot:append>
+                    <q-icon name="close" @click="affiliationFilter = ''" class="cursor-pointer" />
+                </template>
+            </q-input>
 
             <q-list bordered class="rounded-borders q-mt-lg">
                 <q-item-label header>Matching profiles</q-item-label>
@@ -25,19 +32,19 @@ import { searchResultsStore } from '../../stores/searchResultsPageStore';
 import SearchResultsItem from './SearchResultItem.vue';
 
 const searchStore = searchResultsStore();
+let affiliationFilter: string = '';
 //const pagination = ... TODO: Add Pagination
 
 const getSearchResultsPageStore = () => {
     return searchStore;
 }
 
-const handleAffiliationFilter = (): void =>  {
-    //TODO: Implement Affiliation Filter
+const handleAffiliationFilter = (data: string): void =>  {
+    affiliationFilter = data;
+    getSearchResultsPageStore().setAffiliationFilter(getAffiliationFilter());
 }
 
 const getAffiliationFilter = (): string =>  {
-    return 'a'; //TODO:
+    return affiliationFilter;
 }
-getAffiliationFilter;
-handleAffiliationFilter;
 </script>
