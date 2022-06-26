@@ -38,7 +38,7 @@ const getAffiliationFilter = (): string => {
 };
 
 const getBasicProfiles = () => {
-  return getSearchResultsPageStore().searchResultsCachedModel.basicProfiles;
+  return getSearchResultsPageStore().searchResultsShowingModel.basicProfiles;
 }
 
 const strippedArray = computed(()=>getBasicProfiles().slice(0, 10));
