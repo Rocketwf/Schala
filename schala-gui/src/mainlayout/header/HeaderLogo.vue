@@ -8,6 +8,6 @@
     import { useRouter, Router } from 'vue-router';
      const router: Router = useRouter();
      const redirectHome = () => {
-       router.replace("#")
+       router.replace('#')
 };
 </script>

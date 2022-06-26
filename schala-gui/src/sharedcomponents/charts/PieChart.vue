@@ -20,7 +20,8 @@ let chartOptions = {
           dataLabels: {
             enabled: true,
             enabledOnSeries: undefined,
-            formatter: function(value:number, { seriesIndex, _, w }:any) {
+            formatter: function(value:number, { seriesIndex, _fix, w }: ) {
+              _fix;
               return w.config.series[seriesIndex] + ' (' + Number(value).toFixed(2) + '%)'
             }
           },
