@@ -21,9 +21,23 @@ export class ProfileFactory {
         const fetchedHIndex: number = this.dataSource.fetchHIndex(this.authorId);
 
         let hIndex: number;
-        //TODO: Make this Object Oriented
-        const copy: Article[] = JSON.parse(JSON.stringify(this.dataSource.fetchArticles(this.authorId)));
-        //If the h10-index could be fetched, returns it. Otherwise calculates it
+        const copy: Article[] = new Array<Article>();
+        this.dataSource.fetchArticles(this.authorId).forEach((article: Article) => {
+            copy.push(
+                new Article(
+                    article.title,
+                    article.year,
+                    article.citation,
+                    article.selfCitation,
+                    article.bibTex,
+                    article.url,
+                    article.venue,
+                    article.coAuthors,
+                ),
+            );
+        });
+
+        //If the h-index could be fetched, returns it. Otherwise calculates it
         if (fetchedHIndex != null) {
             hIndex = fetchedHIndex;
         } else {
@@ -57,16 +71,14 @@ export class ProfileFactory {
     calculateI10Index(): I10Index {
         const fetchedI10Index: number = this.dataSource.fetchI10Index(this.authorId);
         let i10Index: number;
-        const copy: Article[] = JSON.parse(JSON.stringify(this.dataSource.fetchArticles(this.authorId)));
+        const authorArticles: Article[] = this.dataSource.fetchArticles(this.authorId);
         //If the i10-index could be fetched, returns it. Otherwise calculates it
         if (fetchedI10Index != null) {
             i10Index = fetchedI10Index;
         } else {
             i10Index = 0;
-            //Sorting the articles of the scholar by the number of citations
-            copy.sort((a: Article, b: Article) => (a.citation > b.citation ? -1 : 1));
             //Calculating the hIndex of the scholar
-            copy.forEach((articles: Article, index: number) => {
+            authorArticles.forEach((articles: Article, index: number) => {
                 index;
                 if (articles.citation < 10) {
                     return;
@@ -74,23 +86,34 @@ export class ProfileFactory {
                 i10Index++;
             });
         }
-        //Sorting the articles of the scholar by the number of citations without self citations
-        copy.sort((a: Article, b: Article) => (a.citation - a.selfCitation > b.citation - b.selfCitation ? -1 : 1));
-        //Calculating the i10 index without self citations of the scholar
+        //Counts the number of articles which have more than 10 citations
         let i10IndexWithoutSelfCitations: number = 0;
-        copy.forEach((articles: Article, index: number) => {
-            if (articles.citation - articles.selfCitation < index) {
-                return;
+        authorArticles.forEach((articles: Article) => {
+            if (articles.citation - articles.selfCitation >= 10) {
+                i10IndexWithoutSelfCitations++;
             }
-            i10IndexWithoutSelfCitations++;
         });
 
         return new I10Index(i10Index, i10IndexWithoutSelfCitations);
     }
 
     calculateSelfCitations(): number {
-        const authorPublications: Article[] = JSON.parse(JSON.stringify(this.dataSource.fetchArticles(this.authorId)));
-        //Calculating the number of self-citations by iterating over all the articles of the scholar
+        const authorPublications: Article[] = new Array<Article>();
+        this.dataSource.fetchArticles(this.authorId).forEach((article: Article) => {
+            authorPublications.push(
+                new Article(
+                    article.title,
+                    article.year,
+                    article.citation,
+                    article.selfCitation,
+                    article.bibTex,
+                    article.url,
+                    article.venue,
+                    article.coAuthors,
+                ),
+            );
+        });
+        //Calculating the number of self-citations
         let numberOfSelfCitations: number = 0;
         for (const publication of authorPublications) {
             if (this.dataSource.hasSelfCitation(publication, this.authorId)) {
@@ -101,7 +124,21 @@ export class ProfileFactory {
     }
 
     calculateIndirectSelfCitations(): number {
-        const authorPublications: Article[] = JSON.parse(JSON.stringify(this.dataSource.fetchArticles(this.authorId)));
+        const authorPublications: Article[] = new Array<Article>();
+        this.dataSource.fetchArticles(this.authorId).forEach((article: Article) => {
+            authorPublications.push(
+                new Article(
+                    article.title,
+                    article.year,
+                    article.citation,
+                    article.selfCitation,
+                    article.bibTex,
+                    article.url,
+                    article.venue,
+                    article.coAuthors,
+                ),
+            );
+        });
         let numberOfIndirectSelfCitations: number = 0;
         for (const publication of authorPublications) {
             for (const coAuthor of publication.coAuthors) {
