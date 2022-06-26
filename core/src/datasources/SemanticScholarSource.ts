@@ -1,5 +1,5 @@
 import { Article } from '../models/articles/Article';
-import { APIAuthor, GetUsersResponse } from '../models/api/API';
+import { GetUsersResponse } from '../models/api/API';
 import { DataSource } from './DataSource';
 import axios, { AxiosResponse } from 'axios';
 
