@@ -7,6 +7,10 @@ export class ObjectSeriesChartModel implements Filterable<ObjectSeriesChartModel
         return this._series;
     }
 
+    public set series(newSeries: Series[]) {
+        this._series = newSeries;
+    }
+
     deepCopy(): ObjectSeriesChartModel {
         throw new Error('Method not implemented.');
     }
