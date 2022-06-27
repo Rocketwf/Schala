@@ -6,7 +6,6 @@ import {
     APIBasicAuthor,
     APIPapers,
     APIPaper,
-    APIJournal,
     APICoAuthor,
     APISearch,
 } from '../models/api/API';
@@ -216,9 +215,10 @@ export class SemanticScholarSource implements DataSource {
     }
     async hasSelfCitation(article: Article, authorId: string): Promise<boolean> {
         const fullAuthor: APIAuthor = await this.getAndCacheFullAuthor(authorId);
-        fullAuthor;
-        article;
-        authorId;
-        return {} as boolean;
+        const paper: APIPaper = fullAuthor.papers.data.find((paper: APIPaper) => paper.paperId === article.id);
+        for (const ref of paper.references) {
+            if (ref.authors.find((author: APICoAuthor) => author.authorId === authorId)) return true;
+        }
+        return false;
     }
 }

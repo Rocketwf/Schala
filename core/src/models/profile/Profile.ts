@@ -44,11 +44,21 @@ export class FullProfile {
     private _basicProfile: BasicProfile;
     private _hIndex: HIndex;
     private _i10Index: I10Index;
+    private _selfCitations: number;
+    private _indirectSelfCitations: number;
 
-    constructor(basicProfile: BasicProfile, hIndex: HIndex, i10Index: I10Index) {
+    constructor(
+        basicProfile: BasicProfile,
+        hIndex: HIndex,
+        i10Index: I10Index,
+        selfCitations: number,
+        indirectSelfCitations: number,
+    ) {
         this._basicProfile = basicProfile;
         this._hIndex = hIndex;
         this._i10Index = i10Index;
+        this._selfCitations = selfCitations;
+        this._indirectSelfCitations = indirectSelfCitations;
     }
 
     public get basicProfile(): BasicProfile {
@@ -61,6 +71,12 @@ export class FullProfile {
 
     public get i10Index(): I10Index {
         return this._i10Index;
+    }
+    public get selfCitations(): number {
+        return this._selfCitations;
+    }
+    public get indirectSelfCitations(): number {
+        return this._indirectSelfCitations;
     }
 }
 export class HIndex {

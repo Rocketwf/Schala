@@ -16,7 +16,8 @@ export class ProfileFactory {
         const basicProfile: BasicProfile = new BasicProfile(authorId, name, affiliations, citation);
         const hIndexObj: HIndex = new HIndex(hIndex);
         const i10IndexObj: I10Index = await this.calculateI10Index();
-        return Array.of(new FullProfile(basicProfile, hIndexObj, i10IndexObj));
+        const selfCitations: number = await this.calculateSelfCitations();
+        return Array.of(new FullProfile(basicProfile, hIndexObj, i10IndexObj, selfCitations, 0));
     }
 
     async calculateHIndex(): Promise<HIndex> {
@@ -100,31 +101,13 @@ export class ProfileFactory {
     }
 
     async calculateSelfCitations(): Promise<number> {
-        const authorPublications: Article[] = new Array<Article>();
-        const articles: Article[] = [];
+        const articles: Article[] = await this.dataSource.fetchArticles(this.authorId);
+        let selfCitation: number = 0;
         for (const article of articles) {
-            authorPublications.push(
-                new Article(
-                    article.id,
-                    article.title,
-                    article.year,
-                    article.citation,
-                    article.selfCitation,
-                    article.bibTex,
-                    article.url,
-                    article.venue,
-                    article.coAuthors,
-                ),
-            );
-            //Calculating the number of self-citations
-            let numberOfSelfCitations: number = 0;
-            for (const publication of authorPublications) {
-                if (this.dataSource.hasSelfCitation(publication, this.authorId)) {
-                    numberOfSelfCitations++;
-                }
-            }
-            return numberOfSelfCitations;
+            const hasSelfCitation: boolean = await this.dataSource.hasSelfCitation(article, this.authorId);
+            if (hasSelfCitation) ++selfCitation;
         }
+        return selfCitation;
     }
 
     async calculateIndirectSelfCitations(): Promise<number> {
@@ -147,9 +130,10 @@ export class ProfileFactory {
             let numberOfIndirectSelfCitations: number = 0;
             for (const publication of authorPublications) {
                 for (const coAuthor of publication.coAuthors) {
+                    const hasSelfCitation: boolean = await this.dataSource.hasSelfCitation(publication, coAuthor.id);
                     if (
                         coAuthor.id != this.authorId && //Otherwise this would also count direct self citations
-                        this.dataSource.hasSelfCitation(publication, coAuthor.id)
+                        hasSelfCitation
                     ) {
                         numberOfIndirectSelfCitations++;
                     }
