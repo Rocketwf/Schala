@@ -14,6 +14,7 @@ const props = defineProps<{
 
 const series = ref(props.passedSeries);
 const labels = ref(props.passedLabels);
+labels;
 
 let chartOptions = {
           dataLabels: {

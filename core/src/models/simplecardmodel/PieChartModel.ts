@@ -1,4 +1,4 @@
-import { SimpleCardModel } from './simpleCardModel';
+import { SimpleCardModel } from './SimpleCardModel';
 
 export class PieChartModel implements SimpleCardModel {
     colWidth: number = 370;

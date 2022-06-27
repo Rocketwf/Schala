@@ -45,6 +45,7 @@ const getFullProfile = (): FullProfile => {
 const getComparePageStore = () => {
     return comparePageStore();
 };
+getComparePageStore;
 
 // Attributes
 const ID: string = getFullProfile().basicProfile.id;

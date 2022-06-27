@@ -39,6 +39,7 @@ const handleAffiliationFilter = (data: string | number | null): void =>  {
     affiliationFilter = data as string;
     getSearchResultsPageStore().setAffiliationFilter(getAffiliationFilter());
 }
+handleAffiliationFilter;
 
 const getAffiliationFilter = (): string =>  {
     return affiliationFilter;

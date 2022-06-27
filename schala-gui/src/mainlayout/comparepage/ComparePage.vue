@@ -19,13 +19,15 @@
 <script setup charset="utf-8">
 import ProfileSummary from '../../sharedcomponents/ProfileSummary.vue';
 import CompareContent from './CompareContent.vue';
-import comparePageStore from '../../stores/comparePageStore'
+import { comparePageStore } from '../../stores/comparePageStore'
 
 const getComparePageStore = () => {
     return comparePageStore;
 };
+getComparePageStore;
 
 const getProfileSummary = () => {
   return ProfileSummary;
 }
+getProfileSummary;
 </script>
