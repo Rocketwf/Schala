@@ -23,5 +23,7 @@ export {
     FullProfile,
     SearchResultsModel,
     Tab,
+    PieChartModel,
+    SimpleCardModel,
 } from './models';
 export { ProfileRepresentation, ComparisonRepresentation } from './representations';

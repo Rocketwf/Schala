@@ -3,7 +3,7 @@
         <q-toolbar>
             <q-toolbar-title>
                 <q-avatar>
-                    <img src="../../assets/wisteria_Background_only_plant.png" />
+                   <header-logo></header-logo>
                 </q-avatar>
                 schala
             </q-toolbar-title>
@@ -14,22 +14,14 @@
                 </template>
             </q-input>
         </q-toolbar>
-
-        <q-tabs align="center" animated swipeable class="desktop-hide">
-            <q-route-tab to="/profile/search" label="Search Results" icon="search" />
-            <q-route-tab to="/profile/show" label="Profile" icon="person" />
-            <q-route-tab to="/profile/compare" label="Compare" icon="people" />
-        </q-tabs>
-        <q-tabs align="center" animated swipeable class="mobile-hide" inline-label>
-            <q-route-tab to="/profile/search" label="Search Results" icon="search" />
-            <q-route-tab to="/profile/show" label="Profile" icon="person" />
-            <q-route-tab to="/profile/compare" label="Compare" icon="people" />
-        </q-tabs>
+        <nav-bar></nav-bar>
     </q-header>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import HeaderLogo from './HeaderLogo.vue';
+import NavBar from './NavBar.vue';
 const text = ref('');
 text;
 </script>

@@ -13,7 +13,8 @@ const props = defineProps<{
 }>();
 
 // Methods
-const getProfileRepresentation = (): ProfileRepresentation => {
-    return props.profileRepr;
-};
+const getProfileRepresentation = ():ProfileRepresentation => {
+  return props.profileRepr;
+}
+
 </script>
