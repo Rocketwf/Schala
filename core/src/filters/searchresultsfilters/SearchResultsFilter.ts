@@ -7,10 +7,10 @@ export abstract class SearchResultsFilter<S> extends Filter<S, SearchResultsMode
 
 export class AffiliationFilter extends SearchResultsFilter<string> {
     apply(model: SearchResultsModel): void {
-        const filtered: Array<BasicProfile> = model.profiles.filter((profile: BasicProfile) => {
+        const filtered: Array<BasicProfile> = model.basicProfiles.filter((profile: BasicProfile) => {
             return this.affiliationContainsSubstring(profile.affiliation, this.value).length !== 0;
         });
-        model.profiles = filtered;
+        model.basicProfiles = filtered;
     }
 
     private affiliationContainsSubstring(affiliations: Array<string>, substring: string): Array<string> {

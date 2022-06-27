@@ -13,11 +13,7 @@
 
             <q-list bordered class="rounded-borders q-mt-lg">
                 <q-item-label header>Matching profiles</q-item-label>
-                <search-results-item
-                    v-for="pro in getSearchResultsPageStore().getSearchResultsShowingModel()"
-                    :key="pro.id"
-                    :profile="pro"
-                />
+                <search-results-item v-for="profile in strippedArray" :key="profile.id" :profile="profile as BasicProfile" />
             </q-list>
             <div class="q-pa-lg flex flex-center">
                 <!-- TODO: Pagination -->
@@ -27,9 +23,11 @@
     </div>
 </template>
 <script setup charset="utf-8" lang="ts">
-
 import { searchResultsStore } from '../../stores/searchResultsPageStore';
 import SearchResultsItem from './SearchResultItem.vue';
+import { BasicProfile } from 'schala-core';
+import { computed } from 'vue';
+BasicProfile;
 
 const searchStore = searchResultsStore();
 let affiliationFilter: string = '';
@@ -37,7 +35,7 @@ let affiliationFilter: string = '';
 
 const getSearchResultsPageStore = () => {
     return searchStore;
-}
+};
 
 const handleAffiliationFilter = (data: string | number | null): void =>  {
     affiliationFilter = data as string;
@@ -47,4 +45,12 @@ const handleAffiliationFilter = (data: string | number | null): void =>  {
 const getAffiliationFilter = (): string =>  {
     return affiliationFilter;
 }
+
+
+const getBasicProfiles = () => {
+  return searchStore.searchResultsShowingModel.basicProfiles;
+}
+
+const strippedArray = computed(()=>getBasicProfiles().slice(0, 10));
+
 </script>

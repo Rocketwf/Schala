@@ -26,11 +26,10 @@ const getSearchString = (): string => {
     return searchString.value;
 };
 
-const handleSearch = (): void => {
-  getSearchPageResultsStore().setSearchString(getSearchString());
-  router.push({ path: '/profile/search'});
-}
-
+const handleSearch = async () => {
+    getSearchPageResultsStore().setSearchString(getSearchString());
+    router.push({ path: '/profile/search' });
+};
 
 const getSearchPageResultsStore = () => {
     return searchResultsStore();

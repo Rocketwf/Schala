@@ -1,86 +1,161 @@
-import { SemanticScholarSource } from '../datasources';
+import { DataSource, SemanticScholarSource } from '../datasources';
 import { Article } from '../models';
 import { FullProfile, HIndex, I10Index, BasicProfile } from '../models/profile';
 
 export class ProfileFactory {
-    //TODO: Fix Promise
+    private dataSource: DataSource = SemanticScholarSource.getInstance();
+
+    private authorId: string; //The current scholar being added
+
     async build(authorId: string): Promise<FullProfile[]> {
-        return await Promise.all([
-            SemanticScholarSource.getInstance().fetchName(authorId),
-            SemanticScholarSource.getInstance().fetchAffiliations(authorId),
-            SemanticScholarSource.getInstance().fetchHIndex(authorId),
-            SemanticScholarSource.getInstance().fetchCitation(authorId),
-        ]).then((values: [string, string[], number, number]) => {
-            const basicProfile: BasicProfile = new BasicProfile(authorId, values[0], values[1], values[3]);
-            const hIndexObj: HIndex = new HIndex(values[2]);
-            return Array.of(new FullProfile(basicProfile, hIndexObj, null));
-        });
+        const name: string = await this.dataSource.fetchName(authorId);
+        const affiliations: string[] = await this.dataSource.fetchAffiliations(authorId);
+        const hIndex: number = await this.dataSource.fetchHIndex(authorId);
+        const citation: number = await this.dataSource.fetchCitation(authorId);
+        const basicProfile: BasicProfile = new BasicProfile(authorId, name, affiliations, citation);
+        const hIndexObj: HIndex = new HIndex(hIndex);
+        return Array.of(new FullProfile(basicProfile, hIndexObj, null));
     }
 
-    calculateHIndex(): HIndex {
-        const copy: Article[] = JSON.parse(JSON.stringify(this.getArticles));
-        //Sorting the articles of the scholar by the number of citations
-        copy.sort((a: Article, b: Article) => (a.citation > b.citation ? -1 : 1));
-        //Calculating the hIndex of the scholar
-        let hIndex: number = 0;
-        copy.forEach((articles: Article, index: number) => {
-            if (articles.citation < index) {
-                return;
-            }
-            hIndex++;
-        });
+    async calculateHIndex(): Promise<HIndex> {
+        const fetchedHIndex: number = await this.dataSource.fetchHIndex(this.authorId);
 
-        //Sorting the articles of the scholar by the number of citations without self citations
-        copy.sort((a: Article, b: Article) => (a.citation - a.selfCitation > b.citation - b.selfCitation ? -1 : 1));
-        //Calculating the hIndex without self citations of the scholar
-        let hIndexWithoutSelfCitations: number = 0;
-        copy.forEach((articles: Article, index: number) => {
-            if (articles.citation - articles.selfCitation < index) {
-                return;
-            }
-            hIndexWithoutSelfCitations++;
-        });
+        let hIndex: number;
+        const copy: Article[] = new Array<Article>();
+        const articles: Article[] = await this.dataSource.fetchArticles(this.authorId);
+        for (const article of articles) {
+            copy.push(
+                new Article(
+                    article.id,
+                    article.title,
+                    article.year,
+                    article.citation,
+                    article.selfCitation,
+                    article.bibTex,
+                    article.url,
+                    article.venue,
+                    article.coAuthors,
+                ),
+            );
 
-        return new HIndex(hIndex, hIndexWithoutSelfCitations);
+            //If the h-index could be fetched, returns it. Otherwise calculates it
+            if (fetchedHIndex != null) {
+                hIndex = fetchedHIndex;
+            } else {
+                hIndex = 0;
+                //Sorting the articles of the scholar by the number of citations
+                copy.sort((a: Article, b: Article) => (a.citation > b.citation ? -1 : 1));
+                //Calculating the hIndex of the scholar
+
+                copy.forEach((articles: Article, index: number) => {
+                    if (articles.citation < index) {
+                        return;
+                    }
+                    hIndex++;
+                });
+            }
+
+            //Sorting the articles of the scholar by the number of citations without self citations
+            copy.sort((a: Article, b: Article) => (a.citation - a.selfCitation > b.citation - b.selfCitation ? -1 : 1));
+            //Calculating the hIndex without self citations of the scholar
+            let hIndexWithoutSelfCitations: number = 0;
+            copy.forEach((articles: Article, index: number) => {
+                if (articles.citation - articles.selfCitation < index) {
+                    return;
+                }
+                hIndexWithoutSelfCitations++;
+            });
+
+            return new HIndex(hIndex, hIndexWithoutSelfCitations);
+        }
     }
-
-    calculateI10Index(): I10Index {
-        const copy: Article[] = JSON.parse(JSON.stringify(this.getArticles));
-        //Sorting the articles of the scholar by the number of citations
-        copy.sort((a: Article, b: Article) => (a.citation > b.citation ? -1 : 1));
-        //Calculating the hIndex of the scholar
-        let i10Index: number = 0;
-        copy.forEach((articles: Article, index: number) => {
-            index;
-            if (articles.citation < 10) {
-                return;
-            }
-            i10Index++;
-        });
-
-        //Sorting the articles of the scholar by the number of citations without self citations
-        copy.sort((a: Article, b: Article) => (a.citation - a.selfCitation > b.citation - b.selfCitation ? -1 : 1));
-        //Calculating the i10 index without self citations of the scholar
+    async calculateI10Index(): Promise<I10Index> {
+        const fetchedI10Index: number = await this.dataSource.fetchI10Index(this.authorId);
+        let i10Index: number;
+        const authorArticles: Article[] = await this.dataSource.fetchArticles(this.authorId);
+        //If the i10-index could be fetched, returns it. Otherwise calculates it
+        if (fetchedI10Index != null) {
+            i10Index = fetchedI10Index;
+        } else {
+            i10Index = 0;
+            //Calculating the hIndex of the scholar
+            authorArticles.forEach((articles: Article, index: number) => {
+                index;
+                if (articles.citation < 10) {
+                    return;
+                }
+                i10Index++;
+            });
+        }
+        //Counts the number of articles which have more than 10 citations
         let i10IndexWithoutSelfCitations: number = 0;
-        copy.forEach((articles: Article, index: number) => {
-            if (articles.citation - articles.selfCitation < index) {
-                return;
+        authorArticles.forEach((articles: Article) => {
+            if (articles.citation - articles.selfCitation >= 10) {
+                i10IndexWithoutSelfCitations++;
             }
-            i10IndexWithoutSelfCitations++;
         });
 
         return new I10Index(i10Index, i10IndexWithoutSelfCitations);
     }
 
-    calculateSelfCitations(): number {
-        return 0;
+    async calculateSelfCitations(): Promise<number> {
+        const authorPublications: Article[] = new Array<Article>();
+        const articles: Article[] = await this.dataSource.fetchArticles(this.authorId);
+        for (const article of articles) {
+            authorPublications.push(
+                new Article(
+                    article.id,
+                    article.title,
+                    article.year,
+                    article.citation,
+                    article.selfCitation,
+                    article.bibTex,
+                    article.url,
+                    article.venue,
+                    article.coAuthors,
+                ),
+            );
+            //Calculating the number of self-citations
+            let numberOfSelfCitations: number = 0;
+            for (const publication of authorPublications) {
+                if (this.dataSource.hasSelfCitation(publication, this.authorId)) {
+                    numberOfSelfCitations++;
+                }
+            }
+            return numberOfSelfCitations;
+        }
     }
 
-    calculateIndirectSelfCitations(): number {
-        return 0;
-    }
+    async calculateIndirectSelfCitations(): Promise<number> {
+        const authorPublications: Article[] = new Array<Article>();
+        const articles: Article[] = await this.dataSource.fetchArticles(this.authorId);
+        for (const article of articles) {
+            authorPublications.push(
+                new Article(
+                    article.id,
+                    article.title,
+                    article.year,
+                    article.citation,
+                    article.selfCitation,
+                    article.bibTex,
+                    article.url,
+                    article.venue,
+                    article.coAuthors,
+                ),
+            );
+            let numberOfIndirectSelfCitations: number = 0;
+            for (const publication of authorPublications) {
+                for (const coAuthor of publication.coAuthors) {
+                    if (
+                        coAuthor.id != this.authorId && //Otherwise this would also count direct self citations
+                        this.dataSource.hasSelfCitation(publication, coAuthor.id)
+                    ) {
+                        numberOfIndirectSelfCitations++;
+                    }
+                }
+            }
 
-    getArticles(): Article[] {
-        return null;
+            return numberOfIndirectSelfCitations;
+        }
     }
 }

@@ -1,10 +1,20 @@
-import { Article } from '../models/articles/Article';
-import { GetUsersResponse, APIAuthor } from '../models/api/API';
+import { Article, CoAuthor } from '../models/articles/Article';
+import {
+    APIAuthor,
+    APIAuthorCombined,
+    APIAuthorExtra,
+    APIBasicAuthor,
+    APIPapers,
+    APIPaper,
+    APICoAuthor,
+    APISearch,
+} from '../models/api/API';
 import { DataSource } from './DataSource';
 import axios, { AxiosResponse } from 'axios';
 
 export class SemanticScholarSource implements DataSource {
-    private queryResultsMapping: Map<string, Promise<Array<APIAuthor>>>;
+    private queryResultsMapping: Map<string, string[]>;
+    private authorIdAPIAuthor: Map<string, APIAuthor>;
 
     private static instance: SemanticScholarSource;
 
@@ -16,15 +26,43 @@ export class SemanticScholarSource implements DataSource {
     }
 
     private constructor() {
-        this.queryResultsMapping = new Map<string, Promise<Array<APIAuthor>>>();
+        this.queryResultsMapping = new Map<string, string[]>();
+        this.authorIdAPIAuthor = new Map<string, APIAuthor>();
     }
+    private async getAndCacheFullAuthor(authorId: string): Promise<APIAuthor> {
+        const cachedAuthor: APIAuthor = this.authorIdAPIAuthor.get(authorId);
+        let extra: APIAuthorExtra = {} as APIAuthorExtra;
+        let basic: APIBasicAuthor = {} as APIBasicAuthor;
+        if (cachedAuthor) {
+            if (cachedAuthor.filled) {
+                return cachedAuthor;
+            }
+            try {
+                const { data: authorExtra }: AxiosResponse<APIAuthorExtra, object> = await axios.get<APIAuthorExtra>(
+                    'https://api.semanticscholar.org/graph/v1/author/' + authorId + '?fields=url,homepage,hIndex',
+                    {
+                        headers: {
+                            Accept: 'application/json',
+                        },
+                    },
+                );
 
-    private async getAuthors(query: string): Promise<APIAuthor[]> {
-        try {
-            const { data }: AxiosResponse<GetUsersResponse, object> = await axios.get<GetUsersResponse>(
-                'https://api.semanticscholar.org/graph/v1/author/search?query=' +
-                    query +
-                    '&fields=authorId,url,name,aliases,affiliations,homepage,paperCount,citationCount,hIndex,papers.paperId,papers.url,papers.title,papers.abstract,papers.venue,papers.year,papers.referenceCount,papers.citationCount,papers.isOpenAccess,papers.fieldsOfStudy,papers.publicationTypes,papers.publicationDate,papers.journal,papers.authors&limit=5',
+                basic = cachedAuthor.basicAuthor;
+                extra = authorExtra;
+            } catch (error) {
+                if (axios.isAxiosError(error)) {
+                    console.log('error message: ', error.message);
+                    throw new Error(error.message);
+                } else {
+                    console.log('unexpected error: ', error);
+                    throw new Error('TODO: Implement me');
+                }
+            }
+        } else {
+            const { data: combined }: AxiosResponse<APIAuthorCombined, object> = await axios.get<APIAuthorCombined>(
+                'https://api.semanticscholar.org/graph/v1/author/' +
+                    authorId +
+                    '?fields=authorId,name,aliases,affiliations,paperCount,citationCount,url,homepage,hIndex',
                 {
                     headers: {
                         Accept: 'application/json',
@@ -32,7 +70,83 @@ export class SemanticScholarSource implements DataSource {
                 },
             );
 
-            return data.data;
+            basic = {
+                authorId: combined.authorId,
+                name: combined.name,
+                aliases: combined.aliases,
+                affiliations: combined.affiliations,
+                paperCount: combined.paperCount,
+                citationCount: combined.citationCount,
+            };
+            extra = {
+                url: combined.url,
+                homepage: combined.homepage,
+                hIndex: combined.hIndex,
+            };
+        }
+        const { data: papers }: AxiosResponse<APIPapers, object> = await axios.get<APIPapers>(
+            'https://api.semanticscholar.org/graph/v1/author/' +
+                authorId +
+                '/papers/?fields=paperId,url,title,abstract,venue,year,referenceCount,citationCount,isOpenAccess,fieldsOfStudy,publicationTypes,publicationDate,journal,authors,references.paperId,references.authors&limit=1000',
+            {
+                headers: {
+                    Accept: 'application/json',
+                },
+            },
+        );
+        console.log(papers);
+        const fullAuthor: APIAuthor = {
+            basicAuthor: basic,
+            authorExtra: extra,
+            papers: papers,
+            filled: true,
+        };
+        this.authorIdAPIAuthor.set(authorId, fullAuthor);
+        return fullAuthor;
+    }
+
+    private async getAndCacheSearchResults(query: string): Promise<APIAuthor[]> {
+        const apiAuthors: Array<APIAuthor> = new Array<APIAuthor>();
+        if (this.queryResultsMapping.has(query)) {
+            for (const authorId of this.queryResultsMapping.get(query)) {
+                apiAuthors.push(this.authorIdAPIAuthor.get(authorId));
+            }
+            return apiAuthors;
+        }
+        try {
+            const { data }: AxiosResponse<APISearch, object> = await axios.get<APISearch>(
+                'https://api.semanticscholar.org/graph/v1/author/search?query=' +
+                    query +
+                    '&fields=authorId,name,aliases,affiliations,paperCount,citationCount&limit=1000',
+                {
+                    headers: {
+                        Accept: 'application/json',
+                    },
+                },
+            );
+            this.queryResultsMapping.set(query, new Array<string>());
+
+            for (const basicProfile of data.data) {
+                const fullAuthor: APIAuthor = {
+                    basicAuthor: {
+                        authorId: basicProfile.authorId,
+                        name: basicProfile.name,
+                        aliases: basicProfile.aliases,
+                        affiliations: basicProfile.affiliations,
+                        paperCount: basicProfile.paperCount,
+                        citationCount: basicProfile.citationCount,
+                    },
+                    authorExtra: { url: '', homepage: '', hIndex: 0 },
+                    papers: {} as APIPapers,
+                    filled: false,
+                };
+                this.authorIdAPIAuthor.set(basicProfile.authorId, fullAuthor);
+                this.queryResultsMapping.get(query).push(basicProfile.authorId);
+
+                apiAuthors.push(fullAuthor);
+            }
+
+            return apiAuthors;
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 console.log('error message: ', error.message);
@@ -45,80 +159,71 @@ export class SemanticScholarSource implements DataSource {
     }
 
     async fetchAuthorIds(query: string): Promise<string[]> {
-        const latestResponse: Promise<APIAuthor[]> = this.getAuthors(query);
-        const promise: Promise<string[]> = new Promise<string[]>(
-            (resolve: (value: string[] | PromiseLike<string[]>) => void) => {
-                const authorIds: Array<string> = new Array<string>();
-                latestResponse.then((apiAuthors: APIAuthor[]) => {
-                    apiAuthors.forEach((apiAuthor: APIAuthor) => {
-                        authorIds.push(apiAuthor.authorId);
-                    });
-                    resolve(authorIds);
-                });
-            },
-        );
-
-        this.queryResultsMapping.set(query, latestResponse);
-        return await promise;
+        const authors: APIAuthor[] = await this.getAndCacheSearchResults(query);
+        return authors.map((author: APIAuthor) => author.basicAuthor.authorId);
     }
 
-    async fetchHIndex(authorId: string): Promise<number> {
-        return await Promise.all(Array.from(this.queryResultsMapping.values())).then(
-            (arrayOfResolvedPromisses: APIAuthor[][]) => {
-                for (const apiAuthors of arrayOfResolvedPromisses) {
-                    for (const apiAuthor of apiAuthors) {
-                        if (apiAuthor.authorId === authorId) return apiAuthor.hIndex;
-                    }
-                }
-            },
-        );
-    }
     async fetchName(authorId: string): Promise<string> {
-        return await Promise.all(Array.from(this.queryResultsMapping.values())).then(
-            (arrayOfResolvedPromisses: APIAuthor[][]) => {
-                for (const apiAuthors of arrayOfResolvedPromisses) {
-                    for (const apiAuthor of apiAuthors) {
-                        if (apiAuthor.authorId === authorId) return apiAuthor.name;
-                    }
-                }
-            },
-        );
+        let profile: APIAuthor = this.authorIdAPIAuthor.get(authorId);
+        if (!profile) {
+            profile = await this.getAndCacheFullAuthor(authorId);
+            console.log('here is the full author', profile);
+        }
+        return profile.basicAuthor.aliases
+            ? profile.basicAuthor.aliases[profile.basicAuthor.aliases.length - 1]
+            : profile.basicAuthor.name;
     }
 
     async fetchAffiliations(authorId: string): Promise<string[]> {
-        return await Promise.all(Array.from(this.queryResultsMapping.values())).then(
-            (arrayOfResolvedPromisses: APIAuthor[][]) => {
-                for (const apiAuthors of arrayOfResolvedPromisses) {
-                    for (const apiAuthor of apiAuthors) {
-                        if (apiAuthor.authorId === authorId) return apiAuthor.affiliations;
-                    }
-                }
-            },
-        );
+        let profile: APIAuthor = this.authorIdAPIAuthor.get(authorId);
+        if (!profile) {
+            profile = await this.getAndCacheFullAuthor(authorId);
+            console.log('here is the full author', profile);
+        }
+        return profile.basicAuthor.affiliations;
     }
     async fetchCitation(authorId: string): Promise<number> {
-        return await Promise.all(Array.from(this.queryResultsMapping.values())).then(
-            (arrayOfResolvedPromisses: APIAuthor[][]) => {
-                for (const apiAuthors of arrayOfResolvedPromisses) {
-                    for (const apiAuthor of apiAuthors) {
-                        if (apiAuthor.authorId === authorId) return +apiAuthor.citationCount;
-                    }
-                }
-            },
-        );
+        let profile: APIAuthor = this.authorIdAPIAuthor.get(authorId);
+        if (!profile) {
+            profile = await this.getAndCacheFullAuthor(authorId);
+            console.log('here is the full author', profile);
+        }
+        return +profile.basicAuthor.citationCount;
     }
 
-    fetchI10Index(authorId: string): Promise<number> {
-        authorId;
-        return {} as Promise<number>;
+    async fetchHIndex(authorId: string): Promise<number> {
+        const fullAuthor: APIAuthor = await this.getAndCacheFullAuthor(authorId);
+        return fullAuthor.authorExtra.hIndex;
     }
-    fetchArticles(authorId: string): Promise<Article[]> {
+
+    async fetchI10Index(authorId: string): Promise<number> {
+        const fullAuthor: APIAuthor = await this.getAndCacheFullAuthor(authorId);
+        fullAuthor;
         authorId;
-        return {} as Promise<Article[]>;
+        return {} as number;
     }
-    hasSelfCitation(article: Article, authorId: string): Promise<boolean> {
+    async fetchArticles(authorId: string): Promise<Article[]> {
+        const fullAuthor: APIAuthor = await this.getAndCacheFullAuthor(authorId);
+        return fullAuthor.papers.data.map(
+            (apiPaper: APIPaper) =>
+                new Article(
+                    apiPaper.paperId,
+                    apiPaper.title,
+                    apiPaper.year,
+                    apiPaper.citationCount,
+                    0,
+                    '',
+                    apiPaper.url,
+                    apiPaper.journal[0].name,
+                    apiPaper.authors.map((coAuthor: APICoAuthor) => new CoAuthor(coAuthor.authorId, coAuthor.name, 0)),
+                ),
+        );
+    }
+    async hasSelfCitation(article: Article, authorId: string): Promise<boolean> {
+        const fullAuthor: APIAuthor = await this.getAndCacheFullAuthor(authorId);
+        fullAuthor;
         article;
         authorId;
-        return {} as Promise<boolean>;
+        return {} as boolean;
     }
 }

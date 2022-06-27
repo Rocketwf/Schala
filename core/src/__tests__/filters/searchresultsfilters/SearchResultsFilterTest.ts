@@ -9,7 +9,7 @@ describe('filters the search results correctly', () => {
         const testFilter: AffiliationFilter = new AffiliationFilter();
         testFilter.value = 'Industries';
         testFilter.apply(testModel);
-        expect(testModel.profiles.includes(testProfile1)).toBe(false);
-        expect(testModel.profiles.includes(testProfile2)).toBe(true);
+        expect(testModel.basicProfiles.includes(testProfile1)).toBe(false);
+        expect(testModel.basicProfiles.includes(testProfile2)).toBe(true);
     });
 });
