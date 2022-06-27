@@ -8,13 +8,16 @@ export class ProfileFactory {
     private authorId: string; //The current scholar being added
 
     async build(authorId: string): Promise<FullProfile[]> {
+        this.authorId = authorId;
         const name: string = await this.dataSource.fetchName(authorId);
         const affiliations: string[] = await this.dataSource.fetchAffiliations(authorId);
         const hIndex: number = await this.dataSource.fetchHIndex(authorId);
         const citation: number = await this.dataSource.fetchCitation(authorId);
         const basicProfile: BasicProfile = new BasicProfile(authorId, name, affiliations, citation);
         const hIndexObj: HIndex = new HIndex(hIndex);
-        return Array.of(new FullProfile(basicProfile, hIndexObj, null));
+        const i10IndexObj: I10Index = await this.calculateI10Index();
+        const selfCitations: number = await this.calculateSelfCitations();
+        return Array.of(new FullProfile(basicProfile, hIndexObj, i10IndexObj, selfCitations, 0));
     }
 
     async calculateHIndex(): Promise<HIndex> {
@@ -71,59 +74,40 @@ export class ProfileFactory {
     }
     async calculateI10Index(): Promise<I10Index> {
         const fetchedI10Index: number = await this.dataSource.fetchI10Index(this.authorId);
-        let i10Index: number;
         const authorArticles: Article[] = await this.dataSource.fetchArticles(this.authorId);
+        let i10Index: number;
         //If the i10-index could be fetched, returns it. Otherwise calculates it
         if (fetchedI10Index != null) {
             i10Index = fetchedI10Index;
         } else {
             i10Index = 0;
             //Calculating the hIndex of the scholar
-            authorArticles.forEach((articles: Article, index: number) => {
-                index;
-                if (articles.citation < 10) {
-                    return;
+            for (const article of authorArticles) {
+                if (article.citation < 10) {
+                    continue;
                 }
                 i10Index++;
-            });
+            }
         }
         //Counts the number of articles which have more than 10 citations
         let i10IndexWithoutSelfCitations: number = 0;
-        authorArticles.forEach((articles: Article) => {
-            if (articles.citation - articles.selfCitation >= 10) {
+        for (const article of authorArticles) {
+            if (article.citation - article.selfCitation >= 10) {
                 i10IndexWithoutSelfCitations++;
             }
-        });
+        }
 
         return new I10Index(i10Index, i10IndexWithoutSelfCitations);
     }
 
     async calculateSelfCitations(): Promise<number> {
-        const authorPublications: Article[] = new Array<Article>();
         const articles: Article[] = await this.dataSource.fetchArticles(this.authorId);
+        let selfCitation: number = 0;
         for (const article of articles) {
-            authorPublications.push(
-                new Article(
-                    article.id,
-                    article.title,
-                    article.year,
-                    article.citation,
-                    article.selfCitation,
-                    article.bibTex,
-                    article.url,
-                    article.venue,
-                    article.coAuthors,
-                ),
-            );
-            //Calculating the number of self-citations
-            let numberOfSelfCitations: number = 0;
-            for (const publication of authorPublications) {
-                if (this.dataSource.hasSelfCitation(publication, this.authorId)) {
-                    numberOfSelfCitations++;
-                }
-            }
-            return numberOfSelfCitations;
+            const hasSelfCitation: boolean = await this.dataSource.hasSelfCitation(article, this.authorId);
+            if (hasSelfCitation) ++selfCitation;
         }
+        return selfCitation;
     }
 
     async calculateIndirectSelfCitations(): Promise<number> {
@@ -146,9 +130,10 @@ export class ProfileFactory {
             let numberOfIndirectSelfCitations: number = 0;
             for (const publication of authorPublications) {
                 for (const coAuthor of publication.coAuthors) {
+                    const hasSelfCitation: boolean = await this.dataSource.hasSelfCitation(publication, coAuthor.id);
                     if (
                         coAuthor.id != this.authorId && //Otherwise this would also count direct self citations
-                        this.dataSource.hasSelfCitation(publication, coAuthor.id)
+                        hasSelfCitation
                     ) {
                         numberOfIndirectSelfCitations++;
                     }
