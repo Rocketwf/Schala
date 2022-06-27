@@ -1,5 +1,5 @@
 <template>
-    <q-item class="col-md-3 my-content">
+    <q-item class="col-md-3 my-content" v-if="profile">
         <q-item-section side>
             <q-avatar square style="width: 145px; height: 180px">
                 <img
@@ -8,22 +8,18 @@
             </q-avatar>
             <q-item-label class="full-width self-center">
                 <q-btn
-                    @click="handleActionButton"
                     unelevated
                     label="Compare"
                     class="full-width no-box-shadow no-border-radius"
+                    color="primary"
                 />
             </q-item-label>
         </q-item-section>
         <q-item-section top>
-            <q-item-label class="vertical-top text-weight-bold text-h6">{{ Name }}</q-item-label>
+          <q-item-label class="vertical-top text-weight-bold text-h6">{{ Name }}</q-item-label>
             <q-item-label caption>{{ ID }}</q-item-label>
             <q-item-label caption>{{ Affiliation }}</q-item-label>
             <q-item-label caption>{{ Hindex }}</q-item-label>
-            <q-item-label caption>{{ HindexWithoutSelfCitations }} </q-item-label>
-            <q-item-label caption>{{ Citations }}</q-item-label>
-            <q-item-label caption>{{ I10Index }}</q-item-label>
-            <q-item-label caption>{{ I10IndexWithoutSelfCitations }}</q-item-label>
             <q-item-label caption>
                 <q-btn round color="blue" icon="web" size="8px" class="q-mr-sm">
                     <q-tooltip anchor="bottom middle" self="top middle"> visit website </q-tooltip>
@@ -49,19 +45,21 @@ const getFullProfile = (): FullProfile => {
 const getComparePageStore = () => {
     return comparePageStore();
 };
-
-const handleActionButton = (): void => {
-    getComparePageStore().addProfile(ID);
-};
+getComparePageStore;
 
 // Attributes
 const ID: string = getFullProfile().basicProfile.id;
 const Name: string = getFullProfile().basicProfile.name;
 const Affiliation: string[] = getFullProfile().basicProfile.affiliation;
 const Hindex: number = getFullProfile().hIndex.hIndex;
-const HindexWithoutSelfCitations: number = getFullProfile().hIndex.hIndexWithoutSelfCitations;
-const Citations: number = getFullProfile().basicProfile.totalCitations;
-const I10Index: number = getFullProfile().i10Index.i10Index;
-const I10IndexWithoutSelfCitations: number = getFullProfile().i10Index.i10IndexWithoutSelfCitations;
+
+
 </script>
->
+<style lang="sass" scoped>
+.my-content
+  margin: 0 2px
+  padding: 10px 15px
+  background: rgba(86,61,124,.15)
+  border: 1px solid rgba(86,61,124,.2)
+</style>
+

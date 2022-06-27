@@ -1,20 +1,26 @@
 <template>
   <div class="row justify-center bg-transparent">
     <div class="col-md-12 col-xs-12 self-center">
-      <ProfileSummary />
+      <profile-summary v-if="getFullProfile()" :profile="getFullProfile() as FullProfile" />
     </div>
   </div>
-  <ProfileContent />
 </template>
-<script setup charset="utf-8">
-import { profilePageStore } from 'src/stores/profilePageStore';
-import ProfileSummary from 'src/sharedcomponents/ProfileSummary.vue';
-import ProfileContent from './ProfileContent.vue';
+<script setup lang="ts">
+import { profilePageStore } from '../../stores/profilePageStore';
+import ProfileSummary from '../../sharedcomponents/ProfileSummary.vue'
+import { FullProfile } from 'schala-core';
+FullProfile;
+
+const profileStore = profilePageStore();
+//const pagination = ... TODO: Add Pagination
 
 const getProfilePageStore = () => {
-  return profilePageStore();
+    return profileStore;
+};
+const getFullProfile = () => {
+  return getProfilePageStore().profileRepresentation.fullProfile;
 }
-getProfilePageStore;
+
 
 
 </script>

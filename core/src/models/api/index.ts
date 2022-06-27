@@ -1,1 +1,1 @@
-export { APIArticle, APIAuthor, APIJournal } from './API';
+export { APIAuthor, APIJournal } from './API';

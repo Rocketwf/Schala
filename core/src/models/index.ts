@@ -1,9 +1,10 @@
-export { APIArticle, APIAuthor, APIJournal } from './api';
+export { APIAuthor, APIJournal } from './api';
 export { Article } from './articles';
 export { ArticlesModel } from './articlesmodel';
 export { ChartOptionsModel } from './chartoptionsmodel';
-export { Input } from './inputs';
+export { Input, PopupEditButton } from './inputs';
 export { ObjectSeriesChartModel } from './objectserieschartmodel';
 export { Profile, BasicProfile, FullProfile } from './profile';
 export { SearchResultsModel } from './searchresultsmodel';
+export { SimpleCardModel, PieChartModel } from './simplecardmodel';
 export { Tab } from './viewmodels';

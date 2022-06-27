@@ -3,11 +3,19 @@ export interface APIJournal {
     pages?: string;
     name?: string;
 }
-interface APICoAuthor {
+export interface APICoAuthor {
     authorId: string;
     name: string;
 }
-export interface APIArticle {
+export interface APIReference {
+    paperId: string;
+    authors: APICoAuthor[];
+}
+export interface APIPapers {
+    offset: number;
+    data: APIPaper[];
+}
+export interface APIPaper {
     paperId: string;
     url?: string;
     title: string;
@@ -20,26 +28,47 @@ export interface APIArticle {
     fieldsOfStudy?: string[];
     publicationTypes?: string[];
     publicationDate?: string;
-    journal?: APIJournal[];
+    journal?: APIJournal;
     authors?: APICoAuthor[];
+    references: APIReference[];
 }
 
-export interface APIAuthor {
-    authorId: string;
+export interface APIAuthorExtra {
     url: string;
+    homepage: string;
+    hIndex: number;
+}
+export interface APIBasicAuthor {
+    authorId: string;
     name: string;
     aliases: string[];
     affiliations: string[];
-    homepage: string;
     paperCount: string;
     citationCount: string;
-    hIndex: number;
-    papers: APIArticle[];
 }
 
-export interface GetUsersResponse {
+export interface APIAuthorCombined {
+    authorId: string;
+    name: string;
+    aliases: string[];
+    affiliations: string[];
+    paperCount: string;
+    citationCount: string;
+    url: string;
+    homepage: string;
+    hIndex: number;
+}
+
+export interface APIAuthor {
+    basicAuthor: APIBasicAuthor;
+    authorExtra: APIAuthorExtra;
+    papers: APIPapers;
+    filled: boolean;
+}
+
+export interface APISearch {
     total: number;
     offset: number;
     next: number;
-    data: APIAuthor[];
+    data: APIBasicAuthor[];
 }

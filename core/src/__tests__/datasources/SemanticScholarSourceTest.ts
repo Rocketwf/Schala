@@ -6,18 +6,10 @@ describe('findOrCreate method', () => {
         const authorsIds: string[] = await SemanticScholarSource.getInstance().fetchAuthorIds('walter tichy');
         expect(authorsIds).toStrictEqual(['143732150', '1679754', '1395637352', '89914629']);
     });
-    it('HIndex of tichy should be 3', async () => {
-        const hIndex: number = await SemanticScholarSource.getInstance().fetchHIndex('1679754');
-        expect(hIndex).toBe(39);
+    it('fetches the correct first paper', async () => {
+        const articles: Article[] = await SemanticScholarSource.getInstance().fetchArticles('1679754');
+        expect(articles[0].title).toBe('Software Architectures (Dagstuhl Seminar 9508)');
     });
-    it('HIndex of tichy should be 3', async () => {
-        const name: string = await SemanticScholarSource.getInstance().fetchName('1679754');
-        expect(name).toBe('W. Tichy');
-    });
-    //it('fetches the correct first paper', async () => {
-        //const articles: Article[] = await SemanticScholarSource.getInstance().fetchArticles('1679754');
-        //expect(articles[0].title).toBe('Software Architectures (Dagstuhl Seminar 9508)');
-    //});
     it('fetches the correct citation count', async () => {
         const citation: number = await SemanticScholarSource.getInstance().fetchCitation('1679754');
         expect(citation).toBe(7903);
@@ -26,4 +18,22 @@ describe('findOrCreate method', () => {
         const hIndex: number = await SemanticScholarSource.getInstance().fetchHIndex('1679754');
         expect(hIndex).toBe(39);
     });
+    it('fetches author affiliation', async () => {
+        const affiliation: string[] = await SemanticScholarSource.getInstance().fetchAffiliations('1679754');
+        expect(affiliation.length).toBe(0);
+    });
+    it('fetches author citation', async () => {
+        const citation: number = await SemanticScholarSource.getInstance().fetchCitation('1679754');
+        expect(citation).toBe(7903);
+    });
+    //  TODO: Implement fetchI10index, hasSelfCitation
+    // it('fetches author i10 index', async () => {
+    //     const i10Index: number = await SemanticScholarSource.getInstance().fetchI10Index('1679754');
+    //     expect(data).toBe(118);
+    // });
+    // it('checks if author has self-citations', async () => {
+    //     const articles: Article[] = await SemanticScholarSource.getInstance().fetchArticles('1679754');
+    //     const hasSelfCitation: boolean = await SemanticScholarSource.getInstance().hasSelfCitation(articles[0], '1679754');
+    //     expect(hasSelfCitation).toBe(true);
+    // });
 });

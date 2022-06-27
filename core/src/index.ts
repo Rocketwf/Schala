@@ -10,18 +10,20 @@ export {
     SearchResultsFilter,
 } from './filters';
 export {
-    APIArticle,
     APIAuthor,
     APIJournal,
     Article,
     ArticlesModel,
     ChartOptionsModel,
     Input,
+    PopupEditButton,
     ObjectSeriesChartModel,
     Profile,
     BasicProfile,
     FullProfile,
     SearchResultsModel,
     Tab,
+    PieChartModel,
+    SimpleCardModel,
 } from './models';
 export { ProfileRepresentation, ComparisonRepresentation } from './representations';

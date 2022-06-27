@@ -1,17 +1,18 @@
 <template>
     <q-item clickable :class="inComparison ? 'bg-accent' : ''">
-        <q-item-section top class="q-ml-sm">
-            <q-item-label class="q-mt-sm" @click="handleClick">
-                {{ getBasicProfile().id }}
-            </q-item-label>
-            <q-item-label caption lines="2">
-                {{ getBasicProfile().name }}
-            </q-item-label>
-            <q-item-label caption lines="2"> @{{ getBasicProfile().affiliation }} </q-item-label>
-            <q-item-label caption lines="2">
-                {{ getBasicProfile().totalCitations }}
-            </q-item-label>
+        <q-item-section avatar center @click="handleClick">
+            <q-avatar size="66px" rounded>
+                <img src="https://www.seekpng.com/png/detail/966-9665317_placeholder-image-person-jpg.png" />
+            </q-avatar>
         </q-item-section>
+
+        <q-item-section top class="q-ml-sm">
+            <q-item-label class="q-mt-sm">{{ getBasicProfile().name }}</q-item-label>
+            <q-item-label caption lines="2"> @{{ getBasicProfile().affiliation }} </q-item-label>
+            <q-item-label caption lines="2"> 4  papers </q-item-label>
+            <q-item-label caption lines="2"> Cited by {{ getBasicProfile().totalCitations }} </q-item-label>
+        </q-item-section>
+
 
         <q-item-section top side>
             <div class="text-grey-8">
@@ -47,22 +48,23 @@ const handleAdd = () => {
     } else {
         getComparePageStore().addProfile(props.profile.id);
     }
-}
+};
 
-const handleClick = () => {
-    getProfileStore().setProfileId(props.profile.id);
+const handleClick = async () => {
+    await getProfileStore().setProfileId(props.profile.id);
+    console.log(props.profile.id);
     router.push({ path: '/profile/show' });
-}
+};
 
 const getBasicProfile = (): BasicProfile => {
     return props.profile;
-}
+};
 
 const getComparePageStore = () => {
     return compareStore;
-}
+};
 
 const getProfileStore = () => {
     return profileStore;
-}
+};
 </script>
