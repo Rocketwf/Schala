@@ -14,7 +14,6 @@ export class SearchResultsFactory implements Factory {
             const totalCitations: number = await this.dataSource.fetchCitation(authorId);
             basicProfiles.push(new BasicProfile(authorId, name, affiliation, totalCitations));
         }
-        console.log(basicProfiles);
         return basicProfiles;
     }
 }

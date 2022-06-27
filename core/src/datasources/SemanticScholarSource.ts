@@ -6,6 +6,7 @@ import {
     APIBasicAuthor,
     APIPapers,
     APIPaper,
+    APIJournal,
     APICoAuthor,
     APISearch,
 } from '../models/api/API';
@@ -94,7 +95,6 @@ export class SemanticScholarSource implements DataSource {
                 },
             },
         );
-        console.log(papers);
         const fullAuthor: APIAuthor = {
             basicAuthor: basic,
             authorExtra: extra,
@@ -167,7 +167,6 @@ export class SemanticScholarSource implements DataSource {
         let profile: APIAuthor = this.authorIdAPIAuthor.get(authorId);
         if (!profile) {
             profile = await this.getAndCacheFullAuthor(authorId);
-            console.log('here is the full author', profile);
         }
         return profile.basicAuthor.aliases
             ? profile.basicAuthor.aliases[profile.basicAuthor.aliases.length - 1]
@@ -178,7 +177,6 @@ export class SemanticScholarSource implements DataSource {
         let profile: APIAuthor = this.authorIdAPIAuthor.get(authorId);
         if (!profile) {
             profile = await this.getAndCacheFullAuthor(authorId);
-            console.log('here is the full author', profile);
         }
         return profile.basicAuthor.affiliations;
     }
@@ -186,7 +184,6 @@ export class SemanticScholarSource implements DataSource {
         let profile: APIAuthor = this.authorIdAPIAuthor.get(authorId);
         if (!profile) {
             profile = await this.getAndCacheFullAuthor(authorId);
-            console.log('here is the full author', profile);
         }
         return +profile.basicAuthor.citationCount;
     }
@@ -197,10 +194,8 @@ export class SemanticScholarSource implements DataSource {
     }
 
     async fetchI10Index(authorId: string): Promise<number> {
-        const fullAuthor: APIAuthor = await this.getAndCacheFullAuthor(authorId);
-        fullAuthor;
         authorId;
-        return {} as number;
+        return null;
     }
     async fetchArticles(authorId: string): Promise<Article[]> {
         const fullAuthor: APIAuthor = await this.getAndCacheFullAuthor(authorId);
@@ -210,11 +205,11 @@ export class SemanticScholarSource implements DataSource {
                     apiPaper.paperId,
                     apiPaper.title,
                     apiPaper.year,
-                    apiPaper.citationCount,
-                    0,
+                    apiPaper.referenceCount,
+                    20,
                     '',
                     apiPaper.url,
-                    apiPaper.journal[0].name,
+                    apiPaper.journal ? apiPaper.journal.name : '',
                     apiPaper.authors.map((coAuthor: APICoAuthor) => new CoAuthor(coAuthor.authorId, coAuthor.name, 0)),
                 ),
         );

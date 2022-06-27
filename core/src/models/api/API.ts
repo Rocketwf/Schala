@@ -28,7 +28,7 @@ export interface APIPaper {
     fieldsOfStudy?: string[];
     publicationTypes?: string[];
     publicationDate?: string;
-    journal?: APIJournal[];
+    journal?: APIJournal;
     authors?: APICoAuthor[];
     references: APIReference[];
 }

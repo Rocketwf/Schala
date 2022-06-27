@@ -9,5 +9,7 @@ describe('builds Tichy`s profile correctly', () => {
         expect(tichyProfile.basicProfile.name).toBe('Walter F Tichy');
         expect(tichyProfile.basicProfile.id).toBe('1679754');
         expect(tichyProfile.basicProfile.totalCitations).toBe(7903);
+        expect(tichyProfile.i10Index.i10Index).toBe(154);
+        expect(tichyProfile.i10Index.i10IndexWithoutSelfCitations).toBe(45);
     });
 });

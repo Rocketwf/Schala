@@ -1,4 +1,5 @@
 import { SemanticScholarSource } from '../../datasources';
+import { Article } from '../../models/articles';
 
 describe('findOrCreate method', () => {
     it('fetches author ids', async () => {
@@ -21,15 +22,14 @@ describe('findOrCreate method', () => {
         const citation: number = await SemanticScholarSource.getInstance().fetchCitation('1679754');
         expect(citation).toBe(7903);
     });
-    //  TODO: Implement fetchI10index, fetchArticles, hasSelfCitation
-    // it('fetches author i10 index', async () => {
-    //     const i10Index: number = await SemanticScholarSource.getInstance().fetchI10Index('1679754');
-    //     expect(data).toBe(118);
-    // });
-    // it('fetches author articles', async () => {
-    //     const articles: Article[] = await SemanticScholarSource.getInstance().fetchArticles('1679754');
-    //     expect(data.length).toBeGreaterThanOrEqual(277);
-    // });
+    it('fetches author i10 index', async () => {
+        const i10Index: number = await SemanticScholarSource.getInstance().fetchI10Index('1679754');
+        expect(i10Index).toBe(null);
+    });
+    it('fetches author articles', async () => {
+        const articles: Article[] = await SemanticScholarSource.getInstance().fetchArticles('1679754');
+        expect(articles.length).toBeGreaterThanOrEqual(277);
+    });
     // it('checks if author has self-citations', async () => {
     //     const articles: Article[] = await SemanticScholarSource.getInstance().fetchArticles('1679754');
     //     const hasSelfCitation: boolean = await SemanticScholarSource.getInstance().hasSelfCitation(articles[0], '1679754');
