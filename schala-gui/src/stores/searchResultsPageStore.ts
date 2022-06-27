@@ -20,12 +20,12 @@ export const searchResultsStore = defineStore({
         // TODO: Fix setSearchString after SearchResultsModel and deepCopy are implemented
         async setSearchString(passedSearchString: string) {
             this.searchString = passedSearchString;
-            await this.searchResultsFactory.build(this.searchString).then((basicProfiles: BasicProfile[]) => {
-                console.log(basicProfiles.length);
-                console.log(basicProfiles);
-                this.searchResultsCachedModel.basicProfiles = basicProfiles;
-                this.searchResultsShowingModel = this.searchResultsCachedModel.deepCopy();
-            });
+            const basicProfiles: BasicProfile [] = await this.searchResultsFactory.build(this.searchString)
+            console.log(basicProfiles.length);
+            console.log(basicProfiles);
+            this.searchResultsCachedModel.basicProfiles = basicProfiles;
+            this.searchResultsShowingModel = this.searchResultsCachedModel.deepCopy();
+
         },
         setSearchResultsShowingModel(model: SearchResultsModel) {
             this.searchResultsShowingModel = model;

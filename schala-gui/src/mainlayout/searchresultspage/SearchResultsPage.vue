@@ -13,7 +13,7 @@
                   />
               </q-list>
               <div class="q-pa-lg flex flex-center">
-                  <q-pagination v-model="current" :max="5" boundary-links />
+                  <generic-pagination />
               </div>
               <!-- </q-page> Add this after implementing main layout-->
             </q-page>
@@ -24,11 +24,12 @@
 import { searchResultsStore } from '../../stores/searchResultsPageStore';
 import SearchResultsItem from './SearchResultItem.vue';
 import { BasicProfile } from 'schala-core';
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
+import GenericPagination from '../../sharedcomponents/GenericPagination.vue'
 
 const searchStore = searchResultsStore();
 let affiliationFilter: string = '';
-let current = ref(1);
+
 
 const getSearchResultsPageStore = () => {
     return searchStore;
