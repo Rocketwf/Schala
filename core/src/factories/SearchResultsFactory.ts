@@ -9,11 +9,12 @@ export class SearchResultsFactory implements Factory {
         const authorIds: string[] = await this.dataSource.fetchAuthorIds(query);
         const basicProfiles: Array<BasicProfile> = new Array<BasicProfile>();
         for (const authorId of authorIds) {
-            const name: string = this.dataSource.fetchName(authorId);
-            const affiliation: string[] = this.dataSource.fetchAffiliations(authorId);
-            const totalCitations: number = this.dataSource.fetchCitation(authorId);
+            const name: string = await this.dataSource.fetchName(authorId);
+            const affiliation: string[] = await this.dataSource.fetchAffiliations(authorId);
+            const totalCitations: number = await this.dataSource.fetchCitation(authorId);
             basicProfiles.push(new BasicProfile(authorId, name, affiliation, totalCitations));
         }
+        console.log(basicProfiles);
         return basicProfiles;
     }
 }

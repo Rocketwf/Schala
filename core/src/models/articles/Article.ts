@@ -1,4 +1,5 @@
 export class Article {
+    private _id: string;
     private _title: string;
     private _year: number;
     private _citation: number;
@@ -10,6 +11,7 @@ export class Article {
     private _coAuthors: CoAuthor[];
 
     constructor(
+        _id: string,
         _title: string,
         _year: number,
         _citation: number,
@@ -19,6 +21,7 @@ export class Article {
         _venue: string,
         _coAuthors: CoAuthor[],
     ) {
+        this._id = _id;
         this._title = _title;
         this._year = _year;
         this._citation = _citation;
@@ -29,6 +32,9 @@ export class Article {
         this._coAuthors = _coAuthors;
     }
 
+    public get id(): string {
+        return this._id;
+    }
     public get title(): string {
         return this._title;
     }
@@ -61,6 +67,11 @@ export class CoAuthor {
     private _name: string;
     private _coauthoredCount: number;
 
+    constructor(_id: string, _name: string, _coauthoredCount?: number) {
+        this._id = _id;
+        this._name = _name;
+        this._coauthoredCount = _coauthoredCount;
+    }
     public get id(): string {
         return this._id;
     }

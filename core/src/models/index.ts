@@ -1,4 +1,4 @@
-export { APIArticle, APIAuthor, APIJournal } from './api';
+export { APIAuthor, APIJournal } from './api';
 export { Article } from './articles';
 export { ArticlesModel } from './articlesmodel';
 export { ChartOptionsModel } from './chartoptionsmodel';

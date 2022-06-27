@@ -8,23 +8,25 @@ export class ProfileFactory {
     private authorId: string; //The current scholar being added
 
     async build(authorId: string): Promise<FullProfile[]> {
-        const name: string = this.dataSource.fetchName(authorId);
-        const affiliations: string[] = this.dataSource.fetchAffiliations(authorId);
-        const hIndex: number = this.dataSource.fetchHIndex(authorId);
-        const citation: number = this.dataSource.fetchCitation(authorId);
+        const name: string = await this.dataSource.fetchName(authorId);
+        const affiliations: string[] = await this.dataSource.fetchAffiliations(authorId);
+        const hIndex: number = await this.dataSource.fetchHIndex(authorId);
+        const citation: number = await this.dataSource.fetchCitation(authorId);
         const basicProfile: BasicProfile = new BasicProfile(authorId, name, affiliations, citation);
         const hIndexObj: HIndex = new HIndex(hIndex);
         return Array.of(new FullProfile(basicProfile, hIndexObj, null));
     }
 
-    calculateHIndex(): HIndex {
-        const fetchedHIndex: number = this.dataSource.fetchHIndex(this.authorId);
+    async calculateHIndex(): Promise<HIndex> {
+        const fetchedHIndex: number = await this.dataSource.fetchHIndex(this.authorId);
 
         let hIndex: number;
         const copy: Article[] = new Array<Article>();
-        this.dataSource.fetchArticles(this.authorId).forEach((article: Article) => {
+        const articles: Article[] = await this.dataSource.fetchArticles(this.authorId);
+        for (const article of articles) {
             copy.push(
                 new Article(
+                    article.id,
                     article.title,
                     article.year,
                     article.citation,
@@ -35,43 +37,42 @@ export class ProfileFactory {
                     article.coAuthors,
                 ),
             );
-        });
 
-        //If the h-index could be fetched, returns it. Otherwise calculates it
-        if (fetchedHIndex != null) {
-            hIndex = fetchedHIndex;
-        } else {
-            hIndex = 0;
-            //Sorting the articles of the scholar by the number of citations
-            copy.sort((a: Article, b: Article) => (a.citation > b.citation ? -1 : 1));
-            //Calculating the hIndex of the scholar
+            //If the h-index could be fetched, returns it. Otherwise calculates it
+            if (fetchedHIndex != null) {
+                hIndex = fetchedHIndex;
+            } else {
+                hIndex = 0;
+                //Sorting the articles of the scholar by the number of citations
+                copy.sort((a: Article, b: Article) => (a.citation > b.citation ? -1 : 1));
+                //Calculating the hIndex of the scholar
 
+                copy.forEach((articles: Article, index: number) => {
+                    if (articles.citation < index) {
+                        return;
+                    }
+                    hIndex++;
+                });
+            }
+
+            //Sorting the articles of the scholar by the number of citations without self citations
+            copy.sort((a: Article, b: Article) => (a.citation - a.selfCitation > b.citation - b.selfCitation ? -1 : 1));
+            //Calculating the hIndex without self citations of the scholar
+            let hIndexWithoutSelfCitations: number = 0;
             copy.forEach((articles: Article, index: number) => {
-                if (articles.citation < index) {
+                if (articles.citation - articles.selfCitation < index) {
                     return;
                 }
-                hIndex++;
+                hIndexWithoutSelfCitations++;
             });
+
+            return new HIndex(hIndex, hIndexWithoutSelfCitations);
         }
-
-        //Sorting the articles of the scholar by the number of citations without self citations
-        copy.sort((a: Article, b: Article) => (a.citation - a.selfCitation > b.citation - b.selfCitation ? -1 : 1));
-        //Calculating the hIndex without self citations of the scholar
-        let hIndexWithoutSelfCitations: number = 0;
-        copy.forEach((articles: Article, index: number) => {
-            if (articles.citation - articles.selfCitation < index) {
-                return;
-            }
-            hIndexWithoutSelfCitations++;
-        });
-
-        return new HIndex(hIndex, hIndexWithoutSelfCitations);
     }
-
-    calculateI10Index(): I10Index {
-        const fetchedI10Index: number = this.dataSource.fetchI10Index(this.authorId);
+    async calculateI10Index(): Promise<I10Index> {
+        const fetchedI10Index: number = await this.dataSource.fetchI10Index(this.authorId);
         let i10Index: number;
-        const authorArticles: Article[] = this.dataSource.fetchArticles(this.authorId);
+        const authorArticles: Article[] = await this.dataSource.fetchArticles(this.authorId);
         //If the i10-index could be fetched, returns it. Otherwise calculates it
         if (fetchedI10Index != null) {
             i10Index = fetchedI10Index;
@@ -97,11 +98,13 @@ export class ProfileFactory {
         return new I10Index(i10Index, i10IndexWithoutSelfCitations);
     }
 
-    calculateSelfCitations(): number {
+    async calculateSelfCitations(): Promise<number> {
         const authorPublications: Article[] = new Array<Article>();
-        this.dataSource.fetchArticles(this.authorId).forEach((article: Article) => {
+        const articles: Article[] = await this.dataSource.fetchArticles(this.authorId);
+        for (const article of articles) {
             authorPublications.push(
                 new Article(
+                    article.id,
                     article.title,
                     article.year,
                     article.citation,
@@ -112,45 +115,47 @@ export class ProfileFactory {
                     article.coAuthors,
                 ),
             );
-        });
-        //Calculating the number of self-citations
-        let numberOfSelfCitations: number = 0;
-        for (const publication of authorPublications) {
-            if (this.dataSource.hasSelfCitation(publication, this.authorId)) {
-                numberOfSelfCitations++;
-            }
-        }
-        return numberOfSelfCitations;
-    }
-
-    calculateIndirectSelfCitations(): number {
-        const authorPublications: Article[] = new Array<Article>();
-        this.dataSource.fetchArticles(this.authorId).forEach((article: Article) => {
-            authorPublications.push(
-                new Article(
-                    article.title,
-                    article.year,
-                    article.citation,
-                    article.selfCitation,
-                    article.bibTex,
-                    article.url,
-                    article.venue,
-                    article.coAuthors,
-                ),
-            );
-        });
-        let numberOfIndirectSelfCitations: number = 0;
-        for (const publication of authorPublications) {
-            for (const coAuthor of publication.coAuthors) {
-                if (
-                    coAuthor.id != this.authorId && //Otherwise this would also count direct self citations
-                    this.dataSource.hasSelfCitation(publication, coAuthor.id)
-                ) {
-                    numberOfIndirectSelfCitations++;
+            //Calculating the number of self-citations
+            let numberOfSelfCitations: number = 0;
+            for (const publication of authorPublications) {
+                if (this.dataSource.hasSelfCitation(publication, this.authorId)) {
+                    numberOfSelfCitations++;
                 }
             }
+            return numberOfSelfCitations;
         }
+    }
 
-        return numberOfIndirectSelfCitations;
+    async calculateIndirectSelfCitations(): Promise<number> {
+        const authorPublications: Article[] = new Array<Article>();
+        const articles: Article[] = await this.dataSource.fetchArticles(this.authorId);
+        for (const article of articles) {
+            authorPublications.push(
+                new Article(
+                    article.id,
+                    article.title,
+                    article.year,
+                    article.citation,
+                    article.selfCitation,
+                    article.bibTex,
+                    article.url,
+                    article.venue,
+                    article.coAuthors,
+                ),
+            );
+            let numberOfIndirectSelfCitations: number = 0;
+            for (const publication of authorPublications) {
+                for (const coAuthor of publication.coAuthors) {
+                    if (
+                        coAuthor.id != this.authorId && //Otherwise this would also count direct self citations
+                        this.dataSource.hasSelfCitation(publication, coAuthor.id)
+                    ) {
+                        numberOfIndirectSelfCitations++;
+                    }
+                }
+            }
+
+            return numberOfIndirectSelfCitations;
+        }
     }
 }

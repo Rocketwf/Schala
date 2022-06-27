@@ -6,7 +6,7 @@ export const profilePageStore = defineStore({
     id : 'profilePage',
     state: () => ({
       profileId : '',
-      profileRepresentation: {} as ProfileRepresentation,
+      profileRepresentation: {} as ProfileRepresentation
    }),
     actions: {
 
@@ -16,10 +16,11 @@ export const profilePageStore = defineStore({
 
       async setProfileId(newId: string) {
         if (newId === this.profileId) {
-            this.profileRepresentation.renderProfile();
+            
         } else {
             this.profileId = newId;
             const profile: FullProfile[] = await new ProfileFactory().build(this.profileId);
+            this.profileRepresentation = new ProfileRepresentation(profile[0]);
             
                 
             this.profileRepresentation.fullProfile = profile[0];

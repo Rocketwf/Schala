@@ -10,7 +10,6 @@ export {
     SearchResultsFilter,
 } from './filters';
 export {
-    APIArticle,
     APIAuthor,
     APIJournal,
     Article,
