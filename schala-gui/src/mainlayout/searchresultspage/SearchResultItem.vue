@@ -1,18 +1,11 @@
 <template>
     <q-item clickable :class="inComparison ? 'bg-accent' : ''">
-        <q-item-section avatar center @click="handleClick">
-            <q-avatar size="66px" rounded>
-                <img src="https://www.seekpng.com/png/detail/966-9665317_placeholder-image-person-jpg.png" />
-            </q-avatar>
-        </q-item-section>
-
         <q-item-section top class="q-ml-sm">
-            <q-item-label class="q-mt-sm">{{ getBasicProfile().name }}</q-item-label>
+            <q-item-label  @click="handleClick" class= "q-mt-sm">{{ getBasicProfile().name }} </q-item-label>
             <q-item-label caption lines="2"> @{{ getBasicProfile().affiliation }} </q-item-label>
             <q-item-label caption lines="2"> 4  papers </q-item-label>
             <q-item-label caption lines="2"> Cited by {{ getBasicProfile().totalCitations }} </q-item-label>
         </q-item-section>
-
 
         <q-item-section top side>
             <div class="text-grey-8">
@@ -42,11 +35,11 @@ const inComparison = computed(() => {
     return compareStore.isBeingCompared(props.profile.id);
 });
 
-const handleAdd = () => {
+const handleAdd = async () => {
     if (compareStore.isBeingCompared(props.profile.id)) {
         getComparePageStore().removeProfile(props.profile.id);
     } else {
-        getComparePageStore().addProfile(props.profile.id);
+        await getComparePageStore().addProfile(props.profile.id);
     }
 };
 
