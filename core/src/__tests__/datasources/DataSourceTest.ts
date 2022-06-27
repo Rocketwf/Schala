@@ -1,5 +1,4 @@
 import { SemanticScholarSource } from '../../datasources';
-import { Article } from '../../models';
 
 describe('findOrCreate method', () => {
     it('fetches author ids', async () => {
@@ -8,7 +7,7 @@ describe('findOrCreate method', () => {
     });
     it('fetches author name', async () => {
         const name: string = await SemanticScholarSource.getInstance().fetchName('1679754');
-        expect(name).toBe('W. Tichy');
+        expect(name).toBe('Walter F Tichy');
     });
     it('fetches author h-index', async () => {
         const hIndex: number = await SemanticScholarSource.getInstance().fetchHIndex('1679754');
