@@ -1,7 +1,7 @@
 <template>
     <q-item clickable :class="inComparison ? 'bg-accent' : ''">
-        <q-item-section top class="q-ml-sm">
-            <q-item-label  @click="handleClick" class= "q-mt-sm">{{ getBasicProfile().name }} </q-item-label>
+        <q-item-section top class="q-ml-sm" @click="handleClick">
+            <q-item-label class= "q-mt-sm">{{ getBasicProfile().name }} </q-item-label>
             <q-item-label caption lines="2"> @{{ getBasicProfile().affiliation }} </q-item-label>
             <q-item-label caption lines="2"> 4  papers </q-item-label>
             <q-item-label caption lines="2"> Cited by {{ getBasicProfile().totalCitations }} </q-item-label>

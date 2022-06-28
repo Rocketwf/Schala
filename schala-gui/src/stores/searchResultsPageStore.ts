@@ -12,6 +12,9 @@ export const searchResultsStore = defineStore({
         searchResultsCachedModel: new SearchResultsModel(new Array<BasicProfile>()),
         paginationFilter: new SearchResultsPaginationFilter,
     }),
+    getters:{
+      getSearchResultsShowingModel: (state) => state.searchResultsShowingModel as SearchResultsModel,
+    },
     actions: {
         setAffiliationFilter(affiliationFilter: string): void {
           affiliationFilter;
@@ -30,8 +33,11 @@ export const searchResultsStore = defineStore({
             this.searchResultsShowingModel = this.searchResultsCachedModel.deepCopy();
             this.setPaginationFilter(1);
             this.paginationFilter.apply(this.searchResultsShowingModel as SearchResultsModel);
-            this.maxPage = Math.round(basicProfiles.length / 15);
-
+            if(Math.round(basicProfiles.length / 15) == 0){
+              this.maxPage = 1
+            } else{
+              this.maxPage = Math.round(basicProfiles.length / 15);
+            }
         },
         setPaginationFilter(value:number): void{
             this.paginationFilter.value = value;
@@ -45,14 +51,13 @@ export const searchResultsStore = defineStore({
         setSearchResultsCachedModel(model: SearchResultsModel) {
             this.searchResultsCachedModel = model;
         },
-        // TODO: Implement resetFromCache
         resetFromCache(): void {
-            return;
+          this.searchResultsShowingModel = this.searchResultsCachedModel.deepCopy();
         },
         // TODO: Implement applyAllFilters
         applyAllFilters(): void {
-          this.searchResultsShowingModel = this.searchResultsCachedModel.deepCopy();
-          this.paginationFilter.apply(this.searchResultsShowingModel as SearchResultsModel);
+          this.resetFromCache();
+          this.paginationFilter.apply(this.getSearchResultsShowingModel);
         },
     },
 });
