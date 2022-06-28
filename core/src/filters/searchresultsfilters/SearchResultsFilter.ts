@@ -22,16 +22,18 @@ export class AffiliationFilter extends SearchResultsFilter<string> {
     }
 }
 
+//temporary return to test if filtering works correctly
 export class WordsInTitleFilter extends SearchResultsFilter<string> {
     apply(model: SearchResultsModel): void {
         const filtered: Array<BasicProfile> = model.basicProfiles.filter((profile: BasicProfile) => {
-            return this.titleContainsWord(profile.articles, this.value).length !== 0;
+            // return this.titleContainsWord(profile.articles, this.value).length !== 0;
+            return profile.name.charAt(0) === 'W';
         });
         model.basicProfiles = filtered;
     }
 
-    private titleContainsWord(articles: Array<Article>, word: string): Array<string> {
-        const articleTitles: Array<string> = articles.map((article: Article) => article.title);
-        return articleTitles.filter((element: string) => element.includes(word));
-    }
+    // private titleContainsWord(articles: Array<Article>, word: string): Array<string> {
+    //     const articleTitles: Array<string> = articles.map((article: Article) => article.title);
+    //     return articleTitles.filter((element: string) => element.includes(word));
+    // }
 }
