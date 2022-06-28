@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { FullProfile, ComparisonRepresentation } from 'schala-core';
-// import { profilePageStore } from './profilePageStore';
+import { profilePageStore } from './profilePageStore';
 
 export const comparePageStore = defineStore({
   id : 'comparePage',
@@ -11,7 +11,7 @@ export const comparePageStore = defineStore({
   }),
   actions: {
     addProfile(profileId: string) {
-        profileId;
+        
         if (this.fullProfiles.length > 4) {
             return;
         }
@@ -28,8 +28,9 @@ export const comparePageStore = defineStore({
     },
 
     isBeingCompared(profileId: string) {
+        console.log(this.fullProfiles.length);
         for (const profile of this.fullProfiles) {
-            if (profile.basicProfile.id === profileId) {
+            if (profile.basicProfile.id === profileId ) {
                 return true;
             }
         }

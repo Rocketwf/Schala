@@ -6,7 +6,7 @@
             </q-avatar>
         </q-item-section>
 
-        <q-item-section top class="q-ml-sm">
+        <q-item-section top class="q-ml-sm" @click="handleClick">
             <q-item-label class="q-mt-sm">{{ getBasicProfile().name }}</q-item-label>
             <q-item-label caption lines="2"> @{{ getBasicProfile().affiliation }} </q-item-label>
             <q-item-label caption lines="2"> 4  papers </q-item-label>
@@ -51,8 +51,8 @@ const handleAdd = () => {
 };
 
 const handleClick = async () => {
-    await getProfileStore().setProfileId(props.profile.id);
     console.log(props.profile.id);
+    await getProfileStore().setProfileId(props.profile.id);
     router.push({ path: '/profile/show' });
 };
 

@@ -17,7 +17,8 @@ export class ProfileFactory {
         const hIndexObj: HIndex = new HIndex(hIndex);
         const i10IndexObj: I10Index = await this.calculateI10Index();
         const selfCitations: number = await this.calculateSelfCitations();
-        return Array.of(new FullProfile(basicProfile, hIndexObj, i10IndexObj, selfCitations, 0));
+        const website: string = await this.dataSource.fetchWebsite(authorId);
+        return Array.of(new FullProfile(basicProfile, hIndexObj, i10IndexObj, selfCitations, 0, website));
     }
 
     async calculateHIndex(): Promise<HIndex> {
