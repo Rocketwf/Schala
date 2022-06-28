@@ -15,8 +15,7 @@ v-for="profile of (store.getFullProfiles)"
 import ProfileSummary from '../../sharedcomponents/ProfileSummary.vue';
 import CompareContent from './CompareContent.vue';
 import { comparePageStore } from '../../stores/comparePageStore'
-import { BasicProfile, FullProfile } from 'schala-core';
-import { HIndex, I10Index } from 'schala-core/dist/models/profile';
+import { FullProfile } from 'schala-core';
 FullProfile;
 const getComparePageStore = () => {
     return comparePageStore;
