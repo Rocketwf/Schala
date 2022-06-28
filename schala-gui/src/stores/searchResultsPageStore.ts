@@ -1,3 +1,4 @@
+import { WordsInTitleFilter, AffiliationFilter } from 'schala-core/dist/filters/searchresultsfilters/SearchResultsFilter';
 import { BasicProfile, SearchResultsFactory, SearchResultsModel } from 'schala-core';
 import { defineStore } from 'pinia';
 
@@ -8,11 +9,15 @@ export const searchResultsStore = defineStore({
         searchResultsFactory: new SearchResultsFactory(),
         searchResultsShowingModel: new SearchResultsModel(new Array<BasicProfile>()),
         searchResultsCachedModel: new SearchResultsModel(new Array<BasicProfile>()),
+        affilationFilter: new AffiliationFilter(),
+        wordsInTitleFilter: new WordsInTitleFilter(),
     }),
     actions: {
         setAffiliationFilter(affiliationFilter: string): void {
-          affiliationFilter;
-          return;
+          this.affilationFilter.value = affiliationFilter;
+        },
+        setWordsInTitleFilter(wordsInTitleFilter: string): void {
+          this.wordsInTitleFilter.value = wordsInTitleFilter;
         },
         getSearchString(): string {
             return this.searchString;
@@ -37,9 +42,10 @@ export const searchResultsStore = defineStore({
         resetFromCache(): void {
             return;
         },
-        // TODO: Implement applyAllFilters
+
         applyAllFilters(): void {
-            return;
+          this.searchResultsShowingModel = this.searchResultsCachedModel.deepCopy();
+          this.affilationFilter.apply(this.searchResultsShowingModel as SearchResultsModel);
         },
     },
 });
