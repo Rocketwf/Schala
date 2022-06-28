@@ -12,6 +12,9 @@ export const searchResultsStore = defineStore({
         searchResultsCachedModel: new SearchResultsModel(new Array<BasicProfile>()),
         paginationFilter: new SearchResultsPaginationFilter,
     }),
+    getters:{
+      getSearchResultsShowingModel: (state) => state.searchResultsShowingModel as SearchResultsModel,
+    },
     actions: {
         setAffiliationFilter(affiliationFilter: string): void {
           affiliationFilter;
@@ -52,7 +55,7 @@ export const searchResultsStore = defineStore({
         // TODO: Implement applyAllFilters
         applyAllFilters(): void {
           this.searchResultsShowingModel = this.searchResultsCachedModel.deepCopy();
-          this.paginationFilter.apply(this.searchResultsShowingModel as SearchResultsModel);
+          this.paginationFilter.apply(this.getSearchResultsShowingModel);
         },
     },
 });
