@@ -38,4 +38,8 @@ export class ArticlesModel implements Filterable<ArticlesModel>, SimpleCardModel
         });
         return new ArticlesModel(articlesCopy);
     }
+
+    public get articles(): Array<Article> {
+        return this._articles;
+    }
 }
