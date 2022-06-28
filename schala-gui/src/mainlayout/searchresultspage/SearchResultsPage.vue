@@ -1,9 +1,9 @@
 <template>
     <div class="row justify-center">
         <div class="col-xs-12 col-md-8">
-            <q-page padding>         
+            <q-page padding>
               <!--  <filter-affiliation labelText="Filter affiliations" />           TODO:Filter Affiliation -->
-              
+              <filter-box />
               <q-list bordered class="rounded-borders q-mt-lg">
                   <q-item-label header>Matching profiles</q-item-label>
                   <search-results-item
@@ -21,6 +21,7 @@
     </div>
 </template>
 <script setup charset="utf-8" lang="ts">
+import FilterBox from './FilterBox.vue';
 import { searchResultsStore } from '../../stores/searchResultsPageStore';
 import SearchResultsItem from './SearchResultItem.vue';
 import { BasicProfile } from 'schala-core';
@@ -29,6 +30,7 @@ BasicProfile;
 
 const searchStore = searchResultsStore();
 let affiliationFilter: string = '';
+let wordsInTitleFilter: string = '';
 //const pagination = ... TODO: Add Pagination
 
 const getSearchResultsPageStore = () => {
@@ -45,6 +47,15 @@ const getAffiliationFilter = (): string =>  {
     return affiliationFilter;
 }
 
+const handleWordsInTitleFilter = (data: string | number | null): void => {
+  wordsInTitleFilter = data as string;
+  getSearchResultsPageStore().setWordsInTitleFilter(getWordsInTitleFilter());
+}
+handleWordsInTitleFilter;
+
+const getWordsInTitleFilter = (): string => {
+  return wordsInTitleFilter;
+}
 
 const getBasicProfiles = () => {
   return searchStore.searchResultsShowingModel.basicProfiles;
