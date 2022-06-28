@@ -8,17 +8,21 @@
 import { searchResultsStore } from '../stores/searchResultsPageStore';
 import { ref } from 'vue';
 
+const getSearchResultsPageStore = () => {
+    return searchStore;
+};
+
+const getStartingPage = (): number => {
+  return getSearchResultsPageStore().paginationFilter.value;
+};
 
 const searchStore = searchResultsStore();
-const currentPage = ref(1);
+const currentPage = ref(getStartingPage());
 
 const getCurrentPage = (): number => {
   return currentPage.value;
 };
 
-const getSearchResultsPageStore = () => {
-    return searchStore;
-};
 
 const switchPage = (): void => {
   getSearchResultsPageStore().setPaginationFilter(getCurrentPage());
