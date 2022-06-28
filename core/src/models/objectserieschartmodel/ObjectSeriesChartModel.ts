@@ -34,4 +34,7 @@ export class Series {
     public get name(): string {
         return this._name;
     }
+    public get data(): Array<number> {
+        return this._data;
+    }
 }

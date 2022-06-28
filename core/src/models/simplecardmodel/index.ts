@@ -1,2 +1,2 @@
 export { PieChartModel } from './PieChartModel';
-export { SimpleCardModel } from './SimpleCardModel';
+export { SimpleCardModel, ViewName } from './SimpleCardModel';
