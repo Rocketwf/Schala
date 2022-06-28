@@ -3,21 +3,19 @@
         <component
             v-for="cardModel in rowModel.simpleCardModels"
             :key="cardModel.id"
-            :card-model="cardModel as PieChartModel"
+            :card-model="cardModel"
             :is="getView(rowModel.simpleCardModels[0].viewName)"
         />
     </div>
 </template>
 <script setup lang="ts">
-import { RowModel, PieChartModel } from 'schala-core';
+import { RowModel } from 'schala-core';
 import { mapper } from '../sharedcomponents/cards/graphchartcards/SimpleCardMapper';
-import PieChartCard from '../sharedcomponents/cards/graphchartcards/PieChartCard.vue';
-const props = defineProps<{
+
+defineProps<{
     rowModel: RowModel;
 }>();
 const getView = (viewName: string) => {
-    mapper.get(viewName);
-
-    return PieChartCard;
+    return mapper.get(viewName);
 };
 </script>
