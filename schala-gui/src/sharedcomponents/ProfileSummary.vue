@@ -9,9 +9,10 @@
             <q-item-label class="full-width self-center">
                 <q-btn
                     unelevated
-                    label="Compare"
+                    :label="buttonLabel()"
                     class="full-width no-box-shadow no-border-radius"
-                    color="primary"
+                    :color="buttonColor()"
+                    @click="AddOrRemove"
                 />
             </q-item-label>
         </q-item-section>
@@ -45,13 +46,30 @@ const getFullProfile = (): FullProfile => {
 const getComparePageStore = () => {
     return comparePageStore();
 };
-getComparePageStore;
+
+function AddOrRemove() {
+  if (!isBeingCompared) {
+    getComparePageStore().addProfile(getFullProfile().basicProfile.id);
+  } else{
+    getComparePageStore().removeProfile(getFullProfile().basicProfile.id);
+  }
+  isBeingCompared = !isBeingCompared;
+}
+
+function buttonColor(): string {
+  return isBeingCompared ? 'red' : 'primary';
+}
+
+function buttonLabel(): string {
+  return isBeingCompared ? 'Remove' : 'Compare';
+}
 
 // Attributes
 const ID: string = getFullProfile().basicProfile.id;
 const Name: string = getFullProfile().basicProfile.name;
 const Affiliation: string[] = getFullProfile().basicProfile.affiliation;
 const Hindex: number = getFullProfile().hIndex.hIndex;
+let isBeingCompared: boolean = false;
 
 
 </script>
