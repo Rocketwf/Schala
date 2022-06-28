@@ -1,14 +1,20 @@
-import { BasicProfile, SearchResultsFactory, SearchResultsModel } from 'schala-core';
+import { BasicProfile, SearchResultsFactory, SearchResultsModel} from 'schala-core';
 import { defineStore } from 'pinia';
+import { SearchResultsPaginationFilter } from 'schala-core/dist/filters/searchresultsfilters/SearchResultsFilter';
 
 export const searchResultsStore = defineStore({
     id: 'searchResultsPage',
     state: () => ({
         searchString: '',
+        maxPage: 5,
         searchResultsFactory: new SearchResultsFactory(),
         searchResultsShowingModel: new SearchResultsModel(new Array<BasicProfile>()),
         searchResultsCachedModel: new SearchResultsModel(new Array<BasicProfile>()),
+        paginationFilter: new SearchResultsPaginationFilter(1),
     }),
+    getters:{
+      getSearchResultsShowingModel: (state) => state.searchResultsShowingModel as SearchResultsModel,
+    },
     actions: {
         setAffiliationFilter(affiliationFilter: string): void {
           affiliationFilter;
@@ -20,12 +26,24 @@ export const searchResultsStore = defineStore({
         // TODO: Fix setSearchString after SearchResultsModel and deepCopy are implemented
         async setSearchString(passedSearchString: string) {
             this.searchString = passedSearchString;
-            await this.searchResultsFactory.build(this.searchString).then((basicProfiles: BasicProfile[]) => {
-                console.log(basicProfiles.length);
-                console.log(basicProfiles);
-                this.searchResultsCachedModel.basicProfiles = basicProfiles;
-                this.searchResultsShowingModel = this.searchResultsCachedModel.deepCopy();
-            });
+            const basicProfiles: BasicProfile [] = await this.searchResultsFactory.build(this.searchString)
+            console.log(basicProfiles.length);
+            console.log(basicProfiles);
+            this.searchResultsCachedModel.basicProfiles = basicProfiles;
+            this.searchResultsShowingModel = this.searchResultsCachedModel.deepCopy();
+            this.setPaginationFilter(1);
+            this.paginationFilter.apply(this.searchResultsShowingModel as SearchResultsModel);
+            if(Math.round(basicProfiles.length / 15) == 0){
+              this.maxPage = 1
+            } else{
+              this.maxPage = Math.round(basicProfiles.length / 15);
+            }
+        },
+        setPaginationFilter(value:number): void{
+            this.paginationFilter.value = value;
+            this.paginationFilter.hitsPerPage = 15;
+            console.log( this.paginationFilter.value);
+            this.applyAllFilters();
         },
         setSearchResultsShowingModel(model: SearchResultsModel) {
             this.searchResultsShowingModel = model;
@@ -33,13 +51,13 @@ export const searchResultsStore = defineStore({
         setSearchResultsCachedModel(model: SearchResultsModel) {
             this.searchResultsCachedModel = model;
         },
-        // TODO: Implement resetFromCache
         resetFromCache(): void {
-            return;
+          this.searchResultsShowingModel = this.searchResultsCachedModel.deepCopy();
         },
         // TODO: Implement applyAllFilters
         applyAllFilters(): void {
-            return;
+          this.resetFromCache();
+          this.paginationFilter.apply(this.getSearchResultsShowingModel);
         },
     },
 });
