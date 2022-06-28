@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-lg flex flex-center" @click="switchPage">
-    <q-pagination v-model="refCurrentPage" :max="getSearchResultsPageStore().maxPage" :max-pages="5" boundary-links />
+    <q-pagination v-model="currentPage" :max="getSearchResultsPageStore().maxPage" :max-pages="5" boundary-links />
   </div>
 
 </template>
@@ -10,10 +10,10 @@ import { ref } from 'vue';
 
 
 const searchStore = searchResultsStore();
-let refCurrentPage = ref(1);
+const currentPage = ref(1);
 
 const getCurrentPage = (): number => {
-  return refCurrentPage.value;
+  return currentPage.value;
 };
 
 const getSearchResultsPageStore = () => {
