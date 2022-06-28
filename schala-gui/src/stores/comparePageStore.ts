@@ -41,4 +41,9 @@ export const comparePageStore = defineStore({
     },
 
   },
+  getters: {
+    getFullProfiles(state): FullProfile[] {
+      return state.fullProfiles as FullProfile[];
+    }
+  }
 });

@@ -47,7 +47,7 @@ const getComparePageStore = () => {
     return comparePageStore();
 };
 
-function AddOrRemove() {
+const AddOrRemove = () => {
   if (!isBeingCompared) {
     getComparePageStore().addProfile(getFullProfile().basicProfile.id);
   } else{
@@ -56,11 +56,11 @@ function AddOrRemove() {
   isBeingCompared = !isBeingCompared;
 }
 
-function buttonColor(): string {
+const buttonColor = (): string => {
   return isBeingCompared ? 'red' : 'primary';
 }
 
-function buttonLabel(): string {
+const buttonLabel = (): string => {
   return isBeingCompared ? 'Remove' : 'Compare';
 }
 
