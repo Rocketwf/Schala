@@ -1,6 +1,15 @@
 <template>
     <div id="chart">
-        <apexchart type="pie" width="370" :options="chartOptions" :series="getSeries()"></apexchart>
+        <apexchart
+            v-if="!hasNoCitations()"
+            type="pie"
+            width="370"
+            :options="chartOptions"
+            :series="getSeries()"
+        ></apexchart>
+        <div v-else class="text-body1 text-grey q-mb-xl">
+            This author has no citations
+        </div>
     </div>
 </template>
 <script setup charset="utf-8" lang="ts">
@@ -9,6 +18,10 @@ const props = defineProps<{
     pieChartModel: PieChartModel;
 }>();
 
+const hasNoCitations = () => {
+  const series: Array<number> = getSeries();
+  return series[0] + series[1] + series[2] === 0;
+}
 const getSeries = () => {
     const apexSeries: Array<number> = new Array<number>();
     for (const serie of props.pieChartModel.series) {
