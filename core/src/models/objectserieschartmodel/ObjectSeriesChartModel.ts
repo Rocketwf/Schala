@@ -1,6 +1,7 @@
-import { Filterable } from '../../filters';
+import { Filter, Filterable } from '../../filters';
 
 export class ObjectSeriesChartModel implements Filterable<ObjectSeriesChartModel> {
+    filters: Filter<object, ObjectSeriesChartModel>[];
     private _series: Series[];
 
     public get series(): Series[] {

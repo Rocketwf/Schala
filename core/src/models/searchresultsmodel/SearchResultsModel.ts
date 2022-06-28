@@ -1,8 +1,11 @@
+import { Filter } from '../../filters';
 import { Filterable } from '../../filters/Filterable';
 import { BasicProfile } from '../profile/Profile';
 
 export class SearchResultsModel implements Filterable<SearchResultsModel> {
     private _basicProfiles: Array<BasicProfile>;
+    filters: Filter<object, SearchResultsModel>[];
+
     constructor(basicProfiles: Array<BasicProfile>) {
         this._basicProfiles = basicProfiles;
     }
