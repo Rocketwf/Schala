@@ -45,7 +45,6 @@ const handleAdd = async () => {
 
 const handleClick = async () => {
     await getProfileStore().setProfileId(props.profile.id);
-    console.log(props.profile.id);
     router.push({ path: '/profile/show' });
 };
 

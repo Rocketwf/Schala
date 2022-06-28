@@ -29,7 +29,6 @@ import GenericPagination from '../../sharedcomponents/GenericPagination.vue'
 
 const searchStore = searchResultsStore();
 let affiliationFilter: string = '';
-//let maxPage: number = searchStore.searchResultsCachedModel.basicProfiles.length / 15
 
 
 const getSearchResultsPageStore = () => {
@@ -48,7 +47,6 @@ const getAffiliationFilter = (): string =>  {
 
 
 const getBasicProfiles = () => {
-  console.log(searchStore.searchResultsShowingModel.basicProfiles.length);
   return searchStore.searchResultsShowingModel.basicProfiles;
 }
 

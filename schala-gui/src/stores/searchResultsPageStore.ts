@@ -6,6 +6,7 @@ export const searchResultsStore = defineStore({
     id: 'searchResultsPage',
     state: () => ({
         searchString: '',
+        maxPage: 5,
         searchResultsFactory: new SearchResultsFactory(),
         searchResultsShowingModel: new SearchResultsModel(new Array<BasicProfile>()),
         searchResultsCachedModel: new SearchResultsModel(new Array<BasicProfile>()),
@@ -27,11 +28,16 @@ export const searchResultsStore = defineStore({
             console.log(basicProfiles);
             this.searchResultsCachedModel.basicProfiles = basicProfiles;
             this.searchResultsShowingModel = this.searchResultsCachedModel.deepCopy();
+            this.setPaginationFilter(1);
+            this.paginationFilter.apply(this.searchResultsShowingModel as SearchResultsModel);
+            this.maxPage = Math.round(basicProfiles.length / 15);
 
         },
         setPaginationFilter(value:number): void{
             this.paginationFilter.value = value;
             this.paginationFilter.hitsPerPage = 15;
+            console.log( this.paginationFilter.value);
+            this.applyAllFilters();
         },
         setSearchResultsShowingModel(model: SearchResultsModel) {
             this.searchResultsShowingModel = model;
@@ -45,7 +51,8 @@ export const searchResultsStore = defineStore({
         },
         // TODO: Implement applyAllFilters
         applyAllFilters(): void {
-            return;
+          this.searchResultsShowingModel = this.searchResultsCachedModel.deepCopy();
+          this.paginationFilter.apply(this.searchResultsShowingModel as SearchResultsModel);
         },
     },
 });
