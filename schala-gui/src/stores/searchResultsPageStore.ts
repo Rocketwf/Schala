@@ -1,5 +1,6 @@
-import { BasicProfile, SearchResultsFactory, SearchResultsModel } from 'schala-core';
+import { BasicProfile, SearchResultsFactory, SearchResultsModel} from 'schala-core';
 import { defineStore } from 'pinia';
+import { SearchResultsPaginationFilter } from 'schala-core/dist/filters/searchresultsfilters/SearchResultsFilter';
 
 export const searchResultsStore = defineStore({
     id: 'searchResultsPage',
@@ -8,6 +9,7 @@ export const searchResultsStore = defineStore({
         searchResultsFactory: new SearchResultsFactory(),
         searchResultsShowingModel: new SearchResultsModel(new Array<BasicProfile>()),
         searchResultsCachedModel: new SearchResultsModel(new Array<BasicProfile>()),
+        paginationFilter: new SearchResultsPaginationFilter,
     }),
     actions: {
         setAffiliationFilter(affiliationFilter: string): void {
@@ -26,6 +28,10 @@ export const searchResultsStore = defineStore({
             this.searchResultsCachedModel.basicProfiles = basicProfiles;
             this.searchResultsShowingModel = this.searchResultsCachedModel.deepCopy();
 
+        },
+        setPaginationFilter(value:number): void{
+            this.paginationFilter.value = value;
+            this.paginationFilter.hitsPerPage = 15;
         },
         setSearchResultsShowingModel(model: SearchResultsModel) {
             this.searchResultsShowingModel = model;

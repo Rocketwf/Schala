@@ -13,7 +13,7 @@
                   />
               </q-list>
               <div class="q-pa-lg flex flex-center">
-                  <generic-pagination />
+                  <generic-pagination/>
               </div>
               <!-- </q-page> Add this after implementing main layout-->
             </q-page>
@@ -29,6 +29,7 @@ import GenericPagination from '../../sharedcomponents/GenericPagination.vue'
 
 const searchStore = searchResultsStore();
 let affiliationFilter: string = '';
+//let maxPage: number = searchStore.searchResultsCachedModel.basicProfiles.length / 15
 
 
 const getSearchResultsPageStore = () => {
@@ -47,9 +48,12 @@ const getAffiliationFilter = (): string =>  {
 
 
 const getBasicProfiles = () => {
+  console.log(searchStore.searchResultsShowingModel.basicProfiles.length);
   return searchStore.searchResultsShowingModel.basicProfiles;
 }
 
-const strippedArray = computed(()=>getBasicProfiles().slice(0, 10));
+
+
+const strippedArray = computed(()=>getBasicProfiles().slice(0, 15));
 
 </script>
