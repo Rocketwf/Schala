@@ -4,7 +4,7 @@
             v-for="cardModel in rowModel.simpleCardModels"
             :key="cardModel.id"
             :card-model="cardModel"
-            :is="getView(rowModel.simpleCardModels[0].viewName)"
+            :is="getView(cardModel.viewName)"
         />
     </div>
 </template>

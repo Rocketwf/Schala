@@ -1,22 +1,21 @@
 import { Filter, Filterable } from '../../filters';
 import { Article } from '../articles/Article';
-import { SimpleCardModel } from '../simplecardmodel';
+import { SimpleCardModel, ViewName } from '../simplecardmodel';
 
 export class ArticlesModel implements Filterable<ArticlesModel>, SimpleCardModel {
+    private _id: string;
     private _articles: Array<Article>;
-    filters: Filter<object, ArticlesModel>[];
-    colWidth: number;
-    title: string;
-    sub: string;
+    private _colWidth: number;
+    private _title: string;
+    private _sub: string;
+    private _viewName: ViewName;
 
     constructor(articles: Array<Article>) {
         this._articles = articles;
     }
 
     applyAllFilters(): void {
-        this.filters.forEach((filter: Filter<object, ArticlesModel>) => {
-            filter.apply(this);
-        });
+        //filter.apply(this);
     }
 
     deepCopy(): ArticlesModel {
@@ -41,5 +40,21 @@ export class ArticlesModel implements Filterable<ArticlesModel>, SimpleCardModel
 
     public get articles(): Array<Article> {
         return this._articles;
+    }
+
+    public get colWidth(): number {
+        return this._colWidth;
+    }
+    public get title(): string {
+        return this._title;
+    }
+    public get id(): string {
+        return this._id;
+    }
+    public get sub(): string {
+        return this._sub;
+    }
+    public get viewName(): ViewName {
+        return this._viewName;
     }
 }
