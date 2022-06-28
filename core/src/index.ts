@@ -25,5 +25,8 @@ export {
     Tab,
     PieChartModel,
     SimpleCardModel,
+    ViewName,
+    Series,
+    RowModel,
 } from './models';
 export { ProfileRepresentation, ComparisonRepresentation } from './representations';

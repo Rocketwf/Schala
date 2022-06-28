@@ -1,26 +1,42 @@
 <template>
-    <div id="chart">
-        <apexchart :passed-labels = "chartOptions.dataLabels" :passsed-series="chartOptions.series"></apexchart>
-    </div>
+  <div id="chart">
+    <apexchart type="pie" width="370" :options="chartOptions" :series="getSeries()"></apexchart>
+  </div>
 </template>
 <script setup charset="utf-8" lang="ts">
-import { ref } from 'vue';
-import { PieChartModel } from '../../../../core/src/models/simplecardmodel/PieChartModel' // created and updated indexes but doesn't work with import ... from 'schala-core' idk why 
-let pieChart: PieChartModel = new PieChartModel();
+import { PieChartModel, Series } from 'schala-core';
 const props = defineProps<{
-    passedLabels: Array<string>;
-    passedSeries: Array<string>;
+  pieChartModel: PieChartModel
 }>();
 
-const series = ref(props.passedSeries);
-const labels = ref(props.passedLabels);
-labels;
+const getSeries = () => {
+  const apexSeries: Array<number> = new Array<number>();
+  for(const serie of props.pieChartModel.series) {
+    apexSeries.push(...serie.data);
 
-let chartOptions = {
+  }
+  return apexSeries;
+}
+
+const getLabels = () => {
+  const apexLabels: Array<string> = new Array<string>();
+  for(const serie of props.pieChartModel.series) {
+    apexLabels.push(serie.name);
+
+  }
+  return apexLabels;
+}
+
+        const chartOptions = {
           dataLabels: {
+            enabled: true,
+            enabledOnSeries: undefined,
+            formatter: function(value:number, { seriesIndex, _, w }:any) {
+              return w.config.series[seriesIndex] + ' (' + Number(value).toFixed(2) + '%)'
+            }
           },
           chart: {
-            width: pieChart.colWidth,
+            width: 380,
             type: 'pie',
             toolbar: {
               offsetX: -52,
@@ -31,15 +47,20 @@ let chartOptions = {
               },
             },
           },
+          labels: getLabels(),
                   
           legend: {
               show: true,
               position: 'bottom',
               fontSize: '13px',
           },
-          
-          series: {
-            series,
-          }
+          plotOptions: {
+            pie: {
+              dataLabels: {
+                offset: -20,
+              },
+           }
+         }
         }
+
 </script>

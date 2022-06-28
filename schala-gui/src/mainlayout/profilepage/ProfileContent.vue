@@ -1,6 +1,6 @@
 <template>
     <q-page padding>
-        <page-row v-for="rowModel in getProfileRepresentation().rowModels" :key="rowModel.id" />
+        <page-row v-for="rowModel in getProfileRepresentation().rowModels" :key="rowModel.id" :row-model="rowModel" />
     </q-page>
 </template>
 
@@ -16,5 +16,6 @@ const props = defineProps<{
 const getProfileRepresentation = ():ProfileRepresentation => {
   return props.profileRepr;
 }
+console.log(getProfileRepresentation());
 
 </script>

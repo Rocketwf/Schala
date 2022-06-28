@@ -25,8 +25,8 @@ export const profilePageStore = defineStore({
                 
             this.profileRepresentation.fullProfile = profile[0];
             console.log(profile[0]);
-            //this.profileRepresentation.renderProfile();
         }
+        this.profileRepresentation.renderProfile();
       },
     },
 });

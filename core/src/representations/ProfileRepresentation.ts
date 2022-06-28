@@ -1,15 +1,22 @@
 import { FullProfile } from '../models/profile';
 import { RowModel } from '../models/viewmodels';
+import { PieChartModel } from '../models';
+import { ViewName } from '../models/simplecardmodel/SimpleCardModel';
+import { Series } from '../models/objectserieschartmodel/ObjectSeriesChartModel';
 
 export class ProfileRepresentation {
     private _fullProfile: FullProfile;
-    private _rowModels: RowModel[];
+    private _rowModels: Array<RowModel>;
     constructor(_fullProfile: FullProfile) {
         this._fullProfile = _fullProfile;
         this._rowModels = new Array<RowModel>();
     }
     renderProfile(): void {
-        return null;
+        this._rowModels = new Array<RowModel>();
+        this._rowModels.push(new RowModel(8));
+        const pby: PieChartModel = this.createCitationsCard();
+
+        this._rowModels[0].simpleCardModels.push(pby);
     }
 
     public get fullProfile(): FullProfile {
@@ -20,5 +27,13 @@ export class ProfileRepresentation {
     }
     public get rowModels(): RowModel[] {
         return this._rowModels;
+    }
+    private createCitationsCard(): PieChartModel {
+        const series: Array<Series> = new Array<Series>();
+        series.push(new Series('citations by others', [102]));
+        series.push(new Series('self-citations', [110]));
+        series.push(new Series('indirect self-citations', [10]));
+
+        return new PieChartModel('Citations', '', ViewName.PieChartCard, 2, series);
     }
 }
