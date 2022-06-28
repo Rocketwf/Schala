@@ -7,7 +7,7 @@
               <q-list bordered class="rounded-borders q-mt-lg">
                   <q-item-label header>Matching profiles</q-item-label>
                   <search-results-item
-                      v-for="pro in strippedArray"
+                      v-for="pro in getBasicProfiles()"
                       :key="pro.id"
                       :profile="pro as BasicProfile"
                   />
@@ -24,7 +24,6 @@
 import { searchResultsStore } from '../../stores/searchResultsPageStore';
 import SearchResultsItem from './SearchResultItem.vue';
 import { BasicProfile } from 'schala-core';
-import { computed } from 'vue';
 import GenericPagination from '../../sharedcomponents/GenericPagination.vue'
 
 const searchStore = searchResultsStore();
@@ -50,8 +49,5 @@ const getBasicProfiles = () => {
   return searchStore.searchResultsShowingModel.basicProfiles;
 }
 
-
-
-const strippedArray = computed(()=>getBasicProfiles().slice(0, 15));
 
 </script>

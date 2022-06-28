@@ -10,7 +10,7 @@ export const searchResultsStore = defineStore({
         searchResultsFactory: new SearchResultsFactory(),
         searchResultsShowingModel: new SearchResultsModel(new Array<BasicProfile>()),
         searchResultsCachedModel: new SearchResultsModel(new Array<BasicProfile>()),
-        paginationFilter: new SearchResultsPaginationFilter,
+        paginationFilter: new SearchResultsPaginationFilter(1),
     }),
     getters:{
       getSearchResultsShowingModel: (state) => state.searchResultsShowingModel as SearchResultsModel,

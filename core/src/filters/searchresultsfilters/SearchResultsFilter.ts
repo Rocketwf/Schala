@@ -24,7 +24,10 @@ export class AffiliationFilter extends SearchResultsFilter<string> {
 
 export class SearchResultsPaginationFilter extends SearchResultsFilter<number> {
     private _hitsPerPage: number;
-
+    constructor(value: number) {
+        super();
+        this.value = value;
+    }
     public set hitsPerPage(newHitsPerPage: number) {
         this._hitsPerPage = newHitsPerPage;
     }
