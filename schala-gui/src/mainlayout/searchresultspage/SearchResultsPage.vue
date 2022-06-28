@@ -61,6 +61,6 @@ const getBasicProfiles = () => {
   return searchStore.searchResultsShowingModel.basicProfiles;
 }
 
-const strippedArray = computed(()=>getBasicProfiles().slice(0, 10));
+const strippedArray = computed(()=>getBasicProfiles().slice(0, 15));
 
 </script>

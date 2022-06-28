@@ -10,7 +10,7 @@ export const searchResultsStore = defineStore({
         searchResultsShowingModel: new SearchResultsModel(new Array<BasicProfile>()),
         searchResultsCachedModel: new SearchResultsModel(new Array<BasicProfile>()),
         affilationFilter: new AffiliationFilter(),
-        wordsInTitleFilter: new WordsInTitleFilter(),
+        wordsInTitleFilter: new WordsInTitleFilter(''),
     }),
     actions: {
         setAffiliationFilter(affiliationFilter: string): void {
@@ -45,7 +45,7 @@ export const searchResultsStore = defineStore({
 
         applyAllFilters(): void {
           this.searchResultsShowingModel = this.searchResultsCachedModel.deepCopy();
-          this.affilationFilter.apply(this.searchResultsShowingModel as SearchResultsModel);
+          this.wordsInTitleFilter.apply(this.searchResultsShowingModel as SearchResultsModel);
         },
     },
 });

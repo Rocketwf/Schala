@@ -1,32 +1,43 @@
 <template>
-    <div id="filterBox">
-        <q-form @submit="applyFilter" class="q-gutter-md">
-            <q-input v-model="filterString" debounce="500" rounded outlined placeholder="Filter matching results">
-                <template #append>
-                    <q-icon name="filter_alt" />
-                </template>
-            </q-input>
-        </q-form>
-    </div>
+    <q-input
+        rounded
+        standout
+        bottom-slots
+        v-model="filterString"
+        label="Filter Matching Profiles"
+        @update:model-value="applyFilter"
+    >
+        <template #prepend>
+            <q-icon name="school" />
+        </template>
+        <template #append>
+            <q-icon name="close" @click="removeFilter" class="cursor-pointer" />
+        </template>
+    </q-input>
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
 import { searchResultsStore } from 'stores/searchResultsPageStore';
 
+const getSearchPageResultsStore = () => {
+    return searchResultsStore();
+};
+
 // Attributes
-const filterString = ref('');
+const filterString = ref(getSearchPageResultsStore().wordsInTitleFilter.value);
 
 // Methods
 const getFilterString = (): string => {
     return filterString.value;
 };
 
-const applyFilter = async () => {
+const applyFilter = () => {
     getSearchPageResultsStore().setWordsInTitleFilter(getFilterString());
     getSearchPageResultsStore().applyAllFilters();
 };
-
-const getSearchPageResultsStore = () => {
-    return searchResultsStore();
-};
+const removeFilter = () => {
+    filterString.value = '';
+    applyFilter();
+}
 </script>
+
