@@ -8,6 +8,9 @@ export {
     PaginationFilter,
     ObjectSeriesFilter,
     SearchResultsFilter,
+    SearchResultsPaginationFilter,
+    WordsInTitleFilter,
+    AffiliationFilter,
 } from './filters';
 export {
     APIAuthor,
@@ -25,5 +28,8 @@ export {
     Tab,
     PieChartModel,
     SimpleCardModel,
+    ViewName,
+    Series,
+    RowModel,
 } from './models';
 export { ProfileRepresentation, ComparisonRepresentation } from './representations';

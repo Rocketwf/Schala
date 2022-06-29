@@ -1,7 +1,11 @@
 import { Filterable } from './Filterable';
 
 export abstract class Filter<S, T extends Filterable<T>> {
-    private _value: S;
+    protected _value: S;
+
+    constructor(value: S) {
+        this._value = value;
+    }
 
     abstract apply(model: T): void;
     public set value(newValue: S) {

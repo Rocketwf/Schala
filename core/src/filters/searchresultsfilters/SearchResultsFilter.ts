@@ -1,5 +1,5 @@
-import { BasicProfile, SearchResultsModel, Article } from '../../models';
-import { Filter } from '../Filter';
+import { BasicProfile, SearchResultsModel } from '../../models';
+import { Filter } from '../';
 
 export abstract class SearchResultsFilter<S> extends Filter<S, SearchResultsModel> {
     abstract apply(model: SearchResultsModel): void;
@@ -22,11 +22,9 @@ export class AffiliationFilter extends SearchResultsFilter<string> {
     }
 }
 
-//temporary return to test if filtering works correctly
 export class WordsInTitleFilter extends SearchResultsFilter<string> {
     constructor(value: string) {
-        super();
-        this.value = value;
+        super(value);
     }
     apply(model: SearchResultsModel): void {
         model.basicProfiles = model.basicProfiles.filter((profile: BasicProfile) => {
@@ -35,9 +33,20 @@ export class WordsInTitleFilter extends SearchResultsFilter<string> {
             return lowerCaseName.includes(lowerCaseValue);
         });
     }
-
-    // private titleContainsWord(articles: Array<Article>, word: string): Array<string> {
-    //     const articleTitles: Array<string> = articles.map((article: Article) => article.title);
-    //     return articleTitles.filter((element: string) => element.includes(word));
-    // }
+}
+export class SearchResultsPaginationFilter extends SearchResultsFilter<number> {
+    private _hitsPerPage: number;
+    constructor(value: number, hitsPerPage: number) {
+        super(value);
+        this._hitsPerPage = hitsPerPage;
+    }
+    public set hitsPerPage(newHitsPerPage: number) {
+        this._hitsPerPage = newHitsPerPage;
+    }
+    apply(model: SearchResultsModel): void {
+        model.basicProfiles = model.basicProfiles.slice(
+            (this.value - 1) * this._hitsPerPage,
+            (this.value - 1) * this._hitsPerPage + this._hitsPerPage,
+        );
+    }
 }

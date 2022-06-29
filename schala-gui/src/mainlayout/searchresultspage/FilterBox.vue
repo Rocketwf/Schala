@@ -5,7 +5,7 @@
         bottom-slots
         v-model="filterString"
         label="Filter Matching Profiles"
-        @update:model-value="applyFilter"
+        @update:model-value="handleFilter"
     >
         <template #prepend>
             <q-icon name="school" />
@@ -31,13 +31,13 @@ const getFilterString = (): string => {
     return filterString.value;
 };
 
-const applyFilter = () => {
+const handleFilter = () => {
     getSearchPageResultsStore().setWordsInTitleFilter(getFilterString());
     getSearchPageResultsStore().applyAllFilters();
 };
 const removeFilter = () => {
     filterString.value = '';
-    applyFilter();
+    handleFilter();
 }
 </script>
 
