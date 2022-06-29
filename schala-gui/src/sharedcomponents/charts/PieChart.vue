@@ -1,45 +1,78 @@
 <template>
     <div id="chart">
-        <apexchart :passed-labels = "chartOptions.dataLabels" :passsed-series="chartOptions.series"></apexchart>
+        <apexchart
+            v-if="!hasNoCitations()"
+            type="pie"
+            width="370"
+            :options="chartOptions"
+            :series="getSeries()"
+        ></apexchart>
+        <div v-else class="text-body1 text-grey q-mb-xl">
+            This author has no citations
+        </div>
     </div>
 </template>
 <script setup charset="utf-8" lang="ts">
-import { ref } from 'vue';
-import { PieChartModel } from '../../../../core/src/models/simplecardmodel/PieChartModel' // created and updated indexes but doesn't work with import ... from 'schala-core' idk why 
-let pieChart: PieChartModel = new PieChartModel();
+import { PieChartModel } from 'schala-core';
 const props = defineProps<{
-    passedLabels: Array<string>;
-    passedSeries: Array<string>;
+    pieChartModel: PieChartModel;
 }>();
 
-const series = ref(props.passedSeries);
-const labels = ref(props.passedLabels);
-labels;
+const hasNoCitations = () => {
+  const series: Array<number> = getSeries();
+  return series[0] + series[1] + series[2] === 0;
+}
+const getSeries = () => {
+    const apexSeries: Array<number> = new Array<number>();
+    for (const serie of props.pieChartModel.series) {
+        apexSeries.push(...serie.data);
+    }
+    return apexSeries;
+};
 
-let chartOptions = {
-          dataLabels: {
-          },
-          chart: {
-            width: pieChart.colWidth,
-            type: 'pie',
-            toolbar: {
-              offsetX: -52,
-              offsetY: -52,
-              show: true,
-              tools: {
-                download: '<i class="q-icon notranslate material-icons" aria-hidden="true" role="presentation" style="font-size: 24px;">download</i>',
-              },
+const getLabels = () => {
+    const apexLabels: Array<string> = new Array<string>();
+    for (const serie of props.pieChartModel.series) {
+        apexLabels.push(serie.name);
+    }
+    return apexLabels;
+};
+
+type ApexOptionsType = { seriesIndex: number; w: { config: { series: Array<number> } } };
+const chartOptions = {
+    dataLabels: {
+        enabled: true,
+        enabledOnSeries: undefined,
+        formatter: function (value: number, opts: ApexOptionsType) {
+            return opts.w.config.series[opts.seriesIndex] + ' (' + Number(value).toFixed(2) + '%)';
+        },
+    },
+    chart: {
+        width: 380,
+        type: 'pie',
+        toolbar: {
+            offsetX: -52,
+            offsetY: -52,
+            show: true,
+            tools: {
+                download:
+                    '<i class="q-icon notranslate material-icons" aria-hidden="true" role="presentation" style="font-size: 24px;">download</i>',
             },
-          },
-                  
-          legend: {
-              show: true,
-              position: 'bottom',
-              fontSize: '13px',
-          },
-          
-          series: {
-            series,
-          }
-        }
+        },
+    },
+    labels: getLabels(),
+
+    legend: {
+        show: true,
+        position: 'bottom',
+        fontSize: '13px',
+    },
+    plotOptions: {
+        pie: {
+            dataLabels: {
+                offset: -20,
+            },
+        },
+    },
+};
 </script>

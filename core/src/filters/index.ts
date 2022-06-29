@@ -4,4 +4,9 @@ export { ArticlesFilter } from './articlesfilters';
 export { ChartOptionFilter } from './chartoptionsfilters';
 export { PaginationFilter } from './genericfilters';
 export { ObjectSeriesFilter } from './objectserieschartfilters';
-export { SearchResultsFilter } from './searchresultsfilters';
+export {
+    SearchResultsFilter,
+    SearchResultsPaginationFilter,
+    WordsInTitleFilter,
+    AffiliationFilter,
+} from './searchresultsfilters';

@@ -1,1 +1,1 @@
-export { ObjectSeriesChartModel } from './ObjectSeriesChartModel';
+export { ObjectSeriesChartModel, Series } from './ObjectSeriesChartModel';

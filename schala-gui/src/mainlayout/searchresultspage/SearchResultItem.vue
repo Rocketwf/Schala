@@ -9,10 +9,9 @@
         <q-item-section top class="q-ml-sm" @click="handleClick">
             <q-item-label class="q-mt-sm">{{ getBasicProfile().name }}</q-item-label>
             <q-item-label caption lines="2"> @{{ getBasicProfile().affiliation }} </q-item-label>
-            <q-item-label caption lines="2"> 4  papers </q-item-label>
+            <q-item-label caption lines="2"> 4 papers </q-item-label>
             <q-item-label caption lines="2"> Cited by {{ getBasicProfile().totalCitations }} </q-item-label>
         </q-item-section>
-
 
         <q-item-section top side>
             <div class="text-grey-8">
@@ -28,7 +27,7 @@ import { useRouter } from 'vue-router';
 import { comparePageStore } from '../../stores/comparePageStore';
 import { profilePageStore } from '../../stores/profilePageStore';
 import { BasicProfile } from 'schala-core';
-import { useQuasar  } from 'quasar';
+import { useQuasar } from 'quasar';
 
 const props = defineProps<{
     profile: BasicProfile;
@@ -45,26 +44,26 @@ const inComparison = computed(() => {
 });
 
 const triggerNegative = () => {
-        $q.notify({
-          type: 'negative',
-          message: 'You can\'t add more than 4 profiles to the compare tab'
-        })
-}
+    $q.notify({
+        type: 'negative',
+        message: "You can't add more than 4 profiles to the compare tab",
+    });
+};
 const triggerPositive = () => {
-        $q.notify({
-          type: 'positive',
-          message: 'Action was succesful'
-        })
-}
+    $q.notify({
+        type: 'positive',
+        message: 'Action was succesful',
+    });
+};
 
 const handleAdd = async () => {
     if (compareStore.isBeingCompared(props.profile.id)) {
         getComparePageStore().removeProfile(props.profile.id);
         triggerPositive();
-        } else if (compareStore.fullProfiles.length >= 4){
+    } else if (compareStore.fullProfiles.length >= 4) {
         triggerNegative();
         return;
-     } else {
+    } else {
         await getComparePageStore().addProfile(props.profile.id);
         triggerPositive();
     }

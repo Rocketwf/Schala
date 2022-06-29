@@ -1,8 +1,6 @@
 import { defineStore } from 'pinia';
 import { FullProfile, ComparisonRepresentation, ProfileFactory } from 'schala-core';
 import { profilePageStore } from './profilePageStore';
-
-
 const profileStore = profilePageStore();
 
 export const comparePageStore = defineStore({
@@ -10,7 +8,7 @@ export const comparePageStore = defineStore({
   state: () => ({
     fullProfiles: [] as FullProfile[],
     comparisonRepresentation : new ComparisonRepresentation({} as FullProfile),
-    // const profilePageStore: ProfilePageStore = new ProfilePageStore();
+    profilePageStore: profilePageStore(),
   }),
   actions: {
     async addProfile(profileId: string) {
