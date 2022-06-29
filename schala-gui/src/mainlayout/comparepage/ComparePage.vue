@@ -17,4 +17,5 @@ const getProfileSummary = () => {
   return ProfileSummary;
 }
 getProfileSummary;
+CompareContent;
 </script>

@@ -11,19 +11,21 @@ export class ProfileFactory {
         this.authorId = authorId;
         const name: string = await this.dataSource.fetchName(authorId);
         const affiliations: string[] = await this.dataSource.fetchAffiliations(authorId);
-        const hIndex: number = await this.dataSource.fetchHIndex(authorId);
         const citation: number = await this.dataSource.fetchCitation(authorId);
         const basicProfile: BasicProfile = new BasicProfile(authorId, name, affiliations, citation);
-        const hIndexObj: HIndex = new HIndex(hIndex);
+        const hIndexObj: HIndex = await this.calculateHIndex();
         const i10IndexObj: I10Index = await this.calculateI10Index();
         const selfCitations: number = await this.calculateSelfCitations();
+        const indirectSelfCitations: number = await this.calculateIndirectSelfCitations();
         const website: string = await this.dataSource.fetchWebsite(authorId);
-        return Array.of(new FullProfile(basicProfile, hIndexObj, i10IndexObj, selfCitations, 0, website));
+        return Array.of(
+            new FullProfile(basicProfile, hIndexObj, i10IndexObj, selfCitations, indirectSelfCitations, website),
+        );
     }
 
     async calculateHIndex(): Promise<HIndex> {
         const fetchedHIndex: number = await this.dataSource.fetchHIndex(this.authorId);
-
+        console.log('We are at calculateHIndex');
         let hIndex: number;
         const copy: Article[] = new Array<Article>();
         const articles: Article[] = await this.dataSource.fetchArticles(this.authorId);
@@ -69,13 +71,15 @@ export class ProfileFactory {
                 }
                 hIndexWithoutSelfCitations++;
             });
-
+            console.log(hIndex);
+            console.log(hIndexWithoutSelfCitations);
             return new HIndex(hIndex, hIndexWithoutSelfCitations);
         }
     }
     async calculateI10Index(): Promise<I10Index> {
         const fetchedI10Index: number = await this.dataSource.fetchI10Index(this.authorId);
         const authorArticles: Article[] = await this.dataSource.fetchArticles(this.authorId);
+        console.log('We are at calculateI10Index');
         let i10Index: number;
         //If the i10-index could be fetched, returns it. Otherwise calculates it
         if (fetchedI10Index != null) {
@@ -84,10 +88,9 @@ export class ProfileFactory {
             i10Index = 0;
             //Calculating the hIndex of the scholar
             for (const article of authorArticles) {
-                if (article.citation < 10) {
-                    continue;
+                if (article.citation >= 10) {
+                    i10Index++;
                 }
-                i10Index++;
             }
         }
         //Counts the number of articles which have more than 10 citations
@@ -97,24 +100,30 @@ export class ProfileFactory {
                 i10IndexWithoutSelfCitations++;
             }
         }
-
-        return new I10Index(i10Index, i10IndexWithoutSelfCitations);
+        const createdI10Index: I10Index = new I10Index(i10Index, i10IndexWithoutSelfCitations);
+        console.log(createdI10Index.i10Index);
+        console.log(createdI10Index.i10IndexWithoutSelfCitations);
+        return createdI10Index;
     }
 
     async calculateSelfCitations(): Promise<number> {
+        console.log('We are at calculateSelfCitations');
         const articles: Article[] = await this.dataSource.fetchArticles(this.authorId);
         let selfCitation: number = 0;
         for (const article of articles) {
             const hasSelfCitation: boolean = await this.dataSource.hasSelfCitation(article, this.authorId);
             if (hasSelfCitation) ++selfCitation;
         }
+        console.log(selfCitation);
         return selfCitation;
     }
 
     async calculateIndirectSelfCitations(): Promise<number> {
-        const authorPublications: Article[] = new Array<Article>();
+        //const authorPublications: Article[] = new Array<Article>();
         const articles: Article[] = await this.dataSource.fetchArticles(this.authorId);
-        for (const article of articles) {
+        console.log('We are at calculateIndirectSelfCitations');
+        console.log(articles.length);
+        /*for (const article of articles) {
             authorPublications.push(
                 new Article(
                     article.id,
@@ -127,21 +136,22 @@ export class ProfileFactory {
                     article.venue,
                     article.coAuthors,
                 ),
-            );
-            let numberOfIndirectSelfCitations: number = 0;
-            for (const publication of authorPublications) {
-                for (const coAuthor of publication.coAuthors) {
-                    const hasSelfCitation: boolean = await this.dataSource.hasSelfCitation(publication, coAuthor.id);
-                    if (
-                        coAuthor.id != this.authorId && //Otherwise this would also count direct self citations
-                        hasSelfCitation
-                    ) {
-                        numberOfIndirectSelfCitations++;
-                    }
+            );*/
+        let numberOfIndirectSelfCitations: number = 0;
+        console.log(articles.length);
+        for (const publication of articles) {
+            for (const coAuthor of publication.coAuthors) {
+                const hasSelfCitation: boolean = await this.dataSource.hasSelfCitation(publication, coAuthor.id);
+                console.log(hasSelfCitation);
+                if (
+                    coAuthor.id != this.authorId && //Otherwise this would also count direct self citations
+                    hasSelfCitation
+                ) {
+                    numberOfIndirectSelfCitations++;
                 }
             }
-
-            return numberOfIndirectSelfCitations;
         }
+        console.log(numberOfIndirectSelfCitations);
+        return numberOfIndirectSelfCitations;
     }
 }
