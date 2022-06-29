@@ -1,23 +1,24 @@
 <template>
-    <q-card class="my-card">
+    <simple-card :simple-card-model="props.articlesModel">
         <ArticleItem
-            v-for="art in articlesModel.articles"
+            v-for="art in props.articlesModel.articles"
             :key="art.id"
             :article="art"
         />
-    </q-card>
-
+    </simple-card>
     <div class="q-pa-lg flex flex-center">
-        <generic-pagination/>
+        
     </div>
 </template>
 
 <script setup charset="utf-8" lang="ts">
 import { ArticlesModel } from 'schala-core'
 import GenericPagination from '../GenericPagination.vue'
+import ArticleItem from '../../mainlayout/profilepage/ArticleItem.vue'
+import SimpleCard from './SimpleCard.vue'
 
-defineProps<{
-  articlesModel: ArticlesModel;
+const props = defineProps<{
+    articlesModel: ArticlesModel,
 }>()
 
 </script>

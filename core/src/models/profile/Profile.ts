@@ -1,3 +1,5 @@
+import { Article } from '../articles';
+
 export abstract class Profile {}
 export class BasicProfile implements Profile {
     private _id: string;
@@ -46,6 +48,7 @@ export class FullProfile {
     private _i10Index: I10Index;
     private _selfCitations: number;
     private _indirectSelfCitations: number;
+    private _articles: Article[];
 
     constructor(
         basicProfile: BasicProfile,
@@ -53,12 +56,14 @@ export class FullProfile {
         i10Index: I10Index,
         selfCitations: number,
         indirectSelfCitations: number,
+        articles: Article[],
     ) {
         this._basicProfile = basicProfile;
         this._hIndex = hIndex;
         this._i10Index = i10Index;
         this._selfCitations = selfCitations;
         this._indirectSelfCitations = indirectSelfCitations;
+        this._articles = articles;
     }
 
     public get basicProfile(): BasicProfile {
@@ -77,6 +82,9 @@ export class FullProfile {
     }
     public get indirectSelfCitations(): number {
         return this._indirectSelfCitations;
+    }
+    public get articles(): Article[] {
+        return this._articles;
     }
 }
 export class HIndex {

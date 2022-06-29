@@ -3,15 +3,19 @@ import { Article } from '../articles/Article';
 import { SimpleCardModel, ViewName } from '../simplecardmodel';
 
 export class ArticlesModel implements Filterable<ArticlesModel>, SimpleCardModel {
-    private _id: string;
+    private _id: string = '@' + Math.random().toString(31);
     private _articles: Array<Article>;
     private _colWidth: number;
     private _title: string;
     private _sub: string;
     private _viewName: ViewName;
 
-    constructor(articles: Array<Article>) {
-        this._articles = articles;
+    constructor(_articles: Array<Article>, _title: string, _sub: string, _viewName: ViewName, _colWidth: number) {
+        this._articles = _articles;
+        this._title = _title;
+        this._sub = _sub;
+        this._viewName = _viewName;
+        this._colWidth = _colWidth;
     }
 
     applyAllFilters(): void {
@@ -35,7 +39,7 @@ export class ArticlesModel implements Filterable<ArticlesModel>, SimpleCardModel
                 ),
             );
         });
-        return new ArticlesModel(articlesCopy);
+        return new ArticlesModel(articlesCopy, this.title, this.sub, this.viewName, this._colWidth);
     }
 
     public get articles(): Array<Article> {

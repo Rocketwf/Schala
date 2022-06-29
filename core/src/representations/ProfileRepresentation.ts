@@ -1,6 +1,6 @@
 import { FullProfile } from '../models/profile';
 import { RowModel } from '../models/viewmodels';
-import { PieChartModel } from '../models';
+import { ArticlesModel, PieChartModel } from '../models';
 import { ViewName } from '../models/simplecardmodel/SimpleCardModel';
 import { Series } from '../models/objectserieschartmodel/ObjectSeriesChartModel';
 
@@ -17,6 +17,10 @@ export class ProfileRepresentation {
         const pby: PieChartModel = this.createCitationsCard();
 
         this._rowModels[0].simpleCardModels.push(pby);
+
+        this._rowModels.push(new RowModel(10));
+        const art: ArticlesModel = this.createArticlesCard();
+        this._rowModels[1].simpleCardModels.push(art);
     }
 
     public get fullProfile(): FullProfile {
@@ -39,5 +43,9 @@ export class ProfileRepresentation {
         series.push(new Series('indirect self-citations', [this._fullProfile.indirectSelfCitations]));
 
         return new PieChartModel('Citations', '', ViewName.PieChartCard, 2, series);
+    }
+
+    private createArticlesCard(): ArticlesModel {
+        return new ArticlesModel(this.fullProfile.articles, 'All Articles', '', ViewName.ArticlesCard, 10);
     }
 }
