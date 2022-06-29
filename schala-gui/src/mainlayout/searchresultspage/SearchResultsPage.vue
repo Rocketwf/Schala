@@ -1,19 +1,19 @@
 <template>
     <div class="row justify-center">
         <div class="col-xs-12 col-md-8">
-            <q-page padding>         
+            <q-page padding>
               <!--  <filter-affiliation labelText="Filter affiliations" />           TODO:Filter Affiliation -->
-              
+
               <q-list bordered class="rounded-borders q-mt-lg">
                   <q-item-label header>Matching profiles</q-item-label>
                   <search-results-item
-                      v-for="pro in strippedArray"
+                      v-for="pro in getBasicProfiles()"
                       :key="pro.id"
                       :profile="pro as BasicProfile"
                   />
               </q-list>
               <div class="q-pa-lg flex flex-center">
-                  <!-- TODO: Pagination -->
+                  <generic-pagination/>
               </div>
               <!-- </q-page> Add this after implementing main layout-->
             </q-page>
@@ -24,12 +24,11 @@
 import { searchResultsStore } from '../../stores/searchResultsPageStore';
 import SearchResultsItem from './SearchResultItem.vue';
 import { BasicProfile } from 'schala-core';
-import { computed } from 'vue';
-BasicProfile;
+import GenericPagination from '../../sharedcomponents/GenericPagination.vue'
 
 const searchStore = searchResultsStore();
 let affiliationFilter: string = '';
-//const pagination = ... TODO: Add Pagination
+
 
 const getSearchResultsPageStore = () => {
     return searchStore;
@@ -50,6 +49,5 @@ const getBasicProfiles = () => {
   return searchStore.searchResultsShowingModel.basicProfiles;
 }
 
-const strippedArray = computed(()=>getBasicProfiles().slice(0, 10));
 
 </script>
