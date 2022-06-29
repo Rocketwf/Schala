@@ -34,3 +34,4 @@ yarn-error.log*
 
 # Ignore vscode files on main dir
 /.vscode
+yarn.lock

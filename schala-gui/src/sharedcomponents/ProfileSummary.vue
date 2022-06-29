@@ -32,21 +32,37 @@
         <q-item-section side> </q-item-section>
     </q-item>
 </template>
+
 <script setup lang="ts">
+
+import { useQuasar  } from 'quasar';
 import { FullProfile } from 'schala-core'
 import { I10Index,HIndex } from 'schala-core/dist/models/profile';
 import { useRouter, Router } from 'vue-router';
 import { comparePageStore } from '../stores/comparePageStore';
 
-
+const $q = useQuasar();
 const router: Router = useRouter();
 const compareStore = comparePageStore();
-
 const props = defineProps<{
     profile: FullProfile;
 }>();
 
+const triggerNegative = () => {
+        $q.notify({
+          type: 'negative',
+          message: 'You can\'t add more than 4 profiles to the compare tab'
+        })
+}
+const triggerPositive = () => {
+        $q.notify({
+          type: 'positive',
+          message: 'Action was succesful'
+        })
+}
+
 // Methods
+
 const getFullProfile = (): FullProfile => {
     return props.profile;
 };
@@ -62,10 +78,16 @@ const redirectWebsite = () => {
 const handleClickButton = async () => {
    if (compareStore.isBeingCompared(props.profile.basicProfile.id)) {
       await compareStore.removeProfile(props.profile.basicProfile.id);
+      triggerPositive();
+      router.push({ path: '/profile/compare' });
+    } else if (compareStore.fullProfiles.length >= 4){
+        triggerNegative();
+        return;
     } else {
       await compareStore.addProfile(props.profile.basicProfile.id);
+      triggerPositive();
+      router.push({ path: '/profile/compare' });
     }
-    router.push({ path: '/profile/compare' });
 }
  
 // Attributes

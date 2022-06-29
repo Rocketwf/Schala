@@ -28,12 +28,14 @@ import { useRouter } from 'vue-router';
 import { comparePageStore } from '../../stores/comparePageStore';
 import { profilePageStore } from '../../stores/profilePageStore';
 import { BasicProfile } from 'schala-core';
+import { useQuasar  } from 'quasar';
 
 const props = defineProps<{
     profile: BasicProfile;
 }>();
 
 const router = useRouter();
+const $q = useQuasar();
 
 const profileStore = profilePageStore();
 const compareStore = comparePageStore();
@@ -42,11 +44,29 @@ const inComparison = computed(() => {
     return compareStore.isBeingCompared(props.profile.id);
 });
 
+const triggerNegative = () => {
+        $q.notify({
+          type: 'negative',
+          message: 'You can\'t add more than 4 profiles to the compare tab'
+        })
+}
+const triggerPositive = () => {
+        $q.notify({
+          type: 'positive',
+          message: 'Action was succesful'
+        })
+}
+
 const handleAdd = () => {
     if (compareStore.isBeingCompared(props.profile.id)) {
         getComparePageStore().removeProfile(props.profile.id);
-    } else {
+        triggerPositive();
+        } else if (compareStore.fullProfiles.length >= 4){
+        triggerNegative();
+        return;
+     } else {
         getComparePageStore().addProfile(props.profile.id);
+        triggerPositive();
     }
 };
 

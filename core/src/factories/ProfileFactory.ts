@@ -15,12 +15,10 @@ export class ProfileFactory {
         const basicProfile: BasicProfile = new BasicProfile(authorId, name, affiliations, citation);
         const hIndexObj: HIndex = await this.calculateHIndex();
         const i10IndexObj: I10Index = await this.calculateI10Index();
-        const selfCitations: number = await this.calculateSelfCitations();
-        const indirectSelfCitations: number = await this.calculateIndirectSelfCitations();
+        //const selfCitations: number = await this.calculateSelfCitations();
+        //const indirectSelfCitations: number = await this.calculateIndirectSelfCitations();
         const website: string = await this.dataSource.fetchWebsite(authorId);
-        return Array.of(
-            new FullProfile(basicProfile, hIndexObj, i10IndexObj, selfCitations, indirectSelfCitations, website),
-        );
+        return Array.of(new FullProfile(basicProfile, hIndexObj, i10IndexObj, 42, 42, website));
     }
 
     async calculateHIndex(): Promise<HIndex> {
