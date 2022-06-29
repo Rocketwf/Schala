@@ -8,6 +8,7 @@ export {
     PaginationFilter,
     ObjectSeriesFilter,
     SearchResultsFilter,
+    SearchResultsPaginationFilter,
 } from './filters';
 export {
     APIAuthor,

@@ -1,1 +1,1 @@
-export { SearchResultsFilter } from './SearchResultsFilter';
+export { SearchResultsFilter, SearchResultsPaginationFilter } from './SearchResultsFilter';

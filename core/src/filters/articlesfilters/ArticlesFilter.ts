@@ -6,11 +6,10 @@ export abstract class ArticlesFilter<S> extends Filter<S, ArticlesModel> {
 }
 
 export class ArticlesPaginationFilter extends ArticlesFilter<number> {
-    private _hitsPerPage: number;
+    private _hitsPerPage: number = 10;
 
     constructor(value: number) {
-        super();
-        this.value = value;
+        super(value);
     }
 
     public set hitsPerPage(newHitsPerPage: number) {

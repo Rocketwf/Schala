@@ -1,4 +1,4 @@
-import { Filter, Filterable } from '../../filters';
+import { Filterable } from '../../filters';
 import { Article } from '../articles/Article';
 import { SimpleCardModel, ViewName } from '../simplecardmodel';
 

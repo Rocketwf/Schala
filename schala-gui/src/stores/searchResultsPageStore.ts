@@ -1,6 +1,6 @@
 import { BasicProfile, SearchResultsFactory, SearchResultsModel} from 'schala-core';
 import { defineStore } from 'pinia';
-import { SearchResultsPaginationFilter } from 'schala-core/dist/filters/searchresultsfilters/SearchResultsFilter';
+import { SearchResultsPaginationFilter } from 'schala-core';
 
 export const searchResultsStore = defineStore({
     id: 'searchResultsPage',
@@ -32,7 +32,7 @@ export const searchResultsStore = defineStore({
             this.searchResultsCachedModel.basicProfiles = basicProfiles;
             this.searchResultsShowingModel = this.searchResultsCachedModel.deepCopy();
             this.setPaginationFilter(1);
-            this.paginationFilter.apply(this.searchResultsShowingModel as SearchResultsModel);
+            this.paginationFilter.apply(this.getSearchResultsShowingModel);
             if(Math.round(basicProfiles.length / 15) == 0){
               this.maxPage = 1
             } else{

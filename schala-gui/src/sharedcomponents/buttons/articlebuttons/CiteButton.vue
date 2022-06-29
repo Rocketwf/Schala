@@ -7,7 +7,7 @@
             </q-card-section>
 
             <q-card-section class="q-px-lg">
-                {{ bibtex }}
+                {{ props.bibtex }}
 
                 <q-card-actions align="right">
                     <q-btn flat color="primary" label="Copy" @click="copy" />
