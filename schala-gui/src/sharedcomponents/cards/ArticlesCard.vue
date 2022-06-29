@@ -1,6 +1,10 @@
 <template>
     <q-card class="my-card">
-      <articleItem />
+        <ArticleItem
+            v-for="art in articlesModel.articles"
+            :key="art.id"
+            :article="art"
+        />
     </q-card>
 </template>
 
@@ -8,8 +12,7 @@
 import { ArticlesModel } from 'schala-core'
 
 defineProps<{
-  simpleCardModel: SimpleCardModel;
-  viewName: ViewName;
+  articlesModel: ArticlesModel;
 }>()
 
 </script>
