@@ -6,7 +6,7 @@ describe('filters the search results correctly', () => {
         const testProfile1: BasicProfile = new BasicProfile('123', 'Test 1', ['TestAffiliation']);
         const testProfile2: BasicProfile = new BasicProfile('456', 'Test 2', ['TestIndustries']);
         const testModel: SearchResultsModel = new SearchResultsModel([testProfile1, testProfile2]);
-        const testFilter: AffiliationFilter = new AffiliationFilter();
+        const testFilter: AffiliationFilter = new AffiliationFilter('');
         testFilter.value = 'Industries';
         testFilter.apply(testModel);
         expect(testModel.basicProfiles.includes(testProfile1)).toBe(false);

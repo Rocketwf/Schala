@@ -1,5 +1,5 @@
 import { BasicProfile, SearchResultsModel } from '../../models';
-import { Filter } from '../Filter';
+import { Filter } from '../';
 
 export abstract class SearchResultsFilter<S> extends Filter<S, SearchResultsModel> {
     abstract apply(model: SearchResultsModel): void;
@@ -19,5 +19,34 @@ export class AffiliationFilter extends SearchResultsFilter<string> {
                 return true;
             }
         });
+    }
+}
+
+export class WordsInTitleFilter extends SearchResultsFilter<string> {
+    constructor(value: string) {
+        super(value);
+    }
+    apply(model: SearchResultsModel): void {
+        model.basicProfiles = model.basicProfiles.filter((profile: BasicProfile) => {
+            const lowerCaseValue: string = this.value.toLowerCase();
+            const lowerCaseName: string = profile.name.toLowerCase();
+            return lowerCaseName.includes(lowerCaseValue);
+        });
+    }
+}
+export class SearchResultsPaginationFilter extends SearchResultsFilter<number> {
+    private _hitsPerPage: number;
+    constructor(value: number, hitsPerPage: number) {
+        super(value);
+        this._hitsPerPage = hitsPerPage;
+    }
+    public set hitsPerPage(newHitsPerPage: number) {
+        this._hitsPerPage = newHitsPerPage;
+    }
+    apply(model: SearchResultsModel): void {
+        model.basicProfiles = model.basicProfiles.slice(
+            (this.value - 1) * this._hitsPerPage,
+            (this.value - 1) * this._hitsPerPage + this._hitsPerPage,
+        );
     }
 }

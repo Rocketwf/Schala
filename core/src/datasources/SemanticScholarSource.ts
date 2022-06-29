@@ -179,6 +179,15 @@ export class SemanticScholarSource implements DataSource {
         }
         return profile.basicAuthor.affiliations;
     }
+
+    async fetchWebsite(authorId: string): Promise<string> {
+        let profile: APIAuthor = this.authorIdAPIAuthor.get(authorId);
+        if (!profile) {
+            profile = await this.getAndCacheFullAuthor(authorId);
+        }
+        return profile.authorExtra.homepage;
+    }
+
     async fetchCitation(authorId: string): Promise<number> {
         let profile: APIAuthor = this.authorIdAPIAuthor.get(authorId);
         if (!profile) {
