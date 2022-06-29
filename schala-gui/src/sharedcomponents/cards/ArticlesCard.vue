@@ -1,10 +1,12 @@
 <template>
-    <simple-card :simple-card-model="props.articlesModel">
-        <ArticleItem
-            v-for="art in props.articlesModel.articles"
-            :key="art.id"
-            :article="art"
-        />
+    <simple-card :simple-card-model="props.cardModel">
+        <q-card-section>
+            <Article-Item
+                v-for="art in props.cardModel.articles" 
+                :key="art.id"
+                :article="art"
+            />  
+        </q-card-section>    
     </simple-card>
     <div class="q-pa-lg flex flex-center">
         
@@ -18,7 +20,7 @@ import ArticleItem from '../../mainlayout/profilepage/ArticleItem.vue'
 import SimpleCard from './SimpleCard.vue'
 
 const props = defineProps<{
-    articlesModel: ArticlesModel,
+    cardModel: ArticlesModel,
 }>()
 
 </script>

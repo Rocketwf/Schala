@@ -20,7 +20,7 @@
     <q-item-section side>
           <div class="text-grey-8 q-gutter-xs">
 
-            <article-item-button v-slot="slotProps" :icon="'bibtex'">
+            <article-item-button v-slot="slotProps" :icon="'books'">
               <cite-button :bibtex="props.article.bibTex" :button-icon="slotProps.icon"/>
             </article-item-button>>
 
@@ -35,8 +35,8 @@
           </div>
 
           <div class="desktop-hide q-mx-auto q-my-none">
-            <q-item-label >Year: <span class="text-bold inline">2021</span></q-item-label>
-            <q-item-label >Cited: <span class="text-bold inline">364</span></q-item-label>
+            <q-item-label >Year: <span class="text-bold inline">{{props.article.year}}</span></q-item-label>
+            <q-item-label >Cited: <span class="text-bold inline">{{props.article.citation}}</span></q-item-label>
           </div>
         </q-item-section>
   </q-item>

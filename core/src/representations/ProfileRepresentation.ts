@@ -13,14 +13,14 @@ export class ProfileRepresentation {
     }
     renderProfile(): void {
         this._rowModels = new Array<RowModel>();
-        this._rowModels.push(new RowModel(8));
+        this.rowModels.push(new RowModel(8));
         const pby: PieChartModel = this.createCitationsCard();
 
-        this._rowModels[0].simpleCardModels.push(pby);
+        this.rowModels[0].simpleCardModels.push(pby);
 
-        this._rowModels.push(new RowModel(10));
+        this.rowModels.push(new RowModel(10));
         const art: ArticlesModel = this.createArticlesCard();
-        this._rowModels[1].simpleCardModels.push(art);
+        this.rowModels[1].simpleCardModels.push(art);
     }
 
     public get fullProfile(): FullProfile {
@@ -46,6 +46,13 @@ export class ProfileRepresentation {
     }
 
     private createArticlesCard(): ArticlesModel {
-        return new ArticlesModel(this.fullProfile.articles, 'All Articles', '', ViewName.ArticlesCard, 10);
+        const articlesModel: ArticlesModel = new ArticlesModel(
+            this.fullProfile.articles,
+            'All Articles',
+            '',
+            ViewName.ArticlesCard,
+            10,
+        );
+        return articlesModel;
     }
 }
