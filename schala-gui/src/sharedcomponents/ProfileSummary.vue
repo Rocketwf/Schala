@@ -60,12 +60,10 @@ const redirectWebsite = () => {
 }
 
 const handleClickButton = async () => {
-   console.log(compareStore.isBeingCompared(props.profile.basicProfile.id));
    if (compareStore.isBeingCompared(props.profile.basicProfile.id)) {
       await compareStore.removeProfile(props.profile.basicProfile.id);
     } else {
       await compareStore.addProfile(props.profile.basicProfile.id);
-      console.log(compareStore.isBeingCompared(props.profile.basicProfile.id));
     }
     router.push({ path: '/profile/compare' });
 }

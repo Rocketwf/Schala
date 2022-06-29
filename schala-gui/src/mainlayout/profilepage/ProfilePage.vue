@@ -1,7 +1,7 @@
 <template>
   <div class="row justify-center bg-transparent">
     <div class="col-md-12 col-xs-12 self-center">
-           <profile-summary v-if="getFullProfile()" :profile = "getFullProfile()"/>
+           <profile-summary v-if="getFullProfile()" :profile = "(getFullProfile() as FullProfile)"/>
     </div>
   </div>
 </template>
@@ -18,8 +18,8 @@ const getProfilePageStore = () => {
     return profileStore;
 };
 
-const getFullProfile = () => {
-  return getProfilePageStore().profileRepresentation.fullProfile as FullProfile;
+const getFullProfile = ()  => {
+  return getProfilePageStore().profileRepresentation.fullProfile;
 }
 
 </script>

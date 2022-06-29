@@ -21,8 +21,6 @@ export const searchResultsStore = defineStore({
         async setSearchString(passedSearchString: string) {
             this.searchString = passedSearchString;
             await this.searchResultsFactory.build(this.searchString).then((basicProfiles: BasicProfile[]) => {
-                console.log(basicProfiles.length);
-                console.log(basicProfiles);
                 this.searchResultsCachedModel.basicProfiles = basicProfiles;
                 this.searchResultsShowingModel = this.searchResultsCachedModel.deepCopy();
             });

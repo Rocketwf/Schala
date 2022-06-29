@@ -17,7 +17,6 @@ export const comparePageStore = defineStore({
         if (this.fullProfiles.length > 4 || this.isBeingCompared(profileId)) {
             return;
         }
-        console.log(profileStore.getFullProfile().basicProfile.id);
         const fullProfile = profileStore.getFullProfile() as FullProfile;
         this.fullProfiles.push(fullProfile);
         return;
