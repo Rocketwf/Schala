@@ -42,6 +42,10 @@ export class ArticlesModel implements Filterable<ArticlesModel>, SimpleCardModel
         return this._articles;
     }
 
+    public set articles(articles: Array<Article>) {
+        this._articles = articles;
+    }
+
     public get colWidth(): number {
         return this._colWidth;
     }
