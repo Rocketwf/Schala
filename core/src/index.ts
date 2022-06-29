@@ -9,6 +9,8 @@ export {
     ObjectSeriesFilter,
     SearchResultsFilter,
     SearchResultsPaginationFilter,
+    WordsInTitleFilter,
+    AffiliationFilter,
 } from './filters';
 export {
     APIAuthor,

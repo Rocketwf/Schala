@@ -1,48 +1,53 @@
-import { BasicProfile, SearchResultsFactory, SearchResultsModel} from 'schala-core';
+import { SearchResultsPaginationFilter, WordsInTitleFilter, AffiliationFilter } from 'schala-core';
+import { BasicProfile, SearchResultsFactory, SearchResultsModel } from 'schala-core';
 import { defineStore } from 'pinia';
-import { SearchResultsPaginationFilter } from 'schala-core';
 
 export const searchResultsStore = defineStore({
     id: 'searchResultsPage',
     state: () => ({
         searchString: '',
-        maxPage: 5,
+        maxPage: 0,
         searchResultsFactory: new SearchResultsFactory(),
         searchResultsShowingModel: new SearchResultsModel(new Array<BasicProfile>()),
         searchResultsCachedModel: new SearchResultsModel(new Array<BasicProfile>()),
-        paginationFilter: new SearchResultsPaginationFilter(1),
+        paginationFilter: new SearchResultsPaginationFilter(1, 15),
+        affilationFilter: new AffiliationFilter(''),
+        wordsInTitleFilter: new WordsInTitleFilter(''),
     }),
-    getters:{
-      getSearchResultsShowingModel: (state) => state.searchResultsShowingModel as SearchResultsModel,
+    getters: {
+        getSearchResultsShowingModel: (state) => state.searchResultsShowingModel as SearchResultsModel,
     },
     actions: {
         setAffiliationFilter(affiliationFilter: string): void {
-          affiliationFilter;
-          return;
+            this.affilationFilter.value = affiliationFilter;
+
+            this.applyAllFilters();
         },
-        getSearchString(): string {
-            return this.searchString;
+        setWordsInTitleFilter(wordsInTitleFilter: string): void {
+            this.wordsInTitleFilter.value = wordsInTitleFilter;
+            this.paginationFilter.value = 1;
+            
+            this.applyAllFilters();
         },
-        // TODO: Fix setSearchString after SearchResultsModel and deepCopy are implemented
         async setSearchString(passedSearchString: string) {
             this.searchString = passedSearchString;
-            const basicProfiles: BasicProfile [] = await this.searchResultsFactory.build(this.searchString)
-            console.log(basicProfiles.length);
-            console.log(basicProfiles);
+            const basicProfiles: BasicProfile[] = await this.searchResultsFactory.build(this.searchString);
             this.searchResultsCachedModel.basicProfiles = basicProfiles;
             this.searchResultsShowingModel = this.searchResultsCachedModel.deepCopy();
+
+            this.fixNumberOfPages();
+
             this.setPaginationFilter(1);
-            this.paginationFilter.apply(this.getSearchResultsShowingModel);
-            if(Math.round(basicProfiles.length / 15) == 0){
-              this.maxPage = 1
-            } else{
-              this.maxPage = Math.round(basicProfiles.length / 15);
-            }
+
+
+            this.applyAllFilters();
         },
-        setPaginationFilter(value:number): void{
+        fixNumberOfPages(): void {
+            this.maxPage = Math.ceil(this.searchResultsShowingModel.basicProfiles.length / 15);
+        },
+        setPaginationFilter(value: number): void {
             this.paginationFilter.value = value;
-            this.paginationFilter.hitsPerPage = 15;
-            console.log( this.paginationFilter.value);
+
             this.applyAllFilters();
         },
         setSearchResultsShowingModel(model: SearchResultsModel) {
@@ -52,12 +57,16 @@ export const searchResultsStore = defineStore({
             this.searchResultsCachedModel = model;
         },
         resetFromCache(): void {
-          this.searchResultsShowingModel = this.searchResultsCachedModel.deepCopy();
+            this.searchResultsShowingModel = this.searchResultsCachedModel.deepCopy();
         },
-        // TODO: Implement applyAllFilters
         applyAllFilters(): void {
-          this.resetFromCache();
-          this.paginationFilter.apply(this.getSearchResultsShowingModel);
+            this.resetFromCache();
+            this.wordsInTitleFilter.apply(this.getSearchResultsShowingModel);
+
+            //
+            // Fix the number of pages before you run the pagination filter
+            this.fixNumberOfPages();
+            this.paginationFilter.apply(this.getSearchResultsShowingModel);
         },
     },
 });

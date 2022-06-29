@@ -1,5 +1,5 @@
 import { BasicProfile, SearchResultsModel } from '../../models';
-import { Filter } from '../Filter';
+import { Filter } from '../';
 
 export abstract class SearchResultsFilter<S> extends Filter<S, SearchResultsModel> {
     abstract apply(model: SearchResultsModel): void;
@@ -22,13 +22,24 @@ export class AffiliationFilter extends SearchResultsFilter<string> {
     }
 }
 
-export class SearchResultsPaginationFilter extends SearchResultsFilter<number> {
-    private _hitsPerPage: number = 15;
-
-    constructor(value: number) {
+export class WordsInTitleFilter extends SearchResultsFilter<string> {
+    constructor(value: string) {
         super(value);
     }
-
+    apply(model: SearchResultsModel): void {
+        model.basicProfiles = model.basicProfiles.filter((profile: BasicProfile) => {
+            const lowerCaseValue: string = this.value.toLowerCase();
+            const lowerCaseName: string = profile.name.toLowerCase();
+            return lowerCaseName.includes(lowerCaseValue);
+        });
+    }
+}
+export class SearchResultsPaginationFilter extends SearchResultsFilter<number> {
+    private _hitsPerPage: number;
+    constructor(value: number, hitsPerPage: number) {
+        super(value);
+        this._hitsPerPage = hitsPerPage;
+    }
     public set hitsPerPage(newHitsPerPage: number) {
         this._hitsPerPage = newHitsPerPage;
     }

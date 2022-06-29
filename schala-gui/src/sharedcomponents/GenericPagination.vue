@@ -1,31 +1,23 @@
 <template>
-  <div class="q-pa-lg flex flex-center" @click="switchPage">
-    <q-pagination v-model="currentPage" :max="getSearchResultsPageStore().maxPage" :max-pages="5" boundary-links />
-  </div>
-
+    <div class="q-pa-lg flex flex-center" @click="switchPage">
+        <q-pagination v-model="newPageValue" :max="maxValue" :max-pages="5" boundary-links />
+    </div>
 </template>
 <script setup charset="utf-8" lang="ts">
-import { searchResultsStore } from '../stores/searchResultsPageStore';
 import { ref } from 'vue';
 
-const getSearchResultsPageStore = () => {
-    return searchStore;
+const props = defineProps<{
+    handleSwitch: (value: number) => void;
+    maxValue: number;
+    currentPage: number;
+}>();
+
+const newPageValue = ref(props.currentPage);
+
+const getNewPageValue = (): number => {
+    return newPageValue.value;
 };
-
-const getStartingPage = (): number => {
-  return getSearchResultsPageStore().paginationFilter.value;
-};
-
-const searchStore = searchResultsStore();
-const currentPage = ref(getStartingPage());
-
-const getCurrentPage = (): number => {
-  return currentPage.value;
-};
-
-
-const switchPage = (): void => {
-  getSearchResultsPageStore().setPaginationFilter(getCurrentPage());
+const switchPage = () => {
+  props.handleSwitch(getNewPageValue());
 }
-
 </script>
