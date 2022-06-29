@@ -77,7 +77,7 @@ const redirectWebsite = () => {
 
 const handleClickButton = async () => {
    if (compareStore.isBeingCompared(props.profile.basicProfile.id)) {
-      await compareStore.removeProfile(props.profile.basicProfile.id);
+      compareStore.removeProfile(props.profile.basicProfile.id);
       triggerPositive();
       router.push({ path: '/profile/compare' });
     } else if (compareStore.fullProfiles.length >= 4){

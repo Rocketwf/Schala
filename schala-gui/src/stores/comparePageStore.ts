@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { FullProfile, ComparisonRepresentation } from 'schala-core';
+import { FullProfile, ComparisonRepresentation, ProfileFactory } from 'schala-core';
 import { profilePageStore } from './profilePageStore';
 
 
@@ -13,13 +13,12 @@ export const comparePageStore = defineStore({
     // const profilePageStore: ProfilePageStore = new ProfilePageStore();
   }),
   actions: {
-    addProfile(profileId: string) {
+    async addProfile(profileId: string) {
         if (this.fullProfiles.length > 4 || this.isBeingCompared(profileId)) {
             return;
         }
-        const fullProfile = profileStore.getFullProfile() as FullProfile;
-        this.fullProfiles.push(fullProfile);
-        return;
+        const profile: FullProfile[] = await new ProfileFactory().build(profileId);
+        this.fullProfiles.push(profile[0]);
     },
 
     removeProfile(profileId: string) {

@@ -57,7 +57,7 @@ const triggerPositive = () => {
         })
 }
 
-const handleAdd = () => {
+const handleAdd = async () => {
     if (compareStore.isBeingCompared(props.profile.id)) {
         getComparePageStore().removeProfile(props.profile.id);
         triggerPositive();
@@ -65,7 +65,7 @@ const handleAdd = () => {
         triggerNegative();
         return;
      } else {
-        getComparePageStore().addProfile(props.profile.id);
+        await getComparePageStore().addProfile(props.profile.id);
         triggerPositive();
     }
 };
