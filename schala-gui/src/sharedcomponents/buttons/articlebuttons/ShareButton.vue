@@ -4,7 +4,7 @@
 
 <script setup charset="utf-8" lang="ts">
 
-const props = defineProps<{
+defineProps<{
     url: string,
     buttonIcon: string;
 }>()

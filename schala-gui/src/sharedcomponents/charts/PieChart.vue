@@ -3,7 +3,6 @@
         <apexchart
             v-if="!hasNoCitations()"
             type="pie"
-            width="370"
             :options="chartOptions"
             :series="getSeries()"
         ></apexchart>

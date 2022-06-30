@@ -13,7 +13,7 @@
 <script setup charset="utf-8" lang="ts">
 import { CoAuthor } from 'schala-core/dist/models/articles/Article';
 
-const props = defineProps<{
+defineProps<{
     coAuthors: CoAuthor[];
     buttonIcon: string;
 }>()

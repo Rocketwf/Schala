@@ -6,7 +6,7 @@
                 <q-item-label caption>{{ simpleCardModel.sub }}</q-item-label>
             </q-card-section>
 
-            <q-card-section class="flex flex-center justify-center" style="height: 80%;">
+            <q-card-section class="justify-center" style="height: 80%;">
                 <slot />
             </q-card-section>
         </q-card>
