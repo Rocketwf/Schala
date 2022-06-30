@@ -1,9 +1,15 @@
 <template>
     <q-item clickable :class="inComparison ? 'bg-accent' : ''">
+        <q-item-section avatar center @click="handleClick">
+            <q-avatar size="66px" rounded>
+                <img src="https://www.seekpng.com/png/detail/966-9665317_placeholder-image-person-jpg.png" />
+            </q-avatar>
+        </q-item-section>
+
         <q-item-section top class="q-ml-sm" @click="handleClick">
-            <q-item-label class= "q-mt-sm">{{ getBasicProfile().name }} </q-item-label>
+            <q-item-label class="q-mt-sm">{{ getBasicProfile().name }}</q-item-label>
             <q-item-label caption lines="2"> @{{ getBasicProfile().affiliation }} </q-item-label>
-            <q-item-label caption lines="2"> 4  papers </q-item-label>
+            <q-item-label caption lines="2"> 4 papers </q-item-label>
             <q-item-label caption lines="2"> Cited by {{ getBasicProfile().totalCitations }} </q-item-label>
         </q-item-section>
 
@@ -21,12 +27,14 @@ import { useRouter } from 'vue-router';
 import { comparePageStore } from '../../stores/comparePageStore';
 import { profilePageStore } from '../../stores/profilePageStore';
 import { BasicProfile } from 'schala-core';
+import { useQuasar } from 'quasar';
 
 const props = defineProps<{
     profile: BasicProfile;
 }>();
 
 const router = useRouter();
+const $q = useQuasar();
 
 const profileStore = profilePageStore();
 const compareStore = comparePageStore();
@@ -35,11 +43,29 @@ const inComparison = computed(() => {
     return compareStore.isBeingCompared(props.profile.id);
 });
 
+const triggerNegative = () => {
+    $q.notify({
+        type: 'negative',
+        message: "You can't add more than 4 profiles to the compare tab",
+    });
+};
+const triggerPositive = () => {
+    $q.notify({
+        type: 'positive',
+        message: 'Action was succesful',
+    });
+};
+
 const handleAdd = async () => {
     if (compareStore.isBeingCompared(props.profile.id)) {
         getComparePageStore().removeProfile(props.profile.id);
+        triggerPositive();
+    } else if (compareStore.fullProfiles.length >= 4) {
+        triggerNegative();
+        return;
     } else {
         await getComparePageStore().addProfile(props.profile.id);
+        triggerPositive();
     }
 };
 

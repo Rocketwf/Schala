@@ -49,6 +49,7 @@ export class FullProfile {
     private _selfCitations: number;
     private _indirectSelfCitations: number;
     private _articles: Article[];
+    private _website: string;
 
     constructor(
         basicProfile: BasicProfile,
@@ -57,6 +58,7 @@ export class FullProfile {
         selfCitations: number,
         indirectSelfCitations: number,
         articles: Article[],
+        website: string,
     ) {
         this._basicProfile = basicProfile;
         this._hIndex = hIndex;
@@ -64,6 +66,7 @@ export class FullProfile {
         this._selfCitations = selfCitations;
         this._indirectSelfCitations = indirectSelfCitations;
         this._articles = articles;
+        this._website = website;
     }
 
     public get basicProfile(): BasicProfile {
@@ -85,6 +88,9 @@ export class FullProfile {
     }
     public get articles(): Article[] {
         return this._articles;
+    }
+    public get website(): string {
+        return this._website;
     }
 }
 export class HIndex {
