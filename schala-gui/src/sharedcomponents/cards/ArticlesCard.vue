@@ -1,6 +1,6 @@
 <template>
     <simple-card :simple-card-model="props.cardModel">
-            <Article-Item
+            <article-item
                 v-for="art in props.cardModel.articles" 
                 :key="art.id"
                 :article="art"
