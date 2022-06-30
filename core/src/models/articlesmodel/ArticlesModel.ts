@@ -3,7 +3,7 @@ import { Article } from '../articles/Article';
 import { SimpleCardModel, ViewName } from '../simplecardmodel';
 
 export class ArticlesModel implements Filterable<ArticlesModel>, SimpleCardModel {
-    private _id: string = '@' + Math.random().toString(31);
+    private _id: string = 'a' + Math.random().toString(31);
     private _articles: Array<Article>;
     private _colWidth: number;
     private _title: string;

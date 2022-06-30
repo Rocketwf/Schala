@@ -1,6 +1,7 @@
 export enum ViewName {
     PieChartCard = 'PieChartCard',
     ArticlesCard = 'ArticlesCard',
+    StackedColumns100Chart = 'StackedColumns100Chart',
 }
 
 export interface SimpleCardModel {
