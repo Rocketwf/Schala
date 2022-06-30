@@ -7,6 +7,7 @@ export class Article {
     private _bibTex: string;
     private _url: string;
     private _venue: string;
+    private _abstract: string;
 
     private _coAuthors: CoAuthor[];
 
@@ -20,6 +21,7 @@ export class Article {
         _url: string,
         _venue: string,
         _coAuthors: CoAuthor[],
+        _abstract: string,
     ) {
         this._id = _id;
         this._title = _title;
@@ -30,6 +32,7 @@ export class Article {
         this._url = _url;
         this._venue = _venue;
         this._coAuthors = _coAuthors;
+        this._abstract = _abstract;
     }
 
     public get id(): string {
@@ -59,6 +62,10 @@ export class Article {
 
     public get coAuthors(): CoAuthor[] {
         return this._coAuthors;
+    }
+
+    public get abstract(): string {
+        return this._abstract;
     }
 }
 

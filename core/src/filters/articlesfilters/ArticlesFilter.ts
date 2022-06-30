@@ -104,3 +104,13 @@ export class NumberOfCitationsFilter extends ArticlesFilter<number> {
         model.articles = newArticles;
     }
 }
+
+export class KeywordsFilter extends ArticlesFilter<string[]> {
+    apply(model: ArticlesModel): void {
+        let newArticles: Article[] = model.articles;
+        for (const x of this.value) {
+            newArticles = newArticles.filter((article: Article) => article.abstract.includes(x));
+        }
+        model.articles = newArticles;
+    }
+}

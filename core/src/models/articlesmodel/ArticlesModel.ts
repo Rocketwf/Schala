@@ -36,6 +36,7 @@ export class ArticlesModel implements Filterable<ArticlesModel>, SimpleCardModel
                     article.url,
                     article.venue,
                     article.coAuthors,
+                    article.abstract,
                 ),
             );
         });
