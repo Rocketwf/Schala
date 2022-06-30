@@ -8,6 +8,7 @@ export abstract class Filter<S, T extends Filterable<T>> {
     }
 
     abstract apply(model: T): void;
+
     public set value(newValue: S) {
         this._value = newValue;
     }
