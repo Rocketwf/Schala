@@ -19,3 +19,10 @@ export class ToFilter extends ObjectSeriesFilter<number> {
         model.series = newSeries;
     }
 }
+
+export class ShowingFilter extends ObjectSeriesFilter<number> {
+    apply(model: ObjectSeriesChartModel): void {
+        const newSeries: Series[] = model.series.slice(0, this.value);
+        model.series = newSeries;
+    }
+}

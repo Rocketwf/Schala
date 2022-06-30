@@ -60,9 +60,9 @@ export class SortByFilter extends ArticlesFilter<string> {
 
 export class CoauthorsFilter extends ArticlesFilter<string[]> {
     apply(model: ArticlesModel): void {
-        let newArticles: Article[];
+        let newArticles: Article[] = model.articles;
         for (const x of this.value) {
-            newArticles = model.articles.filter((article: Article) => this.contains(article.coAuthors, x));
+            newArticles = newArticles.filter((article: Article) => this.contains(article.coAuthors, x));
         }
         model.articles = newArticles;
     }
