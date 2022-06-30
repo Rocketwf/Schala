@@ -2,7 +2,8 @@ import { FullProfile } from '../models/profile';
 import { RowModel } from '../models/viewmodels';
 import { ArticlesModel, PieChartModel } from '../models';
 import { ViewName } from '../models/simplecardmodel/SimpleCardModel';
-import { Series } from '../models/objectserieschartmodel/ObjectSeriesChartModel';
+import { ObjectSeriesChartModel, Series } from '../models/objectserieschartmodel/ObjectSeriesChartModel';
+import { ExpertiseModel } from '../models/simplecardmodel/ExpertiseModel';
 
 export class ProfileRepresentation {
     private _fullProfile: FullProfile;
@@ -12,15 +13,10 @@ export class ProfileRepresentation {
         this._rowModels = new Array<RowModel>();
     }
     renderProfile(): void {
-        this._rowModels = new Array<RowModel>();
-        this.rowModels.push(new RowModel(8));
-        const pby: PieChartModel = this.createCitationsCard();
-
-        this.rowModels[0].simpleCardModels.push(pby);
-
-        this.rowModels.push(new RowModel(10));
-        const art: ArticlesModel = this.createArticlesCard();
-        this.rowModels[1].simpleCardModels.push(art);
+        this.createFirstRow();
+        this.createSecondRow();
+        this.createThirdRow();
+        this.createFourthRow();
     }
 
     public get fullProfile(): FullProfile {
@@ -32,6 +28,31 @@ export class ProfileRepresentation {
     public get rowModels(): RowModel[] {
         return this._rowModels;
     }
+
+    private createPublicationsByYearCard(): ObjectSeriesChartModel {
+        return null;
+    }
+
+    private createPublicationsByVenueCard(): ObjectSeriesChartModel {
+        return null;
+    }
+
+    private createMostCitedScholarsCard(): ObjectSeriesChartModel {
+        return null;
+    }
+
+    private createMostFrequentCoAuthorsCard(): ObjectSeriesChartModel {
+        return null;
+    }
+
+    private createCoAuthorsWithHighestHIndexCard(): ObjectSeriesChartModel {
+        return null;
+    }
+
+    private createExpertiseCard(): ExpertiseModel {
+        return null;
+    }
+
     private createCitationsCard(): PieChartModel {
         const series: Array<Series> = new Array<Series>();
         series.push(
@@ -54,5 +75,35 @@ export class ProfileRepresentation {
             10,
         );
         return articlesModel;
+    }
+
+    //This method creates the first row which renders the following:
+    //Publications by year
+    //Publications by venue
+    //Citations by year
+    private createFirstRow(): void {
+        this._rowModels = new Array<RowModel>();
+        this.rowModels.push(new RowModel(8));
+        const pby: PieChartModel = this.createCitationsCard();
+        this.rowModels[0].simpleCardModels.push(pby);
+    }
+    //This method creates the second row which renders the following:
+    //Most cited scholars
+    //Citation breakdown
+    //Most frquent co-authors
+    private createSecondRow(): void {
+        return;
+    }
+    //This method creates the third row which renders the following:
+    //Co-Authors with highest h-index
+    //Expertise
+    private createThirdRow(): void {
+        return;
+    }
+    //This method creates the fourth row which renders the articles
+    private createFourthRow(): void {
+        this.rowModels.push(new RowModel(10));
+        const art: ArticlesModel = this.createArticlesCard();
+        this.rowModels[1].simpleCardModels.push(art);
     }
 }
