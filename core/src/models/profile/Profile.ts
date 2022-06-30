@@ -1,4 +1,4 @@
-import { Article } from '../articles';
+import { Article, ReferenceOrCitation, Author } from '../articles';
 
 export abstract class Profile {}
 export class BasicProfile implements Profile {
@@ -46,25 +46,14 @@ export class FullProfile {
     private _basicProfile: BasicProfile;
     private _hIndex: HIndex;
     private _i10Index: I10Index;
-    private _selfCitations: number;
-    private _indirectSelfCitations: number;
     private _articles: Article[];
     private _website: string;
+    private _selfCitationCount: number;
 
-    constructor(
-        basicProfile: BasicProfile,
-        hIndex: HIndex,
-        i10Index: I10Index,
-        selfCitations: number,
-        indirectSelfCitations: number,
-        articles: Article[],
-        website: string,
-    ) {
+    constructor(basicProfile: BasicProfile, hIndex: HIndex, i10Index: I10Index, articles: Article[], website: string) {
         this._basicProfile = basicProfile;
         this._hIndex = hIndex;
         this._i10Index = i10Index;
-        this._selfCitations = selfCitations;
-        this._indirectSelfCitations = indirectSelfCitations;
         this._articles = articles;
         this._website = website;
     }
@@ -80,17 +69,31 @@ export class FullProfile {
     public get i10Index(): I10Index {
         return this._i10Index;
     }
-    public get selfCitations(): number {
-        return this._selfCitations;
-    }
-    public get indirectSelfCitations(): number {
-        return this._indirectSelfCitations;
-    }
     public get articles(): Article[] {
         return this._articles;
     }
     public get website(): string {
         return this._website;
+    }
+    public getSelfCitations(): number {
+        console.log('begin self ciztatins');
+        if (this._selfCitationCount) {
+            return this._selfCitationCount;
+        }
+        let selfCitationCount: number = 0;
+        const titles: string[] = new Array<string>();
+        this.articles.forEach((article: Article) => {
+            article.citations.forEach((ref: ReferenceOrCitation) => {
+                if (ref.isOwn(this._basicProfile.id)) {
+                    titles.push(ref.title);
+
+                    ++selfCitationCount;
+                }
+            });
+        });
+        this._selfCitationCount = selfCitationCount;
+        console.log(titles.sort((a: string, b: string) => b.localeCompare(a)));
+        return this._selfCitationCount;
     }
 }
 export class HIndex {
@@ -133,3 +136,24 @@ export class I10Index {
         return this._i10IndexWithoutSelfCitations;
     }
 }
+export class CitationByYear {
+    private _year: number;
+    private _count: number;
+    private _selfCitations: number;
+    constructor(_year: number, _count: number, _selfCitations: number) {
+        this._year = _year;
+        this._count = _count;
+        this._selfCitations = _selfCitations;
+    }
+
+    public get year(): number {
+        return this._year;
+    }
+    public get count(): number {
+        return this._count;
+    }
+    public get selfCitations(): number {
+        return this._selfCitations;
+    }
+}
+

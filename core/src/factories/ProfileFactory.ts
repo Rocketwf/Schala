@@ -16,10 +16,8 @@ export class ProfileFactory {
         const hIndexObj: HIndex = await this.calculateHIndex();
         const i10IndexObj: I10Index = await this.calculateI10Index();
         const articles: Article[] = await this.dataSource.fetchArticles(authorId);
-        //const selfCitations: number = await this.calculateSelfCitations();
-        //const indirectSelfCitations: number = await this.calculateIndirectSelfCitations();
         const website: string = await this.dataSource.fetchWebsite(authorId);
-        return Array.of(new FullProfile(basicProfile, hIndexObj, i10IndexObj, 42, 42, articles, website));
+        return Array.of(new FullProfile(basicProfile, hIndexObj, i10IndexObj, articles, website));
     }
 
     async calculateHIndex(): Promise<HIndex> {
@@ -33,12 +31,12 @@ export class ProfileFactory {
                     article.id,
                     article.title,
                     article.year,
-                    article.citation,
-                    article.selfCitation,
                     article.bibTex,
                     article.url,
                     article.venue,
-                    article.coAuthors,
+                    article.authors,
+                    article.citations,
+                    article.references,
                 ),
             );
 
@@ -97,47 +95,5 @@ export class ProfileFactory {
         }
         const createdI10Index: I10Index = new I10Index(i10Index, i10IndexWithoutSelfCitations);
         return createdI10Index;
-    }
-
-    async calculateSelfCitations(): Promise<number> {
-        const articles: Article[] = await this.dataSource.fetchArticles(this.authorId);
-        let selfCitation: number = 0;
-        for (const article of articles) {
-            const hasSelfCitation: boolean = await this.dataSource.hasSelfCitation(article, this.authorId);
-            if (hasSelfCitation) ++selfCitation;
-        }
-        return selfCitation;
-    }
-
-    async calculateIndirectSelfCitations(): Promise<number> {
-        //const authorPublications: Article[] = new Array<Article>();
-        const articles: Article[] = await this.dataSource.fetchArticles(this.authorId);
-        /*for (const article of articles) {
-            authorPublications.push(
-                new Article(
-                    article.id,
-                    article.title,
-                    article.year,
-                    article.citation,
-                    article.selfCitation,
-                    article.bibTex,
-                    article.url,
-                    article.venue,
-                    article.coAuthors,
-                ),
-            );*/
-        let numberOfIndirectSelfCitations: number = 0;
-        for (const publication of articles) {
-            for (const coAuthor of publication.coAuthors) {
-                const hasSelfCitation: boolean = await this.dataSource.hasSelfCitation(publication, coAuthor.id);
-                if (
-                    coAuthor.id != this.authorId && //Otherwise this would also count direct self citations
-                    hasSelfCitation
-                ) {
-                    numberOfIndirectSelfCitations++;
-                }
-            }
-        }
-        return numberOfIndirectSelfCitations;
     }
 }

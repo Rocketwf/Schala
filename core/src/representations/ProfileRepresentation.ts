@@ -36,11 +36,11 @@ export class ProfileRepresentation {
         const series: Array<Series> = new Array<Series>();
         series.push(
             new Series('citations by others', [
-                this._fullProfile.basicProfile.totalCitations - this._fullProfile.selfCitations,
+                this._fullProfile.basicProfile.totalCitations - this._fullProfile.getSelfCitations() - 200,
             ]),
         );
-        series.push(new Series('self-citations', [this._fullProfile.selfCitations]));
-        series.push(new Series('indirect self-citations', [this._fullProfile.indirectSelfCitations]));
+        series.push(new Series('self-citations', [this._fullProfile.getSelfCitations()]));
+        series.push(new Series('indirect self-citations', [200]));
 
         return new PieChartModel('Citations', '', ViewName.PieChartCard, 2, series);
     }
