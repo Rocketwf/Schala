@@ -25,7 +25,9 @@ const hasNoCitations = () => {
 
 const getSeries = () => {
     const apexSeries: Array<number> = new Array<number>();
+    console.log('sa');
     for (const serie of props.stackedColumns100ChartModel.series) {
+        console.log(serie.data)
         apexSeries.push(...serie.data);
     }
     return apexSeries;

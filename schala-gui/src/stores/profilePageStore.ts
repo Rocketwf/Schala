@@ -30,7 +30,6 @@ export const profilePageStore = defineStore({
             const profile: FullProfile[] = await new ProfileFactory().build(this.profileId);
             this.profileRepresentation = new ProfileRepresentation(profile[0]);
             this.profileRepresentation.fullProfile = profile[0];
-            console.log(profile[0]);
         }
         this.profileRepresentation.renderProfile();
       },

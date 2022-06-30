@@ -16,5 +16,4 @@ const props = defineProps<{
 const getProfileRepresentation = (): ProfileRepresentation => {
     return props.profileRepr;
 };
-console.log(getProfileRepresentation());
 </script>

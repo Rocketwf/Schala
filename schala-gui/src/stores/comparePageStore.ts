@@ -24,6 +24,7 @@ export const comparePageStore = defineStore({
             }
             const profile: FullProfile[] = await new ProfileFactory().build(profileId);
             this.fullProfiles.push(profile[0]);
+            this.comparisonRepresentation.fullProfiles = this.fullProfiles;
             this.comparisonRepresentation.renderComparison();
         },
 
@@ -32,6 +33,7 @@ export const comparePageStore = defineStore({
                 return;
             }
             this.fullProfiles = this.fullProfiles.filter((p) => p.basicProfile.id !== profileId);
+            this.comparisonRepresentation.fullProfiles = this.fullProfiles;
             this.comparisonRepresentation.renderComparison();
         },
 

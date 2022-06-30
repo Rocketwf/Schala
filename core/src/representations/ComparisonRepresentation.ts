@@ -77,7 +77,7 @@ export class ComparisonRepresentation {
         const stackedColumns100ChartModel: StackedColumns100ChartModel = new StackedColumns100ChartModel(
             'Citations',
             '',
-            ViewName.StackedColumns100Chart,
+            ViewName.StackedColumns100ChartCard,
             6,
             series,
             'Scholar Names',

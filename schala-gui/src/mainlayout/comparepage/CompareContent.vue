@@ -16,5 +16,4 @@ const props = defineProps<{
 const getComparisonRepresentation = (): ComparisonRepresentation => {
     return props.comparisonRepr;
 };
-console.log(getComparisonRepresentation());
 </script>
