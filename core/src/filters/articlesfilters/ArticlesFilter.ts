@@ -76,3 +76,31 @@ export class CoauthorsFilter extends ArticlesFilter<string[]> {
         return false;
     }
 }
+
+export class WordsInTitleFilter extends ArticlesFilter<string[]> {
+    apply(model: ArticlesModel): void {
+        let newArticles: Article[] = model.articles;
+        for (const x of this.value) {
+            newArticles = newArticles.filter((article: Article) => this.contains(article.title, x));
+        }
+        model.articles = newArticles;
+    }
+
+    private contains(title: string, word: string): boolean {
+        const splitTitle: string[] = title.split(' ');
+        for (const part of splitTitle) {
+            if (part == word) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+export class NumberOfCitationsFilter extends ArticlesFilter<number> {
+    apply(model: ArticlesModel): void {
+        const newArticles: Article[] = model.articles;
+        newArticles.filter((article: Article) => article.citation >= this.value);
+        model.articles = newArticles;
+    }
+}
