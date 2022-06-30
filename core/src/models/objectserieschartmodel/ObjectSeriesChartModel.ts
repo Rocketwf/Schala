@@ -1,8 +1,14 @@
 import { Filter, Filterable } from '../../filters';
+import { SimpleCardModel, ViewName } from '../simplecardmodel';
 
-export class ObjectSeriesChartModel implements Filterable<ObjectSeriesChartModel> {
+export class ObjectSeriesChartModel implements Filterable<ObjectSeriesChartModel>, SimpleCardModel {
     filters: Filter<object, ObjectSeriesChartModel>[];
     private _series: Series[];
+    private _id: string;
+    private _colWidth: number;
+    private _title: string;
+    private _sub: string;
+    private _viewName: ViewName;
 
     public get series(): Series[] {
         return this._series;
@@ -10,6 +16,22 @@ export class ObjectSeriesChartModel implements Filterable<ObjectSeriesChartModel
 
     public set series(newSeries: Series[]) {
         this._series = newSeries;
+    }
+
+    public get id(): string {
+        return this._id;
+    }
+    public get colWidth(): number {
+        return this._colWidth;
+    }
+    public get title(): string {
+        return this._title;
+    }
+    public get sub(): string {
+        return this._sub;
+    }
+    public get viewName(): ViewName {
+        return this._viewName;
     }
 
     deepCopy(): ObjectSeriesChartModel {
