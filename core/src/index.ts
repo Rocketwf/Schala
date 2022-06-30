@@ -31,5 +31,6 @@ export {
     ViewName,
     Series,
     RowModel,
+    StackedColumns100ChartModel,
 } from './models';
 export { ProfileRepresentation, ComparisonRepresentation } from './representations';
