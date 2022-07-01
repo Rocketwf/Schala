@@ -3,14 +3,34 @@ import { FullProfile, ComparisonRepresentation, ProfileFactory } from 'schala-co
 import { profilePageStore } from './profilePageStore';
 const profileStore = profilePageStore();
 
+/**
+ * Stores elements needed for ComparePage.
+ */
 export const comparePageStore = defineStore({
     id: 'comparePage',
     state: () => ({
+        /**
+         * List of FullProfile that will be represented in ComparePage.
+         */
         fullProfiles: [] as FullProfile[],
+
+        /**
+         * class responsible for rendering a comparison.
+         */
         comparisonRepresentation: new ComparisonRepresentation([] as FullProfile[]),
+
+        /**
+        * Store where the info of ProfilePage is stored.
+        */
         profilePageStore: profilePageStore(),
     }),
     actions: {
+
+        /**
+         * Adds the profile with the given ID, if it is present in ProfilePageStore,
+         * otherwise it uses the ProfileFactory from the ProfilePageStore
+         * to build a FullProfile.
+         */
         async addProfile(profileId: string) {
             let fullProfile: FullProfile;
             if (this.fullProfiles.length > 4 || this.isBeingCompared(profileId)) {
@@ -28,6 +48,11 @@ export const comparePageStore = defineStore({
             this.comparisonRepresentation.renderComparison();
         },
 
+        /**
+         * Removes the given profile if it is present.
+         * @param profileId - to be removed profile's id
+         * @returns null
+         */
         removeProfile(profileId: string) {
             if (this.fullProfiles.length == 0) {
                 return;
@@ -38,14 +63,27 @@ export const comparePageStore = defineStore({
         },
 
 
+        /**
+         * Getter method of ComparisonRepresentation.
+         * @returns ComparisonRepresentation
+         */
         getComparisonRepresentation() {
             return this.comparisonRepresentation;
         },
 
+        /**
+         * Getter method of ProfilePageStore.
+         * @returns ProfilePageStore
+         */
         getProfilePageStore() {
             return profileStore;
         },
 
+        /**
+         * Returns whether the given profileId is being compared.
+         * @param profileId - to be checked profile's id
+         * @returns true if the profile is in comparison
+         */
         isBeingCompared(profileId: string) {
             for (const profile of this.fullProfiles) {
                 if (profile.basicProfile.id === profileId) {

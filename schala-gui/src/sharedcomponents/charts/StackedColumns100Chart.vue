@@ -12,17 +12,26 @@
     </div>
 </template>
 <script setup charset="utf-8" lang="ts">
+/**
+ * The StackedColumns100Chart contains the 100% stacked columns chart implementation that is shown in a StackedColumns100ChartCard.
+ */
 import { Series, StackedColumns100ChartModel } from 'schala-core';
 
 const props = defineProps<{
     stackedColumns100ChartModel: StackedColumns100ChartModel;
 }>();
 
+/**
+ * Checks if the total citation count of the authors is 0. If yes, returns true.
+ */
 const hasNoCitations = () => {
   const series: Array<Series> = getSeries();
   return series[0].data.reduce((a, b) => a + b, 0) + series[1].data.reduce((a, b) => a + b, 0) + series[2].data.reduce((a, b) => a + b, 0) === 0;
 }
 
+/**
+ * Converts the series to the form specific to the StackedColumns100Chart.
+ */
 const getSeries = () => {
     const apexSeries: Array<Series> = new Array<Series>();
 
@@ -49,6 +58,10 @@ const getSeries = () => {
 };
 
 type ApexOptionsType = { seriesIndex: number; dataPointIndex: number, w: { config: { series: Array<Series> } } };
+
+/**
+ *  Options of the displayed apex-chart
+ */
 const chartOptions = {
     dataLabels: {
         enabled: true,

@@ -2,6 +2,9 @@ import { Filter } from '../../filters';
 import { ViewName } from '../simplecardmodel';
 import { ObjectSeriesChartModel, Series } from './ObjectSeriesChartModel';
 
+/**
+ * Data structure for the 100% stacked columns chart.
+ */
 export class StackedColumns100ChartModel extends ObjectSeriesChartModel {
     constructor(
         _title: string,

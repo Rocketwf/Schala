@@ -5,6 +5,9 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * Holds the visualisation of scholar comparison.
+ */
 import { ComparisonRepresentation } from 'schala-core';
 import PageRow from 'src/sharedcomponents/PageRow.vue';
 
@@ -12,7 +15,9 @@ const props = defineProps<{
     comparisonRepr: ComparisonRepresentation;
 }>();
 
-// Methods
+/**
+ * Getter method for the ComparisonRepresentation.
+ */
 const getComparisonRepresentation = (): ComparisonRepresentation => {
     return props.comparisonRepr;
 };

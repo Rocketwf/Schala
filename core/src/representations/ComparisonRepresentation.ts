@@ -2,15 +2,30 @@ import { Series, StackedColumns100ChartModel, ViewName } from '../models';
 import { FullProfile } from '../models/profile';
 import { RowModel } from '../models/viewmodels';
 
+/**
+ * Builds the data structure that will be given to ComparePage.
+ */
 export class ComparisonRepresentation {
     private _fullProfiles: FullProfile[];
+
+    /**
+     * Rows to be displayed in the comparison.
+     */
     private _rowModels: RowModel[];
 
+    /**
+     *  Constructs the ComparisonRepresentation
+     * @param _fullProfiles - FullProfiles present in the ComparePage
+     */
     constructor(_fullProfiles: FullProfile[]) {
         this._fullProfiles = _fullProfiles;
         this._rowModels = new Array<RowModel>();
     }
 
+    /**
+     * Updates the rows of ComparePage.
+     * @returns void
+     */
     renderComparison(): void {
         this._rowModels = new Array<RowModel>();
         if (this.fullProfiles.length === 0) {
@@ -20,19 +35,39 @@ export class ComparisonRepresentation {
 
         this.pushRow(cerRow);
     }
+
+    /**
+     * Getter method of RowModels.
+     */
     public get rowModels(): RowModel[] {
         return this._rowModels;
     }
-    //TODO: Implement these (I didnt because it was getting too late ZZZZzzzzz)
+
+    /**
+     * Setter method of RowModel list.
+     */
     public set rowModels(rowModels: RowModel[]) {
         this._rowModels = rowModels;
     }
+
+    /**
+     * Adds a row into the RowModel list.
+     * @param rowModel - Rowmodel to push
+     */
     public pushRow(rowModel: RowModel): void {
         this._rowModels.push(rowModel);
     }
+
+    /**
+     * Getter method of the fullProfiles
+     */
     public get fullProfiles(): FullProfile[] {
         return this._fullProfiles;
     }
+
+    /**
+     * Setter method of the fullProfiles
+     */
     public set fullProfiles(fullProfile: FullProfile[]) {
         this._fullProfiles = fullProfile;
     }
@@ -51,6 +86,11 @@ export class ComparisonRepresentation {
     private createPublicationByYearRow(): RowModel {
         return null;
     }
+
+    /**
+     * Creates citations and expertise rows.
+     * @returns - RowModel containing the citations and expertise models
+     */
     private createCitationsExpertiseRow(): RowModel {
         const cerRow: RowModel = new RowModel(12);
         const series: Array<Series> = new Array<Series>();
