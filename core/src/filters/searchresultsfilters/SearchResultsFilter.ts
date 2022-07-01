@@ -35,11 +35,17 @@ export class WordsInTitleFilter extends SearchResultsFilter<string> {
     }
 }
 export class SearchResultsPaginationFilter extends SearchResultsFilter<number> {
+    /**
+     *  Integer representing the number of articles per page.
+     */
     private _hitsPerPage: number;
     constructor(value: number, hitsPerPage: number) {
         super(value);
         this._hitsPerPage = hitsPerPage;
     }
+    /**
+     * Setter method of the hitsPerPage attribute.
+     */
     public set hitsPerPage(newHitsPerPage: number) {
         this._hitsPerPage = newHitsPerPage;
     }

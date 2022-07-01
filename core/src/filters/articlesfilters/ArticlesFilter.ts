@@ -7,12 +7,18 @@ export abstract class ArticlesFilter<S> extends Filter<S, ArticlesModel> {
 }
 
 export class ArticlesPaginationFilter extends ArticlesFilter<number> {
+    /**
+     *  Integer representing the number of articles per page.
+     */
     private _hitsPerPage: number = 10;
 
     constructor(value: number) {
         super(value);
     }
 
+    /**
+     * Setter method of the hitsPerPage attribute.
+     */
     public set hitsPerPage(newHitsPerPage: number) {
         this._hitsPerPage = newHitsPerPage;
     }
@@ -73,9 +79,12 @@ export class CoauthorsFilter extends ArticlesFilter<string[]> {
         model.articles = newArticles;
     }
 
+    /**
+     * Method for checking if a string includes given substrings.
+     */
     private contains(coAuthors: CoAuthor[], name: string): boolean {
         for (const coAuthor of coAuthors) {
-            if (coAuthor.name == name) {
+            if (name.indexOf(coAuthor.name) >= 0) {
                 return true;
             }
         }
@@ -95,10 +104,13 @@ export class WordsInTitleFilter extends ArticlesFilter<string[]> {
         model.articles = newArticles;
     }
 
+    /**
+     * Method for checking if a string includes given substrings.
+     */
     private contains(title: string, word: string): boolean {
         const splitTitle: string[] = title.split(' ');
         for (const part of splitTitle) {
-            if (part == word) {
+            if (part.indexOf(word) >= 0) {
                 return true;
             }
         }
@@ -129,7 +141,7 @@ export class KeywordsFilter extends ArticlesFilter<string[]> {
                 }
                 const lowerCaseValue: string = x.toLowerCase();
                 const lowerCaseName: string = article.abstract.toLowerCase();
-                return lowerCaseName.includes(lowerCaseValue);
+                return lowerCaseName.indexOf(lowerCaseValue) >= 0;
             });
         }
         model.articles = newArticles;

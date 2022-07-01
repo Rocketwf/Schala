@@ -13,13 +13,7 @@ describe('articles filter test', () => {
     it('sorts articles by year', async () => {
         const articles: Article[] = await SemanticScholarSource.getInstance().fetchArticles('1679754');
 
-        const articleModel: ArticlesModel = new ArticlesModel(
-            articles,
-            'Articles',
-            'SUB',
-            ViewName['ArticlesCard'],
-            10,
-        );
+        const articleModel: ArticlesModel = new ArticlesModel(articles, 'Articles', 'SUB', ViewName.ArticlesCard, 10);
         const sortBy: SortByFilter = new SortByFilter('year');
         sortBy.apply(articleModel);
         expect(articleModel.articles[0].year).toBe(2021);
@@ -27,13 +21,7 @@ describe('articles filter test', () => {
     it('sorts articles by citations', async () => {
         const articles: Article[] = await SemanticScholarSource.getInstance().fetchArticles('1679754');
 
-        const articleModel: ArticlesModel = new ArticlesModel(
-            articles,
-            'Articles',
-            'SUB',
-            ViewName['ArticlesCard'],
-            10,
-        );
+        const articleModel: ArticlesModel = new ArticlesModel(articles, 'Articles', 'SUB', ViewName.ArticlesCard, 10);
         const sortBy: SortByFilter = new SortByFilter('citations');
         sortBy.apply(articleModel);
         expect(articleModel.articles[0].citation).toBe(269);
@@ -41,13 +29,7 @@ describe('articles filter test', () => {
     it('sorts articles by citations', async () => {
         const articles: Article[] = await SemanticScholarSource.getInstance().fetchArticles('1679754');
 
-        const articleModel: ArticlesModel = new ArticlesModel(
-            articles,
-            'Articles',
-            'SUB',
-            ViewName['ArticlesCard'],
-            10,
-        );
+        const articleModel: ArticlesModel = new ArticlesModel(articles, 'Articles', 'SUB', ViewName.ArticlesCard, 10);
         const sortBy: SortByFilter = new SortByFilter('self-citations');
         sortBy.apply(articleModel);
         expect(articleModel.articles[0].selfCitation).toBe(20);
@@ -55,13 +37,7 @@ describe('articles filter test', () => {
     it('filters articles by coauthors', async () => {
         const articles: Article[] = await SemanticScholarSource.getInstance().fetchArticles('1679754');
 
-        const articleModel: ArticlesModel = new ArticlesModel(
-            articles,
-            'Articles',
-            'SUB',
-            ViewName['ArticlesCard'],
-            10,
-        );
+        const articleModel: ArticlesModel = new ArticlesModel(articles, 'Articles', 'SUB', ViewName.ArticlesCard, 10);
         const strings: string[] = [];
         strings.push('D. Garlan');
         const coAuthor: CoauthorsFilter = new CoauthorsFilter(strings);
@@ -71,13 +47,7 @@ describe('articles filter test', () => {
     it('filters articles by words in the title', async () => {
         const articles: Article[] = await SemanticScholarSource.getInstance().fetchArticles('1679754');
 
-        const articleModel: ArticlesModel = new ArticlesModel(
-            articles,
-            'Articles',
-            'SUB',
-            ViewName['ArticlesCard'],
-            10,
-        );
+        const articleModel: ArticlesModel = new ArticlesModel(articles, 'Articles', 'SUB', ViewName.ArticlesCard, 10);
         const strings: string[] = [];
         strings.push('COVID');
         const words: WordsInTitleFilter = new WordsInTitleFilter(strings);
@@ -87,13 +57,7 @@ describe('articles filter test', () => {
     it('filters articles by number of citations', async () => {
         const articles: Article[] = await SemanticScholarSource.getInstance().fetchArticles('1679754');
 
-        const articleModel: ArticlesModel = new ArticlesModel(
-            articles,
-            'Articles',
-            'SUB',
-            ViewName['ArticlesCard'],
-            10,
-        );
+        const articleModel: ArticlesModel = new ArticlesModel(articles, 'Articles', 'SUB', ViewName.ArticlesCard, 10);
         const number: NumberOfCitationsFilter = new NumberOfCitationsFilter(20);
         number.apply(articleModel);
         expect(articleModel.articles[0].title).toBe(
@@ -103,14 +67,8 @@ describe('articles filter test', () => {
     it('filters articles by keywords', async () => {
         const articles: Article[] = await SemanticScholarSource.getInstance().fetchArticles('1679754');
 
-        const articleModel: ArticlesModel = new ArticlesModel(
-            articles,
-            'Articles',
-            'SUB',
-            ViewName['ArticlesCard'],
-            10,
-        );
-        const strings: string[] = ['Understanding', 'context'];
+        const articleModel: ArticlesModel = new ArticlesModel(articles, 'Articles', 'SUB', ViewName.ArticlesCard, 10);
+        const strings: string[] = ['Understanding', 'cont'];
         const keywords: KeywordsFilter = new KeywordsFilter(strings);
         keywords.apply(articleModel);
         expect(articleModel.articles[0].title).toBe(

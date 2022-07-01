@@ -3,10 +3,10 @@ import { ChartOptionsModel, Series } from '../../../models';
 describe('chart options filter', () => {
     it('limits y axis of a chart to highest value ', () => {
         const series: Series[] = [
-            new Series('2020', [3, 5, 50], 'gg'),
-            new Series('2021', [5, 70], 'gg'),
-            new Series('2022', [20, 35], 'gg'),
-            new Series('2019', [10, 3, 6, 22, 14], 'gg'),
+            new Series('2020', [3, 5, 50]),
+            new Series('2021', [5, 70]),
+            new Series('2022', [20, 35]),
+            new Series('2019', [10, 3, 6, 22, 14]),
         ];
         const model: ChartOptionsModel = new ChartOptionsModel(series);
         const chart: ScaleUpFilter = new ScaleUpFilter(true);
