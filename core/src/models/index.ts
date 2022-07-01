@@ -2,7 +2,7 @@ export { APIAuthor, APIJournal } from './api';
 export { Article } from './articles';
 export { ArticlesModel } from './articlesmodel';
 export { ChartOptionsModel } from './chartoptionsmodel';
-export { Input, PopupEditButton } from './inputs';
+export { CheckBox, TextField, SelectOption, Input, PopupEditButton } from './inputs';
 export { ObjectSeriesChartModel, Series } from './objectserieschartmodel';
 export { Profile, BasicProfile, FullProfile } from './profile';
 export { SearchResultsModel } from './searchresultsmodel';
