@@ -55,30 +55,21 @@ export class ComparisonRepresentation {
         const cerRow: RowModel = new RowModel(12);
         const series: Array<Series> = new Array<Series>();
 
-        const citationData: number[] = [];
         this.fullProfiles.forEach((profile: FullProfile) => {
-            citationData.push(
-                profile.basicProfile.totalCitations - profile.selfCitations - profile.indirectSelfCitations,
+            series.push(
+                new Series(profile.basicProfile.name, [
+                    profile.basicProfile.totalCitations - profile.selfCitations - profile.indirectSelfCitations,
+                    profile.selfCitations,
+                    profile.indirectSelfCitations,
+                ]),
             );
         });
-        series.push(new Series('citations by others', citationData));
-
-        const selfCitationData: number[] = [];
-        this.fullProfiles.forEach((profile: FullProfile) => {
-            selfCitationData.push(profile.selfCitations);
-        });
-        series.push(new Series('self-citations', selfCitationData));
-
-        const indirectSelfCitationData: number[] = [];
-        this.fullProfiles.forEach((profile: FullProfile) => {
-            indirectSelfCitationData.push(profile.indirectSelfCitations);
-        });
-        series.push(new Series('indirect self-citations', indirectSelfCitationData));
 
         const labels: string[] = [];
         this.fullProfiles.forEach((profile: FullProfile) => {
             labels.push(profile.basicProfile.name);
         });
+
         const stackedColumns100ChartModel: StackedColumns100ChartModel = new StackedColumns100ChartModel(
             'Citations',
             '',

@@ -24,7 +24,28 @@ const hasNoCitations = () => {
 }
 
 const getSeries = () => {
-    return props.stackedColumns100ChartModel.series;
+    const apexSeries: Array<Series> = new Array<Series>();
+
+    const citationData: number[] = [];
+    props.stackedColumns100ChartModel.series.forEach((serie: Series) => {
+        citationData.push(
+            serie.data[0],
+        );
+    });
+    apexSeries.push(new Series('citations by others', citationData));
+
+    const selfCitationData: number[] = [];
+    props.stackedColumns100ChartModel.series.forEach((serie: Series) => {
+        selfCitationData.push(serie.data[1]);
+    });
+    apexSeries.push(new Series('self-citations', selfCitationData));
+
+    const indirectSelfCitationData: number[] = [];
+    props.stackedColumns100ChartModel.series.forEach((serie: Series) => {
+        indirectSelfCitationData.push(serie.data[2]);
+    });
+    apexSeries.push(new Series('indirect self-citations', indirectSelfCitationData));
+    return apexSeries;
 };
 
 type ApexOptionsType = { seriesIndex: number; dataPointIndex: number, w: { config: { series: Array<Series> } } };
@@ -32,7 +53,7 @@ const chartOptions = {
     dataLabels: {
         enabled: true,
         enabledOnSeries: undefined,
-        formatter: function(value:number, { seriesIndex, dataPointIndex, w }:ApexOptionsType) {
+        formatter: function(value:number, { seriesIndex, dataPointIndex, w }: ApexOptionsType) {
                 return w.config.series[seriesIndex].data[dataPointIndex] + ' (' + Number(value).toFixed(2) + '%)'
         },
     },
