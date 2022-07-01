@@ -32,8 +32,8 @@ export class SemanticScholarSource implements DataSource {
     }
     private async getAndCacheFullAuthor(authorId: string): Promise<APIAuthor> {
         const cachedAuthor: APIAuthor = this.authorIdAPIAuthor.get(authorId);
-        let extra: APIAuthorExtra = {} as APIAuthorExtra;
         let basic: APIBasicAuthor = {} as APIBasicAuthor;
+        let extra: APIAuthorExtra = {} as APIAuthorExtra;
         if (cachedAuthor) {
             if (cachedAuthor.filled) {
                 return cachedAuthor;
@@ -88,13 +88,43 @@ export class SemanticScholarSource implements DataSource {
         const { data: papers }: AxiosResponse<APIPapers, object> = await axios.get<APIPapers>(
             'https://api.semanticscholar.org/graph/v1/author/' +
                 authorId +
-                '/papers/?fields=paperId,url,title,abstract,venue,year,referenceCount,citationCount,isOpenAccess,fieldsOfStudy,publicationTypes,publicationDate,journal,authors,citations.paperId,citations.authors,citations.title,citations.year,references.paperId,references.authors,references.title,references.year&limit=1000',
+                '/papers/?fields=paperId,url,title,abstract,venue,year,referenceCount,citationCount,isOpenAccess,fieldsOfStudy,publicationTypes,publicationDate,journal&limit=1000',
             {
                 headers: {
                     Accept: 'application/json',
                 },
             },
         );
+        const {
+            data: papersExtra,
+        }: AxiosResponse<
+            { paperId: string; authors: APICoAuthor[]; citations: APIRefCit[]; references: APIRefCit[] }[],
+            object
+        > = await axios.get<
+            { paperId: string; authors: APICoAuthor[]; citations: APIRefCit[]; references: APIRefCit[] }[]
+        >(
+            'http://70.34.209.19:3000/papers?authorId=' +
+                authorId +
+                '&fields=authors,authors.name,authors.hIndex,citations,citations.authors,citations.title,citations.year,references,references.authors,references.year,references.title',
+            {
+                headers: {
+                    Accept: 'application/json',
+                },
+            },
+        );
+        //citations.paperId,citations.authors,citations.title,citations.year,references.paperId,references.authors,references.title,references.year
+        const consistentPapers: APIPaper[] = new Array<APIPaper>();
+        for (const paper of papersExtra) {
+            const correspondingPaper: APIPaper = papers.data.find((p: APIPaper) => p.paperId === paper.paperId);
+            if (correspondingPaper) {
+                correspondingPaper.citations = paper.citations;
+                correspondingPaper.references = paper.references;
+                correspondingPaper.authors = paper.authors;
+                consistentPapers.push(correspondingPaper);
+            }
+        }
+        papers.data = consistentPapers;
+
         const fullAuthor: APIAuthor = {
             basicAuthor: basic,
             authorExtra: extra,
@@ -216,7 +246,7 @@ export class SemanticScholarSource implements DataSource {
                 '',
                 apiPaper.url,
                 apiPaper.journal ? apiPaper.journal.name : '',
-                apiPaper.authors.map((author: APICoAuthor) => new Author(author.authorId, author.name)),
+                apiPaper.authors.map((author: APICoAuthor) => new Author(author.authorId, author.name, author.hIndex)),
                 apiPaper.citations.map(
                     (citation: APIRefCit) =>
                         new ReferenceOrCitation(

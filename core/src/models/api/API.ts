@@ -6,6 +6,7 @@ export interface APIJournal {
 export interface APICoAuthor {
     authorId: string;
     name: string;
+    hIndex?: number;
 }
 export interface APIRefCit {
     paperId: string;

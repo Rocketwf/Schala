@@ -1,4 +1,4 @@
-import { Article, ReferenceOrCitation, Author } from '../articles';
+import { Article, Author, ReferenceOrCitation } from '../articles';
 
 export abstract class Profile {}
 export class BasicProfile implements Profile {
@@ -49,6 +49,7 @@ export class FullProfile {
     private _articles: Article[];
     private _website: string;
     private _selfCitationCount: number;
+    private _indirectSelfCitationCount: number;
 
     constructor(basicProfile: BasicProfile, hIndex: HIndex, i10Index: I10Index, articles: Article[], website: string) {
         this._basicProfile = basicProfile;
@@ -76,24 +77,36 @@ export class FullProfile {
         return this._website;
     }
     public getSelfCitations(): number {
-        console.log('begin self ciztatins');
         if (this._selfCitationCount) {
             return this._selfCitationCount;
         }
         let selfCitationCount: number = 0;
-        const titles: string[] = new Array<string>();
         this.articles.forEach((article: Article) => {
-            article.citations.forEach((ref: ReferenceOrCitation) => {
-                if (ref.isOwn(this._basicProfile.id)) {
-                    titles.push(ref.title);
-
-                    ++selfCitationCount;
-                }
-            });
+            selfCitationCount += article.getSelfCitations(this._basicProfile.id);
         });
         this._selfCitationCount = selfCitationCount;
-        console.log(titles.sort((a: string, b: string) => b.localeCompare(a)));
         return this._selfCitationCount;
+    }
+    public getIndirectSelfCitations(): number {
+        console.log('begin indirect self citations');
+        if (this._indirectSelfCitationCount) {
+            return this._indirectSelfCitationCount;
+        }
+        let indirectSelfCitationCount: number = 0;
+        for (const article of this._articles) {
+            for (const citation of article.citations) {
+                if (citation.isOwn(this._basicProfile.id)) continue;
+                for (const author of citation.authors) {
+                    if (article.authors.find((e: Author) => e.id === author.id)) {
+                        ++indirectSelfCitationCount;
+                        break;
+                    }
+                }
+            }
+        }
+
+        this._indirectSelfCitationCount = indirectSelfCitationCount;
+        return this._indirectSelfCitationCount;
     }
 }
 export class HIndex {
@@ -156,4 +169,3 @@ export class CitationByYear {
         return this._selfCitations;
     }
 }
-

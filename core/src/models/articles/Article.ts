@@ -75,15 +75,27 @@ export class Article {
     public set references(_references: ReferenceOrCitation[]) {
         this._references = _references;
     }
+    public getSelfCitations(of: string): number {
+        let selfCitationCount: number = 0;
+        this.references.forEach((ref: ReferenceOrCitation) => {
+            if (ref.isOwn(of)) {
+                ++selfCitationCount;
+            }
+        });
+
+        return selfCitationCount;
+    }
 }
 
 export class Author {
     private _id: string;
     private _name: string;
+    private _hIndex: number;
 
-    constructor(_id: string, _name: string) {
+    constructor(_id: string, _name: string, _hIndex?: number) {
         this._id = _id;
         this._name = _name;
+        this._hIndex = _hIndex;
     }
     public get id(): string {
         return this._id;
@@ -91,6 +103,9 @@ export class Author {
 
     public get name(): string {
         return this._name;
+    }
+    public get hIndex(): number {
+        return this._hIndex;
     }
 }
 export class ReferenceOrCitation {
