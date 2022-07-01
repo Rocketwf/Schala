@@ -21,6 +21,7 @@ export {
     Input,
     PopupEditButton,
     ObjectSeriesChartModel,
+    StackedColumnsChartModel,
     Profile,
     BasicProfile,
     FullProfile,

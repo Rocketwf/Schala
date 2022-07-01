@@ -2,13 +2,34 @@ import { Filter, Filterable } from '../../filters';
 import { SimpleCardModel, ViewName } from '../simplecardmodel';
 
 export class ObjectSeriesChartModel implements Filterable<ObjectSeriesChartModel>, SimpleCardModel {
-    filters: Filter<object, ObjectSeriesChartModel>[];
     private _series: Series[];
     private _id: string;
     private _colWidth: number;
     private _title: string;
     private _sub: string;
     private _viewName: ViewName;
+    private _xTitle: string;
+    private _yTitle: string;
+    private _labels: string[];
+    constructor(
+        _title: string,
+        _sub: string,
+        _viewName: ViewName,
+        _colWidth: number,
+        _series: Array<Series>,
+        _xTitle: string,
+        _yTitle: string,
+        _labels: string[],
+    ) {
+        this._title = _title;
+        this._sub = _sub;
+        this._viewName = _viewName;
+        this._colWidth = _colWidth;
+        this._series = _series;
+        this._xTitle = _xTitle;
+        this._yTitle = _yTitle;
+        this._labels = _labels;
+    }
 
     public get series(): Series[] {
         return this._series;
@@ -34,6 +55,15 @@ export class ObjectSeriesChartModel implements Filterable<ObjectSeriesChartModel
         return this._viewName;
     }
 
+    public get xTitle(): string {
+        return this._xTitle;
+    }
+    public get yTitle(): string {
+        return this._yTitle;
+    }
+    public get labels(): string[] {
+        return this._labels;
+    }
     deepCopy(): ObjectSeriesChartModel {
         throw new Error('Method not implemented.');
     }

@@ -48,8 +48,9 @@ export class FullProfile {
     private _i10Index: I10Index;
     private _articles: Article[];
     private _website: string;
-    private _selfCitationCount: number;
-    private _indirectSelfCitationCount: number;
+    private _selfCitationCountByYear: Map<number, number>;
+    private _indirectSelfCitationByYear: Map<number, number>;
+    private _totalCitationsByYear: Map<number, number>;
 
     constructor(basicProfile: BasicProfile, hIndex: HIndex, i10Index: I10Index, articles: Article[], website: string) {
         this._basicProfile = basicProfile;
@@ -76,37 +77,78 @@ export class FullProfile {
     public get website(): string {
         return this._website;
     }
-    public getSelfCitations(): number {
-        if (this._selfCitationCount) {
-            return this._selfCitationCount;
+    public getSelfCitationsByYear(): Map<number, number> {
+        if (this._selfCitationCountByYear) {
+            return this._selfCitationCountByYear;
         }
-        let selfCitationCount: number = 0;
+        const selfCitationCountByYear: Map<number, number> = new Map<number, number>();
         this.articles.forEach((article: Article) => {
-            selfCitationCount += article.getSelfCitations(this._basicProfile.id);
+            if (!selfCitationCountByYear.has(article.year)) selfCitationCountByYear.set(article.year, 0);
+            selfCitationCountByYear.set(
+                article.year,
+                selfCitationCountByYear.get(article.year) + article.getSelfCitations(this._basicProfile.id),
+            );
         });
-        this._selfCitationCount = selfCitationCount;
-        return this._selfCitationCount;
+        this._selfCitationCountByYear = selfCitationCountByYear;
+        return this._selfCitationCountByYear;
     }
-    public getIndirectSelfCitations(): number {
-        console.log('begin indirect self citations');
-        if (this._indirectSelfCitationCount) {
-            return this._indirectSelfCitationCount;
+    public getSelfCitationsCount(): number {
+        const selfCitationsByYear: number = Array.from(this.getSelfCitationsByYear().values()).reduce(
+            (acc: number, value: number) => acc + value,
+        );
+        return selfCitationsByYear;
+    }
+    public getIndirectSelfCitationsByYear(): Map<number, number> {
+        if (this._indirectSelfCitationByYear) {
+            return this._indirectSelfCitationByYear;
         }
-        let indirectSelfCitationCount: number = 0;
+        const indirectSelfCitationCountByYear: Map<number, number> = new Map<number, number>();
         for (const article of this._articles) {
             for (const citation of article.citations) {
                 if (citation.isOwn(this._basicProfile.id)) continue;
                 for (const author of citation.authors) {
                     if (article.authors.find((e: Author) => e.id === author.id)) {
-                        ++indirectSelfCitationCount;
+                        if (!indirectSelfCitationCountByYear.has(citation.year))
+                            indirectSelfCitationCountByYear.set(citation.year, 0);
+                        indirectSelfCitationCountByYear.set(
+                            citation.year,
+                            indirectSelfCitationCountByYear.get(citation.year) + 1,
+                        );
                         break;
                     }
                 }
             }
         }
 
-        this._indirectSelfCitationCount = indirectSelfCitationCount;
-        return this._indirectSelfCitationCount;
+        this._indirectSelfCitationByYear = indirectSelfCitationCountByYear;
+        return this._indirectSelfCitationByYear;
+    }
+    public getIndirectSelfCitationsCount(): number {
+        const indirectSelfCitationsByYear: number = Array.from(this.getIndirectSelfCitationsByYear().values()).reduce(
+            (acc: number, value: number) => acc + value,
+        );
+        return indirectSelfCitationsByYear;
+    }
+    public getTotalCitationsByYear(): Map<number, number> {
+        if (this._totalCitationsByYear) {
+            return this._totalCitationsByYear;
+        }
+        const totalCitationsCountByYear: Map<number, number> = new Map<number, number>();
+        for (const article of this._articles) {
+            for (const citation of article.citations) {
+                if (!totalCitationsCountByYear.has(citation.year)) totalCitationsCountByYear.set(citation.year, 0);
+                totalCitationsCountByYear.set(citation.year, totalCitationsCountByYear.get(citation.year) + 1);
+            }
+        }
+
+        this._totalCitationsByYear = totalCitationsCountByYear;
+        return this._totalCitationsByYear;
+    }
+    public getTotalCitationsCount(): number {
+        const totalCitationsCountByYear: number = Array.from(this.getTotalCitationsByYear().values()).reduce(
+            (acc: number, value: number) => acc + value,
+        );
+        return totalCitationsCountByYear;
     }
 }
 export class HIndex {
