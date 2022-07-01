@@ -31,5 +31,6 @@ export {
     ViewName,
     Series,
     RowModel,
+    LineColumnsMixedChartModel,
 } from './models';
 export { ProfileRepresentation, ComparisonRepresentation } from './representations';
