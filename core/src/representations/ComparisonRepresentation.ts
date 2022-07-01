@@ -13,6 +13,9 @@ export class ComparisonRepresentation {
 
     renderComparison(): void {
         this._rowModels = new Array<RowModel>();
+        if (this.fullProfiles.length === 0) {
+            return;
+        }
         const cerRow: RowModel = this.createCitationsExpertiseRow();
 
         this.pushRow(cerRow);
@@ -54,7 +57,9 @@ export class ComparisonRepresentation {
 
         const citationData: number[] = [];
         this.fullProfiles.forEach((profile: FullProfile) => {
-            citationData.push(profile.basicProfile.totalCitations - profile.selfCitations);
+            citationData.push(
+                profile.basicProfile.totalCitations - profile.selfCitations - profile.indirectSelfCitations,
+            );
         });
         series.push(new Series('citations by others', citationData));
 

@@ -6,40 +6,34 @@
             :options="chartOptions"
             :series="getSeries()"
         ></apexchart>
-        <div v-else class="text-body1 text-grey q-mb-xl">
+        <div v-else class="text-body1 text-center text-grey q-mb-xl">
             These authors have no citations
         </div>
     </div>
 </template>
 <script setup charset="utf-8" lang="ts">
-import { StackedColumns100ChartModel } from 'schala-core';
+import { Series, StackedColumns100ChartModel } from 'schala-core';
 
 const props = defineProps<{
     stackedColumns100ChartModel: StackedColumns100ChartModel;
 }>();
 
 const hasNoCitations = () => {
-  const series: Array<number> = getSeries();
-  return series[0] + series[1] + series[2] === 0;
+  const series: Array<Series> = getSeries();
+  return series[0].data.reduce((a, b) => a + b, 0) + series[1].data.reduce((a, b) => a + b, 0) + series[2].data.reduce((a, b) => a + b, 0) === 0;
 }
 
 const getSeries = () => {
-    const apexSeries: Array<number> = new Array<number>();
-    console.log('sa');
-    for (const serie of props.stackedColumns100ChartModel.series) {
-        console.log(serie.data)
-        apexSeries.push(...serie.data);
-    }
-    return apexSeries;
+    return props.stackedColumns100ChartModel.series;
 };
 
-type ApexOptionsType = { seriesIndex: number; w: { config: { series: Array<number> } } };
+type ApexOptionsType = { seriesIndex: number; dataPointIndex: number, w: { config: { series: Array<Series> } } };
 const chartOptions = {
     dataLabels: {
         enabled: true,
         enabledOnSeries: undefined,
-        formatter: function (value: number, opts: ApexOptionsType) {
-            return opts.w.config.series[opts.seriesIndex] + ' (' + Number(value).toFixed(2) + '%)';
+        formatter: function(value:number, { seriesIndex, dataPointIndex, w }:ApexOptionsType) {
+                return w.config.series[seriesIndex].data[dataPointIndex] + ' (' + Number(value).toFixed(2) + '%)'
         },
     },
     chart: {
@@ -82,12 +76,12 @@ const chartOptions = {
 
     yaxis: {
         title: {
-        text: props.stackedColumns100ChartModel.yTitle,
+            text: props.stackedColumns100ChartModel.yTitle,
         },
         labels: {
-        style: {
-            fontSize: '12px'
-        }
+            style: {
+                fontSize: '12px'
+            }
         }
     },
 
