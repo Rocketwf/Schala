@@ -26,29 +26,32 @@ export class ArticlesPaginationFilter extends ArticlesFilter<number> {
 }
 
 export class SortByFilter extends ArticlesFilter<string> {
+    constructor(value: string) {
+        super(value);
+    }
     apply(model: ArticlesModel): void {
         const newArticles: Article[] = model.articles.sort((n1: Article, n2: Article) => {
             if (this.value == 'year') {
-                if (n1.year > n2.year) {
+                if (n1.year < n2.year) {
                     return 1;
                 }
-                if (n1.year < n2.year) {
+                if (n1.year > n2.year) {
                     return -1;
                 }
                 return 0;
             } else if (this.value == 'citations') {
-                if (n1.citation > n2.citation) {
+                if (n1.citation < n2.citation) {
                     return 1;
                 }
-                if (n1.citation < n2.citation) {
+                if (n1.citation > n2.citation) {
                     return -1;
                 }
                 return 0;
             } else if (this.value == 'self-citations') {
-                if (n1.selfCitation > n2.selfCitation) {
+                if (n1.selfCitation < n2.selfCitation) {
                     return 1;
                 }
-                if (n1.selfCitation < n2.selfCitation) {
+                if (n1.selfCitation > n2.selfCitation) {
                     return -1;
                 }
                 return 0;
@@ -59,6 +62,9 @@ export class SortByFilter extends ArticlesFilter<string> {
 }
 
 export class CoauthorsFilter extends ArticlesFilter<string[]> {
+    constructor(value: string[]) {
+        super(value);
+    }
     apply(model: ArticlesModel): void {
         let newArticles: Article[] = model.articles;
         for (const x of this.value) {
@@ -78,6 +84,9 @@ export class CoauthorsFilter extends ArticlesFilter<string[]> {
 }
 
 export class WordsInTitleFilter extends ArticlesFilter<string[]> {
+    constructor(value: string[]) {
+        super(value);
+    }
     apply(model: ArticlesModel): void {
         let newArticles: Article[] = model.articles;
         for (const x of this.value) {
@@ -98,18 +107,31 @@ export class WordsInTitleFilter extends ArticlesFilter<string[]> {
 }
 
 export class NumberOfCitationsFilter extends ArticlesFilter<number> {
+    constructor(value: number) {
+        super(value);
+    }
     apply(model: ArticlesModel): void {
-        const newArticles: Article[] = model.articles;
-        newArticles.filter((article: Article) => article.citation >= this.value);
+        const newArticles: Article[] = model.articles.filter((article: Article) => article.citation >= this.value);
         model.articles = newArticles;
     }
 }
 
 export class KeywordsFilter extends ArticlesFilter<string[]> {
+    constructor(value: string[]) {
+        super(value);
+    }
     apply(model: ArticlesModel): void {
         let newArticles: Article[] = model.articles;
         for (const x of this.value) {
-            newArticles = newArticles.filter((article: Article) => article.abstract.includes(x));
+            newArticles = newArticles.filter((article: Article) => {
+                if (article.abstract == null) {
+                    return false;
+                }
+                const lowerCaseValue: string = x.toLowerCase();
+                console.log(article.abstract);
+                const lowerCaseName: string = article.abstract.toLowerCase();
+                return lowerCaseName.includes(lowerCaseValue);
+            });
         }
         model.articles = newArticles;
     }

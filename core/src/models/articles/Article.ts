@@ -21,6 +21,7 @@ export class Article {
         _url: string,
         _venue: string,
         _coAuthors: CoAuthor[],
+        _abstract: string,
     ) {
         this._id = _id;
         this._title = _title;
@@ -31,6 +32,7 @@ export class Article {
         this._url = _url;
         this._venue = _venue;
         this._coAuthors = _coAuthors;
+        this._abstract = _abstract;
     }
 
     public get id(): string {

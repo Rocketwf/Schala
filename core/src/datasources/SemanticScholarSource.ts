@@ -219,6 +219,7 @@ export class SemanticScholarSource implements DataSource {
                     apiPaper.url,
                     apiPaper.journal ? apiPaper.journal.name : '',
                     apiPaper.authors.map((coAuthor: APICoAuthor) => new CoAuthor(coAuthor.authorId, coAuthor.name, 0)),
+                    apiPaper.abstract,
                 ),
         );
     }

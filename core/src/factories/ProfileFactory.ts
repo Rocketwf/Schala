@@ -39,6 +39,7 @@ export class ProfileFactory {
                     article.url,
                     article.venue,
                     article.coAuthors,
+                    article.abstract,
                 ),
             );
 

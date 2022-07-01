@@ -1,8 +1,21 @@
 import { Filter, Filterable } from '../../filters';
+import { ViewName } from '../simplecardmodel/SimpleCardModel';
 
 export class ObjectSeriesChartModel implements Filterable<ObjectSeriesChartModel> {
     filters: Filter<object, ObjectSeriesChartModel>[];
-    private _series: Series[];
+    private _title: string;
+    private _sub: string;
+    private _viewName: ViewName;
+    private _colWidth: number;
+    private _series: Array<Series>;
+
+    constructor(_title: string, _sub: string, _viewName: ViewName, _colWidth: number, _series: Array<Series>) {
+        this._title = _title;
+        this._sub = _sub;
+        this._viewName = _viewName;
+        this._colWidth = _colWidth;
+        this._series = _series;
+    }
 
     public get series(): Series[] {
         return this._series;
