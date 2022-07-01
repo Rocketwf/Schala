@@ -1,4 +1,4 @@
-import { FullProfile } from '../models/profile';
+import { FullProfile, Citations } from '../models/profile';
 import { RowModel } from '../models/viewmodels';
 import { ArticlesModel, PieChartModel, ObjectSeriesChartModel, StackedColumnsChartModel } from '../models';
 import { ViewName } from '../models/simplecardmodel/SimpleCardModel';
@@ -61,26 +61,14 @@ export class ProfileRepresentation {
     }
     private createCitationByYearCard(): ObjectSeriesChartModel {
         const series: Series[] = new Array<Series>();
-        const totalCitations: number = this._fullProfile.getTotalCitationsCount();
-        this._fullProfile.getSelfCitationsByYear().forEach((year: number, count: number) => {
-            let indirectSelfCitationsOfYear: number = 0;
-            if (this._fullProfile.getIndirectSelfCitationsByYear().has(year))
-                indirectSelfCitationsOfYear = this._fullProfile.getIndirectSelfCitationsByYear().get(year);
-            const selfCitationsOfYear: number = count;
-            const citationsByOthers: number = totalCitations - indirectSelfCitationsOfYear - selfCitationsOfYear;
-            series.push(new Series(year + '', [indirectSelfCitationsOfYear, selfCitationsOfYear, citationsByOthers]));
-        });
-        this._fullProfile.getIndirectSelfCitationsByYear().forEach((year: number, count: number) => {
-            if (!series.find((s: Series) => s.name === year + '')) {
-                let selfCitationsOfYear: number = 0;
-                if (this._fullProfile.getSelfCitationsByYear().has(year))
-                    selfCitationsOfYear = this._fullProfile.getSelfCitationsByYear().get(year);
-                const indirectSelfCitationsOfYear: number = count;
-                const citationsByOthers: number = totalCitations - indirectSelfCitationsOfYear - selfCitationsOfYear;
-                series.push(
-                    new Series(year + '', [indirectSelfCitationsOfYear, selfCitationsOfYear, citationsByOthers]),
-                );
-            }
+        this._fullProfile.citations.forEach((citations: Citations, year: number) => {
+            series.push(
+                new Series(year + '', [
+                    citations.indirectSelfCitationsCount,
+                    citations.selfCitationsCount,
+                    citations.totalCitationsCount - citations.selfCitationsCount - citations.indirectSelfCitationsCount,
+                ]),
+            );
         });
         const objectSeriesChartModel: ObjectSeriesChartModel = new StackedColumnsChartModel(
             'Citation by year',

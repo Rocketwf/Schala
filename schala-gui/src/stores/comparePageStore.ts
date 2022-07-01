@@ -6,33 +6,30 @@ const profileStore = profilePageStore();
 export const comparePageStore = defineStore({
     id: 'comparePage',
     state: () => ({
-        fullProfiles: [] as FullProfile[],
-        comparisonRepresentation: new ComparisonRepresentation({} as FullProfile),
+        comparisonRepresentation: new ComparisonRepresentation([] as Array<FullProfile>),
         profilePageStore: profilePageStore(),
     }),
     actions: {
         async addProfile(profileId: string) {
             let fullProfile: FullProfile;
-            if (this.fullProfiles.length > 4 || this.isBeingCompared(profileId)) {
-                return;
+            if (this.profilePageStore.profileId === profileId) {
+                fullProfile = this.profilePageStore.getFullProfile();
             } else {
-                if (this.isBeingCompared(profileId)) {
-                    const factory: ProfileFactory = new ProfileFactory();
-                    fullProfile = (await factory.build(profileId))[0];
-                    this.fullProfiles.push(fullProfile);
-                }
+                fullProfile = (await new ProfileFactory().build(profileId))[0];
             }
-            const profile: FullProfile[] = await new ProfileFactory().build(profileId);
-            this.fullProfiles.push(profile[0]);
+            this.comparisonRepresentation.fullProfiles.push(fullProfile);
+            this.comparisonRepresentation.renderComparison();
         },
 
         removeProfile(profileId: string) {
-            if (this.fullProfiles.length == 0) {
+            if (this.comparisonRepresentation.fullProfiles.length == 0) {
                 return;
             }
-            this.fullProfiles = this.fullProfiles.filter((p) => p.basicProfile.id !== profileId);
+            this.comparisonRepresentation.fullProfiles = this.comparisonRepresentation.fullProfiles.filter(
+                (p) => p.basicProfile.id !== profileId,
+            );
+            this.comparisonRepresentation.renderComparison();
         },
-
 
         getComparisonRepresentation() {
             return this.comparisonRepresentation;
@@ -43,7 +40,8 @@ export const comparePageStore = defineStore({
         },
 
         isBeingCompared(profileId: string) {
-            for (const profile of this.fullProfiles) {
+            console.log(this.comparisonRepresentation.fullProfiles);
+            for (const profile of this.comparisonRepresentation.fullProfiles) {
                 if (profile.basicProfile.id === profileId) {
                     return true;
                 }

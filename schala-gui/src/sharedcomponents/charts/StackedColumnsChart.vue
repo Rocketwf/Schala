@@ -18,18 +18,23 @@ const props = defineProps<{
 }>();
 
 const hasNoCitations = () => {
-    return false;
+    let sum = 0;
+    const series = getSeries();
+    for (const ser of series) {
+        sum += ser.data[0] + ser.data[1] + ser.data[0];
+    }
+    return sum === 0;
 };
 const getSeries = () => {
-    const apexSeries: Array<{name: string, data: Array<number>}> = new Array<{name: string, data: Array<number>}>();
+    const apexSeries: Array<{ name: string; data: Array<number> }> = new Array<{ name: string; data: Array<number> }>();
     const stackedModel: StackedColumnsChartModel = props.stackedColumnsChartModel;
     console.log(stackedModel);
     for (let i = 0; i < stackedModel.labels.length; ++i) {
         const convertedSeries = new Array<number>();
-        for(const series of stackedModel.series) {
-          convertedSeries.push(series.data[i]);
+        for (const series of stackedModel.series) {
+            convertedSeries.push(series.data[i]);
         }
-        const apexSeriesObj = {name: stackedModel.labels[i], data: convertedSeries};
+        const apexSeriesObj = { name: stackedModel.labels[i], data: convertedSeries };
         apexSeries.push(apexSeriesObj);
     }
     return apexSeries;
@@ -37,25 +42,33 @@ const getSeries = () => {
 
 type ApexOptionsType = { seriesIndex: number; dataPointIndex: number; w: { config: { series: Array<Series> } } };
 const chartOptions = {
-    dataLabels: {
-        enabled: true,
-        enabledOnSeries: undefined,
-        formatter: function (value: number, { seriesIndex, dataPointIndex, w }: ApexOptionsType) {
-            return w.config.series[seriesIndex].data[dataPointIndex] + ' (' + Number(value).toFixed(2) + '%)';
-        },
-    },
     chart: {
+        dataLabels: {
+            enabled: true,
+            enabledOnSeries: [4],
+            textAnchor: 'left',
+            formatter: function (_val: number, opt: ApexOptionsType) {
+                let series = opt.w.config.series;
+                let idx = opt.dataPointIndex;
+                const total = series.reduce((total, self) => total + self.data[idx], 0);
+                return total + 'K';
+            },
+            style: {
+                colors: ['#000'],
+            },
+        },
+        type: 'bar',
         height: 350,
         stacked: true,
-        stackType: '100%',
         toolbar: {
-            offsetX: -52,
-            offsetY: -52,
             show: true,
             tools: {
                 download:
                     '<i class="q-icon notranslate material-icons" aria-hidden="true" role="presentation" style="font-size: 24px;">download</i>',
             },
+        },
+        zoom: {
+            enabled: true,
         },
     },
     responsive: [
@@ -70,12 +83,17 @@ const chartOptions = {
             },
         },
     ],
+    plotOptions: {
+        bar: {
+            horizontal: false,
+        },
+    },
     xaxis: {
         title: {
             text: props.stackedColumnsChartModel.xTitle,
-            offsetY: 0,
+            offsetY: -10,
         },
-        categories: props.stackedColumnsChartModel.series.map(series => series.name).slice(0,10),
+        categories: props.stackedColumnsChartModel.series.map((s) => s.name),
         labels: {
             style: {
                 fontSize: '12px',
@@ -83,6 +101,7 @@ const chartOptions = {
         },
     },
     yaxis: {
+        max: (max: number) => max,
         title: {
             text: props.stackedColumnsChartModel.yTitle,
         },
@@ -92,13 +111,12 @@ const chartOptions = {
             },
         },
     },
+    legend: {
+        position: 'top',
+        offsetY: 0,
+    },
     fill: {
         opacity: 1,
-    },
-    legend: {
-        position: 'right',
-        offsetX: 0,
-        offsetY: 50,
     },
 };
 </script>

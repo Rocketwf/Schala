@@ -1,16 +1,32 @@
-import { FullProfile } from '../models/profile';
-import { RowModel } from '../models/viewmodels';
+import {
+    FullProfile,
+    RowModel,
+    ViewName,
+    ObjectSeriesChartModel,
+    Series,
+    Citations,
+    StackedColumnsChartModel,
+} from '../models';
 
 export class ComparisonRepresentation {
-    private _fullProfile: FullProfile;
+    private _fullProfiles: FullProfile[];
     private _rowModels: RowModel[];
-    constructor(_fullProfile: FullProfile) {
-        this._fullProfile = _fullProfile;
+    constructor(_fullProfiles: FullProfile[]) {
+        this._fullProfiles = _fullProfiles;
         this._rowModels = new Array<RowModel>();
     }
     renderComparison(): void {
-        return null;
+        this._rowModels = [];
+        this.createCitationsByYearRow();
     }
+
+    public get fullProfiles(): FullProfile[] {
+        return this._fullProfiles;
+    }
+    public set fullProfiles(_fullProfiles: FullProfile[]) {
+        this._fullProfiles = _fullProfiles;
+    }
+
     public get rowModels(): RowModel[] {
         return this._rowModels;
     }
@@ -24,8 +40,34 @@ export class ComparisonRepresentation {
     private createPublicationByVenueYearRow(): RowModel {
         return null;
     }
-    private createCitationsByYearRow(): RowModel {
-        return null;
+    private createCitationsByYearRow(): void {
+        const rowModel: RowModel = new RowModel(12);
+        for (const fullProfile of this._fullProfiles) {
+            const series: Series[] = new Array<Series>();
+            fullProfile.citations.forEach((citations: Citations, year: number) => {
+                series.push(
+                    new Series(year + '', [
+                        citations.indirectSelfCitationsCount,
+                        citations.selfCitationsCount,
+                        citations.totalCitationsCount -
+                            citations.selfCitationsCount -
+                            citations.indirectSelfCitationsCount,
+                    ]),
+                );
+            });
+            const objectSeriesChartModel: ObjectSeriesChartModel = new StackedColumnsChartModel(
+                'Citation by year',
+                '',
+                ViewName.StackedColumnsChartCard,
+                3,
+                series,
+                'Years',
+                'Number of citations',
+                ['indirect self-citation', 'self-citations', 'cited by others'],
+            );
+            rowModel.simpleCardModels.push(objectSeriesChartModel);
+        }
+        this._rowModels.push(rowModel);
     }
     private createMostFrequentCoAuthorsRow(): RowModel {
         return null;

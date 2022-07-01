@@ -37,7 +37,7 @@ export const profilePageStore = defineStore({
 
 
       getFullProfile() {
-        return this.getProfileRepresentation().fullProfile;
+        return this.getProfileRepresentation().fullProfile as FullProfile;
       },
     
       getBasicProfile() {

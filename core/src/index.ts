@@ -25,6 +25,7 @@ export {
     Profile,
     BasicProfile,
     FullProfile,
+    Citations,
     SearchResultsModel,
     Tab,
     PieChartModel,

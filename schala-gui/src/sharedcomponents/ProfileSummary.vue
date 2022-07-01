@@ -80,7 +80,7 @@ const handleClickButton = async () => {
       compareStore.removeProfile(props.profile.basicProfile.id);
       triggerPositive();
       router.push({ path: '/profile/compare' });
-    } else if (compareStore.fullProfiles.length >= 4){
+    } else if (compareStore.comparisonRepresentation.fullProfiles.length >= 4){
         triggerNegative();
         return;
     } else {
