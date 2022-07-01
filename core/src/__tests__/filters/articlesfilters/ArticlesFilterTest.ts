@@ -7,7 +7,7 @@ import {
     WordsInTitleFilter,
 } from '../../../filters/articlesfilters/ArticlesFilter';
 import { ArticlesModel, ViewName } from '../../../models';
-import { Article, CoAuthor } from '../../../models/articles/Article';
+import { Article } from '../../../models/articles/Article';
 
 describe('articles filter test', () => {
     it('sorts articles by year', async () => {
@@ -52,7 +52,7 @@ describe('articles filter test', () => {
         sortBy.apply(articleModel);
         expect(articleModel.articles[0].selfCitation).toBe(20);
     });
-    it('filter articles by coauthors', async () => {
+    it('filters articles by coauthors', async () => {
         const articles: Article[] = await SemanticScholarSource.getInstance().fetchArticles('1679754');
 
         const articleModel: ArticlesModel = new ArticlesModel(
@@ -68,7 +68,7 @@ describe('articles filter test', () => {
         coAuthor.apply(articleModel);
         expect(articleModel.articles[0].title).toBe('Software Architectures (Dagstuhl Seminar 9508)');
     });
-    it('filter articles by words in the title', async () => {
+    it('filters articles by words in the title', async () => {
         const articles: Article[] = await SemanticScholarSource.getInstance().fetchArticles('1679754');
 
         const articleModel: ArticlesModel = new ArticlesModel(
@@ -84,7 +84,7 @@ describe('articles filter test', () => {
         words.apply(articleModel);
         expect(articleModel.articles[0].title).toBe('How Does a COVID mRNA vaccine really work?');
     });
-    it('filter articles by number of citations', async () => {
+    it('filters articles by number of citations', async () => {
         const articles: Article[] = await SemanticScholarSource.getInstance().fetchArticles('1679754');
 
         const articleModel: ArticlesModel = new ArticlesModel(
@@ -100,7 +100,7 @@ describe('articles filter test', () => {
             'Analysis of Acceleration Structure Parameters and Hybrid Autotuning for Raytracing.',
         );
     });
-    it('filter articles by keywords', async () => {
+    it('filters articles by keywords', async () => {
         const articles: Article[] = await SemanticScholarSource.getInstance().fetchArticles('1679754');
 
         const articleModel: ArticlesModel = new ArticlesModel(
@@ -111,7 +111,6 @@ describe('articles filter test', () => {
             10,
         );
         const strings: string[] = ['Understanding', 'context'];
-        console.log(strings);
         const keywords: KeywordsFilter = new KeywordsFilter(strings);
         keywords.apply(articleModel);
         expect(articleModel.articles[0].title).toBe(

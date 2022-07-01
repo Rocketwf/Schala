@@ -8,8 +8,9 @@ export abstract class ChartOptionFilter<S> extends Filter<S, ChartOptionsModel> 
 export class ScaleUpFilter extends ChartOptionFilter<boolean> {
     apply(model: ChartOptionsModel): void {
         if (this.value) {
-            let limits: number[];
+            const limits: number[] = [];
             for (const serie of model.series) {
+                console.log(serie.data);
                 const sum: number = serie.data.reduce((accumulator: number, current: number) => {
                     return accumulator + current;
                 }, 0);

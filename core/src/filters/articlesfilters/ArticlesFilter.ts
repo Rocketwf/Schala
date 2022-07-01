@@ -128,7 +128,6 @@ export class KeywordsFilter extends ArticlesFilter<string[]> {
                     return false;
                 }
                 const lowerCaseValue: string = x.toLowerCase();
-                console.log(article.abstract);
                 const lowerCaseName: string = article.abstract.toLowerCase();
                 return lowerCaseName.includes(lowerCaseValue);
             });
