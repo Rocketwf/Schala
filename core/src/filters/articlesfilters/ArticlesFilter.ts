@@ -1,5 +1,5 @@
 import { Article, ArticlesModel } from '../../models';
-import { CoAuthor } from '../../models/articles/Article';
+import { Author } from '../../models/articles/Article';
 import { Filter } from '../Filter';
 
 export abstract class ArticlesFilter<S> extends Filter<S, ArticlesModel> {
@@ -74,7 +74,7 @@ export class CoauthorsFilter extends ArticlesFilter<string[]> {
     apply(model: ArticlesModel): void {
         let newArticles: Article[] = model.articles;
         for (const x of this.value) {
-            newArticles = newArticles.filter((article: Article) => this.contains(article.coAuthors, x));
+            newArticles = newArticles.filter((article: Article) => this.contains(article.authors, x));
         }
         model.articles = newArticles;
     }
@@ -82,7 +82,7 @@ export class CoauthorsFilter extends ArticlesFilter<string[]> {
     /**
      * Method for checking if a string includes given substrings.
      */
-    private contains(coAuthors: CoAuthor[], name: string): boolean {
+    private contains(coAuthors: Author[], name: string): boolean {
         for (const coAuthor of coAuthors) {
             if (name.indexOf(coAuthor.name) >= 0) {
                 return true;

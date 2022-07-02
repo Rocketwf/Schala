@@ -1,7 +1,7 @@
 import { Filter, Filterable } from '../../filters';
 import { ViewName } from '../simplecardmodel/SimpleCardModel';
 
-export class ObjectSeriesChartModel implements Filterable<ObjectSeriesChartModel> {
+export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesChartModel> {
     private _id: string;
     private _colWidth: number;
     private _title: string;
@@ -63,6 +63,16 @@ export class ObjectSeriesChartModel implements Filterable<ObjectSeriesChartModel
         this._yTitle = _yTitle;
         this._labels = _labels;
     }
+
+    /**
+     * Creates a carbon copy of the model
+     */
+    abstract deepCopy(): ObjectSeriesChartModel;
+
+    /**
+     * Applies all the filters with the current value on the cached data.
+     */
+    abstract applyAllFilters(): void;
 
     /**
      * Getter method of the data that is currently being represented.
@@ -146,13 +156,6 @@ export class ObjectSeriesChartModel implements Filterable<ObjectSeriesChartModel
      */
     public get labels(): string[] {
         return this._labels;
-    }
-
-    deepCopy(): ObjectSeriesChartModel {
-        throw new Error('Method not implemented.');
-    }
-    applyAllFilters(): void {
-        throw new Error('Method not implemented.');
     }
 }
 
