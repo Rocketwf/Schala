@@ -105,7 +105,7 @@ export class SemanticScholarSource implements DataSource {
         >(
             'http://70.34.209.19:3000/papers?authorId=' +
                 authorId +
-                '&fields=authors,authors.name,authors.hIndex,citations,citations.authors,citations.title,citations.year,references,references.authors,references.year,references.title',
+                '&fields=authors,authors.name,authors.aliases,authors.hIndex,citations,citations.authors,citations.title,citations.year,references,references.authors,references.year,references.title',
             {
                 headers: {
                     Accept: 'application/json',
@@ -247,7 +247,11 @@ export class SemanticScholarSource implements DataSource {
                 apiPaper.url,
                 apiPaper.journal ? apiPaper.journal.name : '',
                 apiPaper.abstract,
-                apiPaper.authors.map((author: APICoAuthor) => new Author(author.authorId, author.name, author.hIndex)),
+                apiPaper.authors.map((author: APICoAuthor) => {
+                    let name: string = author.name;
+                    if (author.aliases) name = author.aliases[author.aliases.length - 1];
+                    return new Author(author.authorId, name, author.hIndex);
+                }),
                 apiPaper.citations.map(
                     (citation: APIRefCit) =>
                         new ReferenceOrCitation(

@@ -1,6 +1,14 @@
 import { FullProfile, Citations } from '../models/profile';
+import { Author } from '../models/articles';
 import { RowModel } from '../models/viewmodels';
-import { ArticlesModel, PieChartModel, Series, ObjectSeriesChartModel, StackedColumnsChartModel, LineColumnsMixedChartModel } from '../models';
+import {
+    ArticlesModel,
+    PieChartModel,
+    Series,
+    ObjectSeriesChartModel,
+    StackedColumnsChartModel,
+    LineColumnsMixedChartModel,
+} from '../models';
 import { ViewName } from '../models/simplecardmodel/SimpleCardModel';
 import { ExpertiseModel } from '../models/simplecardmodel/ExpertiseModel';
 
@@ -44,10 +52,6 @@ export class ProfileRepresentation {
         return null;
     }
 
-    private createCoAuthorsWithHighestHIndexCard(): ObjectSeriesChartModel {
-        return null;
-    }
-
     private createExpertiseCard(): ExpertiseModel {
         return null;
     }
@@ -82,110 +86,43 @@ export class ProfileRepresentation {
      * Creates line columns mixed chart card.
      * @returns - LineColumnsMixedChartModel
      */
-    private createLineColumnsMixedChartCard(): LineColumnsMixedChartModel {
+    private createCoAuthorsWithHighestHIndexCard(): LineColumnsMixedChartModel {
         const series: Array<Series> = new Array<Series>();
-        const coAuthorHIndices: { coAuthorId: string; hIndex: number }[] = this.calculateCoAuthorHIndex(
-            this._fullProfile,
-        );
-        const coAuthorIds: string[] = coAuthorHIndices.map((coAuthorHindex: { coAuthorId: string; hIndex: number }) => {
-            return coAuthorHindex.coAuthorId;
-        });
-        const hIndices: number[] = coAuthorHIndices.map((coAuthorHindex: { coAuthorId: string; hIndex: number }) => {
-            return coAuthorHindex.hIndex;
-        });
-        const publications: number[] = this.calculateCoAuthorPublications(this._fullProfile);
-        const coAuthorNames: string[] = ['Author1', 'Author2', 'Author3', 'Author4', 'Author5'];
-        for (let i: number = 0; i < coAuthorNames.length; i++) {
-            series.push(new Series(coAuthorNames[i], [hIndices[i]], 'line'));
-            series.push(new Series(coAuthorNames[i], [publications[i]], 'column'));
+        const authorsCount: Map<Author, number> = new Map<Author, number>();
+
+        for (const art of this._fullProfile.articles) {
+            for (const author of art.authors) {
+                if (author.id === this._fullProfile.basicProfile.id) continue;
+                let found: boolean = false;
+                for (const savedAuthor of Array.from(authorsCount.keys())) {
+                    if (author.id === savedAuthor.id) {
+                        authorsCount.set(savedAuthor, authorsCount.get(savedAuthor) + 1);
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    authorsCount.set(author, 1);
+                }
+            }
         }
-        //const labels: Array<string> = [];
+        console.log(authorsCount);
+        for (const [author, count] of authorsCount) {
+            series.push(new Series(author.name, [author.hIndex], 'line'));
+            series.push(new Series(author.name, [count], 'column'));
+        }
         return new LineColumnsMixedChartModel(
             'Co-authors with highest h-index',
             '',
             ViewName.LineColumnsMixedChartCard,
             5,
             series,
-            'publications1',
-            'h-index1',
-            coAuthorNames,
+            'h-index',
+            'Publications',
+            ['Publications', 'h-index'],
         );
     }
 
-    /**
-     * Calculates number of publications of the co-authors with highest h-index.
-     * @returns - number[] containing number of publications of the co-authors with highest h-index.
-     */
-    private calculateCoAuthorPublications(fullProfile: FullProfile): number[] {
-        return [3, 2, 1, 5, 4];
-    }
-
-    /**
-     * Calculates h-indices of the co-authors.
-     * @returns - CoAuthorHIndices[] containing co-authors ids with their h-index.
-     */
-    private calculateCoAuthorHIndex(fullProfile: FullProfile): CoAuthorHIndices[] {
-        const coAuthors: Array<Array<CoAuthor>> = fullProfile.articles.map((article: Article) => {
-            return article.coAuthors;
-        });
-        const merged: Array<CoAuthor> = coAuthors.reduce((prev: CoAuthor[], cur: CoAuthor[]) => {
-            return prev.concat(cur);
-        }, []);
-        const coAuthorIds: Array<string> = merged.map((coAuthor: CoAuthor) => {
-            return coAuthor.id;
-        });
-        const filtered: Array<string> = this.removeDuplicateIds(coAuthorIds);
-        // const promises: Promise<CoAuthorHIndices[]> = Promise.all(
-        //     filtered.map(async (coAuthorId: string) => {
-        //         return {
-        //             coAuthorId: coAuthorId,
-        //             hIndex: await SemanticScholarSource.getInstance().fetchHIndex(coAuthorId),
-        //         };
-        //     }),
-        // );
-        // let coAuthorHIndices: { coAuthorId: string; hIndex: number }[];
-        // promises.then((data: { coAuthorId: string; hIndex: number }[]) => (coAuthorHIndices = data));
-        // const sorted: { coAuthorId: string; hIndex: number }[] = coAuthorHIndices.sort(
-        //     (n1: { coAuthorId: string; hIndex: number }, n2: { coAuthorId: string; hIndex: number }) => {
-        //         if (n1.hIndex > n2.hIndex) {
-        //             return 1;
-        //         }
-
-        //         if (n1.hIndex < n2.hIndex) {
-        //             return -1;
-        //         }
-
-        //         return 0;
-        //     },
-        // );
-        //const topFive: CoAuthorHIndices[] = sorted.slice(0, 5);
-        // return topFive;
-        return [
-            { coAuthorId: '1111111', hIndex: 5 },
-            { coAuthorId: '2222222', hIndex: 3 },
-            { coAuthorId: '3333333', hIndex: 15 },
-            { coAuthorId: '4444444', hIndex: 2 },
-            { coAuthorId: '5555555', hIndex: 20 },
-        ];
-    }
-
-    /**
-     * Removes duplicates from the given array
-     * @param coAuthorIds string[] containing co-author ids
-     * @returns string[] containing co-author ids without duplicates
-     */
-    private removeDuplicateIds(coAuthorIds: Array<string>) {
-        const lookup: { [coAuthorId: string]: boolean } = {};
-        const filtered: string[] = [];
-        for (let i: number = 0; i < coAuthorIds.length; i++) {
-            const v: string = coAuthorIds[i];
-            if (!lookup[v]) {
-                filtered.push(v);
-                lookup[v] = true;
-            }
-        }
-        return filtered;
-    }
     //This method creates the first row which renders the following:
     //Publications by year
     //Publications by venue
@@ -209,7 +146,9 @@ export class ProfileRepresentation {
     //Co-Authors with highest h-index
     //Expertise
     private createThirdRow(): void {
-        return;
+        const rowModel: RowModel = new RowModel(10);
+        rowModel.simpleCardModels.push(this.createCoAuthorsWithHighestHIndexCard());
+        this._rowModels.push(rowModel);
     }
     //This method creates the fourth row which renders the articles
     private createFourthRow(): void {

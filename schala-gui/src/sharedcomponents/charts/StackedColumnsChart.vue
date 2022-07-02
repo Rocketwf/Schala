@@ -33,7 +33,7 @@ const getSeries = () => {
         for (const series of stackedModel.series) {
             convertedSeries.push(series.data[i]);
         }
-        const apexSeriesObj = { name: stackedModel.labels[i], data: convertedSeries };
+        const apexSeriesObj = { name: stackedModel.labels[i], data: convertedSeries.slice(0,10) };
         apexSeries.push(apexSeriesObj);
     }
     return apexSeries;
@@ -94,6 +94,7 @@ const chartOptions = {
         },
         categories: props.stackedColumnsChartModel.series.map((s) => s.name),
         labels: {
+            rotate: -45,
             style: {
                 fontSize: '12px',
             },

@@ -5,33 +5,32 @@
 </template>
 
 <script setup charset="utf-8" lang="ts">
-import { LineColumnsMixedChartModel } from 'schala-core';
+import { LineColumnsMixedChartModel, Series } from 'schala-core';
 
 const props = defineProps<{
     lineColumnsMixedChartModel: LineColumnsMixedChartModel;
 }>();
 
-type serie = { name: string; data: Array<number>; type: string };
 /**
  * Converts the series to the form specific to the LineColumnsMixedChart.
  */
 const getSeries = () => {
     const columnData: Array<number> = props.lineColumnsMixedChartModel.series
-        .filter((s: serie) => s.type === 'column')
-        .map((s: serie) => s.data[0]);
+        .filter((s: Series) => s.type === 'column')
+        .map((s: Series) => s.data[0]);
     const lineData: Array<number> = props.lineColumnsMixedChartModel.series
-        .filter((s: serie) => s.type === 'line')
-        .map((s: serie) => s.data[0]);
+        .filter((s: Series) => s.type === 'line')
+        .map((s: Series) => s.data[0]);
     const series = [
         {
-            name: 'Publications',
+            name: props.lineColumnsMixedChartModel.labels[0],
             type: 'column',
-            data: columnData,
+            data: columnData.splice(0, 10),
         },
         {
-            name: 'h-index',
+            name: props.lineColumnsMixedChartModel.labels[1],
             type: 'line',
-            data: lineData,
+            data: lineData.splice(0, 10),
         },
     ];
     return series;
@@ -41,10 +40,10 @@ const getSeries = () => {
  * Getter method for LineColumnsMixedChart labels
  */
 const getLabels = () => {
-    return props.lineColumnsMixedChartModel.labels;
+    return props.lineColumnsMixedChartModel.series.filter(s => s.type == 'line')
+        .map((s: Series) => s.name).splice(0, 10);
 };
 
-type ApexOptionsType = { seriesIndex: number; w: { config: { series: Array<number> } } };
 /**
  *  Options of the displayed apex-chart
  */
@@ -52,9 +51,6 @@ const chartOptions = {
     dataLabels: {
         enabled: true,
         enabledOnSeries: [1],
-        formatter: function (value: number, opts: ApexOptionsType) {
-            return value;
-        },
     },
 
     chart: {
@@ -83,17 +79,20 @@ const chartOptions = {
     labels: getLabels(),
     xaxis: {
         type: 'category',
+        labels: {
+            rotate: -45,
+        }
     },
     yaxis: [
         {
             title: {
-                text: 'Publications',
+                text: props.lineColumnsMixedChartModel.yTitle,
             },
         },
         {
             opposite: true,
             title: {
-                text: 'h-index',
+                text: props.lineColumnsMixedChartModel.xTitle,
             },
         },
     ],
