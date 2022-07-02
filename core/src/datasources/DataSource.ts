@@ -9,6 +9,5 @@ export interface DataSource {
 
     fetchI10Index(authorId: string): Promise<number>;
     fetchArticles(authorId: string): Promise<Article[]>;
-    hasSelfCitation(article: Article, authorId: string): Promise<boolean>;
     fetchWebsite(authorId: string): Promise<string>;
 }

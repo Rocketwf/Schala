@@ -1,20 +1,20 @@
 import { Filterable } from '../../filters/Filterable';
-import { Series } from '../objectserieschartmodel';
+import { ObjectSeriesChartModel } from '../objectserieschartmodel';
 
 export class ChartOptionsModel implements Filterable<ChartOptionsModel> {
-    private _maxLimit: number;
-    private _series: Series[];
+    private _maxLimit: number = 0;
+    private _objectSeriesChartModels: Array<ObjectSeriesChartModel>;
 
-    constructor(_series: Series[]) {
-        this._series = _series;
+    constructor(_objectSeriesChartModels: ObjectSeriesChartModel[]) {
+        this._objectSeriesChartModels = _objectSeriesChartModels;
     }
 
-    public get series(): Series[] {
-        return this._series;
+    public get objectSeriesChartModels(): ObjectSeriesChartModel[] {
+        return this._objectSeriesChartModels;
     }
 
-    public set series(newSeries: Series[]) {
-        this._series = newSeries;
+    public set objectSeriesChartModels(objectSeriesChartModels: ObjectSeriesChartModel[]) {
+        this._objectSeriesChartModels = objectSeriesChartModels;
     }
 
     public get maxLimit(): number {

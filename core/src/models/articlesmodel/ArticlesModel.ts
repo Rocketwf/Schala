@@ -3,7 +3,7 @@ import { Article } from '../articles/Article';
 import { SimpleCardModel, ViewName } from '../simplecardmodel';
 
 export class ArticlesModel implements Filterable<ArticlesModel>, SimpleCardModel {
-    private _id: string = '@' + Math.random().toString(31);
+    private _id: string = 'a' + Math.random().toString(31);
     private _articles: Array<Article>;
     private _colWidth: number;
     private _title: string;
@@ -16,6 +16,8 @@ export class ArticlesModel implements Filterable<ArticlesModel>, SimpleCardModel
         this._sub = _sub;
         this._viewName = _viewName;
         this._colWidth = _colWidth;
+        // show only 10 for dev
+        this.articles = this._articles.splice(0, 10);
     }
 
     applyAllFilters(): void {
@@ -30,12 +32,13 @@ export class ArticlesModel implements Filterable<ArticlesModel>, SimpleCardModel
                     article.id,
                     article.title,
                     article.year,
-                    article.citation,
-                    article.selfCitation,
                     article.bibTex,
                     article.url,
                     article.venue,
-                    article.coAuthors,
+                    article.abstract,
+                    article.authors,
+                    article.citations,
+                    article.references,
                 ),
             );
         });
