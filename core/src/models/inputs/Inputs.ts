@@ -1,9 +1,7 @@
-import { Filter, Filterable, ObjectSeriesFilter } from '../../filters';
-import { ArticlesModel } from '../articlesmodel';
-import { ChartOptionsModel } from '../chartoptionsmodel';
-import { ObjectSeriesChartModel } from '../objectserieschartmodel';
+import { Filter, Filterable } from '../../filters';
 
 export interface Input<T, S extends Filterable<S>> {
+    filter: Filter<T, S>;
     /*
      Represents the input name as string
     */
@@ -21,32 +19,33 @@ export interface Input<T, S extends Filterable<S>> {
     /*
      Defines a handler for a new input, it changes the current value of the corresponding filter object, and calls applyAllFilters on the data
     */
-    handleInput(value: T, filter: Filter<T, S>, data: Filterable<S>[]): void;
+    handleInput(value: T, data: Filterable<S>[]): void;
 }
 
 export class TextField<S extends Filterable<S>> implements Input<string, S> {
     private _inputName: string;
     private _inputId: string;
     private _inputValue: string;
-    //private _filter: ObjectSeriesFilter<ObjectSeriesChartModel>;
+    private _filter: Filter<string, S>;
 
-    constructor(
-        _inputName: string,
-        _inputId: string,
-        inputValue: string,
-        //_filter: ObjectSeriesFilter<ObjectSeriesChartModel>,
-    ) {
+    constructor(_inputName: string, _inputId: string, inputValue: string, _filter: Filter<string, S>) {
         this._inputName = _inputName;
         this._inputId = _inputId;
         this._inputValue = inputValue;
-        //this._filter = _filter;
+        this._filter = _filter;
     }
 
-    handleInput(value: string, filter: Filter<string, S>, data: Filterable<S>[]): void {
-        filter.value = value;
-        for (const entry of data) {
-            entry.applyAllFilters();
+    handleInput(value: string, data: Filterable<S>[]): void {
+        for (const each of (value + '').split(',')) {
+            this._filter.value = each;
+            for (const entry of data) {
+                entry.applyAllFilters();
+            }
         }
+    }
+
+    public get filter(): Filter<string, S> {
+        return this._filter;
     }
 
     /*
@@ -97,25 +96,23 @@ export class CheckBox<S extends Filterable<S>> implements Input<boolean, S> {
     private _inputName: string;
     private _inputId: string;
     private _inputValue: boolean;
-    //private _filter: ObjectSeriesFilter<ChartOptionsModel>;
+    private _filter: Filter<boolean, S>;
 
-    constructor(
-        _inputName: string,
-        _inputId: string,
-        inputValue: boolean,
-        //_filter: ObjectSeriesFilter<ChartOptionsModel>,
-    ) {
+    constructor(_inputName: string, _inputId: string, inputValue: boolean, _filter: Filter<boolean, S>) {
         this._inputName = _inputName;
         this._inputId = _inputId;
         this._inputValue = inputValue;
-        //this._filter = _filter;
+        this._filter = _filter;
     }
 
-    handleInput(value: boolean, filter: Filter<boolean, S>, data: Filterable<S>[]): void {
-        filter.value = value;
+    handleInput(value: boolean, data: Filterable<S>[]): void {
+        this._filter.value = !value;
         for (const entry of data) {
             entry.applyAllFilters();
         }
+    }
+    public get filter(): Filter<boolean, S> {
+        return this._filter;
     }
 
     /*
@@ -166,29 +163,31 @@ export class SelectOption<S extends Filterable<S>> implements Input<string, S> {
     private _inputId: string;
     private _inputValue: string;
     private _possibleOptions: string[];
-    //private _filter: ObjectSeriesFilter<ArticlesModel>;
+    private _filter: Filter<string, S>;
 
-    constructor(_inputName: string, _inputId: string, inputValue: string) {
+    constructor(_inputName: string, _inputId: string, inputValue: string, _filter: Filter<string, S>) {
         this._inputName = _inputName;
         this._inputId = _inputId;
         this._inputValue = inputValue;
-        //this._filter = _filter;
+        this._filter = _filter;
     }
 
-    handleInput(value: string, filter: Filter<string, S>, data: Filterable<S>[]): void {
-        filter.value = value;
+    handleInput(value: string, data: Filterable<S>[]): void {
+        this._filter.value = value;
         for (const entry of data) {
             entry.applyAllFilters();
         }
     }
 
+    public get filter(): Filter<string, S> {
+        return this._filter;
+    }
     /*
      Getter method of the input name as a string
     */
     public get inputName(): string {
         return this._inputName;
     }
-
     /*
      Setter method of the input name as a string
     */

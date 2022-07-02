@@ -11,28 +11,19 @@
 </div>
 </template>
 <script setup lang="ts">
-import { ChartOptionsModel, CheckBox} from 'schala-core';
+import { ChartOptionsModel, CheckBox, Filterable} from 'schala-core';
 import { ref } from 'vue';
 
 const label: string = 'Scale up number of publications according to the scholar with highest entries';
 let scale_citations = ref(false);
-let model: ChartOptionsModel;
-
 
 const props = defineProps<{
   checkBox: CheckBox<ChartOptionsModel>,
+  models: Filterable <ChartOptionsModel>[]
 }>()
 
 const getLabel = (): string => {
   return label;
-}
-
-const getModel = (): ChartOptionsModel => {
-  return model;
-}
-
-const setModel = (newModel: ChartOptionsModel): void=> {
-  model = newModel;
 }
 
 const getCheckBox = (): CheckBox<ChartOptionsModel> => {
@@ -40,10 +31,7 @@ const getCheckBox = (): CheckBox<ChartOptionsModel> => {
 }
 
 const update = (): void => {
-    /*if(scale_citations.value){
-      getCheckBox().handleInput(scale_citations.value,scale, getModel());
-    }
-    */
+  getCheckBox().handleInput(scale_citations.value, props.models);
 }
 
 </script>

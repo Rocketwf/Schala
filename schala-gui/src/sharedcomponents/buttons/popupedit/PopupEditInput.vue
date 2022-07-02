@@ -6,12 +6,12 @@
   </q-input>
 </template>
 <script setup lang="ts">
-import { ObjectSeriesChartModel, SimpleCardModel, TextField } from 'schala-core';
+import { ArticlesModel, Filter, Filterable, ObjectSeriesChartModel, TextField } from 'schala-core';
 import { ref } from 'vue';
 
 const props = defineProps<{
-    textField: TextField<ObjectSeriesChartModel>;
-    //getSimpleCardModel: () => SimpleCardModel;
+    textField: TextField<ObjectSeriesChartModel | ArticlesModel>;
+    models: Filterable <ObjectSeriesChartModel | ArticlesModel>[];
 }>();
 
 
@@ -28,11 +28,12 @@ const getInputValue = (): string =>{
 }
 const input = ref(getInputValue());
 
-const update = (value: string | number | null): void =>{
- /* if( typeof value === 'string') {
-     props.textField.handleInput(value, props.textField.filter, props.getSimpleCardModel())
+const handleInput = (value: string): void =>{
+ if(value) {
+     props.textField.handleInput(input.value, props.models)
   }
-  */
-
+}
+const update = (): void =>{
+  handleInput(input.value);
 }
 </script>
