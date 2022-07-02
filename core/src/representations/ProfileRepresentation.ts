@@ -1,6 +1,14 @@
 import { FullProfile, Citations } from '../models/profile';
+import { Author } from '../models/articles';
 import { RowModel } from '../models/viewmodels';
-import { ArticlesModel, PieChartModel, Series, ObjectSeriesChartModel, StackedColumnsChartModel } from '../models';
+import {
+    ArticlesModel,
+    PieChartModel,
+    Series,
+    ObjectSeriesChartModel,
+    StackedColumnsChartModel,
+    LineColumnsMixedChartModel,
+} from '../models';
 import { ViewName } from '../models/simplecardmodel/SimpleCardModel';
 import { ExpertiseModel } from '../models/simplecardmodel/ExpertiseModel';
 
@@ -12,7 +20,6 @@ export class ProfileRepresentation {
         this._rowModels = new Array<RowModel>();
     }
     renderProfile(): void {
-        this._rowModels = new Array<RowModel>();
         this.createFirstRow();
         this.createSecondRow();
         this.createThirdRow();
@@ -42,10 +49,6 @@ export class ProfileRepresentation {
     }
 
     private createMostFrequentCoAuthorsCard(): ObjectSeriesChartModel {
-        return null;
-    }
-
-    private createCoAuthorsWithHighestHIndexCard(): ObjectSeriesChartModel {
         return null;
     }
 
@@ -79,6 +82,47 @@ export class ProfileRepresentation {
         return articlesModel;
     }
 
+    /**
+     * Creates line columns mixed chart card.
+     * @returns - LineColumnsMixedChartModel
+     */
+    private createCoAuthorsWithHighestHIndexCard(): LineColumnsMixedChartModel {
+        const series: Array<Series> = new Array<Series>();
+        const authorsCount: Map<Author, number> = new Map<Author, number>();
+
+        for (const art of this._fullProfile.articles) {
+            for (const author of art.authors) {
+                if (author.id === this._fullProfile.basicProfile.id) continue;
+                let found: boolean = false;
+                for (const savedAuthor of Array.from(authorsCount.keys())) {
+                    if (author.id === savedAuthor.id) {
+                        authorsCount.set(savedAuthor, authorsCount.get(savedAuthor) + 1);
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    authorsCount.set(author, 1);
+                }
+            }
+        }
+        console.log(authorsCount);
+        for (const [author, count] of authorsCount) {
+            series.push(new Series(author.name, [author.hIndex], 'line'));
+            series.push(new Series(author.name, [count], 'column'));
+        }
+        return new LineColumnsMixedChartModel(
+            'Co-authors with highest h-index',
+            '',
+            ViewName.LineColumnsMixedChartCard,
+            5,
+            series,
+            'h-index',
+            'Publications',
+            ['Publications', 'h-index'],
+        );
+    }
+
     //This method creates the first row which renders the following:
     //Publications by year
     //Publications by venue
@@ -102,7 +146,9 @@ export class ProfileRepresentation {
     //Co-Authors with highest h-index
     //Expertise
     private createThirdRow(): void {
-        return;
+        const rowModel: RowModel = new RowModel(10);
+        rowModel.simpleCardModels.push(this.createCoAuthorsWithHighestHIndexCard());
+        this._rowModels.push(rowModel);
     }
     //This method creates the fourth row which renders the articles
     private createFourthRow(): void {

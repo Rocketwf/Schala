@@ -8,18 +8,6 @@ export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesC
     private _sub: string;
     private _viewName: ViewName;
 
-    private _cachedModel: ObjectSeriesChartModel;
-
-    /**
-     * Contains the filters to be applied to the model
-     */
-    private _filters: Filter<number, ObjectSeriesChartModel>[];
-
-    /**
-     * Contains the data of the model.
-     */
-    private _series: Series[];
-
     /**
      * Represents the name of the x-axis as a string.
      */
@@ -34,18 +22,18 @@ export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesC
      * Represents the labels as a list of string.
      */
     private _labels: string[];
+    /**
+     * Represents the labels as a list of string.
+     */
+    private _series: Series[];
+
+    private _cachedModel: ObjectSeriesChartModel;
 
     /**
-     * Constructs the ObjectSeriesChartModel
-     * @param _title - title of the model
-     * @param _sub - subtitle of the model
-     * @param _viewName - type of the model
-     * @param _colWidth - width of the model
-     * @param _series - data of the model
-     * @param _xTitle - name of the x-axis
-     * @param _yTitle - name of the y-axis
-     * @param _labels - labels of the model
+     * Contains the filters to be applied to the model
      */
+    private _filters: Filter<number, ObjectSeriesChartModel>[];
+
     constructor(
         _title: string,
         _sub: string,
@@ -64,12 +52,8 @@ export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesC
         this._xTitle = _xTitle;
         this._yTitle = _yTitle;
         this._labels = _labels;
-        this._series = this._series.splice(0, 10);
     }
 
-    persist(): void {
-        this._cachedModel = this.deepCopy();
-    }
     /**
      * Creates a carbon copy of the model
      */
@@ -163,6 +147,9 @@ export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesC
     public get labels(): string[] {
         return this._labels;
     }
+    persist(): void {
+        this._cachedModel = this.deepCopy();
+    }
 }
 
 export class Series {
@@ -181,5 +168,8 @@ export class Series {
     }
     public get data(): Array<number> {
         return this._data;
+    }
+    public get type(): string {
+        return this._type;
     }
 }

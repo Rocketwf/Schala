@@ -3,25 +3,36 @@
         <q-item-section side>
             <q-item-label class="full-width self-center">
                 <q-btn
-                v-if="!getComparePageStore().isBeingCompared(getFullProfile().basicProfile.id)" 
-                unelevated label= "Compare" class= "full-width no-box-shadow no-border-radius" 
-                color="primary" @click ="handleClickButton" />
-                <q-btn 
-                v-else unelevated label= "Remove" class= "full-width no-box-shadow no-border-radius" 
-                color="red" @click ="handleClickButton"/>
+                    v-if="!getComparePageStore().isBeingCompared(getFullProfile().basicProfile.id)"
+                    unelevated
+                    label="Compare"
+                    class="full-width no-box-shadow no-border-radius"
+                    color="primary"
+                    @click="handleClickButton"
+                />
+                <q-btn
+                    v-else
+                    unelevated
+                    label="Remove"
+                    class="full-width no-box-shadow no-border-radius"
+                    color="red"
+                    @click="handleClickButton"
+                />
             </q-item-label>
         </q-item-section>
         <q-item-section top>
-          <q-item-label class="vertical-top text-weight-bold text-h6">{{ Name }}</q-item-label>
-            <q-item-label caption> ID: {{ ID }}</q-item-label>
-            <q-item-label caption> Affiliation: {{ Affiliation }}</q-item-label>
-            <q-item-label caption> HIndex: {{ hIndex.hIndex }}</q-item-label>
-            <q-item-label caption> HIndexWithoutSelfCitations: {{ hIndex.hIndexWithoutSelfCitations }}</q-item-label>
-            <q-item-label caption> TotalCitations: {{ TotalCitations }}</q-item-label>
-            <q-item-label caption> SelfCitations: {{ SelfCitations }}</q-item-label>
-            <q-item-label caption> IndirectSelfCitations: {{ IndirectSelfCitations }}</q-item-label>
-            <q-item-label caption >I10Index : {{ i10Index.i10Index }}</q-item-label>
-             <q-item-label caption >I10IndexWithoutSelfCitations : {{ i10Index.i10IndexWithoutSelfCitations }}</q-item-label>
+            <q-item-label class="vertical-top text-weight-bold text-h6">{{ name }}</q-item-label>
+            <q-item-label caption> ID: {{ id }}</q-item-label>
+            <q-item-label caption> Affiliation: {{ affiliation }}</q-item-label>
+            <q-item-label caption> H-Index: {{ hIndex.hIndex }}</q-item-label>
+            <q-item-label caption> H-Index without self-citations: {{ hIndex.hIndexWithoutSelfCitations }}</q-item-label>
+            <q-item-label caption> Total citations: {{ totalCitations }}</q-item-label>
+            <q-item-label caption> Self citations: {{ selfCitations }}</q-item-label>
+            <q-item-label caption> Indirect self citations: {{ indirectSelfCitations }}</q-item-label>
+            <q-item-label caption> I10-Index : {{ i10Index.i10Index }}</q-item-label>
+            <q-item-label caption
+                >I10-Index without self citations : {{ i10Index.i10IndexWithoutSelfCitations }}</q-item-label
+            >
             <q-item-label caption> Website: {{ 'www.google.com' }}</q-item-label>
             <q-item-label caption>
                 <q-btn round color="blue" icon="web" size="8px" class="q-mr-sm" @click="redirectWebsite">
@@ -34,10 +45,9 @@
 </template>
 
 <script setup lang="ts">
-
-import { useQuasar  } from 'quasar';
-import { FullProfile } from 'schala-core'
-import { I10Index,HIndex } from 'schala-core/dist/models/profile';
+import { useQuasar } from 'quasar';
+import { FullProfile } from 'schala-core';
+import { I10Index, HIndex } from 'schala-core/dist/models/profile';
 import { useRouter, Router } from 'vue-router';
 import { comparePageStore } from '../stores/comparePageStore';
 
@@ -49,17 +59,17 @@ const props = defineProps<{
 }>();
 
 const triggerNegative = () => {
-        $q.notify({
-          type: 'negative',
-          message: 'You can\'t add more than 4 profiles to the compare tab'
-        })
-}
+    $q.notify({
+        type: 'negative',
+        message: "You can't add more than 4 profiles to the compare tab",
+    });
+};
 const triggerPositive = () => {
-        $q.notify({
-          type: 'positive',
-          message: 'Action was succesful'
-        })
-}
+    $q.notify({
+        type: 'positive',
+        message: 'Action was succesful',
+    });
+};
 
 // Methods
 
@@ -69,40 +79,41 @@ const getFullProfile = (): FullProfile => {
 
 const getComparePageStore = () => {
     return compareStore;
-}
+};
 
 const redirectWebsite = () => {
-    window.open(Website);
-}
+    window.open(website);
+};
 
 const handleClickButton = async () => {
-   if (compareStore.isBeingCompared(props.profile.basicProfile.id)) {
-      compareStore.removeProfile(props.profile.basicProfile.id);
-      triggerPositive();
-      router.push({ path: '/profile/compare' });
-    } else if (compareStore.comparisonRepresentation.fullProfiles.length >= 4){
+    if (compareStore.isBeingCompared(props.profile.basicProfile.id)) {
+        compareStore.removeProfile(props.profile.basicProfile.id);
+        triggerPositive();
+        router.push({ path: '/profile/compare' });
+    } else if (compareStore.comparisonRepresentation.fullProfiles.length >= 4) {
         triggerNegative();
         return;
     } else {
-      await compareStore.addProfile(props.profile.basicProfile.id);
-      triggerPositive();
-      router.push({ path: '/profile/compare' });
+        await compareStore.addProfile(props.profile.basicProfile.id);
+        triggerPositive();
+        router.push({ path: '/profile/compare' });
     }
-}
- 
+};
+
 // Attributes
-const ID: string = getFullProfile().basicProfile.id;
-const Name: string = getFullProfile().basicProfile.name;
-const Affiliation: string[] = getFullProfile().basicProfile.affiliation;
+const id: string = getFullProfile().basicProfile.id;
+const name: string = getFullProfile().basicProfile.name;
+const affiliation: string = getFullProfile().basicProfile.affiliation.length !== 0 ? getFullProfile().basicProfile.affiliation.reduce(
+    (acc: string, curr: string) => acc + ',' + curr,
+) : '';
 const hIndex: HIndex = getFullProfile().hIndex;
 
-const TotalCitations: number = getFullProfile().basicProfile.totalCitations;
-const SelfCitations: number = getFullProfile().getSelfCitationsCount();
-const IndirectSelfCitations: number = getFullProfile().getIndirectSelfCitationsCount();
+const totalCitations: number = getFullProfile().basicProfile.totalCitations;
+const selfCitations: number = getFullProfile().getSelfCitationsCount();
+const indirectSelfCitations: number = getFullProfile().getIndirectSelfCitationsCount();
 const i10Index: I10Index = getFullProfile().i10Index;
-const Website: string = 'http://www.google.com';
+const website: string = 'http://www.google.com';
 //const Website: string = getFullProfile().website;
-
 </script>
 <style lang="sass" scoped>
 .my-content
