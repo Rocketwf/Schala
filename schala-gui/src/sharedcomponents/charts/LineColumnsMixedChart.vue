@@ -11,11 +11,30 @@ const props = defineProps<{
     lineColumnsMixedChartModel: LineColumnsMixedChartModel;
 }>();
 
+type serie = { name: string; data: Array<number>; type: string };
 /**
  * Converts the series to the form specific to the LineColumnsMixedChart.
  */
 const getSeries = () => {
-    return props.lineColumnsMixedChartModel.series;
+    const columnData: Array<number> = props.lineColumnsMixedChartModel.series
+        .filter((s: serie) => s.type === 'column')
+        .map((s: serie) => s.data[0]);
+    const lineData: Array<number> = props.lineColumnsMixedChartModel.series
+        .filter((s: serie) => s.type === 'line')
+        .map((s: serie) => s.data[0]);
+    const series = [
+        {
+            name: 'Publications',
+            type: 'column',
+            data: columnData,
+        },
+        {
+            name: 'h-index',
+            type: 'line',
+            data: lineData,
+        },
+    ];
+    return series;
 };
 
 /**

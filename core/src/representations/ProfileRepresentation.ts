@@ -84,9 +84,12 @@ export class ProfileRepresentation {
         const hIndices: number[] = coAuthorHIndices.map((coAuthorHindex: { coAuthorId: string; hIndex: number }) => {
             return coAuthorHindex.hIndex;
         });
+        const publications: number[] = this.calculateCoAuthorPublications(this._fullProfile);
         const coAuthorNames: string[] = ['Author1', 'Author2', 'Author3', 'Author4', 'Author5'];
-        series.push(new Series('Publications', this.calculateCoAuthorPublications(this._fullProfile), 'column'));
-        series.push(new Series('h-index', hIndices, 'line'));
+        for (let i: number = 0; i < coAuthorNames.length; i++) {
+            series.push(new Series(coAuthorNames[i], [hIndices[i]], 'line'));
+            series.push(new Series(coAuthorNames[i], [publications[i]], 'column'));
+        }
         //const labels: Array<string> = [];
         return new LineColumnsMixedChartModel(
             'Co-authors with highest h-index',
@@ -146,7 +149,7 @@ export class ProfileRepresentation {
         //         return 0;
         //     },
         // );
-        const topFive: CoAuthorHIndices[] = sorted.slice(0, 5);
+        //const topFive: CoAuthorHIndices[] = sorted.slice(0, 5);
         // return topFive;
         return [
             { coAuthorId: '1111111', hIndex: 5 },
