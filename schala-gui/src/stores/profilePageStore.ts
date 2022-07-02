@@ -1,4 +1,3 @@
-
 import { defineStore } from 'pinia';
 import { FullProfile, ProfileFactory, ProfileRepresentation } from 'schala-core';
  
@@ -23,9 +22,7 @@ export const profilePageStore = defineStore({
 
 
       async setProfileId(newId: string) {
-        if (newId === this.profileId) {
-
-        } else {
+        if (newId !== this.profileId) {
             this.profileId = newId;
             const profile: FullProfile[] = await new ProfileFactory().build(this.profileId);
             this.profileRepresentation = new ProfileRepresentation(profile[0]);
@@ -36,7 +33,7 @@ export const profilePageStore = defineStore({
 
 
       getFullProfile() {
-        return this.getProfileRepresentation().fullProfile;
+        return this.getProfileRepresentation().fullProfile as FullProfile;
       },
     
       getBasicProfile() {

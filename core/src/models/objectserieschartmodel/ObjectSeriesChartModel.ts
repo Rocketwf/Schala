@@ -1,25 +1,13 @@
-import { Filter, Filterable } from '../../filters';
+import { Filterable } from '../../filters';
 import { SimpleCardModel, ViewName } from '../simplecardmodel';
 
-/**
- * Abstract class, it defines the wrapper for the object series charts, it is composed of a list of Series and one ChartOptionsModel.
- */
 export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesChartModel>, SimpleCardModel {
+    private _series: Series[];
     private _id: string;
     private _colWidth: number;
     private _title: string;
     private _sub: string;
     private _viewName: ViewName;
-
-    /**
-     * Contains the filters to be applied to the model
-     */
-    private _filters: Filter<number, ObjectSeriesChartModel>[];
-
-    /**
-     * Contains the data of the model.
-     */
-    private _series: Series[];
 
     /**
      * Represents the name of the x-axis as a string.
@@ -89,20 +77,6 @@ export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesC
      */
     public set series(newSeries: Series[]) {
         this._series = newSeries;
-    }
-
-    /**
-     * Getter method of the filters to be applied.
-     */
-    public get filters(): Filter<number, ObjectSeriesChartModel>[] {
-        return this._filters;
-    }
-
-    /**
-     * Setter method of the filters to be applied.
-     */
-    public set filters(newFilters: Filter<number, ObjectSeriesChartModel>[]) {
-        this._filters = newFilters;
     }
 
     /**

@@ -2,7 +2,7 @@
     <div class="row justify-center bg-transparent" style="100%">
         <div
             class="col-md-3 col-xs-12 self-center"
-            v-for="profile of getComparePageStore().fullProfiles"
+            v-for="profile of getComparePageStore().comparisonRepresentation.fullProfiles"
             :key="profile.basicProfile.id"
         >
             <!-- Template for the profile summary (upper part of the profile). -->
@@ -18,14 +18,14 @@
  * Main component which illustrates the graphs of compared scholars.
  */
 import ProfileSummary from '../../sharedcomponents/ProfileSummary.vue';
+import CompareContent from './CompareContent.vue';
 import { comparePageStore } from '../../stores/comparePageStore';
 import { FullProfile, ComparisonRepresentation } from 'schala-core';
-import CompareContent from './CompareContent.vue'
-
-
 /**
  * Store for the state of the compare page.
  */
+FullProfile;
+ComparisonRepresentation;
 const compareStore = comparePageStore();
 
 /**
@@ -34,9 +34,4 @@ const compareStore = comparePageStore();
 const getComparePageStore = () => {
     return compareStore;
 };
-
-const getProfileSummary = () => {
-    return ProfileSummary;
-};
-getProfileSummary;
 </script>

@@ -1,6 +1,13 @@
-import { Series, StackedColumns100ChartModel, ViewName } from '../models';
-import { FullProfile } from '../models/profile';
-import { RowModel } from '../models/viewmodels';
+import {
+    FullProfile,
+    RowModel,
+    ViewName,
+    ObjectSeriesChartModel,
+    Series,
+    Citations,
+    StackedColumnsChartModel,
+    StackedColumns100ChartModel,
+} from '../models';
 
 /**
  * Builds the data structure that will be given to ComparePage.
@@ -27,13 +34,12 @@ export class ComparisonRepresentation {
      * @returns void
      */
     renderComparison(): void {
-        this._rowModels = new Array<RowModel>();
         if (this.fullProfiles.length === 0) {
             return;
         }
-        const cerRow: RowModel = this.createCitationsExpertiseRow();
-
-        this.pushRow(cerRow);
+        this._rowModels = [];
+        this.createCitationsByYearRow();
+        this.createCitationsExpertiseRow();
     }
 
     /**
@@ -74,8 +80,34 @@ export class ComparisonRepresentation {
     private createPublicationByVenueYearRow(): RowModel {
         return null;
     }
-    private createCitationsByYearRow(): RowModel {
-        return null;
+    private createCitationsByYearRow(): void {
+        const rowModel: RowModel = new RowModel(12);
+        for (const fullProfile of this._fullProfiles) {
+            const series: Series[] = new Array<Series>();
+            fullProfile.citations.forEach((citations: Citations, year: number) => {
+                series.push(
+                    new Series(year + '', [
+                        citations.indirectSelfCitationsCount,
+                        citations.selfCitationsCount,
+                        citations.totalCitationsCount -
+                            citations.selfCitationsCount -
+                            citations.indirectSelfCitationsCount,
+                    ]),
+                );
+            });
+            const objectSeriesChartModel: ObjectSeriesChartModel = new StackedColumnsChartModel(
+                'Citation by year',
+                '',
+                ViewName.StackedColumnsChartCard,
+                3,
+                series,
+                'Years',
+                'Number of citations',
+                ['indirect self-citation', 'self-citations', 'cited by others'],
+            );
+            rowModel.simpleCardModels.push(objectSeriesChartModel);
+        }
+        this._rowModels.push(rowModel);
     }
     private createMostFrequentCoAuthorsRow(): RowModel {
         return null;
@@ -91,16 +123,18 @@ export class ComparisonRepresentation {
      * Creates citations and expertise rows.
      * @returns - RowModel containing the citations and expertise models
      */
-    private createCitationsExpertiseRow(): RowModel {
+    private createCitationsExpertiseRow(): void {
         const cerRow: RowModel = new RowModel(12);
         const series: Array<Series> = new Array<Series>();
 
         this.fullProfiles.forEach((profile: FullProfile) => {
             series.push(
                 new Series(profile.basicProfile.name, [
-                    profile.basicProfile.totalCitations - profile.selfCitations - profile.indirectSelfCitations,
-                    profile.selfCitations,
-                    profile.indirectSelfCitations,
+                    profile.getTotalCitationsCount() -
+                        profile.getSelfCitationsCount() -
+                        profile.getIndirectSelfCitationsCount(),
+                    profile.getSelfCitationsCount(),
+                    profile.getIndirectSelfCitationsCount(),
                 ]),
             );
         });
@@ -121,7 +155,6 @@ export class ComparisonRepresentation {
             labels,
         );
         cerRow.simpleCardModels.push(stackedColumns100ChartModel);
-
-        return cerRow;
+        this.rowModels.push(cerRow);
     }
 }

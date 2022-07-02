@@ -1,11 +1,7 @@
-import { Filter } from '../../filters';
 import { ViewName } from '../simplecardmodel';
 import { ObjectSeriesChartModel, Series } from './ObjectSeriesChartModel';
 
-/**
- * Data structure for the 100% stacked columns chart.
- */
-export class StackedColumns100ChartModel extends ObjectSeriesChartModel {
+export class StackedColumnsChartModel extends ObjectSeriesChartModel {
     constructor(
         _title: string,
         _sub: string,
@@ -18,13 +14,16 @@ export class StackedColumns100ChartModel extends ObjectSeriesChartModel {
     ) {
         super(_title, _sub, _viewName, _colWidth, _series, _xTitle, _yTitle, _labels);
     }
+    applyAllFilters(): void {
+        return;
+    }
 
     deepCopy(): ObjectSeriesChartModel {
         const seriesCopy: Array<Series> = new Array<Series>();
         this.series.forEach((serie: Series) => {
             seriesCopy.push(new Series(serie.name, serie.data));
         });
-        return new StackedColumns100ChartModel(
+        return new StackedColumnsChartModel(
             this.title,
             this.sub,
             this.viewName,
@@ -34,9 +33,5 @@ export class StackedColumns100ChartModel extends ObjectSeriesChartModel {
             this.yTitle,
             this.labels,
         );
-    }
-
-    applyAllFilters(): void {
-        return;
     }
 }

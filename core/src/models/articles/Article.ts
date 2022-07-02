@@ -7,29 +7,31 @@ export class Article {
     private _bibTex: string;
     private _url: string;
     private _venue: string;
+    private _citations: ReferenceOrCitation[];
+    private _references: ReferenceOrCitation[];
 
-    private _coAuthors: CoAuthor[];
+    private _authors: Author[];
 
     constructor(
         _id: string,
         _title: string,
         _year: number,
-        _citation: number,
-        _selfCitation: number,
         _bibTex: string,
         _url: string,
         _venue: string,
-        _coAuthors: CoAuthor[],
+        _authors: Author[],
+        _citations: ReferenceOrCitation[],
+        _references: ReferenceOrCitation[],
     ) {
         this._id = _id;
         this._title = _title;
         this._year = _year;
-        this._citation = _citation;
-        this._selfCitations = _selfCitation;
         this._bibTex = _bibTex;
         this._url = _url;
         this._venue = _venue;
-        this._coAuthors = _coAuthors;
+        this._authors = _authors;
+        this._citations = _citations;
+        this._references = _references;
     }
 
     public get id(): string {
@@ -57,20 +59,43 @@ export class Article {
         return this._venue;
     }
 
-    public get coAuthors(): CoAuthor[] {
-        return this._coAuthors;
+    public get authors(): Author[] {
+        return this._authors;
+    }
+
+    public get citations(): ReferenceOrCitation[] {
+        return this._citations;
+    }
+    public set citations(_citations: ReferenceOrCitation[]) {
+        this._citations = _citations;
+    }
+    public get references(): ReferenceOrCitation[] {
+        return this._references;
+    }
+    public set references(_references: ReferenceOrCitation[]) {
+        this._references = _references;
+    }
+    public getSelfCitations(of: string): number {
+        let selfCitationCount: number = 0;
+        this.references.forEach((ref: ReferenceOrCitation) => {
+            if (ref.isOwn(of)) {
+                ++selfCitationCount;
+            }
+        });
+
+        return selfCitationCount;
     }
 }
 
-export class CoAuthor {
+export class Author {
     private _id: string;
     private _name: string;
-    private _coauthoredCount: number;
+    private _hIndex: number;
 
-    constructor(_id: string, _name: string, _coauthoredCount?: number) {
+    constructor(_id: string, _name: string, _hIndex?: number) {
         this._id = _id;
         this._name = _name;
-        this._coauthoredCount = _coauthoredCount;
+        this._hIndex = _hIndex;
     }
     public get id(): string {
         return this._id;
@@ -79,7 +104,31 @@ export class CoAuthor {
     public get name(): string {
         return this._name;
     }
-    public get coAuthoredCount(): number {
-        return this._coauthoredCount;
+    public get hIndex(): number {
+        return this._hIndex;
+    }
+}
+export class ReferenceOrCitation {
+    private _year: number;
+    private _title: string;
+    private _authors: Author[];
+    constructor(_year: number, _title: string, _authors: Author[]) {
+        this._year = _year;
+        this._authors = _authors;
+        this._title = _title;
+    }
+
+    public get title(): string {
+        return this._title;
+    }
+
+    public get year(): number {
+        return this._year;
+    }
+    public get authors(): Author[] {
+        return this._authors;
+    }
+    public isOwn(authorId: string): boolean {
+        return this._authors.filter((author: Author) => author.id === authorId).length > 0;
     }
 }

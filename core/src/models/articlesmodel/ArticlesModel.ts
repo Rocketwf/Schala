@@ -30,12 +30,12 @@ export class ArticlesModel implements Filterable<ArticlesModel>, SimpleCardModel
                     article.id,
                     article.title,
                     article.year,
-                    article.citation,
-                    article.selfCitation,
                     article.bibTex,
                     article.url,
                     article.venue,
-                    article.coAuthors,
+                    article.authors,
+                    article.citations,
+                    article.references,
                 ),
             );
         });

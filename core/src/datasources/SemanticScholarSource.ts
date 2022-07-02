@@ -1,4 +1,4 @@
-import { Article, CoAuthor } from '../models/articles/Article';
+import { Article, Author, ReferenceOrCitation } from '../models/articles/Article';
 import {
     APIAuthor,
     APIAuthorCombined,
@@ -8,6 +8,7 @@ import {
     APIPaper,
     APICoAuthor,
     APISearch,
+    APIRefCit,
 } from '../models/api/API';
 import { DataSource } from './DataSource';
 import axios, { AxiosResponse } from 'axios';
@@ -31,8 +32,8 @@ export class SemanticScholarSource implements DataSource {
     }
     private async getAndCacheFullAuthor(authorId: string): Promise<APIAuthor> {
         const cachedAuthor: APIAuthor = this.authorIdAPIAuthor.get(authorId);
-        let extra: APIAuthorExtra = {} as APIAuthorExtra;
         let basic: APIBasicAuthor = {} as APIBasicAuthor;
+        let extra: APIAuthorExtra = {} as APIAuthorExtra;
         if (cachedAuthor) {
             if (cachedAuthor.filled) {
                 return cachedAuthor;
@@ -87,13 +88,43 @@ export class SemanticScholarSource implements DataSource {
         const { data: papers }: AxiosResponse<APIPapers, object> = await axios.get<APIPapers>(
             'https://api.semanticscholar.org/graph/v1/author/' +
                 authorId +
-                '/papers/?fields=paperId,url,title,abstract,venue,year,referenceCount,citationCount,isOpenAccess,fieldsOfStudy,publicationTypes,publicationDate,journal,authors,references.paperId,references.authors&limit=1000',
+                '/papers/?fields=paperId,url,title,abstract,venue,year,referenceCount,citationCount,isOpenAccess,fieldsOfStudy,publicationTypes,publicationDate,journal&limit=1000',
             {
                 headers: {
                     Accept: 'application/json',
                 },
             },
         );
+        const {
+            data: papersExtra,
+        }: AxiosResponse<
+            { paperId: string; authors: APICoAuthor[]; citations: APIRefCit[]; references: APIRefCit[] }[],
+            object
+        > = await axios.get<
+            { paperId: string; authors: APICoAuthor[]; citations: APIRefCit[]; references: APIRefCit[] }[]
+        >(
+            'http://70.34.209.19:3000/papers?authorId=' +
+                authorId +
+                '&fields=authors,authors.name,authors.hIndex,citations,citations.authors,citations.title,citations.year,references,references.authors,references.year,references.title',
+            {
+                headers: {
+                    Accept: 'application/json',
+                },
+            },
+        );
+        //citations.paperId,citations.authors,citations.title,citations.year,references.paperId,references.authors,references.title,references.year
+        const consistentPapers: APIPaper[] = new Array<APIPaper>();
+        for (const paper of papersExtra) {
+            const correspondingPaper: APIPaper = papers.data.find((p: APIPaper) => p.paperId === paper.paperId);
+            if (correspondingPaper) {
+                correspondingPaper.citations = paper.citations;
+                correspondingPaper.references = paper.references;
+                correspondingPaper.authors = paper.authors;
+                consistentPapers.push(correspondingPaper);
+            }
+        }
+        papers.data = consistentPapers;
+
         const fullAuthor: APIAuthor = {
             basicAuthor: basic,
             authorExtra: extra,
@@ -207,27 +238,37 @@ export class SemanticScholarSource implements DataSource {
     }
     async fetchArticles(authorId: string): Promise<Article[]> {
         const fullAuthor: APIAuthor = await this.getAndCacheFullAuthor(authorId);
-        return fullAuthor.papers.data.map(
-            (apiPaper: APIPaper) =>
-                new Article(
-                    apiPaper.paperId,
-                    apiPaper.title,
-                    apiPaper.year,
-                    apiPaper.referenceCount,
-                    20,
-                    '',
-                    apiPaper.url,
-                    apiPaper.journal ? apiPaper.journal.name : '',
-                    apiPaper.authors.map((coAuthor: APICoAuthor) => new CoAuthor(coAuthor.authorId, coAuthor.name, 0)),
+        return fullAuthor.papers.data.map((apiPaper: APIPaper) => {
+            const article: Article = new Article(
+                apiPaper.paperId,
+                apiPaper.title,
+                apiPaper.year,
+                '',
+                apiPaper.url,
+                apiPaper.journal ? apiPaper.journal.name : '',
+                apiPaper.authors.map((author: APICoAuthor) => new Author(author.authorId, author.name, author.hIndex)),
+                apiPaper.citations.map(
+                    (citation: APIRefCit) =>
+                        new ReferenceOrCitation(
+                            citation.year,
+                            citation.title,
+                            citation.authors.map((coAuthor: APICoAuthor) => {
+                                return new Author(coAuthor.authorId, coAuthor.name);
+                            }),
+                        ),
                 ),
-        );
-    }
-    async hasSelfCitation(article: Article, authorId: string): Promise<boolean> {
-        const fullAuthor: APIAuthor = await this.getAndCacheFullAuthor(authorId);
-        const paper: APIPaper = fullAuthor.papers.data.find((paper: APIPaper) => paper.paperId === article.id);
-        for (const ref of paper.references) {
-            if (ref.authors.find((author: APICoAuthor) => author.authorId === authorId)) return true;
-        }
-        return false;
+                apiPaper.references.map(
+                    (ref: APIRefCit) =>
+                        new ReferenceOrCitation(
+                            ref.year,
+                            ref.title,
+                            ref.authors.map((coAuthor: APICoAuthor) => {
+                                return new Author(coAuthor.authorId, coAuthor.name);
+                            }),
+                        ),
+                ),
+            );
+            return article;
+        });
     }
 }
