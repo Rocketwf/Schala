@@ -1,6 +1,6 @@
-import { FullProfile } from '../models/profile';
+import { FullProfile, Citations } from '../models/profile';
 import { RowModel } from '../models/viewmodels';
-import { ArticlesModel, PieChartModel } from '../models';
+import { ArticlesModel, PieChartModel, ObjectSeriesChartModel, StackedColumnsChartModel } from '../models';
 import { ViewName } from '../models/simplecardmodel/SimpleCardModel';
 import { ObjectSeriesChartModel, Series } from '../models/objectserieschartmodel/ObjectSeriesChartModel';
 import { ExpertiseModel } from '../models/simplecardmodel/ExpertiseModel';
@@ -13,10 +13,12 @@ export class ProfileRepresentation {
         this._rowModels = new Array<RowModel>();
     }
     renderProfile(): void {
+        this._rowModels = new Array<RowModel>();
         this.createFirstRow();
         this.createSecondRow();
         this.createThirdRow();
         this.createFourthRow();
+
     }
 
     public get fullProfile(): FullProfile {
@@ -57,11 +59,13 @@ export class ProfileRepresentation {
         const series: Array<Series> = new Array<Series>();
         series.push(
             new Series('citations by others', [
-                this._fullProfile.basicProfile.totalCitations - this._fullProfile.selfCitations,
+                this._fullProfile.basicProfile.totalCitations -
+                    this._fullProfile.getSelfCitationsCount() -
+                    this._fullProfile.getIndirectSelfCitationsCount(),
             ]),
         );
-        series.push(new Series('self-citations', [this._fullProfile.selfCitations]));
-        series.push(new Series('indirect self-citations', [this._fullProfile.indirectSelfCitations]));
+        series.push(new Series('self-citations', [this._fullProfile.getSelfCitationsCount()]));
+        series.push(new Series('indirect self-citations', [this._fullProfile.getIndirectSelfCitationsCount()]));
 
         return new PieChartModel('Citations', '', ViewName.PieChartCard, 2, series);
     }
@@ -83,8 +87,11 @@ export class ProfileRepresentation {
     //Citations by year
     private createFirstRow(): void {
         this._rowModels = new Array<RowModel>();
-        this.rowModels.push(new RowModel(8));
+        this.rowModels.push(new RowModel(10));
         const pby: PieChartModel = this.createCitationsCard();
+        const cby: ObjectSeriesChartModel = this.createCitationByYearCard();
+
+        this.rowModels[0].simpleCardModels.push(cby);
         this.rowModels[0].simpleCardModels.push(pby);
     }
     //This method creates the second row which renders the following:
@@ -92,7 +99,9 @@ export class ProfileRepresentation {
     //Citation breakdown
     //Most frquent co-authors
     private createSecondRow(): void {
-        return;
+        this.rowModels.push(new RowModel(10));
+        const art: ArticlesModel = this.createArticlesCard();
+        this.rowModels[1].simpleCardModels.push(art);
     }
     //This method creates the third row which renders the following:
     //Co-Authors with highest h-index
@@ -105,5 +114,29 @@ export class ProfileRepresentation {
         this.rowModels.push(new RowModel(10));
         const art: ArticlesModel = this.createArticlesCard();
         this.rowModels[1].simpleCardModels.push(art);
+    }
+    private createCitationByYearCard(): ObjectSeriesChartModel {
+        const series: Series[] = new Array<Series>();
+        this._fullProfile.citations.forEach((citations: Citations, year: number) => {
+            series.push(
+                new Series(year + '', [
+                    citations.indirectSelfCitationsCount,
+                    citations.selfCitationsCount,
+                    citations.totalCitationsCount - citations.selfCitationsCount - citations.indirectSelfCitationsCount,
+                ]),
+            );
+        });
+        const objectSeriesChartModel: ObjectSeriesChartModel = new StackedColumnsChartModel(
+            'Citation by year',
+            '',
+            ViewName.StackedColumnsChartCard,
+            4,
+            series,
+            'Years',
+            'Number of citations',
+            ['indirect self-citation', 'self-citations', 'cited by others'],
+        );
+
+        return objectSeriesChartModel;
     }
 }

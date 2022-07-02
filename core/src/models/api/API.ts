@@ -6,10 +6,13 @@ export interface APIJournal {
 export interface APICoAuthor {
     authorId: string;
     name: string;
+    hIndex?: number;
 }
-export interface APIReference {
+export interface APIRefCit {
     paperId: string;
     authors: APICoAuthor[];
+    title: string;
+    year: number;
 }
 export interface APIPapers {
     offset: number;
@@ -30,7 +33,8 @@ export interface APIPaper {
     publicationDate?: string;
     journal?: APIJournal;
     authors?: APICoAuthor[];
-    references: APIReference[];
+    citations: APIRefCit[];
+    references: APIRefCit[];
 }
 
 export interface APIAuthorExtra {

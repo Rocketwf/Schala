@@ -6,7 +6,7 @@
             :options="chartOptions"
             :series="getSeries()"
         ></apexchart>
-        <div v-else class="text-body1 text-grey q-mb-xl">
+        <div v-else class="text-body1 text-center text-grey q-mb-xl">
             This author has no citations
         </div>
     </div>

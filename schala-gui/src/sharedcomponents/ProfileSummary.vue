@@ -80,7 +80,7 @@ const handleClickButton = async () => {
       compareStore.removeProfile(props.profile.basicProfile.id);
       triggerPositive();
       router.push({ path: '/profile/compare' });
-    } else if (compareStore.fullProfiles.length >= 4){
+    } else if (compareStore.comparisonRepresentation.fullProfiles.length >= 4){
         triggerNegative();
         return;
     } else {
@@ -97,8 +97,8 @@ const Affiliation: string[] = getFullProfile().basicProfile.affiliation;
 const hIndex: HIndex = getFullProfile().hIndex;
 
 const TotalCitations: number = getFullProfile().basicProfile.totalCitations;
-const SelfCitations: number = getFullProfile().selfCitations;
-const IndirectSelfCitations: number = getFullProfile().indirectSelfCitations;
+const SelfCitations: number = getFullProfile().getSelfCitationsCount();
+const IndirectSelfCitations: number = getFullProfile().getIndirectSelfCitationsCount();
 const i10Index: I10Index = getFullProfile().i10Index;
 const Website: string = 'http://www.google.com';
 //const Website: string = getFullProfile().website;

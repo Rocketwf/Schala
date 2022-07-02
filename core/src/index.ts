@@ -21,9 +21,11 @@ export {
     Input,
     PopupEditButton,
     ObjectSeriesChartModel,
+    StackedColumnsChartModel,
     Profile,
     BasicProfile,
     FullProfile,
+    Citations,
     SearchResultsModel,
     Tab,
     PieChartModel,
@@ -32,5 +34,6 @@ export {
     Series,
     RowModel,
     ExpertiseModel,
+    StackedColumns100ChartModel,
 } from './models';
 export { ProfileRepresentation, ComparisonRepresentation } from './representations';
