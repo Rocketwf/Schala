@@ -6,15 +6,15 @@
 </q-popup-edit>
 </template>
 <script setup lang="ts">
-import { ObjectSeriesChartModel, TextField } from 'schala-core';
+import { ObjectSeriesChartModel, SimpleCardModel, TextField } from 'schala-core';
 import PopupEditInput from 'src/sharedcomponents/buttons/popupedit/PopupEditInput.vue';
 
 let label: string;
 let badge: boolean;
 
 const props = defineProps<{
-    //scope:any;
     textField: TextField<ObjectSeriesChartModel>[];
+    getSimpleCardModel: (value: SimpleCardModel) => void;
 }>();
 
 const getLabel = (): string =>{

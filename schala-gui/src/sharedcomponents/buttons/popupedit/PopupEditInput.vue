@@ -1,17 +1,17 @@
 <template>
-  <q-input dark color="white" v-model="input" @update:model-value="update" :label="props.label" dense autofocus >
-        <template v-slot:append>
+  <q-input dark color="white" v-model="input" @update:model-value="update" :label="getInputName" dense autofocus >
+        <template #append>
           <q-icon name="edit" />
         </template>
   </q-input>
 </template>
 <script setup lang="ts">
-import { ObjectSeriesChartModel, TextField } from 'schala-core';
+import { ObjectSeriesChartModel, SimpleCardModel, TextField } from 'schala-core';
 import { ref } from 'vue';
 
 const props = defineProps<{
     textField: TextField<ObjectSeriesChartModel>;
-    label: string;
+    //getSimpleCardModel: () => SimpleCardModel;
 }>();
 
 
@@ -29,7 +29,10 @@ const getInputValue = (): string =>{
 const input = ref(getInputValue());
 
 const update = (value: string | number | null): void =>{
-   //props.textField.inputValue
-    console.log('YARRAK')
+ /* if( typeof value === 'string') {
+     props.textField.handleInput(value, props.textField.filter, props.getSimpleCardModel())
+  }
+  */
+
 }
 </script>
