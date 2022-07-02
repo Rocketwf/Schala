@@ -79,7 +79,6 @@ export const comparePageStore = defineStore({
          * @returns true if the profile is in comparison
          */
         isBeingCompared(profileId: string) {
-            console.log(this.comparisonRepresentation.fullProfiles);
             for (const profile of this.comparisonRepresentation.fullProfiles) {
                 if (profile.basicProfile.id === profileId) {
                     return true;

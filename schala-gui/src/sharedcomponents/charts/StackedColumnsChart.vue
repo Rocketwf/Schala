@@ -28,7 +28,6 @@ const hasNoCitations = () => {
 const getSeries = () => {
     const apexSeries: Array<{ name: string; data: Array<number> }> = new Array<{ name: string; data: Array<number> }>();
     const stackedModel: StackedColumnsChartModel = props.stackedColumnsChartModel;
-    console.log(stackedModel);
     for (let i = 0; i < stackedModel.labels.length; ++i) {
         const convertedSeries = new Array<number>();
         for (const series of stackedModel.series) {

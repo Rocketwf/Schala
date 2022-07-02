@@ -28,6 +28,7 @@ export const profilePageStore = defineStore({
             this.profileRepresentation = new ProfileRepresentation(profile[0]);
             this.profileRepresentation.fullProfile = profile[0];
         }
+        console.log(this.profileRepresentation.fullProfile.articles);
         this.profileRepresentation.renderProfile();
       },
 

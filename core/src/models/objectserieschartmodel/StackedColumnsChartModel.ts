@@ -28,7 +28,7 @@ export class StackedColumnsChartModel extends ObjectSeriesChartModel {
             this.sub,
             this.viewName,
             this.colWidth,
-            this.series,
+            seriesCopy,
             this.xTitle,
             this.yTitle,
             this.labels,

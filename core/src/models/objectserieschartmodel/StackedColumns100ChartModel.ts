@@ -1,4 +1,3 @@
-import { Filter } from '../../filters';
 import { ViewName } from '../simplecardmodel';
 import { ObjectSeriesChartModel, Series } from './ObjectSeriesChartModel';
 
@@ -19,24 +18,10 @@ export class StackedColumns100ChartModel extends ObjectSeriesChartModel {
         super(_title, _sub, _viewName, _colWidth, _series, _xTitle, _yTitle, _labels);
     }
 
-    deepCopy(): ObjectSeriesChartModel {
-        const seriesCopy: Array<Series> = new Array<Series>();
-        this.series.forEach((serie: Series) => {
-            seriesCopy.push(new Series(serie.name, serie.data));
-        });
-        return new StackedColumns100ChartModel(
-            this.title,
-            this.sub,
-            this.viewName,
-            this.colWidth,
-            this.series,
-            this.xTitle,
-            this.yTitle,
-            this.labels,
-        );
-    }
-
     applyAllFilters(): void {
+        return;
+    }
+    deepCopy(): StackedColumns100ChartModel {
         return;
     }
 }

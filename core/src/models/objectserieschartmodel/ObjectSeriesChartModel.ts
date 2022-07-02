@@ -8,6 +8,8 @@ export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesC
     private _sub: string;
     private _viewName: ViewName;
 
+    private _cachedModel: ObjectSeriesChartModel;
+
     /**
      * Contains the filters to be applied to the model
      */
@@ -62,8 +64,12 @@ export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesC
         this._xTitle = _xTitle;
         this._yTitle = _yTitle;
         this._labels = _labels;
+        this._series = this._series.splice(0, 10);
     }
 
+    persist(): void {
+        this._cachedModel = this.deepCopy();
+    }
     /**
      * Creates a carbon copy of the model
      */

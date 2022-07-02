@@ -16,6 +16,8 @@ export class ArticlesModel implements Filterable<ArticlesModel>, SimpleCardModel
         this._sub = _sub;
         this._viewName = _viewName;
         this._colWidth = _colWidth;
+        // show only 10 for dev
+        this.articles = this._articles.splice(0, 10);
     }
 
     applyAllFilters(): void {

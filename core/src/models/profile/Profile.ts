@@ -77,7 +77,6 @@ export class FullProfile {
     }
     public get citations(): Map<number, Citations> {
         if (this._fasterCitations) {
-            console.log('saved');
             return this._fasterCitations;
         }
         const fasterCitations: Map<number, Citations> = new Map<number, Citations>();

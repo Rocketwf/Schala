@@ -1,8 +1,7 @@
 import { FullProfile, Citations } from '../models/profile';
 import { RowModel } from '../models/viewmodels';
-import { ArticlesModel, PieChartModel, ObjectSeriesChartModel, StackedColumnsChartModel } from '../models';
+import { ArticlesModel, PieChartModel, Series, ObjectSeriesChartModel, StackedColumnsChartModel } from '../models';
 import { ViewName } from '../models/simplecardmodel/SimpleCardModel';
-import { ObjectSeriesChartModel, Series } from '../models/objectserieschartmodel/ObjectSeriesChartModel';
 import { ExpertiseModel } from '../models/simplecardmodel/ExpertiseModel';
 
 export class ProfileRepresentation {
@@ -18,7 +17,6 @@ export class ProfileRepresentation {
         this.createSecondRow();
         this.createThirdRow();
         this.createFourthRow();
-
     }
 
     public get fullProfile(): FullProfile {
@@ -86,7 +84,6 @@ export class ProfileRepresentation {
     //Publications by venue
     //Citations by year
     private createFirstRow(): void {
-        this._rowModels = new Array<RowModel>();
         this.rowModels.push(new RowModel(10));
         const pby: PieChartModel = this.createCitationsCard();
         const cby: ObjectSeriesChartModel = this.createCitationByYearCard();
@@ -99,9 +96,7 @@ export class ProfileRepresentation {
     //Citation breakdown
     //Most frquent co-authors
     private createSecondRow(): void {
-        this.rowModels.push(new RowModel(10));
-        const art: ArticlesModel = this.createArticlesCard();
-        this.rowModels[1].simpleCardModels.push(art);
+        return;
     }
     //This method creates the third row which renders the following:
     //Co-Authors with highest h-index
