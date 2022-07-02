@@ -27,6 +27,7 @@ export class Article {
         _authors: Author[],
         _citations: ReferenceOrCitation[],
         _references: ReferenceOrCitation[],
+        _fullProfile?: FullProfile,
     ) {
         this._id = _id;
         this._title = _title;
@@ -38,6 +39,8 @@ export class Article {
         this._authors = _authors;
         this._citations = _citations;
         this._references = _references;
+
+        this._fullProfile = _fullProfile;
     }
 
     public get id(): string {
@@ -77,6 +80,10 @@ export class Article {
         this._fullProfile = newFullProfile;
     }
 
+    public getCitationCount(): number {
+        return this.citations.length;
+    }
+
     public get citations(): ReferenceOrCitation[] {
         return this._citations;
     }
@@ -89,10 +96,11 @@ export class Article {
     public set references(_references: ReferenceOrCitation[]) {
         this._references = _references;
     }
-    public getSelfCitations(): number {
+    public getSelfCitations(profileId?: string): number {
         let selfCitationCount: number = 0;
+        const profileIdResolve: string = profileId ? profileId : this._fullProfile.basicProfile.id;
         this.references.forEach((ref: ReferenceOrCitation) => {
-            if (ref.isOwn(this._fullProfile.basicProfile.id)) {
+            if (ref.isOwn(profileIdResolve)) {
                 ++selfCitationCount;
             }
         });

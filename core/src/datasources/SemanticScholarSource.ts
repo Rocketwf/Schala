@@ -12,6 +12,7 @@ import {
 } from '../models/api/API';
 import { DataSource } from './DataSource';
 import axios, { AxiosResponse } from 'axios';
+import { FullProfile } from '../models';
 
 export class SemanticScholarSource implements DataSource {
     private queryResultsMapping: Map<string, string[]>;
@@ -236,7 +237,7 @@ export class SemanticScholarSource implements DataSource {
         authorId;
         return null;
     }
-    async fetchArticles(authorId: string): Promise<Article[]> {
+    async fetchArticles(authorId: string, fullProfile?: FullProfile): Promise<Article[]> {
         const fullAuthor: APIAuthor = await this.getAndCacheFullAuthor(authorId);
         return fullAuthor.papers.data.map((apiPaper: APIPaper) => {
             const article: Article = new Article(
@@ -268,6 +269,7 @@ export class SemanticScholarSource implements DataSource {
                             }),
                         ),
                 ),
+                fullProfile,
             );
             return article;
         });

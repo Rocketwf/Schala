@@ -1,4 +1,6 @@
 import { Article } from '../models/articles/Article';
+import { FullProfile } from '../models/profile';
+
 export interface DataSource {
     fetchAuthorIds(query: string): Promise<string[]>;
 
@@ -8,6 +10,6 @@ export interface DataSource {
     fetchCitation(authorId: string): Promise<number>;
 
     fetchI10Index(authorId: string): Promise<number>;
-    fetchArticles(authorId: string): Promise<Article[]>;
+    fetchArticles(authorId: string, fullProfile?: FullProfile): Promise<Article[]>;
     fetchWebsite(authorId: string): Promise<string>;
 }

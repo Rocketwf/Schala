@@ -46,10 +46,10 @@ export class SortByFilter extends ArticlesFilter<string> {
                 }
                 return 0;
             } else if (this.value == 'citations') {
-                if (n1.citation < n2.citation) {
+                if (n1.getCitationCount() < n2.getCitationCount()) {
                     return 1;
                 }
-                if (n1.citation > n2.citation) {
+                if (n1.getCitationCount() > n2.getCitationCount()) {
                     return -1;
                 }
                 return 0;

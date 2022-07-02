@@ -15,9 +15,11 @@ export class ProfileFactory {
         const basicProfile: BasicProfile = new BasicProfile(authorId, name, affiliations, citation);
         const hIndexObj: HIndex = await this.calculateHIndex();
         const i10IndexObj: I10Index = await this.calculateI10Index();
-        const articles: Article[] = await this.dataSource.fetchArticles(authorId);
         const website: string = await this.dataSource.fetchWebsite(authorId);
-        return Array.of(new FullProfile(basicProfile, hIndexObj, i10IndexObj, articles, website));
+        const fullProfile: FullProfile = new FullProfile(basicProfile, hIndexObj, i10IndexObj, website);
+        const articles: Article[] = await this.dataSource.fetchArticles(authorId, fullProfile);
+        fullProfile.articles = articles;
+        return Array.of(fullProfile);
     }
 
     async calculateHIndex(): Promise<HIndex> {

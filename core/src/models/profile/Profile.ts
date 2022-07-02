@@ -50,12 +50,13 @@ export class FullProfile {
     private _website: string;
     private _fasterCitations: Map<number, Citations>;
 
-    constructor(basicProfile: BasicProfile, hIndex: HIndex, i10Index: I10Index, articles: Article[], website: string) {
+    constructor(basicProfile: BasicProfile, hIndex: HIndex, i10Index: I10Index, website: string, articles?: Article[]) {
         this._basicProfile = basicProfile;
         this._hIndex = hIndex;
         this._i10Index = i10Index;
-        this._articles = articles;
         this._website = website;
+
+        this._articles = articles;
     }
 
     public get basicProfile(): BasicProfile {
@@ -71,6 +72,9 @@ export class FullProfile {
     }
     public get articles(): Article[] {
         return this._articles;
+    }
+    public set articles(articles: Article[]) {
+        this._articles = articles;
     }
     public get website(): string {
         return this._website;
@@ -109,7 +113,7 @@ export class FullProfile {
                 }
             }
 
-            citations.selfCitationsCount += article.getSelfCitations(this._basicProfile.id);
+            citations.selfCitationsCount += article.getSelfCitations();
         }
         this._fasterCitations = fasterCitations;
         return this._fasterCitations;
