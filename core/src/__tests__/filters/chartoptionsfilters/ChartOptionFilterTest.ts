@@ -1,5 +1,5 @@
 import { ScaleUpFilter } from '../../../filters/chartoptionsfilters/ChartOptionFilter';
-import { ChartOptionsModel, ObjectSeriesChartModel, Series, StackedColumnsChartModel, ViewName } from '../../../models';
+import { ChartOptionsModel, Series, StackedColumnsChartModel, ViewName } from '../../../models';
 describe('chart options filter', () => {
     it('limits y axis of a chart to highest value ', () => {
         const series: Series[] = [

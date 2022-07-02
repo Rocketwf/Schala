@@ -1,4 +1,4 @@
-import { Article, Author, ReferenceOrCitation } from '../articles';
+import { Article, Author } from '../articles';
 
 export abstract class Profile {}
 export class BasicProfile implements Profile {

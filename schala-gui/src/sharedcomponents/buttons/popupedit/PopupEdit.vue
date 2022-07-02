@@ -24,18 +24,22 @@ const props = defineProps<{
 const getLabel = (): string => {
     return label;
 };
+getLabel;
 
 const setLabel = (newLabel: string): void => {
     label = newLabel;
 };
+setLabel;
 
 const getBadge = (): boolean => {
     return badge;
 };
+getBadge;
 
 const setBadge = (newBadge: boolean): void => {
     badge = newBadge;
 };
+setBadge;
 
 const getTextFields = (): TextField<ObjectSeriesChartModel>[] => {
     return props.textField;

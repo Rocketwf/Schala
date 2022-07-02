@@ -6,7 +6,7 @@
   </q-input>
 </template>
 <script setup lang="ts">
-import { ArticlesModel, Filter, Filterable, ObjectSeriesChartModel, TextField } from 'schala-core';
+import { ArticlesModel,Filterable, ObjectSeriesChartModel, TextField } from 'schala-core';
 import { ref } from 'vue';
 
 const props = defineProps<{
@@ -22,6 +22,7 @@ const getInputName = (): string =>{
 const getInputId = (): string =>{
   return props.textField.inputId
 }
+getInputId;
 
 const getInputValue = (): string =>{
   return props.textField.inputValue
