@@ -11,15 +11,24 @@ const props = defineProps<{
     lineColumnsMixedChartModel: LineColumnsMixedChartModel;
 }>();
 
+/**
+ * Converts the series to the form specific to the LineColumnsMixedChart.
+ */
 const getSeries = () => {
     return props.lineColumnsMixedChartModel.series;
 };
 
+/**
+ * Getter method for LineColumnsMixedChart labels
+ */
 const getLabels = () => {
     return props.lineColumnsMixedChartModel.labels;
 };
 
 type ApexOptionsType = { seriesIndex: number; w: { config: { series: Array<number> } } };
+/**
+ *  Options of the displayed apex-chart
+ */
 const chartOptions = {
     dataLabels: {
         enabled: true,

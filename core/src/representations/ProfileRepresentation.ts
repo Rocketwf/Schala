@@ -8,6 +8,11 @@ import { ViewName } from '../models/simplecardmodel/SimpleCardModel';
 import { Series } from '../models/objectserieschartmodel/ObjectSeriesChartModel';
 import { SemanticScholarSource } from '../datasources';
 
+type CoAuthorHIndices = {
+    coAuthorId: string;
+    hIndex: number;
+};
+
 export class ProfileRepresentation {
     private _fullProfile: FullProfile;
     private _rowModels: Array<RowModel>;
@@ -64,6 +69,10 @@ export class ProfileRepresentation {
         return articlesModel;
     }
 
+    /**
+     * Creates line columns mixed chart card.
+     * @returns - LineColumnsMixedChartModel
+     */
     private createLineColumnsMixedChartCard(): LineColumnsMixedChartModel {
         const series: Array<Series> = new Array<Series>();
         const coAuthorHIndices: { coAuthorId: string; hIndex: number }[] = this.calculateCoAuthorHIndex(
@@ -91,11 +100,19 @@ export class ProfileRepresentation {
         );
     }
 
+    /**
+     * Calculates number of publications of the co-authors with highest h-index.
+     * @returns - number[] containing number of publications of the co-authors with highest h-index.
+     */
     private calculateCoAuthorPublications(fullProfile: FullProfile): number[] {
         return [3, 2, 1, 5, 4];
     }
 
-    private calculateCoAuthorHIndex(fullProfile: FullProfile): { coAuthorId: string; hIndex: number }[] {
+    /**
+     * Calculates h-indices of the co-authors.
+     * @returns - CoAuthorHIndices[] containing co-authors ids with their h-index.
+     */
+    private calculateCoAuthorHIndex(fullProfile: FullProfile): CoAuthorHIndices[] {
         const coAuthors: Array<Array<CoAuthor>> = fullProfile.articles.map((article: Article) => {
             return article.coAuthors;
         });
@@ -106,7 +123,7 @@ export class ProfileRepresentation {
             return coAuthor.id;
         });
         const filtered: Array<string> = this.removeDuplicateIds(coAuthorIds);
-        // const promises: Promise<{ coAuthorId: string; hIndex: number }[]> = Promise.all(
+        // const promises: Promise<CoAuthorHIndices[]> = Promise.all(
         //     filtered.map(async (coAuthorId: string) => {
         //         return {
         //             coAuthorId: coAuthorId,
@@ -129,7 +146,7 @@ export class ProfileRepresentation {
         //         return 0;
         //     },
         // );
-        const topFive: { coAuthorId: string; hIndex: number }[] = sorted.slice(0, 5);
+        const topFive: CoAuthorHIndices[] = sorted.slice(0, 5);
         // return topFive;
         return [
             { coAuthorId: '1111111', hIndex: 5 },
@@ -140,6 +157,11 @@ export class ProfileRepresentation {
         ];
     }
 
+    /**
+     * Removes duplicates from the given array
+     * @param coAuthorIds string[] containing co-author ids
+     * @returns string[] containing co-author ids without duplicates
+     */
     private removeDuplicateIds(coAuthorIds: Array<string>) {
         const lookup: { [coAuthorId: string]: boolean } = {};
         const filtered: string[] = [];
