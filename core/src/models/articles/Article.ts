@@ -1,140 +1,72 @@
-import { FullProfile } from '../profile';
-
 export class Article {
-    private _id: string;
     private _title: string;
-    private _year: number;
-    private _citation: number;
-    private _selfCitations: number;
-    private _bibTex: string;
-    private _url: string;
     private _venue: string;
-    private _abstract: string;
-    private _citations: ReferenceOrCitation[];
-    private _references: ReferenceOrCitation[];
-    private _fullProfile: FullProfile;
-
-    private _authors: Author[];
+    private _publicationYear: number;
+    private _citationsCount: number;
+    private _url: string;
+    private _CoAuthors: string[];
 
     constructor(
-        _id: string,
         _title: string,
-        _year: number,
-        _bibTex: string,
-        _url: string,
         _venue: string,
-        _abstract: string,
-        _authors: Author[],
-        _citations: ReferenceOrCitation[],
-        _references: ReferenceOrCitation[],
-        _fullProfile?: FullProfile,
+        _year: number,
+        _citationsCount: number,
+        _url: string,
+        _CoAuthors: string[],
     ) {
-        this._id = _id;
         this._title = _title;
-        this._year = _year;
-        this._bibTex = _bibTex;
-        this._url = _url;
         this._venue = _venue;
-        this._abstract = _abstract;
-        this._authors = _authors;
-        this._citations = _citations;
-        this._references = _references;
-
-        this._fullProfile = _fullProfile;
-    }
-
-    public get id(): string {
-        return this._id;
-    }
-    public get title(): string {
-        return this._title;
+        this._publicationYear = _year;
+        this._citationsCount = _citationsCount;
+        this._url = _url;
+        this._CoAuthors = _CoAuthors;
     }
     public get year(): number {
-        return this._year;
+        return this._publicationYear;
     }
-    public get citation(): number {
-        return this._citation;
+    public set year(newYear: number) {
+        this._publicationYear = newYear;
     }
-    public get selfCitation(): number {
-        return this._selfCitations;
-    }
-    public get bibTex(): string {
-        return this._bibTex;
-    }
-    public get url(): string {
-        return this._url;
-    }
-    public get venue(): string {
-        return this._venue;
+    public get citationCount(): number {
+        return this._citationsCount;
     }
 
-    public get authors(): Author[] {
-        return this._authors;
-    }
-
-    public get fullProfile(): FullProfile {
-        return this._fullProfile;
-    }
-
-    public set fullProfile(newFullProfile: FullProfile) {
-        this._fullProfile = newFullProfile;
-    }
-
-    public getCitationCount(): number {
-        return this.citations.length;
-    }
-
-    public get citations(): ReferenceOrCitation[] {
-        return this._citations;
-    }
-    public set citations(_citations: ReferenceOrCitation[]) {
-        this._citations = _citations;
-    }
-    public get references(): ReferenceOrCitation[] {
-        return this._references;
-    }
-    public set references(_references: ReferenceOrCitation[]) {
-        this._references = _references;
-    }
-    public getSelfCitations(profileId?: string): number {
-        let selfCitationCount: number = 0;
-        const profileIdResolve: string = profileId ? profileId : this._fullProfile.basicProfile.id;
-        this.references.forEach((ref: ReferenceOrCitation) => {
-            if (ref.isOwn(profileIdResolve)) {
-                ++selfCitationCount;
-            }
-        });
-
-        return selfCitationCount;
-    }
-
-    public get abstract(): string {
-        return this._abstract;
+    public set citationCount(newCitationCount: number) {
+        this._citationsCount = newCitationCount;
     }
 }
 
 export class Author {
-    private _id: string;
     private _name: string;
     private _hIndex: number;
+    private _jointPublicationCount: number;
 
-    constructor(_id: string, _name: string, _hIndex?: number) {
-        this._id = _id;
+    constructor(_name: string, _jointPublicationCount: number, _hIndex?: number) {
         this._name = _name;
+        this._jointPublicationCount = _jointPublicationCount;
         this._hIndex = _hIndex;
     }
-    public get id(): string {
-        return this._id;
-    }
-
     public get name(): string {
         return this._name;
+    }
+    public set name(newName: string) {
+        this._name = newName;
+    }
+
+    public get jointPublicationCount(): number {
+        return this._jointPublicationCount;
+    }
+    public set jointPublicationCount(newJointPublicationCount: number) {
+        this._jointPublicationCount = newJointPublicationCount;
     }
     public get hIndex(): number {
         return this._hIndex;
     }
+    public set hIndex(newHIndex: number) {
+        this._hIndex = newHIndex;
+    }
 }
-export class ReferenceOrCitation {
+/*export class ReferenceOrCitation {
     private _year: number;
     private _title: string;
     private _authors: Author[];
@@ -157,4 +89,4 @@ export class ReferenceOrCitation {
     public isOwn(authorId: string): boolean {
         return this._authors.filter((author: Author) => author.id === authorId).length > 0;
     }
-}
+}*/
