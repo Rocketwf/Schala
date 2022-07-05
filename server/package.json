@@ -18,7 +18,6 @@
     "@types/node": "^18.0.1",
     "@typescript-eslint/eslint-plugin": "^5.30.5",
     "@typescript-eslint/parser": "^5.30.5",
-    "concurrently": "^7.2.2",
     "eslint": "^8.19.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
@@ -28,7 +27,6 @@
     "ts-jest": "^28.0.5"
   },
   "scripts": {
-    "frontendbackend": "concurrently \"yarn server\" \"cd ../schala-gui && quasar dev\"",
     "server": "node index.js",
     "test": "jest --config jestconfig.json",
     "lint": "eslint --ext .js,.ts ./"

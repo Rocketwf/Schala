@@ -21,7 +21,7 @@ update_core_in_gui:
 deps: server_deps core_deps gui_deps
 
 server:
-	(cd server; node index.js)
+	(cd server; tsc -b --verbose; node index.js)
 
 core_prepare:
 	(cd core; tsc -b --verbose)
@@ -29,7 +29,7 @@ core_prepare:
 core: core_prepare gui_deps
 
 frontendbackend:
-	(cd server;yarn frontendbackend)
+	(cd schala-gui;yarn frontendbackend)
 
 run: server_deps core_deps core gui_deps update_core_in_gui frontendbackend
 

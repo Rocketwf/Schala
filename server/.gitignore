@@ -2,7 +2,7 @@
 .thumbs.db
 node_modules
 yarn.lock
-
+/dist
 # Capacitor related directories and files
 /src-capacitor/www
 /src-capacitor/node_modules
