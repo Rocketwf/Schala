@@ -21,6 +21,7 @@
     "concurrently": "^7.2.2",
     "eslint": "^8.19.0",
     "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-tsdoc": "^0.2.16",
     "jest": "^28.1.2",
     "prettier": "^2.7.1",
@@ -28,6 +29,8 @@
   },
   "scripts": {
     "frontendbackend": "concurrently \"yarn server\" \"cd ../schala-gui && quasar dev\"",
-    "server": "node index.js"
+    "server": "node index.js",
+    "test": "jest --config jestconfig.json",
+    "lint": "eslint --ext .js,.ts ./"
   }
 }
