@@ -1,1 +1,1 @@
-export { Article, ReferenceOrCitation, Author } from './Article';
+export { Article, Author } from './Article';

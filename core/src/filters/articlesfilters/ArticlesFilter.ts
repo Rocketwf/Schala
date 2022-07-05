@@ -31,12 +31,12 @@ export class ArticlesPaginationFilter extends ArticlesFilter<number> {
     }
 }
 
-export class SortByFilter extends ArticlesFilter<string> {
+/*export class SortByFilter extends ArticlesFilter<string> {
     constructor(value: string) {
         super(value);
     }
     apply(model: ArticlesModel): void {
-        const newArticles: Article[] = model.articles.sort((n1: Article, n2: Article) => {
+       const newArticles: Article[] = model.articles.sort((n1: Article, n2: Article) => {
             if (this.value == 'year') {
                 if (n1.year < n2.year) {
                     return 1;
@@ -65,9 +65,9 @@ export class SortByFilter extends ArticlesFilter<string> {
         });
         model.articles = newArticles;
     }
-}
+}*/
 
-export class CoauthorsFilter extends ArticlesFilter<string[]> {
+/*export class CoauthorsFilter extends ArticlesFilter<string[]> {
     constructor(value: string[]) {
         super(value);
     }
@@ -78,11 +78,11 @@ export class CoauthorsFilter extends ArticlesFilter<string[]> {
         }
         model.articles = newArticles;
     }
-
-    /**
-     * Method for checking if a string includes given substrings.
-     */
-    private contains(coAuthors: Author[], name: string): boolean {
+*/
+/**
+ * Method for checking if a string includes given substrings.
+ */
+/*private contains(coAuthors: Author[], name: string): boolean {
         for (const coAuthor of coAuthors) {
             if (name.indexOf(coAuthor.name) >= 0) {
                 return true;
@@ -91,7 +91,7 @@ export class CoauthorsFilter extends ArticlesFilter<string[]> {
         return false;
     }
 }
-
+*/
 export class WordsInTitleFilter extends ArticlesFilter<string[]> {
     constructor(value: string[]) {
         super(value);
@@ -123,8 +123,8 @@ export class NumberOfCitationsFilter extends ArticlesFilter<number> {
         super(value);
     }
     apply(model: ArticlesModel): void {
-        const newArticles: Article[] = model.articles.filter((article: Article) => article.citation >= this.value);
-        model.articles = newArticles;
+        //const newArticles: Article[] = model.articles.filter((article: Article) => article.citation >= this.value);
+        //model.articles = newArticles;
     }
 }
 
@@ -136,12 +136,12 @@ export class KeywordsFilter extends ArticlesFilter<string[]> {
         let newArticles: Article[] = model.articles;
         for (const x of this.value) {
             newArticles = newArticles.filter((article: Article) => {
-                if (article.abstract == null) {
+                /*if (article.abstract == null) {
                     return false;
                 }
                 const lowerCaseValue: string = x.toLowerCase();
                 const lowerCaseName: string = article.abstract.toLowerCase();
-                return lowerCaseName.indexOf(lowerCaseValue) >= 0;
+                return lowerCaseName.indexOf(lowerCaseValue) >= 0;*/
             });
         }
         model.articles = newArticles;

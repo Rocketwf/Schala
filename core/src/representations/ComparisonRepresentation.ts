@@ -84,7 +84,7 @@ export class ComparisonRepresentation {
         const rowModel: RowModel = new RowModel(12);
         for (const fullProfile of this._fullProfiles) {
             const series: Series[] = new Array<Series>();
-            fullProfile.citations.forEach((citations: Citations, year: number) => {
+            /*fullProfile.citations.forEach((citations: Citations, year: number) => {
                 series.push(
                     new Series(year + '', [
                         citations.indirectSelfCitationsCount,
@@ -94,7 +94,7 @@ export class ComparisonRepresentation {
                             citations.indirectSelfCitationsCount,
                     ]),
                 );
-            });
+            });*/
             const objectSeriesChartModel: ObjectSeriesChartModel = new StackedColumnsChartModel(
                 'Citation by year',
                 '',
@@ -128,7 +128,7 @@ export class ComparisonRepresentation {
         const series: Array<Series> = new Array<Series>();
 
         this.fullProfiles.forEach((profile: FullProfile) => {
-            series.push(
+            /*series.push(
                 new Series(profile.basicProfile.name, [
                     profile.getTotalCitationsCount() -
                         profile.getSelfCitationsCount() -
@@ -136,12 +136,12 @@ export class ComparisonRepresentation {
                     profile.getSelfCitationsCount(),
                     profile.getIndirectSelfCitationsCount(),
                 ]),
-            );
+            );*/
         });
 
         const labels: string[] = [];
         this.fullProfiles.forEach((profile: FullProfile) => {
-            labels.push(profile.basicProfile.name);
+            //labels.push(profile.basicProfile.name);
         });
 
         const stackedColumns100ChartModel: StackedColumns100ChartModel = new StackedColumns100ChartModel(

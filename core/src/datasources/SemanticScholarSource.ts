@@ -1,23 +1,23 @@
-import { Article, Author, ReferenceOrCitation } from '../models/articles/Article';
+import { Article, Author } from '../models/articles/Article';
 import {
     APIAuthor,
-    APIAuthorCombined,
-    APIAuthorExtra,
     APIBasicAuthor,
     APIPapers,
     APIPaper,
     APICoAuthor,
     APISearch,
     APIRefCit,
+    APIBasicProfile,
+    APIFullProfile,
+    APIArticle,
 } from '../models/api/API';
 import { DataSource } from './DataSource';
 import axios, { AxiosResponse } from 'axios';
-import { FullProfile } from '../models';
+import { BasicProfile, FullProfile } from '../models';
 
 export class SemanticScholarSource implements DataSource {
-    private queryResultsMapping: Map<string, string[]>;
-    private authorIdAPIAuthor: Map<string, APIAuthor>;
-
+    private _queryResultsMapping: Map<string, BasicProfile[]>;
+    private _profileIdFullProfileMapping: Map<string, FullProfile>;
     private static instance: SemanticScholarSource;
 
     public static getInstance(): SemanticScholarSource {
@@ -28,29 +28,107 @@ export class SemanticScholarSource implements DataSource {
     }
 
     private constructor() {
-        this.queryResultsMapping = new Map<string, string[]>();
-        this.authorIdAPIAuthor = new Map<string, APIAuthor>();
+        this._queryResultsMapping = new Map<string, BasicProfile[]>();
+        this._profileIdFullProfileMapping = new Map<string, FullProfile>();
     }
-    private async getAndCacheFullAuthor(authorId: string): Promise<APIAuthor> {
-        const cachedAuthor: APIAuthor = this.authorIdAPIAuthor.get(authorId);
-        let basic: APIBasicAuthor = {} as APIBasicAuthor;
-        let extra: APIAuthorExtra = {} as APIAuthorExtra;
-        if (cachedAuthor) {
-            if (cachedAuthor.filled) {
-                return cachedAuthor;
-            }
+
+    async fetchSearchResults(query: string): Promise<BasicProfile[]> {
+        if (this._queryResultsMapping.has(query)) {
+            return this._queryResultsMapping.get(query);
+        } else {
             try {
-                const { data: authorExtra }: AxiosResponse<APIAuthorExtra, object> = await axios.get<APIAuthorExtra>(
-                    'https://api.semanticscholar.org/graph/v1/author/' + authorId + '?fields=url,homepage,hIndex',
+                const { data: bp }: AxiosResponse<APIBasicProfile[], object> = await axios.get<APIBasicProfile[]>(
+                    'https://placeholder/searchResults?query=' + query,
                     {
                         headers: {
                             Accept: 'application/json',
                         },
                     },
                 );
+                const basicProfiles: BasicProfile[] = new Array<BasicProfile>();
+                for (const apiBasicProfile of bp) {
+                    const basicProfile: BasicProfile = new BasicProfile(
+                        apiBasicProfile.id,
+                        apiBasicProfile.name,
+                        apiBasicProfile.affiliation,
+                        apiBasicProfile.totalCitations,
+                        apiBasicProfile.pictureURL,
+                    );
+                    basicProfiles.push(basicProfile);
+                }
+                this._queryResultsMapping.set(query, basicProfiles);
+                return basicProfiles;
+            } catch (error) {
+                if (axios.isAxiosError(error)) {
+                    console.log('error message: ', error.message);
+                    throw new Error(error.message);
+                } else {
+                    console.log('unexpected error: ', error);
+                    throw new Error('Unexpected error');
+                }
+            }
+        }
+    }
 
-                basic = cachedAuthor.basicAuthor;
-                extra = authorExtra;
+    async fetchFullProfile(profileId: string): Promise<FullProfile> {
+        if (this._profileIdFullProfileMapping.has(profileId)) {
+            return this._profileIdFullProfileMapping.get(profileId);
+        } else {
+            try {
+                const { data: fp }: AxiosResponse<APIFullProfile[], object> = await axios.get<APIFullProfile[]>(
+                    'https://placeholder/author/' +
+                        profileId +
+                        '?fields=authorId,name,aliases,affiliations,paperCount,citationCount,url,homepage,hIndex',
+                    {
+                        headers: {
+                            Accept: 'application/json',
+                        },
+                    },
+                );
+                const { data: articles }: AxiosResponse<APIArticle[], object> = await axios.get<APIArticle[]>(
+                    'https://placeholder/author/' +
+                        profileId +
+                        '/articles/?fields=title,venue,title,publicationYear,citationCount,url,coAuthors',
+                    {
+                        headers: {
+                            Accept: 'application/json',
+                        },
+                    },
+                );
+                const articleTemp: Array<Article> = new Array<Article>();
+                for (const apiPaper of articles) {
+                    articleTemp.push(
+                        new Article(
+                            apiPaper.title,
+                            apiPaper.venue,
+                            apiPaper.publicationYear,
+                            apiPaper.citationCount,
+                            apiPaper.url,
+                            apiPaper.coAuthors,
+                        ),
+                    );
+                }
+                const tempBasicProfile: BasicProfile = new BasicProfile(
+                    fp[0].basicProfile.id,
+                    fp[0].basicProfile.name,
+                    fp[0].basicProfile.affiliation,
+                    fp[0].basicProfile.totalCitations,
+                    fp[0].basicProfile.pictureURL,
+                );
+
+                const fullProfile: FullProfile = new FullProfile(
+                    tempBasicProfile,
+                    fp[0].expertise,
+                    fp[0].hIndex,
+                    fp[0].i10Index,
+                    articleTemp,
+                    fp[0].publicationByYear,
+                    fp[0].publicationByVenue,
+                    fp[0].citationByYear,
+                    fp[0].citedScholar,
+                );
+                this._profileIdFullProfileMapping.set(profileId, fullProfile);
+                return fullProfile;
             } catch (error) {
                 if (axios.isAxiosError(error)) {
                     console.log('error message: ', error.message);
@@ -60,222 +138,6 @@ export class SemanticScholarSource implements DataSource {
                     throw new Error('TODO: Implement me');
                 }
             }
-        } else {
-            const { data: combined }: AxiosResponse<APIAuthorCombined, object> = await axios.get<APIAuthorCombined>(
-                'https://api.semanticscholar.org/graph/v1/author/' +
-                    authorId +
-                    '?fields=authorId,name,aliases,affiliations,paperCount,citationCount,url,homepage,hIndex',
-                {
-                    headers: {
-                        Accept: 'application/json',
-                    },
-                },
-            );
-
-            basic = {
-                authorId: combined.authorId,
-                name: combined.name,
-                aliases: combined.aliases,
-                affiliations: combined.affiliations,
-                paperCount: combined.paperCount,
-                citationCount: combined.citationCount,
-            };
-            extra = {
-                url: combined.url,
-                homepage: combined.homepage,
-                hIndex: combined.hIndex,
-            };
         }
-        const { data: papers }: AxiosResponse<APIPapers, object> = await axios.get<APIPapers>(
-            'https://api.semanticscholar.org/graph/v1/author/' +
-                authorId +
-                '/papers/?fields=paperId,url,title,abstract,venue,year,referenceCount,citationCount,isOpenAccess,fieldsOfStudy,publicationTypes,publicationDate,journal&limit=1000',
-            {
-                headers: {
-                    Accept: 'application/json',
-                },
-            },
-        );
-        const {
-            data: papersExtra,
-        }: AxiosResponse<
-            { paperId: string; authors: APICoAuthor[]; citations: APIRefCit[]; references: APIRefCit[] }[],
-            object
-        > = await axios.get<
-            { paperId: string; authors: APICoAuthor[]; citations: APIRefCit[]; references: APIRefCit[] }[]
-        >(
-            'http://70.34.209.19:3000/papers?authorId=' +
-                authorId +
-                '&fields=authors,authors.name,authors.aliases,authors.hIndex,citations,citations.authors,citations.title,citations.year,references,references.authors,references.year,references.title',
-            {
-                headers: {
-                    Accept: 'application/json',
-                },
-            },
-        );
-        //citations.paperId,citations.authors,citations.title,citations.year,references.paperId,references.authors,references.title,references.year
-        const consistentPapers: APIPaper[] = new Array<APIPaper>();
-        for (const paper of papersExtra) {
-            const correspondingPaper: APIPaper = papers.data.find((p: APIPaper) => p.paperId === paper.paperId);
-            if (correspondingPaper) {
-                correspondingPaper.citations = paper.citations;
-                correspondingPaper.references = paper.references;
-                correspondingPaper.authors = paper.authors;
-                consistentPapers.push(correspondingPaper);
-            }
-        }
-        papers.data = consistentPapers;
-
-        const fullAuthor: APIAuthor = {
-            basicAuthor: basic,
-            authorExtra: extra,
-            papers: papers,
-            filled: true,
-        };
-        this.authorIdAPIAuthor.set(authorId, fullAuthor);
-        return fullAuthor;
-    }
-
-    private async getAndCacheSearchResults(query: string): Promise<APIAuthor[]> {
-        const apiAuthors: Array<APIAuthor> = new Array<APIAuthor>();
-        if (this.queryResultsMapping.has(query)) {
-            for (const authorId of this.queryResultsMapping.get(query)) {
-                apiAuthors.push(this.authorIdAPIAuthor.get(authorId));
-            }
-            return apiAuthors;
-        }
-        try {
-            const { data }: AxiosResponse<APISearch, object> = await axios.get<APISearch>(
-                'https://api.semanticscholar.org/graph/v1/author/search?query=' +
-                    query +
-                    '&fields=authorId,name,aliases,affiliations,paperCount,citationCount&limit=1000',
-                {
-                    headers: {
-                        Accept: 'application/json',
-                    },
-                },
-            );
-            this.queryResultsMapping.set(query, new Array<string>());
-
-            for (const basicProfile of data.data) {
-                const fullAuthor: APIAuthor = {
-                    basicAuthor: {
-                        authorId: basicProfile.authorId,
-                        name: basicProfile.name,
-                        aliases: basicProfile.aliases,
-                        affiliations: basicProfile.affiliations,
-                        paperCount: basicProfile.paperCount,
-                        citationCount: basicProfile.citationCount,
-                    },
-                    authorExtra: { url: '', homepage: '', hIndex: 0 },
-                    papers: {} as APIPapers,
-                    filled: false,
-                };
-                this.authorIdAPIAuthor.set(basicProfile.authorId, fullAuthor);
-                this.queryResultsMapping.get(query).push(basicProfile.authorId);
-
-                apiAuthors.push(fullAuthor);
-            }
-
-            return apiAuthors;
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                console.log('error message: ', error.message);
-                throw new Error(error.message);
-            } else {
-                console.log('unexpected error: ', error);
-                throw new Error('TODO: Implement me');
-            }
-        }
-    }
-
-    async fetchAuthorIds(query: string): Promise<string[]> {
-        const authors: APIAuthor[] = await this.getAndCacheSearchResults(query);
-        return authors.map((author: APIAuthor) => author.basicAuthor.authorId);
-    }
-
-    async fetchName(authorId: string): Promise<string> {
-        let profile: APIAuthor = this.authorIdAPIAuthor.get(authorId);
-        if (!profile) {
-            profile = await this.getAndCacheFullAuthor(authorId);
-        }
-        return profile.basicAuthor.aliases
-            ? profile.basicAuthor.aliases[profile.basicAuthor.aliases.length - 1]
-            : profile.basicAuthor.name;
-    }
-
-    async fetchAffiliations(authorId: string): Promise<string[]> {
-        let profile: APIAuthor = this.authorIdAPIAuthor.get(authorId);
-        if (!profile) {
-            profile = await this.getAndCacheFullAuthor(authorId);
-        }
-        return profile.basicAuthor.affiliations;
-    }
-
-    async fetchWebsite(authorId: string): Promise<string> {
-        let profile: APIAuthor = this.authorIdAPIAuthor.get(authorId);
-        if (!profile) {
-            profile = await this.getAndCacheFullAuthor(authorId);
-        }
-        return profile.authorExtra.homepage;
-    }
-
-    async fetchCitation(authorId: string): Promise<number> {
-        let profile: APIAuthor = this.authorIdAPIAuthor.get(authorId);
-        if (!profile) {
-            profile = await this.getAndCacheFullAuthor(authorId);
-        }
-        return +profile.basicAuthor.citationCount;
-    }
-
-    async fetchHIndex(authorId: string): Promise<number> {
-        const fullAuthor: APIAuthor = await this.getAndCacheFullAuthor(authorId);
-        return fullAuthor.authorExtra.hIndex;
-    }
-
-    async fetchI10Index(authorId: string): Promise<number> {
-        authorId;
-        return null;
-    }
-    async fetchArticles(authorId: string, fullProfile?: FullProfile): Promise<Article[]> {
-        const fullAuthor: APIAuthor = await this.getAndCacheFullAuthor(authorId);
-        return fullAuthor.papers.data.map((apiPaper: APIPaper) => {
-            const article: Article = new Article(
-                apiPaper.paperId,
-                apiPaper.title,
-                apiPaper.year,
-                '',
-                apiPaper.url,
-                apiPaper.journal ? apiPaper.journal.name : '',
-                apiPaper.abstract,
-                apiPaper.authors.map((author: APICoAuthor) => {
-                    let name: string = author.name;
-                    if (author.aliases) name = author.aliases[author.aliases.length - 1];
-                    return new Author(author.authorId, name, author.hIndex);
-                }),
-                apiPaper.citations.map(
-                    (citation: APIRefCit) =>
-                        new ReferenceOrCitation(
-                            citation.year,
-                            citation.title,
-                            citation.authors.map((coAuthor: APICoAuthor) => {
-                                return new Author(coAuthor.authorId, coAuthor.name);
-                            }),
-                        ),
-                ),
-                apiPaper.references.map(
-                    (ref: APIRefCit) =>
-                        new ReferenceOrCitation(
-                            ref.year,
-                            ref.title,
-                            ref.authors.map((coAuthor: APICoAuthor) => {
-                                return new Author(coAuthor.authorId, coAuthor.name);
-                            }),
-                        ),
-                ),
-                fullProfile,
-            );
-            return article;
-        });
     }
 }
