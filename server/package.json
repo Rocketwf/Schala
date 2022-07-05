@@ -6,6 +6,7 @@
   "author": "Wisteria Team",
   "private": true,
   "dependencies": {
+    "@types/cors": "^2.8.12",
     "axios": "^0.27.2",
     "core-js": "^3.23.3",
     "cors": "^2.8.5",
@@ -27,8 +28,8 @@
     "ts-jest": "^28.0.5"
   },
   "scripts": {
-    "server": "node index.js",
-    "test": "jest --config jestconfig.json",
+    "server": "node dist/index.js",
+    "test": "jest --config jestconfig.json --passWithNoTests",
     "lint": "eslint --ext .js,.ts ./"
   }
 }
