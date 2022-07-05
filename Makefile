@@ -1,10 +1,10 @@
-.PHONY: clean_all clean core_deps gui_deps deps core_prepare core run all
+.PHONY: clean_all clean core_deps gui_deps server_deps server deps core_prepare core run all
 
 clean:
 	rm -rf ./core/dist
 
 clean_all: clean
-	rm -rf ./{core,schala-gui}/node_modules
+	rm -rf ./{core,schala-gui,server}/node_modules
 
 core_deps:
 	(cd core; yarn)
@@ -28,21 +28,25 @@ core_prepare:
 
 core: core_prepare gui_deps
 
-gui:
-	(cd schala-gui; quasar dev)
+frontendbackend:
+	(cd server;yarn frontendbackend)
 
-run: server_deps server core_deps core gui_deps update_core_in_gui gui
+run: server_deps core_deps core gui_deps update_core_in_gui frontendbackend
 
 lint:
+	(cd server; yarn eslint ./src/ --ext .js,.jsx,.ts,.tsx --fix)
 	(cd core; yarn eslint ./src/ --ext .js,.jsx,.ts,.tsx --fix)
 	(cd schala-gui; yarn lint --fix)
 
 core_test:
 	(cd core;tsc -b --verbose; yarn test)
 
+server_test:
+	(cd server;tsc -b --verbose; yarn test)
+
 build_skip_test: core_deps core gui_deps update_core_in_gui
 	(cd schala-gui; yarn build)
 	
 
-all: core_deps core core_test gui_deps gui
+all: server_deps server server_test core_deps core core_test gui_deps frontendbackend
 
