@@ -36,5 +36,4 @@ yarn-error.log*
 /.vscode
 
 # Ignore outer dir packages
-package.json
 yarn.lock
