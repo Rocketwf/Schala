@@ -1,5 +1,4 @@
 export { DataSource, SemanticScholarSource } from './datasources';
-export { Factory, ProfileFactory, SearchResultsFactory } from './factories';
 export {
     Filter,
     Filterable,
@@ -14,7 +13,6 @@ export {
 } from './filters';
 export {
     APIAuthor,
-    APIJournal,
     Article,
     ArticlesModel,
     Input,
@@ -25,7 +23,6 @@ export {
     Profile,
     BasicProfile,
     FullProfile,
-    Citations,
     SearchResultsModel,
     Tab,
     ViewName,

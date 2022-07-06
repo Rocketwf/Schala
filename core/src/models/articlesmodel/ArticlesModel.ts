@@ -29,16 +29,12 @@ export class ArticlesModel implements Filterable<ArticlesModel>, SimpleCardModel
         this._articles.forEach((article: Article) => {
             articlesCopy.push(
                 new Article(
-                    article.id,
                     article.title,
-                    article.year,
-                    article.bibTex,
-                    article.url,
                     article.venue,
-                    article.abstract,
-                    article.authors,
-                    article.citations,
-                    article.references,
+                    article.publicationYear,
+                    article.citationCount,
+                    article.url,
+                    article.coAuthors,
                 ),
             );
         });

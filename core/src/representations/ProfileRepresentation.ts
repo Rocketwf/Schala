@@ -1,28 +1,7 @@
-import { FullProfile, Citations } from '../models/profile';
-import { Author } from '../models/articles';
+import { FullProfile } from '../models/profile';
 import { RowModel } from '../models/viewmodels';
-import {
-    ArticlesModel,
-    PieChartModel,
-    Series,
-    ObjectSeriesChartModel,
-    StackedColumnsChartModel,
-    LineColumnsMixedChartModel,
-} from '../models';
-import { ViewName } from '../models/simplecardmodel/SimpleCardModel';
+import { ObjectSeriesChartModel } from '../models';
 import { ExpertiseModel } from '../models/simplecardmodel/ExpertiseModel';
-class profile {
-    private _test: number;
-        private _name: string;
-    constructor(name : string, test: number) {
-        this._name = name;
-        this._test = test;
-    }
-    
-    
-    
-}
-
 export class ProfileRepresentation {
     private _fullProfile: FullProfile;
     private _rowModels: Array<RowModel>;
@@ -67,84 +46,12 @@ export class ProfileRepresentation {
         return null;
     }
 
-    private createCitationsCard(): PieChartModel {
-        const series: Array<Series> = new Array<Series>();
-        series.push(
-            new Series('citations by others', [
-                this._fullProfile.basicProfile.totalCitations -
-                    this._fullProfile.getSelfCitationsCount() -
-                    this._fullProfile.getIndirectSelfCitationsCount(),
-            ]),
-        );
-        series.push(new Series('self-citations', [this._fullProfile.getSelfCitationsCount()]));
-        series.push(new Series('indirect self-citations', [this._fullProfile.getIndirectSelfCitationsCount()]));
-
-        return new PieChartModel('Citations', '', ViewName.PieChartCard, 2, series);
-    }
-
-    private createArticlesCard(): ArticlesModel {
-        const articlesModel: ArticlesModel = new ArticlesModel(
-            this.fullProfile.articles,
-            'All Articles',
-            '',
-            ViewName.ArticlesCard,
-            10,
-        );
-        return articlesModel;
-    }
-
-    /**
-     * Creates line columns mixed chart card.
-     * @returns - LineColumnsMixedChartModel
-     */
-    private createCoAuthorsWithHighestHIndexCard(): LineColumnsMixedChartModel {
-        const series: Array<Series> = new Array<Series>();
-        const authorsCount: Map<Author, number> = new Map<Author, number>();
-
-        for (const art of this._fullProfile.articles) {
-            for (const author of art.authors) {
-                if (author.id === this._fullProfile.basicProfile.id) continue;
-                let found: boolean = false;
-                for (const savedAuthor of Array.from(authorsCount.keys())) {
-                    if (author.id === savedAuthor.id) {
-                        authorsCount.set(savedAuthor, authorsCount.get(savedAuthor) + 1);
-                        found = true;
-                        break;
-                    }
-                }
-                if (!found) {
-                    authorsCount.set(author, 1);
-                }
-            }
-        }
-        console.log(authorsCount);
-        for (const [author, count] of authorsCount) {
-            series.push(new Series(author.name, [author.hIndex], 'line'));
-            series.push(new Series(author.name, [count], 'column'));
-        }
-        return new LineColumnsMixedChartModel(
-            'Co-authors with highest h-index',
-            '',
-            ViewName.LineColumnsMixedChartCard,
-            5,
-            series,
-            'h-index',
-            'Publications',
-            ['Publications', 'h-index'],
-        );
-    }
-
     //This method creates the first row which renders the following:
     //Publications by year
     //Publications by venue
     //Citations by year
     private createFirstRow(): void {
-        this.rowModels.push(new RowModel(10));
-        const pby: PieChartModel = this.createCitationsCard();
-        const cby: ObjectSeriesChartModel = this.createCitationByYearCard();
-
-        this.rowModels[0].simpleCardModels.push(cby);
-        this.rowModels[0].simpleCardModels.push(pby);
+        return;
     }
     //This method creates the second row which renders the following:
     //Most cited scholars
@@ -157,38 +64,10 @@ export class ProfileRepresentation {
     //Co-Authors with highest h-index
     //Expertise
     private createThirdRow(): void {
-        const rowModel: RowModel = new RowModel(10);
-        rowModel.simpleCardModels.push(this.createCoAuthorsWithHighestHIndexCard());
-        this._rowModels.push(rowModel);
+        return;
     }
     //This method creates the fourth row which renders the articles
     private createFourthRow(): void {
-        this.rowModels.push(new RowModel(10));
-        const art: ArticlesModel = this.createArticlesCard();
-        this.rowModels[1].simpleCardModels.push(art);
-    }
-    private createCitationByYearCard(): ObjectSeriesChartModel {
-        const series: Series[] = new Array<Series>();
-        this._fullProfile.citations.forEach((citations: Citations, year: number) => {
-            series.push(
-                new Series(year + '', [
-                    citations.indirectSelfCitationsCount,
-                    citations.selfCitationsCount,
-                    citations.totalCitationsCount - citations.selfCitationsCount - citations.indirectSelfCitationsCount,
-                ]),
-            );
-        });
-        const objectSeriesChartModel: ObjectSeriesChartModel = new StackedColumnsChartModel(
-            'Citation by year',
-            '',
-            ViewName.StackedColumnsChartCard,
-            4,
-            series,
-            'Years',
-            'Number of citations',
-            ['indirect self-citation', 'self-citations', 'cited by others'],
-        );
-
-        return objectSeriesChartModel;
+        return;
     }
 }

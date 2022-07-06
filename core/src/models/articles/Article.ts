@@ -1,6 +1,4 @@
-import { APIArticle } from '../api/API';
-
-export class Article implements APIArticle {
+export class Article {
     private _title: string;
     private _venue: string;
     private _publicationYear: number;
@@ -99,27 +97,3 @@ export class Author {
         this._hIndex = newHIndex;
     }
 }
-/*export class ReferenceOrCitation {
-    private _year: number;
-    private _title: string;
-    private _authors: Author[];
-    constructor(_year: number, _title: string, _authors: Author[]) {
-        this._year = _year;
-        this._authors = _authors;
-        this._title = _title;
-    }
-
-    public get title(): string {
-        return this._title;
-    }
-
-    public get year(): number {
-        return this._year;
-    }
-    public get authors(): Author[] {
-        return this._authors;
-    }
-    public isOwn(authorId: string): boolean {
-        return this._authors.filter((author: Author) => author.id === authorId).length > 0;
-    }
-}*/

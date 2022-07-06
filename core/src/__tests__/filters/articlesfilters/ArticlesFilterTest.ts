@@ -1,8 +1,3 @@
-import { SemanticScholarSource } from '../../../datasources/SemanticScholarSource';
-import { SortByFilter } from '../../../filters/articlesfilters/ArticlesFilter';
-import { ArticlesModel, ViewName } from '../../../models';
-import { Article } from '../../../models/articles/Article';
-
 describe('articles filter test', () => {
     it('fetches author articles', async () => {
         expect(true).toBe(true);
