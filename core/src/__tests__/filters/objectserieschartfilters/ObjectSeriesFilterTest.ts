@@ -12,7 +12,7 @@ describe('chart options filter', () => {
     it('filters charts by showing value', () => {
         const showing: ShowingFilter = new ShowingFilter(2);
         showing.apply(model);
-        expect(model.series.length == 2).toBe(true);
+        expect(model.series.length).toBe(2);
     });
     it('filters charts by from value', () => {
         const from: FromFilter = new FromFilter(2021);
@@ -22,6 +22,6 @@ describe('chart options filter', () => {
     it('filters charts by to value', () => {
         const to: ToFilter = new ToFilter(2019);
         to.apply(model);
-        expect(model.series.length == 0).toBe(true);
+        expect(model.series.length).toBe(1);
     });
 });
