@@ -4,20 +4,35 @@ import { FullProfileRoutes } from './routes/FullProfileRoutes';
 import { SearchResultsRoutes } from './routes/SearchResultsRoutes';
 import cors from 'cors';
 
+/**
+ * Express application.
+ */
 const app: Application = express();
-const routes: Array<CommonRoutesConfig> = [];
-const port: number = 3000; // default port to listen
-app.use(cors());
 
+/**
+ * Represents the routes of the index as a list of CommonRoutesConfig.
+ */
+const routes: Array<CommonRoutesConfig> = [];
+
+/**
+ * Represents the port of the index as a number.
+ */
+const port: number = 3000;
+
+app.use(cors());
 routes.push(new SearchResultsRoutes(app));
 routes.push(new FullProfileRoutes(app));
 
-// define a route handler for the default home page
+/**
+ * Defines a route handler for the default home page.
+ */
 app.get('/', (req: Request, res: Response) => {
     res.send('Hello world!');
 });
 
-// start the Express server
+/**
+ * Starts the Express server.
+ */
 app.listen(port, () => {
     console.log(`server started at http://localhost:${port}`);
 });

@@ -3,13 +3,27 @@ import { CommonRoutesConfig, EndPoints } from './CommonRoutesConfig';
 import { SearchResultsService } from '../services/SearchResultsService';
 import { ProfileService } from '../services/ProfileService';
 
+/**
+ * Manages the search results routes of the given app.
+ */
 export class SearchResultsRoutes extends CommonRoutesConfig {
+    /**
+     * Service to get the search results
+     */
     private searchResultsService: ProfileService = new SearchResultsService();
 
+    /**
+     * Constructs the SearchResultsRoutes.
+     * @param app - app to configure
+     */
     constructor(app: express.Application) {
         super(app, 'SearchResultsRoutes');
     }
 
+    /**
+     * Configures the routes of the given app.
+     * @returns - application
+     */
     configureRoutes(): express.Application {
         this.app
             .route('/' + EndPoints.SEARCHRESULTS + '/:query')
