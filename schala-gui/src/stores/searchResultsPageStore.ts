@@ -1,5 +1,10 @@
-import { SearchResultsPaginationFilter, WordsInTitleFilter, AffiliationFilter } from 'schala-core';
-import { BasicProfile, SearchResultsFactory, SearchResultsModel } from 'schala-core';
+import {
+    SemanticScholarSource,
+    SearchResultsPaginationFilter,
+    WordsInTitleFilter,
+    AffiliationFilter,
+} from 'schala-core';
+import { BasicProfile, SearchResultsModel } from 'schala-core';
 import { defineStore } from 'pinia';
 
 export const searchResultsStore = defineStore({
@@ -7,7 +12,6 @@ export const searchResultsStore = defineStore({
     state: () => ({
         searchString: '',
         maxPage: 0,
-        searchResultsFactory: new SearchResultsFactory(),
         searchResultsShowingModel: new SearchResultsModel(new Array<BasicProfile>()),
         searchResultsCachedModel: new SearchResultsModel(new Array<BasicProfile>()),
         paginationFilter: new SearchResultsPaginationFilter(1, 15),
@@ -26,19 +30,20 @@ export const searchResultsStore = defineStore({
         setWordsInTitleFilter(wordsInTitleFilter: string): void {
             this.wordsInTitleFilter.value = wordsInTitleFilter;
             this.paginationFilter.value = 1;
-            
+
             this.applyAllFilters();
         },
         async setSearchString(passedSearchString: string) {
             this.searchString = passedSearchString;
-            const basicProfiles: BasicProfile[] = await this.searchResultsFactory.build(this.searchString);
+            const basicProfiles: BasicProfile[] = await SemanticScholarSource.getInstance().fetchSearchResults(
+                passedSearchString,
+            );
             this.searchResultsCachedModel.basicProfiles = basicProfiles;
             this.searchResultsShowingModel = this.searchResultsCachedModel.deepCopy();
 
             this.fixNumberOfPages();
 
             this.setPaginationFilter(1);
-
 
             this.applyAllFilters();
         },

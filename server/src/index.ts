@@ -6,7 +6,7 @@ app.use(cors());
 
 // define a route handler for the default home page
 app.get('/', (req: Request, res: Response) => {
-    res.send('Hello dad!');
+    res.send('Hello world!');
 });
 
 // start the Express server

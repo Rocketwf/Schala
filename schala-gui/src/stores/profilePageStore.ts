@@ -1,44 +1,43 @@
 import { defineStore } from 'pinia';
-import { FullProfile, ProfileFactory, ProfileRepresentation } from 'schala-core';
- 
+import { FullProfile, SemanticScholarSource, ProfileRepresentation } from 'schala-core';
+
 export const profilePageStore = defineStore({
-    id : 'profilePage',
+    id: 'profilePage',
     state: () => ({
-      profileId : '',
-      profileRepresentation: {} as ProfileRepresentation,
-   }),
+        profileId: '',
+        profileRepresentation: {} as ProfileRepresentation,
+    }),
     actions: {
+        setProfileRepresentation(passedRepr: ProfileRepresentation) {
+            this.profileRepresentation = passedRepr;
+        },
 
-      setProfileRepresentation(passedRepr : ProfileRepresentation) {
-        this.profileRepresentation = passedRepr;
-      },
+        getProfileRepresentation() {
+            return this.profileRepresentation;
+        },
+        getProfileId(): string {
+            return this.profileId;
+        },
 
-      getProfileRepresentation() {
-         return this.profileRepresentation;
-      } ,
-      getProfileId(): string{
-          return this.profileId;
-      },
+        async setProfileId(newId: string) {
+            if (newId !== this.profileId) {
+                this.profileId = newId;
+                const profile: FullProfile = await SemanticScholarSource.getInstance().fetchFullProfile(
+                    this.profileId,
+                );
+                this.profileRepresentation = new ProfileRepresentation(profile);
+                this.profileRepresentation.fullProfile = profile;
+            }
+            console.log(this.profileRepresentation.fullProfile.articles);
+            this.profileRepresentation.renderProfile();
+        },
 
+        getFullProfile() {
+            return this.getProfileRepresentation().fullProfile as FullProfile;
+        },
 
-      async setProfileId(newId: string) {
-        if (newId !== this.profileId) {
-            this.profileId = newId;
-            const profile: FullProfile[] = await new ProfileFactory().build(this.profileId);
-            this.profileRepresentation = new ProfileRepresentation(profile[0]);
-            this.profileRepresentation.fullProfile = profile[0];
-        }
-        console.log(this.profileRepresentation.fullProfile.articles);
-        this.profileRepresentation.renderProfile();
-      },
-
-
-      getFullProfile() {
-        return this.getProfileRepresentation().fullProfile as FullProfile;
-      },
-    
-      getBasicProfile() {
-        return this.getProfileRepresentation().fullProfile.basicProfile;
-      }
+        getBasicProfile() {
+            return this.getProfileRepresentation().fullProfile.basicProfile;
+        },
     },
 });
