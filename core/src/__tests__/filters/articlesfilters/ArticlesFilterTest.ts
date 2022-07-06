@@ -1,7 +1,7 @@
 describe('articles filter test', () => {
-    it('fetches author articles', async () => {
-        expect(true).toBe(true);
-    }, 30000);
+    //it('fetches author articles', async () => {
+        //expect(true).toBe(true);
+    //}, 30000);
     //it('sorts articles by citations', async () => {
     //const articles: Article[] = await SemanticScholarSource.getInstance().fetchArticles('1679754');
 
