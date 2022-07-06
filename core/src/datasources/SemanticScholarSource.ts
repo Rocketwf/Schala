@@ -1,21 +1,19 @@
-import { Article, Author } from '../models/articles/Article';
-import {
-    APIAuthor,
-    APIBasicAuthor,
-    APIPapers,
-    APIPaper,
-    APICoAuthor,
-    APISearch,
-    APIRefCit,
-    APIBasicProfile,
-    APIFullProfile,
-    APIArticle,
-} from '../models/api/API';
+import { Article } from '../models/articles/Article';
+import { PublicationByYear, PublicationByVenue, CitedScholar, CitationByYear } from '../models/profile/Profile';
+import { APIBasicProfile, APIFullProfile } from '../models/api/API';
 import { DataSource } from './DataSource';
 import axios, { AxiosResponse } from 'axios';
 import { BasicProfile, FullProfile } from '../models';
 
+enum ENDPOINTS {
+    SEARCHRESULTS = 'searchResults',
+    FULLPROFILE = 'fullprofile',
+}
+
 export class SemanticScholarSource implements DataSource {
+    private URL: string = 'http://localhost';
+    private PORT: number = 3000;
+
     private _queryResultsMapping: Map<string, BasicProfile[]>;
     private _profileIdFullProfileMapping: Map<string, FullProfile>;
     private static instance: SemanticScholarSource;
@@ -38,7 +36,7 @@ export class SemanticScholarSource implements DataSource {
         } else {
             try {
                 const { data: bp }: AxiosResponse<APIBasicProfile[], object> = await axios.get<APIBasicProfile[]>(
-                    'https://placeholder/searchResults?query=' + query,
+                    this.URL + ':' + this.PORT + '/' + ENDPOINTS.SEARCHRESULTS + '?query=' + query,
                     {
                         headers: {
                             Accept: 'application/json',
@@ -75,57 +73,68 @@ export class SemanticScholarSource implements DataSource {
             return this._profileIdFullProfileMapping.get(profileId);
         } else {
             try {
-                const { data: fp }: AxiosResponse<APIFullProfile[], object> = await axios.get<APIFullProfile[]>(
-                    'https://placeholder/author/' +
-                        profileId +
-                        '?fields=authorId,name,aliases,affiliations,paperCount,citationCount,url,homepage,hIndex',
+                const { data: fp }: AxiosResponse<APIFullProfile, object> = await axios.get<APIFullProfile>(
+                    this.URL + ':' + this.PORT + '/' + ENDPOINTS.FULLPROFILE + '?id=' + profileId,
                     {
                         headers: {
                             Accept: 'application/json',
                         },
                     },
                 );
-                const { data: articles }: AxiosResponse<APIArticle[], object> = await axios.get<APIArticle[]>(
-                    'https://placeholder/author/' +
-                        profileId +
-                        '/articles/?fields=title,venue,title,publicationYear,citationCount,url,coAuthors',
-                    {
-                        headers: {
-                            Accept: 'application/json',
-                        },
-                    },
+                const basicProfile: BasicProfile = new BasicProfile(
+                    fp.basicProfile.id,
+                    fp.basicProfile.name,
+                    fp.basicProfile.affiliation,
+                    fp.basicProfile.totalCitations,
+                    fp.basicProfile.pictureURL,
                 );
-                const articleTemp: Array<Article> = new Array<Article>();
-                for (const apiPaper of articles) {
-                    articleTemp.push(
+                const articles: Article[] = new Array<Article>();
+                for (const art of fp.articles) {
+                    articles.push(
                         new Article(
-                            apiPaper.title,
-                            apiPaper.venue,
-                            apiPaper.publicationYear,
-                            apiPaper.citationCount,
-                            apiPaper.url,
-                            apiPaper.coAuthors,
+                            art.title,
+                            art.venue,
+                            art.publicationYear,
+                            art.citationCount,
+                            art.url,
+                            art.coAuthors,
                         ),
                     );
                 }
-                const tempBasicProfile: BasicProfile = new BasicProfile(
-                    fp[0].basicProfile.id,
-                    fp[0].basicProfile.name,
-                    fp[0].basicProfile.affiliation,
-                    fp[0].basicProfile.totalCitations,
-                    fp[0].basicProfile.pictureURL,
-                );
+                const pby: PublicationByYear[] = new Array<PublicationByYear>();
+                for (const apiPby of fp.publicationsByYear) {
+                    pby.push(new PublicationByYear(apiPby.year, apiPby.publicationsCount));
+                }
+                const pbv: PublicationByVenue[] = new Array<PublicationByVenue>();
+                for (const apiPbv of fp.publicationsByVenue) {
+                    pbv.push(new PublicationByVenue(apiPbv.venue, apiPbv.publicationCount));
+                }
+                const cby: CitationByYear[] = new Array<CitationByYear>();
+                for (const apiCby of fp.citationsByYear) {
+                    cby.push(
+                        new CitationByYear(
+                            apiCby.year,
+                            apiCby.selfCitationsCount,
+                            apiCby.indirectSelfCitationsCount,
+                            apiCby.totalCitationsCount,
+                        ),
+                    );
+                }
+                const citedScholars: CitedScholar[] = new Array<CitedScholar>();
+                for (const apiCs of fp.citedScholars) {
+                    citedScholars.push(new CitedScholar(apiCs.name, apiCs.citationCount));
+                }
 
                 const fullProfile: FullProfile = new FullProfile(
-                    tempBasicProfile,
-                    fp[0].expertise,
-                    fp[0].hIndex,
-                    fp[0].i10Index,
-                    articleTemp,
-                    fp[0].publicationByYear,
-                    fp[0].publicationByVenue,
-                    fp[0].citationByYear,
-                    fp[0].citedScholar,
+                    basicProfile,
+                    fp.expertise,
+                    fp.hIndex,
+                    fp.i10Index,
+                    articles,
+                    pby,
+                    pbv,
+                    cby,
+                    citedScholars,
                 );
                 this._profileIdFullProfileMapping.set(profileId, fullProfile);
                 return fullProfile;

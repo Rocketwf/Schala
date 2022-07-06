@@ -1,15 +1,7 @@
-import {
-    APIBasicProfile,
-    APICitationByYear,
-    APICitedScholar,
-    APIFullProfile,
-    APIPublicationByVenue,
-    APIPublicationByYear,
-} from '../api/API';
-import { Article, Author } from '../articles';
+import { Article } from '../articles';
 
 export abstract class Profile {}
-export class BasicProfile implements APIBasicProfile {
+export class BasicProfile {
     private _id: string;
     private _name: string;
     private _affiliation: string[];
@@ -45,7 +37,7 @@ export class BasicProfile implements APIBasicProfile {
     }
 }
 
-export class FullProfile implements APIFullProfile {
+export class FullProfile {
     private _basicProfile: BasicProfile;
     private _expertise: string[];
     private _hIndex: number;
@@ -53,10 +45,10 @@ export class FullProfile implements APIFullProfile {
     private _i10Index: number;
     private _i10IndexWithoutSelfCitations: number;
     private _articles: Article[];
-    private _citedScholar: APICitedScholar;
-    private _citationByYear: APICitationByYear;
-    private _publicationByVenue: APIPublicationByVenue;
-    private _publicationByYear: APIPublicationByYear;
+    private _citedScholars: CitedScholar[];
+    private _citationsByYear: CitationByYear[];
+    private _publicationsByVenue: PublicationByVenue[];
+    private _publicationsByYear: PublicationByYear[];
 
     constructor(
         _basicProfile: BasicProfile,
@@ -64,43 +56,43 @@ export class FullProfile implements APIFullProfile {
         _hIndex: number,
         _i10Index: number,
         _articles: Article[],
-        _publicationsByYear: APIPublicationByYear,
-        _publicationsByVenue: APIPublicationByVenue,
-        _citationsByYear: APICitationByYear,
-        _citedScholar: APICitedScholar,
+        _publicationsByYear: PublicationByYear[],
+        _publicationsByVenue: PublicationByVenue[],
+        _citationsByYear: CitationByYear[],
+        _citedScholars: CitedScholar[],
     ) {
         this._basicProfile = _basicProfile;
         this._expertise = _expertise;
         this._hIndex = _hIndex;
         this._i10Index = _i10Index;
         this._articles = _articles;
-        this._publicationByYear = _publicationsByYear;
-        this._publicationByVenue = _publicationsByVenue;
-        this._citationByYear = _citationsByYear;
-        this._citedScholar = _citedScholar;
+        this._publicationsByYear = _publicationsByYear;
+        this._publicationsByVenue = _publicationsByVenue;
+        this._citationsByYear = _citationsByYear;
+        this._citedScholars = _citedScholars;
     }
 
-    public get publicationByYear(): APIPublicationByYear {
-        return this._publicationByYear;
+    public get publicationsByYear(): PublicationByYear[] {
+        return this._publicationsByYear;
     }
-    public set publicationsByYear(newPublicationsByYear: APIPublicationByYear) {
-        this._publicationByYear = newPublicationsByYear;
+    public set publicationsByYear(newPublicationsByYear: PublicationByYear[]) {
+        this._publicationsByYear = newPublicationsByYear;
     }
-    public get publicationByVenue(): APIPublicationByVenue {
-        return this._publicationByVenue;
+    public get publicationsByVenue(): PublicationByVenue[] {
+        return this._publicationsByVenue;
     }
-    public set publicationByVenue(newPublicationsByVenue: APIPublicationByVenue) {
-        this._publicationByVenue = newPublicationsByVenue;
+    public set publicationsByVenue(newPublicationsByVenue: PublicationByVenue[]) {
+        this._publicationsByVenue = newPublicationsByVenue;
     }
-    public get citationByYear(): APICitationByYear {
-        return this._citationByYear;
+    public get citationsByYear(): CitationByYear[] {
+        return this._citationsByYear;
     }
 
-    public get citedScholar(): APICitedScholar {
-        return this._citedScholar;
+    public get citedScholars(): CitedScholar[] {
+        return this._citedScholars;
     }
-    public set citedScholar(newCitedScholar: APICitedScholar) {
-        this._citedScholar = newCitedScholar;
+    public set citedScholars(newCitedScholars: CitedScholar[]) {
+        this._citedScholars = newCitedScholars;
     }
 
     public get articles(): Article[] {
@@ -144,48 +136,6 @@ export class FullProfile implements APIFullProfile {
     }
     public set basicProfile(basicProfile: BasicProfile) {
         this.basicProfile = basicProfile;
-    }
-}
-export class Citations {
-    private _year: number;
-    private _selfCitationsCount: number;
-    private _indirectSelfCitationCount: number;
-    private _totalCitationsCount: number;
-    constructor(
-        _year: number,
-        _selfCitationsCount: number,
-        _indirectSelfCitationCount: number,
-        _totalCitationsCount: number,
-    ) {
-        this._year = _year;
-        this._selfCitationsCount = _selfCitationsCount;
-        this._indirectSelfCitationCount = _indirectSelfCitationCount;
-        this._totalCitationsCount = _totalCitationsCount;
-    }
-
-    public set year(_year: number) {
-        this._year = _year;
-    }
-    public get year(): number {
-        return this._year;
-    }
-    public set indirectSelfCitationsCount(_indirectSelfCitationCount: number) {
-        this._indirectSelfCitationCount = _indirectSelfCitationCount;
-    }
-    public get indirectSelfCitationsCount(): number {
-        return this._indirectSelfCitationCount;
-    }
-    public set selfCitationsCount(_selfCitationsCount: number) {
-        this._selfCitationsCount = _selfCitationsCount;
-    }
-    public get selfCitationsCount(): number {
-        return this._selfCitationsCount;
-    }
-    public set totalCitationsCount(_totalCitationsCount: number) {
-        this._totalCitationsCount = _totalCitationsCount;
-    }
-    public get totalCitationsCount(): number {
-        return this._totalCitationsCount;
     }
 }
 
@@ -232,7 +182,7 @@ export class CitationByYear {
     }
 }
 
-export class PublicationByYear implements APIPublicationByYear {
+export class PublicationByYear {
     private _year: number;
     private _publicationsCount: number;
     constructor(_year: number, _publicationCount: number) {

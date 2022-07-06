@@ -11,6 +11,17 @@ import {
 } from '../models';
 import { ViewName } from '../models/simplecardmodel/SimpleCardModel';
 import { ExpertiseModel } from '../models/simplecardmodel/ExpertiseModel';
+class profile {
+    private _test: number;
+        private _name: string;
+    constructor(name : string, test: number) {
+        this._name = name;
+        this._test = test;
+    }
+    
+    
+    
+}
 
 export class ProfileRepresentation {
     private _fullProfile: FullProfile;
