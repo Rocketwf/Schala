@@ -18,8 +18,8 @@ export class GoogleScholarScraperSource implements DataSource {
         authorId;
         return;
     }
-    public async fetchPapers(authorId: string): Promise<APIPaper[]> {
-        authorId;
+    public async fetchPapers(paperIds: string[]): Promise<APIPaper[]> {
+        paperIds;
         return;
     }
     public async fetchPictureURL(authorId: string): Promise<string> {
