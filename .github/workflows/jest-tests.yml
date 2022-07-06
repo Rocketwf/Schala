@@ -5,7 +5,7 @@ on:
 
 jobs:
   run-linters:
-    name: Run core test units
+    name: Run core and server test units
     runs-on: ubuntu-latest
 
     steps:
@@ -16,7 +16,14 @@ jobs:
         run: yarn
         working-directory: core
 
-      - name: Run tests
+      - name: Run core tests
         run: yarn test
         working-directory: core
 
+      - name: Install server dependencies
+        run: yarn
+        working-directory: server
+        
+      - name: Run server tests
+        run: yarn test
+        working-directory: server

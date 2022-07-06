@@ -27,3 +27,11 @@ jobs:
       - name: Run linter gui
         run: yarn lint
         working-directory: schala-gui
+        
+      - name: Install server dependencies
+        run: yarn
+        working-directory: server
+        
+      - name: Run linter server
+        run: yarn lint
+        working-directory: server
