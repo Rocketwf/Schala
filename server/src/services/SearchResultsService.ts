@@ -9,7 +9,7 @@ import { ProfileService } from './ProfileService';
 export class SearchResultsService extends ProfileService {
     private dataSource: DataSource = SemanticScholarSource.getInstance();
     private apiBasicAuthors: APIBasicAuthor[];
-    private basicProfiles: BasicProfile[];
+    private basicProfiles: BasicProfile[] = new Array<BasicProfile>;
     private pictureURL: string;
     async build(query: string): BasicProfile[] {
         this.apiBasicAuthors = await this.dataSource.fetchSearchResults(query);
