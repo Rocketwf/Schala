@@ -1,4 +1,4 @@
-import express from 'express';
+import { Application, Request, Response } from 'express';
 import { CommonRoutesConfig, EndPoints } from './CommonRoutesConfig';
 import { FullProfileService } from '../services/FullProfileService';
 import { ProfileService } from '../services/ProfileService';
@@ -16,7 +16,7 @@ export class FullProfileRoutes extends CommonRoutesConfig {
      * Constructs the FullProfileRoutes.
      * @param app - app to configure
      */
-    constructor(app: express.Application) {
+    constructor(app: Application) {
         super(app, 'FullProfileRoutes');
     }
 
@@ -24,11 +24,11 @@ export class FullProfileRoutes extends CommonRoutesConfig {
      * Configures the routes of the given app.
      * @returns - application
      */
-    configureRoutes(): express.Application {
+    configureRoutes(): Application {
         this.app
             .route('/' + EndPoints.FULLPROFILE + '/:authorId')
-            .get((req: express.Request, res: express.Response) =>
-                res.status(200).send(this.fullProfileService.build(`${req.params.authorId}`)),
+            .get((req: Request, res: Response) =>
+                res.status(200).send(this.fullProfileService.build(req.params.authorId)),
             );
         return this.app;
     }

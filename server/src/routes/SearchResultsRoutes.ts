@@ -1,4 +1,4 @@
-import express from 'express';
+import { Application, Request, Response } from 'express';
 import { CommonRoutesConfig, EndPoints } from './CommonRoutesConfig';
 import { SearchResultsService } from '../services/SearchResultsService';
 import { ProfileService } from '../services/ProfileService';
@@ -16,7 +16,7 @@ export class SearchResultsRoutes extends CommonRoutesConfig {
      * Constructs the SearchResultsRoutes.
      * @param app - app to configure
      */
-    constructor(app: express.Application) {
+    constructor(app: Application) {
         super(app, 'SearchResultsRoutes');
     }
 
@@ -24,11 +24,11 @@ export class SearchResultsRoutes extends CommonRoutesConfig {
      * Configures the routes of the given app.
      * @returns - application
      */
-    configureRoutes(): express.Application {
+    configureRoutes(): Application {
         this.app
             .route('/' + EndPoints.SEARCHRESULTS + '/:query')
-            .get((req: express.Request, res: express.Response) =>
-                res.status(200).send(this.searchResultsService.build(`${req.params.query}`)),
+            .get((req: Request, res: Response) =>
+                res.status(200).send(this.searchResultsService.build(req.params.query)),
             );
         return this.app;
     }

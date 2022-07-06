@@ -1,12 +1,11 @@
+import express, { Application } from 'express';
 /**
  * Allowed values for endpoints.
  */
 export enum EndPoints {
-    FULLPROFILE = 'fullprofile',
-    SEARCHRESULTS = 'searchresults',
+    FULLPROFILE = 'fullProfile',
+    SEARCHRESULTS = 'searchResults',
 }
-
-import express from 'express';
 
 /**
  * Abstract class to manage routes of an app.
@@ -15,7 +14,7 @@ export abstract class CommonRoutesConfig {
     /**
      * Express application.
      */
-    private _app: express.Application;
+    private _app: Application;
 
     /**
      * Represents the name of the CommonRoutesConfig as a string.
@@ -27,7 +26,7 @@ export abstract class CommonRoutesConfig {
      * @param app - app to configure
      * @param name - name of the routes
      */
-    constructor(app: express.Application, name: string) {
+    constructor(app: Application, name: string) {
         this._app = app;
         this._name = name;
         this.configureRoutes();
@@ -36,12 +35,12 @@ export abstract class CommonRoutesConfig {
     /**
      * Abstract method to configure the routes of a given app.
      */
-    abstract configureRoutes(): express.Application;
+    abstract configureRoutes(): Application;
 
     /**
      * Getter method of the app attribute.
      */
-    public get app(): express.Application {
+    public get app(): Application {
         return this._app;
     }
 
