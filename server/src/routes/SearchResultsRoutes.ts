@@ -1,23 +1,23 @@
 import { Application, Request, Response } from 'express';
 import { CommonRoutesConfig, EndPoints } from './CommonRoutesConfig';
-import { FullProfileService } from '../services/FullProfileService';
+import { SearchResultsService } from '../services/SearchResultsService';
 import { ProfileService } from '../services/ProfileService';
 
 /**
- * Manages the full profile routes of the given app.
+ * Manages the search results routes of the given app.
  */
-export class FullProfileRoutes extends CommonRoutesConfig {
+export class SearchResultsRoutes extends CommonRoutesConfig {
     /**
-     * Service to get the full profile
+     * Service to get the search results
      */
-    private fullProfileService: ProfileService = new FullProfileService();
+    private searchResultsService: ProfileService = new SearchResultsService();
 
     /**
-     * Constructs the FullProfileRoutes.
+     * Constructs the SearchResultsRoutes.
      * @param app - app to configure
      */
     constructor(app: Application) {
-        super(app, 'FullProfileRoutes');
+        super(app, 'SearchResultsRoutes');
     }
 
     /**
@@ -26,9 +26,9 @@ export class FullProfileRoutes extends CommonRoutesConfig {
      */
     configureRoutes(): Application {
         this.app
-            .route('/' + EndPoints.FULLPROFILE + '/:authorId')
+            .route('/' + EndPoints.SEARCHRESULTS + '/:query')
             .get((req: Request, res: Response) =>
-                res.status(200).send(this.fullProfileService.build(req.params.authorId)),
+                res.status(200).send(this.searchResultsService.build(req.params.query)),
             );
         return this.app;
     }
