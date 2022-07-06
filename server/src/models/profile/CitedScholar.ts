@@ -2,6 +2,11 @@ export class CitedScholar {
     private _name: string;
     private _citationCount: number;
 
+    constructor(_name: string, _citationCount: number) {
+        this._name = _name;
+        this._citationCount = _citationCount;
+    }
+
     public get name(): string {
         return this._name;
     }

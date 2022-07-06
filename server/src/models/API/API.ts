@@ -18,8 +18,8 @@ export interface APIAuthor {
     name: string;
     aliases: string[];
     affiliations: string[];
-    paperCount: string;
-    citationCount: string;
+    paperCount: number;
+    citationCount: number;
     homepage: string;
     hIndex: number;
     papers: APIPapers;
@@ -57,7 +57,7 @@ export interface APIRefCit {
 }
 export interface APICoAuthor {
     authorId: string;
-    ame: string;
+    name: string;
     aliases?: string[];
     hIndex?: number;
 }

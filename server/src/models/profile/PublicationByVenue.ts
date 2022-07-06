@@ -2,6 +2,10 @@ export class PublicationByVenue {
     private _venue: string;
     private _publicationCount: number;
 
+    constructor(_venue: string, _publicationCount: number) {
+        this._venue = _venue;
+        this._publicationCount = _publicationCount;
+    }
     public get venue(): string {
         return this._venue;
     }

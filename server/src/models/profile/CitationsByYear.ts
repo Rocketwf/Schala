@@ -4,6 +4,18 @@ export class CitationsByYear {
     private _indirectSelfCitationsCount: number;
     private _totalCitationCount: number;
 
+
+    constructor (
+        _year: number,
+        _selfCitationsCount: number,
+        _indirectSelfCitationsCount: number,
+        _totalCitationCount: number,
+    ) {
+        this._year = _year;
+        this._selfCitationsCount = _selfCitationsCount;
+        this._indirectSelfCitationsCount = _indirectSelfCitationsCount;
+        this._totalCitationCount = _totalCitationCount;
+    }
     public get year(): number {
         return this._year;
     }
