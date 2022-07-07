@@ -14,10 +14,8 @@
 import ExpertiseItem from './ExpertiseItem.vue';
 import { ExpertiseModel } from 'schala-core';
 import SimpleCard from './SimpleCard.vue';
-import { ref } from 'vue';
 
 const props = defineProps<{
     cardModel: ExpertiseModel;
 }>();
-let tab = ref(props.cardModel.expertise[0]);
 </script>

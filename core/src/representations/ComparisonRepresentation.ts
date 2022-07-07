@@ -85,6 +85,10 @@ export class ComparisonRepresentation {
         this._fullProfiles = fullProfile;
     }
 
+    public getSummaryWidth(): number {
+        return 12 / this._fullProfiles.length;
+    }
+
     private createPublicationByYearRow(): void {
         const rowModel: RowModel = new RowModel(12);
         const tempYearSeries: Array<Series> = new Array<Series>();
@@ -145,7 +149,7 @@ export class ComparisonRepresentation {
                 'Publications by venue',
                 '',
                 ViewName.DistributedColumnsChartCard,
-                3,
+                12 / this._fullProfiles.length,
                 series,
                 'Venues',
                 'Number of publications',
@@ -171,7 +175,7 @@ export class ComparisonRepresentation {
                 'Citations by year',
                 '',
                 ViewName.StackedColumnsChartCard,
-                3,
+                12 / this._fullProfiles.length,
                 series,
                 'Years',
                 'Number of citations',
@@ -193,7 +197,7 @@ export class ComparisonRepresentation {
                 'Most frequent co-authors',
                 '',
                 ViewName.BasicBarsChartCard,
-                3,
+                12 / this._fullProfiles.length,
                 series,
                 'Number of co-authored publication',
                 '',
@@ -218,7 +222,7 @@ export class ComparisonRepresentation {
                 'Co-authors with highest h-index',
                 '',
                 ViewName.LineColumnsMixedChartCard,
-                3,
+                12 / this._fullProfiles.length,
                 series,
                 'h-index',
                 'Publications',

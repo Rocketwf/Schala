@@ -1,7 +1,7 @@
 <template>
     <div class="row justify-center bg-transparent" style="100%">
         <div
-            class="col-md-3 col-xs-12 self-center"
+            :class="'col-md-' + getComparePageStore().comparisonRepresentation.getSummaryWidth() + ' col-xs-12 self-center'"
             v-for="profile of getComparePageStore().comparisonRepresentation.fullProfiles"
             :key="profile.basicProfile.id"
         >
