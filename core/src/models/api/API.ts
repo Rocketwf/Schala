@@ -1,73 +1,83 @@
 export interface APIArticle {
-    title: string;
-    venue: string;
-    publicationYear: number;
-    citationCount: number;
-    url: string;
-    coAuthors: string[];
+    _title: string;
+    _venue: string;
+    _publicationYear: number;
+    _citationCount: number;
+    _url: string;
+    _coAuthors: string[];
 }
 
 export interface APIAuthor {
-    name: string;
-    jointPublicationCount: number;
-    hIndex: number;
+    _name: string;
+    _jointPublicationCount: number;
+    _hIndex: number;
 }
 export interface APIPaper {
-    title: string;
-    venue: string;
-    publicationYear: number;
-    citationCount: number;
-    url: string;
-    coAuthors: string[];
+    _title: string;
+    _venue: string;
+    _publicationYear: number;
+    _citationCount: number;
+    _url: string;
+    _coAuthors: string[];
 }
 export interface APIBasicAuthor {
-    authorId: string;
-    name: string;
-    aliases: string[];
-    affiliations: string[];
-    paperCount: number;
-    citationCount: number;
+    _authorId: string;
+    _name: string;
+    _aliases: string[];
+    _affiliations: string[];
+    _paperCount: number;
+    _citationCount: number;
 }
 
 export interface APIPublicationByYear {
-    year: number;
-    publicationsCount: number;
+    _year: number;
+    _publicationsCount: number;
 }
 
 export interface APIFullProfile {
-    basicProfile: APIBasicProfile;
-    expertise: string[];
-    hIndex: number;
-    hIndexWithoutSelfCitations: number;
-    i10Index: number;
-    i10IndexWithoutSelfCitations: number;
-    citedScholars: APICitedScholar[];
-    citationsByYear: APICitationByYear[];
-    publicationsByVenue: APIPublicationByVenue[];
-    publicationsByYear: APIPublicationByYear[];
-    articles: APIArticle[];
+    _expertise: string[];
+    _hIndex: number;
+    _hIndexWithoutSelfCitations: number;
+    _i10Index: number;
+    _i10IndexWithoutSelfCitations: number;
+    _selfCitationsCount: number;
+    _indirectSelfCitationsCount: number;
+    _totalCitationsCount: number;
+    _basicProfile: APIBasicProfile;
+    _publicationsByYear: APIPublicationByYear[];
+    _publicationsByVenue: APIPublicationByVenue[];
+    _citationsByYear: APICitationsByYear[];
+    _citedScholars: APICitedScholar[];
+    _authors: APIAuthor[];
+    _articles: APIArticle[];
+}
+export interface APICitationsByYear {
+    _year: number;
+    _selfCitationsCount: number;
+    _indirectSelfCitationsCount: number;
+    _totalCitationCount: number;
 }
 
 export interface APIPublicationByVenue {
-    venue: string;
-    publicationCount: number;
+    _venue: string;
+    _publicationCount: number;
 }
 
 export interface APICitedScholar {
-    name: string;
-    citationCount: number;
+    _name: string;
+    _citationCount: number;
 }
 
 export interface APICitationByYear {
-    year: number;
-    selfCitationsCount: number;
-    indirectSelfCitationsCount: number;
-    totalCitationsCount: number;
+    _year: number;
+    _selfCitationsCount: number;
+    _indirectSelfCitationsCount: number;
+    _totalCitationsCount: number;
 }
 export interface APIBasicProfile {
-    id: string;
-    name: string;
-    affiliation: string[];
-    totalCitations: number;
-    pictureURL: string;
+    _id: string;
+    _name: string;
+    _affiliations: string[];
+    _totalCitations: number;
+    _pictureURL: string;
 }

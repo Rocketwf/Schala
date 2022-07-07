@@ -11,14 +11,11 @@ export class SearchResultsService extends ProfileService {
     async build(query: string): Promise<BasicProfile[]> {
         this.apiBasicAuthors = await this.dataSource.fetchSearchResults(query);
 
-        for (const basicAuthors of this.apiBasicAuthors) {
+        for (const basicAuthor of this.apiBasicAuthors) {
+            let name: string = basicAuthor.name;
+            if (basicAuthor.aliases) name = basicAuthor.aliases[basicAuthor.aliases.length - 1];
             this.basicProfiles.push(
-                new BasicProfile(
-                    basicAuthors.authorId,
-                    basicAuthors.name,
-                    basicAuthors.affiliations,
-                    +basicAuthors.citationCount,
-                ),
+                new BasicProfile(basicAuthor.authorId, name, basicAuthor.affiliations, +basicAuthor.citationCount),
             );
         }
         return this.basicProfiles;

@@ -4,6 +4,8 @@ import ArticlesCard from '../ArticlesCard.vue';
 import LineColumnsMixedChartCard from './LineColumnsMixedChartCard.vue';
 import StackedColumns100ChartCard from './StackedColumns100ChartCard.vue';
 import StackedColumnsChartCard from './StackedColumnsChartCard.vue';
+import BasicColumnsChartCard from './BasicColumnsChartCard.vue';
+import DistributedColumnsChartCard from './DistributedColumnsChartCard.vue';
 
 export const mapper = new Map<string, Component>();
 mapper.set('PieChartCard', PieChartCard);
@@ -11,3 +13,5 @@ mapper.set('ArticlesCard', ArticlesCard);
 mapper.set('LineColumnsMixedChartCard', LineColumnsMixedChartCard);
 mapper.set('StackedColumns100ChartCard', StackedColumns100ChartCard);
 mapper.set('StackedColumnsChartCard', StackedColumnsChartCard);
+mapper.set('BasicColumnsChartCard', BasicColumnsChartCard);
+mapper.set('DistributedColumnsChartCard', DistributedColumnsChartCard);

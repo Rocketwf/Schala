@@ -1,1 +1,1 @@
-export { Profile, BasicProfile, FullProfile, CoAuthorPublicationHIndex } from './Profile';
+export { Profile, BasicProfile, FullProfile } from './Profile';
