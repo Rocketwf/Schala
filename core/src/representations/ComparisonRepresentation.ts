@@ -37,7 +37,8 @@ export class ComparisonRepresentation {
      * @returns void
      */
     renderComparison(): void {
-        if (this.fullProfiles.length === 0) {
+        if (this._fullProfiles.length === 0) {
+            this._rowModels = [];
             return;
         }
         this._rowModels = [];
