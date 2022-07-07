@@ -23,12 +23,8 @@ export interface APIAuthor {
     citationCount: number;
     homepage: string;
     hIndex: number;
-    papers: APIPapers;
+    papers: APIPaper[];
     profilePicture?: string;
-}
-export interface APIPapers {
-    offset: number;
-    data: PaperId[];
 }
 export interface PaperId {
     paperId: string;

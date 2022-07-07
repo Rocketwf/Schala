@@ -1,1 +1,1 @@
-export { APISearch, APIBasicAuthor, APIAuthor, APIPapers, APIPaper, APIRefCit, APICoAuthor, APIJournal } from './API';
+export { APISearch, APIBasicAuthor, APIAuthor, APIPaper, APIRefCit, APICoAuthor, APIJournal } from './API';

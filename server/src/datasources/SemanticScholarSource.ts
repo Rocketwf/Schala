@@ -63,7 +63,7 @@ export class SemanticScholarSource implements DataSource {
                             .get<APIPaper>(
                                 'https://api.semanticscholar.org/graph/v1/paper/' +
                                     paperId +
-                                    '?fields=paperId,url,title,abstract,venue,year,referenceCount,citationCount,isOpenAccess,fieldsOfStudy,publicationTypes,publicationDate,citations,references,authors,journal',
+                                    '?fields=paperId,url,title,abstract,venue,year,referenceCount,citationCount,isOpenAccess,fieldsOfStudy,publicationTypes,publicationDate,citations.paperId,citations.authors,citations.title,citations.year,references.paperId,references.authors,references.title,references.year,authors,journal',
                                 {
                                     headers: {
                                         Accept: 'application/json',

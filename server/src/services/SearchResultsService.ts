@@ -13,14 +13,12 @@ export class SearchResultsService extends ProfileService {
         this.apiBasicAuthors = await this.dataSource.fetchSearchResults(query);
 
         for (const basicAuthors of this.apiBasicAuthors) {
-            this.pictureURL = await this.dataSource.fetchPictureURL(basicAuthors.authorId);
             this.basicProfiles.push(
                 new BasicProfile(
                     basicAuthors.authorId,
                     basicAuthors.name,
                     basicAuthors.affiliations,
                     +basicAuthors.citationCount,
-                    this.pictureURL,
                 ),
             );
         }

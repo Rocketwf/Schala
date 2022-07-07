@@ -14,59 +14,53 @@ import { CitationsByYear } from '../models/profile/CitationsByYear';
 import { ArticleCoAuthor } from '../models/profile/ArticleCoAuthor';
 
 export class FullProfileService extends ProfileService {
-    private dataSource: DataSource = new SemanticScholarSource();
-
-    private apiAuthor: APIAuthor;
-    private authorPapers: APIPaper[];
-
-    private coAuthors: Author[];
+    private _dataSource: DataSource = new SemanticScholarSource();
 
     private _fasterCitations: Map<number, CitationsByYear>;
 
     async build(authorId: string): Promise<FullProfile[]> {
-        this.apiAuthor = await this.dataSource.fetchAuthor(authorId);
+        this._fasterCitations = null;
+
+        const apiAuthor: APIAuthor = await this._dataSource.fetchAuthor(authorId);
+
         const authorPaperIds: string[] = new Array<string>();
-        this.apiAuthor.papers.data.forEach((element: PaperId) => {
+        apiAuthor.papers.forEach((element: PaperId) => {
             authorPaperIds.push(element.paperId);
         });
-        this.authorPapers = await this.dataSource.fetchPapers(authorPaperIds);
+        const authorPapers: APIPaper[] = await this._dataSource.fetchPapers(authorPaperIds);
 
-        const basicProfile: BasicProfile = this.buildBasicProfile();
+        const basicProfile: BasicProfile = this.buildBasicProfile(apiAuthor);
 
-        this.coAuthors = this.buildAuthors();
+        const coAuthors: Author[] = this.buildAuthors(apiAuthor, authorPapers);
 
         const fullProfile: FullProfile = new FullProfile(
-            this.buildExpertise(),
-            this.calculateHIndex(),
-            this.calculateHIndexWithoutSelfCitations(),
-            this.calculateI10Index(),
-            this.calculateI10IndexWithoutSelfCitations(),
-            this.calculateSelfCitations(),
-            this.calculateIndirectSelfCitations(),
+            this.buildExpertise(authorPapers),
+            this.calculateHIndex(authorPapers),
+            this.calculateHIndexWithoutSelfCitations(apiAuthor, authorPapers),
+            this.calculateI10Index(authorPapers),
+            this.calculateI10IndexWithoutSelfCitations(apiAuthor, authorPapers),
+            this.calculateSelfCitations(apiAuthor, authorPapers),
+            this.calculateIndirectSelfCitations(apiAuthor, authorPapers),
             basicProfile.totalCitations,
             basicProfile,
-            this.buildPublicationsByYear(),
-            this.buildPublicationsByVenue(),
-            Array.from(this.citations.values()),
-            this.buildCitedScholars(),
-            this.coAuthors,
-            this.buildArticles(),
+            this.buildPublicationsByYear(authorPapers),
+            this.buildPublicationsByVenue(authorPapers),
+            Array.from(this.prepareFastCitations(apiAuthor, authorPapers).values()),
+            this.buildCitedScholars(apiAuthor, authorPapers),
+            coAuthors,
+            this.buildArticles(apiAuthor, authorPapers),
         );
         return Array.of(fullProfile);
     }
 
-    private buildBasicProfile(): BasicProfile {
-        return new BasicProfile(
-            this.apiAuthor.authorId,
-            this.apiAuthor.name,
-            this.apiAuthor.affiliations,
-            this.apiAuthor.citationCount,
-        );
+    private buildBasicProfile(apiAuthor: APIAuthor): BasicProfile {
+        return new BasicProfile(apiAuthor.authorId, apiAuthor.name, apiAuthor.affiliations, apiAuthor.citationCount);
     }
 
-    private buildExpertise(): string[] {
+    private buildExpertise(apiPapers: APIPaper[]): string[] {
         const expertise: Set<string> = new Set<string>();
-        for (const apiPaper of this.authorPapers) {
+        for (const apiPaper of apiPapers) {
+            if (!apiPaper.fieldsOfStudy) continue;
             for (const fieldOfStudy of apiPaper.fieldsOfStudy) {
                 expertise.add(fieldOfStudy);
             }
@@ -74,49 +68,45 @@ export class FullProfileService extends ProfileService {
         return Array.from(expertise);
     }
 
-    private calculateHIndex(): number {
-        if (this.apiAuthor.hIndex != null) {
-            return this.apiAuthor.hIndex;
-        } else {
-            let hIndex: number = 0;
+    private calculateHIndex(apiPapers: APIPaper[]): number {
+        let hIndex: number = 0;
 
-            this.authorPapers.sort((a: APIPaper, b: APIPaper) => (a.citationCount > b.citationCount ? -1 : 1));
+        apiPapers.sort((a: APIPaper, b: APIPaper) => (a.citationCount > b.citationCount ? -1 : 1));
 
-            this.authorPapers.forEach((articles: APIPaper, index: number) => {
-                if (articles.citationCount >= index) {
-                    hIndex++;
-                }
-            });
-            return hIndex;
-        }
+        apiPapers.forEach((articles: APIPaper, index: number) => {
+            if (articles.citationCount >= index) {
+                hIndex++;
+            }
+        });
+        return hIndex;
     }
 
-    private isOwnRefOrCit(ref: APIRefCit): boolean {
-        return ref.authors.filter((author: APICoAuthor) => author.authorId === this.apiAuthor.authorId).length > 0;
+    private isOwnRefOrCit(apiAuthor: APIAuthor, ref: APIRefCit): boolean {
+        return ref.authors.filter((author: APICoAuthor) => author.authorId === apiAuthor.authorId).length > 0;
     }
-    private getSelfCitationsInPaper(paper: APIPaper): number {
+    private getSelfCitationsInPaper(apiAuthor: APIAuthor, paper: APIPaper): number {
         let selfCitationCount: number = 0;
         paper.references.forEach((refOrCit: APIRefCit) => {
-            if (this.isOwnRefOrCit(refOrCit)) {
+            if (this.isOwnRefOrCit(apiAuthor, refOrCit)) {
                 ++selfCitationCount;
             }
         });
 
         return selfCitationCount;
     }
-    private calculateHIndexWithoutSelfCitations(): number {
+    private calculateHIndexWithoutSelfCitations(apiAuthor: APIAuthor, apiPaper: APIPaper[]): number {
         let hIndexWithoutSelfCitations: number = 0;
-        this.authorPapers.forEach((article: APIPaper, index: number) => {
-            if (article.citationCount - this.getSelfCitationsInPaper(article) >= index) {
+        apiPaper.forEach((article: APIPaper, index: number) => {
+            if (article.citationCount - this.getSelfCitationsInPaper(apiAuthor, article) >= index) {
                 hIndexWithoutSelfCitations++;
             }
         });
         return hIndexWithoutSelfCitations;
     }
 
-    private calculateI10Index(): number {
+    private calculateI10Index(apiPapers: APIPaper[]): number {
         let i10Index: number = 0;
-        for (const paper of this.authorPapers) {
+        for (const paper of apiPapers) {
             if (paper.citationCount >= 10) {
                 i10Index++;
             }
@@ -124,29 +114,29 @@ export class FullProfileService extends ProfileService {
         return i10Index;
     }
 
-    private calculateI10IndexWithoutSelfCitations(): number {
+    private calculateI10IndexWithoutSelfCitations(apiAuthor: APIAuthor, apiPapers: APIPaper[]): number {
         let i10IndexWithoutSelfCitations: number = 0;
-        for (const article of this.authorPapers) {
-            if (article.citationCount - this.getSelfCitationsInPaper(article) >= 10) {
+        for (const article of apiPapers) {
+            if (article.citationCount - this.getSelfCitationsInPaper(apiAuthor, article) >= 10) {
                 i10IndexWithoutSelfCitations++;
             }
         }
         return i10IndexWithoutSelfCitations;
     }
 
-    private calculateSelfCitations(): number {
-        if (!this._fasterCitations) this._fasterCitations = this.citations;
-        return Array.from(this.citations.values())
+    private calculateSelfCitations(apiAuthor: APIAuthor, apiPapers: APIPaper[]): number {
+        if (!this._fasterCitations) this._fasterCitations = this.prepareFastCitations(apiAuthor, apiPapers);
+        return Array.from(this._fasterCitations.values())
             .map((e: CitationsByYear) => e.selfCitationsCount)
             .reduce((acc: number, curr: number) => acc + curr);
     }
 
-    public get citations(): Map<number, CitationsByYear> {
+    public prepareFastCitations(apiAuthor: APIAuthor, apiPapers: APIPaper[]): Map<number, CitationsByYear> {
         if (this._fasterCitations) {
             return this._fasterCitations;
         }
         const fasterCitations: Map<number, CitationsByYear> = new Map<number, CitationsByYear>();
-        for (const article of this.authorPapers) {
+        for (const article of apiPapers) {
             let citations: CitationsByYear = fasterCitations.get(article.year);
 
             if (!citations) {
@@ -161,7 +151,7 @@ export class FullProfileService extends ProfileService {
                     fasterCitations.set(citation.year, totalCite);
                 }
                 totalCite.totalCitationCount++;
-                if (this.isOwnRefOrCit(citation)) continue;
+                if (this.isOwnRefOrCit(apiAuthor, citation)) continue;
                 for (const author of citation.authors) {
                     if (article.authors.find((e: APIAuthor) => e.authorId === author.authorId)) {
                         let indSelfCite: CitationsByYear = fasterCitations.get(citation.year);
@@ -175,22 +165,22 @@ export class FullProfileService extends ProfileService {
                 }
             }
 
-            citations.selfCitationsCount += this.getSelfCitationsInPaper(article);
+            citations.selfCitationsCount += this.getSelfCitationsInPaper(apiAuthor, article);
         }
         this._fasterCitations = fasterCitations;
         return this._fasterCitations;
     }
-    private calculateIndirectSelfCitations(): number {
-        if (!this._fasterCitations) this._fasterCitations = this.citations;
-        return Array.from(this.citations.values())
+    private calculateIndirectSelfCitations(apiAuthor: APIAuthor, apiPapers: APIPaper[]): number {
+        if (!this._fasterCitations) this._fasterCitations = this.prepareFastCitations(apiAuthor, apiPapers);
+        return Array.from(this.prepareFastCitations(apiAuthor, apiPapers).values())
             .map((e: CitationsByYear) => e.indirectSelfCitationsCount)
             .reduce((acc: number, curr: number) => acc + curr);
     }
 
-    private buildPublicationsByYear(): PublicationByYear[] {
+    private buildPublicationsByYear(apiPapers: APIPaper[]): PublicationByYear[] {
         const publicationsByYear: PublicationByYear[] = new Array<PublicationByYear>();
         const publicationMap: Map<number, number> = new Map<number, number>(); //Pairs of years and publication counts
-        for (const paper of this.authorPapers) {
+        for (const paper of apiPapers) {
             if (publicationMap.has(paper.year)) {
                 publicationMap.set(paper.year, publicationMap.get(paper.year) + 1);
             } else {
@@ -204,10 +194,10 @@ export class FullProfileService extends ProfileService {
         return publicationsByYear;
     }
 
-    private buildPublicationsByVenue(): PublicationByVenue[] {
+    private buildPublicationsByVenue(apiPapers: APIPaper[]): PublicationByVenue[] {
         const publicationsByVenue: PublicationByVenue[] = new Array<PublicationByVenue>();
         const publicationMap: Map<string, number> = new Map<string, number>(); //Pairs of venues and publication counts
-        for (const paper of this.authorPapers) {
+        for (const paper of apiPapers) {
             if (publicationMap.has(paper.venue)) {
                 publicationMap.set(paper.venue, publicationMap.get(paper.venue) + 1);
             } else {
@@ -223,14 +213,14 @@ export class FullProfileService extends ProfileService {
         return publicationsByVenue;
     }
 
-    private buildCitedScholars(): CitedScholar[] {
+    private buildCitedScholars(apiAuthor: APIAuthor, apiPapers: APIPaper[]): CitedScholar[] {
         const citedScholars: CitedScholar[] = new Array<CitedScholar>();
         const citationsMap: Map<string, number> = new Map<string, number>();
 
-        for (const paper of this.authorPapers) {
-            for (const citing of paper.citations) {
-                for (const coauthors of citing.authors) {
-                    if ((coauthors.authorId = this.apiAuthor.authorId)) {
+        for (const paper of apiPapers) {
+            for (const ref of paper.references) {
+                for (const coauthors of ref.authors) {
+                    if (coauthors.authorId === apiAuthor.authorId) {
                         continue;
                     }
                     if (citationsMap.has(coauthors.name)) {
@@ -251,11 +241,11 @@ export class FullProfileService extends ProfileService {
         return citedScholars;
     }
 
-    private buildAuthors(): Author[] {
+    private buildAuthors(apiAuthor: APIAuthor, apiPapers: APIPaper[]): Author[] {
         const authors: Map<string, Author> = new Map<string, Author>();
-        for (const paper of this.authorPapers) {
+        for (const paper of apiPapers) {
             for (const author of paper.authors) {
-                if (author.authorId === this.apiAuthor.authorId) continue;
+                if (author.authorId === apiAuthor.authorId) continue;
                 if (!authors.has(author.authorId)) {
                     let name: string = author.name;
                     if (author.aliases) {
@@ -270,19 +260,19 @@ export class FullProfileService extends ProfileService {
         return Array.from(authors.values());
     }
 
-    private buildArticles(): Article[] {
+    private buildArticles(apiAuthor: APIAuthor, apiPapers: APIPaper[]): Article[] {
         const articles: Article[] = new Array<Article>();
-        for (const paper of this.authorPapers) {
+        for (const paper of apiPapers) {
             const articleToPush: Article = new Article();
             articleToPush.title = paper.title;
             articleToPush.publicationYear = paper.year;
             articleToPush.venue = paper.venue;
-            articleToPush.selfCitationsCount = 0; //TODO:????
+            articleToPush.selfCitationsCount = this.getSelfCitationsInPaper(apiAuthor, paper);
             articleToPush.citationCount = paper.citationCount;
             articleToPush.abstract = paper.abstract;
             const paperCoauthors: ArticleCoAuthor[] = new Array<ArticleCoAuthor>();
             for (const author of paper.authors) {
-                if (author.authorId == this.apiAuthor.authorId) {
+                if (author.authorId === apiAuthor.authorId) {
                     continue;
                 }
                 paperCoauthors.push(new ArticleCoAuthor(author.authorId, author.name));
