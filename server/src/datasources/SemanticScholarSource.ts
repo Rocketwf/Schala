@@ -6,15 +6,6 @@ import axios, { AxiosResponse } from 'axios';
 const http: RateLimitedAxiosInstance = rateLimit(axios.create(), { maxRequests: 99, perMilliseconds: 1000 });
 http.defaults.headers.common['x-api-key'] = process.env.SCHALA_API_KEY;
 export class SemanticScholarSource implements DataSource {
-    private static instance: SemanticScholarSource;
-
-    public static getInstance(): SemanticScholarSource {
-        if (!SemanticScholarSource.instance) {
-            SemanticScholarSource.instance = new SemanticScholarSource();
-        }
-        return SemanticScholarSource.instance;
-    }
-
     public async fetchSearchResults(query: string): Promise<APIBasicAuthor[]> {
         try {
             const { data: searchResults }: AxiosResponse<APISearch, object> = await http.get<APISearch>(

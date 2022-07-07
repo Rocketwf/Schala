@@ -8,16 +8,15 @@ import { PublicationByVenue } from './PublicationByVenue';
 import { PublicationByYear } from './PublicationByYear';
 
 export class FullProfile extends Profile {
-
     private _expertises: string[];
     private _hIndex: number;
     private _hIndexWithoutSelfCitations: number;
     private _i10Index: number;
     private _i10IndexWithoutSelfCitations: number;
-    private _selfCitationsCount: number;    
+    private _selfCitationsCount: number;
     private _indirectSelfCitationsCount: number;
     private _totalCitationsCount: number;
-    
+
     private _basicProfile: BasicProfile;
     private _publicationsByYear: PublicationByYear[];
     private _publicationsByVenue: PublicationByVenue[];
@@ -26,6 +25,41 @@ export class FullProfile extends Profile {
     private _authors: Author[];
     private _articles: Article[];
 
+    constructor(
+        _expertises: string[],
+        _hIndex: number,
+        _hIndexWithoutSelfCitations: number,
+        _i10Index: number,
+        _i10IndexWithoutSelfCitations: number,
+        _selfCitationsCount: number,
+        _indirectSelfCitationsCount: number,
+        _totalCitationsCount: number,
+
+        _basicProfile: BasicProfile,
+        _publicationsByYear: PublicationByYear[],
+        _publicationsByVenue: PublicationByVenue[],
+        _citationsByYear: CitationsByYear[],
+        _citedScholars: CitedScholar[],
+        _authors: Author[],
+        _articles: Article[],
+    ) {
+        super();
+        this._expertises = _expertises;
+        this._hIndex = _hIndex;
+        this._hIndexWithoutSelfCitations = _hIndexWithoutSelfCitations;
+        this._i10Index = _i10Index;
+        this._i10IndexWithoutSelfCitations = _i10IndexWithoutSelfCitations;
+        this._selfCitationsCount = _selfCitationsCount;
+        this._indirectSelfCitationsCount = _indirectSelfCitationsCount;
+        this._totalCitationsCount = _totalCitationsCount;
+        this._basicProfile = _basicProfile;
+        this._publicationsByYear = _publicationsByYear;
+        this._publicationsByVenue = _publicationsByVenue;
+        this._citationsByYear = _citationsByYear;
+        this._citedScholars = _citedScholars;
+        this._authors = _authors;
+        this._articles = _articles;
+    }
     public get expertises(): string[] {
         return this._expertises;
     }
@@ -61,7 +95,7 @@ export class FullProfile extends Profile {
     public get i10IndexWithoutSelfCitations(): number {
         return this._i10IndexWithoutSelfCitations;
     }
-    
+
     public set i10IndexWithoutSelfCitations(_i10IndexWithoutSelfCitations: number) {
         this._i10IndexWithoutSelfCitations = _i10IndexWithoutSelfCitations;
     }
@@ -69,7 +103,7 @@ export class FullProfile extends Profile {
     public get selfCitationsCount(): number {
         return this._selfCitationsCount;
     }
-    
+
     public set selfCitationsCount(_selfCitationsCount: number) {
         this._selfCitationsCount = _selfCitationsCount;
     }
@@ -77,7 +111,7 @@ export class FullProfile extends Profile {
     public get indirectSelfCitationsCount(): number {
         return this._indirectSelfCitationsCount;
     }
-    
+
     public set indirectSelfCitationsCount(_indirectSelfCitationsCount: number) {
         this._indirectSelfCitationsCount = _indirectSelfCitationsCount;
     }
@@ -85,7 +119,7 @@ export class FullProfile extends Profile {
     public get totalCitationsCount(): number {
         return this._totalCitationsCount;
     }
-    
+
     public set totalCitationsCount(_totalCitationsCount: number) {
         this._totalCitationsCount = _totalCitationsCount;
     }
@@ -93,7 +127,7 @@ export class FullProfile extends Profile {
     public get basicProfile(): BasicProfile {
         return this._basicProfile;
     }
-    
+
     public set basicProfile(_basicProfile: BasicProfile) {
         this._basicProfile = _basicProfile;
     }
