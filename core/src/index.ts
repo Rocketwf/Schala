@@ -37,6 +37,7 @@ export {
     LineColumnsMixedChartModel,
     BasicColumnsChartModel,
     DistributedColumnsChartModel,
+    BasicBarsChartModel,
     ExpertiseModel,
 } from './models';
 export { ProfileRepresentation, ComparisonRepresentation } from './representations';

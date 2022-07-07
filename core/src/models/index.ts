@@ -11,6 +11,7 @@ export {
     StackedColumns100ChartModel,
     BasicColumnsChartModel,
     DistributedColumnsChartModel,
+    BasicBarsChartModel,
 } from './objectserieschartmodel';
 export { Profile, BasicProfile, FullProfile } from './profile';
 export { SearchResultsModel } from './searchresultsmodel';

@@ -5,11 +5,12 @@ export enum ViewName {
     PieChartCard = 'PieChartCard',
     ArticlesCard = 'ArticlesCard',
     BasicColumnsChartCard = 'BasicColumnsChartCard',
+    BasicBarsChartCard = 'BasicBarsChartCard',
     DistributedColumnsChartCard = 'DistributedColumnsChartCard',
     LineColumnsMixedChartCard = 'LineColumnsMixedChartCard',
     StackedColumns100ChartCard = 'StackedColumns100ChartCard',
     StackedColumnsChartCard = 'StackedColumnsChartCard',
-    ExpertisesCard = 'ExpertisesCard',
+    ExpertiseCard = 'ExpertiseCard',
 }
 
 /**

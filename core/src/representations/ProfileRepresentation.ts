@@ -2,6 +2,7 @@ import { ArticlesModel } from './../models/articlesmodel/ArticlesModel';
 import { FullProfile } from '../models/profile';
 import { RowModel } from '../models/viewmodels';
 import {
+    BasicBarsChartModel,
     DistributedColumnsChartModel,
     LineColumnsMixedChartModel,
     ObjectSeriesChartModel,
@@ -71,14 +72,38 @@ export class ProfileRepresentation {
         );
     }
 
-    private createMostCitedScholarsCard(): ObjectSeriesChartModel {
-        this._fullProfile.citedScholars;
-        return null;
+    private createMostCitedScholarsCard(): BasicBarsChartModel {
+        const series: Array<Series> = new Array<Series>();
+        for (const cs of this._fullProfile.citedScholars) {
+            series.push(new Series(cs.name, [cs.citationsCount]));
+        }
+        return new BasicBarsChartModel(
+            'Most cited scholars',
+            '',
+            ViewName.BasicBarsChartCard,
+            4,
+            series,
+            'Number of citations',
+            '',
+            [],
+        );
     }
 
-    private createMostFrequentCoAuthorsCard(): ObjectSeriesChartModel {
-        this._fullProfile;
-        return null;
+    private createMostFrequentCoAuthorsCard(): BasicBarsChartModel {
+        const series: Array<Series> = new Array<Series>();
+        for (const author of this._fullProfile.authors) {
+            series.push(new Series(author.name, [author.jointPublicationCount]));
+        }
+        return new BasicBarsChartModel(
+            'Most frequent co-authors',
+            '',
+            ViewName.BasicBarsChartCard,
+            4,
+            series,
+            'Number of co-authored publication',
+            '',
+            [],
+        );
     }
 
     private createCitationsByYearCard(): StackedColumnsChartModel {
@@ -102,22 +127,7 @@ export class ProfileRepresentation {
     }
 
     private createExpertiseCard(): ExpertiseModel {
-        // const expertiseAuthor: string = this._fullProfile.basicProfile.name;
-        // const expertiseItems: string[] = this._fullProfile.expertise;
-        // type Expertise = {
-        //     authorName: string;
-        //     items: string[];
-        // };
-        // const expertiseObject: Expertise = { authorName: expertiseAuthor, items: expertiseItems };
-        // const expertiseModel: ExpertiseModel = new ExpertiseModel(
-        //     [expertiseObject],
-        //     'Expertise',
-        //     '',
-        //     ViewName.ExpertisesCard,
-        //     5,
-        // );
-        // return expertiseModel;
-        return null;
+        return new ExpertiseModel(this._fullProfile.expertise, 'Expertise', '', ViewName.ExpertiseCard, 5);
     }
 
     private createArticlesCard(): ArticlesModel {
@@ -183,9 +193,9 @@ export class ProfileRepresentation {
     //Most frequent co-authors
     private createSecondRow(): void {
         const rowModel: RowModel = new RowModel(10);
-        // rowModel.simpleCardModels.push(this.createMostCitedScholarsCard());
+        rowModel.simpleCardModels.push(this.createMostCitedScholarsCard());
         rowModel.simpleCardModels.push(this.createCitationsCard());
-        // rowModel.simpleCardModels.push(this.createMostFrequentCoAuthorsCard());
+        rowModel.simpleCardModels.push(this.createMostFrequentCoAuthorsCard());
         this.rowModels.push(rowModel);
     }
 
@@ -195,7 +205,7 @@ export class ProfileRepresentation {
     private createThirdRow(): void {
         const rowModel: RowModel = new RowModel(10);
         rowModel.simpleCardModels.push(this.createCoAuthorsWithHighestHIndexCard());
-        //rowModel.simpleCardModels.push(this.createExpertiseCard());
+        // rowModel.simpleCardModels.push(this.createExpertiseCard());
         this._rowModels.push(rowModel);
     }
 

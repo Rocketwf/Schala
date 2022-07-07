@@ -281,10 +281,10 @@ export class CitedScholar {
     public set name(newName: string) {
         this._name = newName;
     }
-    public get publicationCount(): number {
+    public get citationsCount(): number {
         return this._citationCount;
     }
-    public set publicationCount(newCount: number) {
+    public set citationsCount(newCount: number) {
         this._citationCount = newCount;
     }
 }
