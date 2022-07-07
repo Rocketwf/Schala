@@ -253,10 +253,10 @@ export class PublicationByVenue {
         this._publicationCount = _publicationCount;
     }
 
-    public get year(): string {
+    public get venue(): string {
         return this._venue;
     }
-    public set year(newYear: string) {
+    public set venue(newYear: string) {
         this._venue = newYear;
     }
     public get publicationCount(): number {

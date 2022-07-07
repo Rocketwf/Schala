@@ -16,7 +16,7 @@ const getSeries = () => {
     for (const series of props.distributedColumnsChartModel.series) {
         apexSeries.push(series.data[0]);
     }
-    return [{data: apexSeries}];
+    return [{data: apexSeries.slice(0,10)}];
 };
 
 const chartOptions = {
@@ -48,7 +48,7 @@ const chartOptions = {
             text: props.distributedColumnsChartModel.xTitle,
             offsetY: -11,
         },
-        categories: props.distributedColumnsChartModel.series.map(s => s.name),
+        categories: props.distributedColumnsChartModel.series.map(s => s.name.slice(0, 10)).slice(0,10),
         labels: {
             style: {
                 fontSize: '11px',

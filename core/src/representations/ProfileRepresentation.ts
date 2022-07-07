@@ -7,10 +7,11 @@ import {
     ObjectSeriesChartModel,
     PieChartModel,
     Series,
+    StackedColumnsChartModel,
     ViewName,
 } from '../models';
 import { ExpertiseModel } from '../models/simplecardmodel/ExpertiseModel';
-import { PublicationByYear } from '../models/profile/Profile';
+import { PublicationByVenue, PublicationByYear } from '../models/profile/Profile';
 export class ProfileRepresentation {
     private _fullProfile: FullProfile;
     private _rowModels: Array<RowModel>;
@@ -52,9 +53,22 @@ export class ProfileRepresentation {
         );
     }
 
-    private createPublicationsByVenueCard(): ObjectSeriesChartModel {
-        this._fullProfile.publicationsByVenue;
-        return null;
+    private createPublicationsByVenueCard(): DistributedColumnsChartModel {
+        const series: Array<Series> = new Array<Series>();
+        for (const pbv of this._fullProfile.publicationsByVenue) {
+            series.push(new Series(pbv.venue, [pbv.publicationCount]));
+        }
+
+        return new DistributedColumnsChartModel(
+            'Publications by venue',
+            '',
+            ViewName.DistributedColumnsChartCard,
+            2,
+            series,
+            'Venues',
+            'Number of publications',
+            this._fullProfile.publicationsByVenue.map((pbv: PublicationByVenue) => pbv.venue),
+        );
     }
 
     private createMostCitedScholarsCard(): ObjectSeriesChartModel {
@@ -67,8 +81,24 @@ export class ProfileRepresentation {
         return null;
     }
 
-    private createCitationsByYearCard(): PieChartModel {
-        return null;
+    private createCitationsByYearCard(): StackedColumnsChartModel {
+        const series: Array<Series> = new Array<Series>();
+        for (const cby of this._fullProfile.citationsByYear) {
+            const isc: number = cby.indirectSelfCitationsCount;
+            const sc: number = cby.selfCitationCount;
+            const cbo: number = cby.totalCitationsCount - isc - sc;
+            series.push(new Series(cby.year + '', [isc, sc, cbo]));
+        }
+        return new StackedColumnsChartModel(
+            'Citations by year',
+            '',
+            ViewName.StackedColumnsChartCard,
+            4,
+            series,
+            'Years',
+            'Number of citations',
+            ['indirect self-citations', 'self-citations', 'cited by others'],
+        );
     }
 
     private createExpertiseCard(): ExpertiseModel {
@@ -143,8 +173,8 @@ export class ProfileRepresentation {
     private createFirstRow(): void {
         const rowModel: RowModel = new RowModel(10);
         rowModel.simpleCardModels.push(this.createPublicationsByYearCard());
-        // rowModel.simpleCardModels.push(this.createPublicationsByVenueCard());
-        // rowModel.simpleCardModels.push(this.createCitationsByYearCard());
+        rowModel.simpleCardModels.push(this.createPublicationsByVenueCard());
+        rowModel.simpleCardModels.push(this.createCitationsByYearCard());
         this.rowModels.push(rowModel);
     }
     //This method creates the second row which renders the following:
