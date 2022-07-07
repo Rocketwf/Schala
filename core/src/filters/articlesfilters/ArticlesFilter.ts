@@ -1,5 +1,4 @@
 import { Article, ArticlesModel } from '../../models';
-import { Author } from '../../models/articles/Article';
 import { Filter } from '../Filter';
 
 export abstract class ArticlesFilter<S> extends Filter<S, ArticlesModel> {
@@ -123,6 +122,7 @@ export class NumberOfCitationsFilter extends ArticlesFilter<number> {
         super(value);
     }
     apply(model: ArticlesModel): void {
+        model;
         //const newArticles: Article[] = model.articles.filter((article: Article) => article.citation >= this.value);
         //model.articles = newArticles;
     }
@@ -135,7 +135,9 @@ export class KeywordsFilter extends ArticlesFilter<string[]> {
     apply(model: ArticlesModel): void {
         let newArticles: Article[] = model.articles;
         for (const x of this.value) {
+            x;
             newArticles = newArticles.filter((article: Article) => {
+                article;
                 /*if (article.abstract == null) {
                     return false;
                 }
