@@ -1,18 +1,23 @@
 <template>
     <div id="chart">
-        <apexchart type="bar" :options="chartOptions" :series="getSeries()"></apexchart>
+        <apexchart type="bar" height="350" :options="chartOptions" :series="getSeries()"></apexchart>
     </div>
 </template>
 <script setup charset="utf-8" lang="ts">
-import { BasicColumnsChartModel } from 'schala-core';
+import { BasicColumnsChartModel, Series } from 'schala-core';
 
 const props = defineProps<{
     basicColumnsChartModel: BasicColumnsChartModel;
 }>();
 const getSeries = () => {
     const apexSeries: { name: string, data: number[] }[] = [];
+    let apexData: Array<Array<number>> = [];
     for(const series of props.basicColumnsChartModel.series) {
-        apexSeries.push({name: series.name, data: series.data})
+        apexData.push(series.data);
+    }
+    apexData = apexData[0].map((_, colIndex) => apexData.map(row => row[colIndex]));
+    for (let i: number = 0; i < apexData.length; i++) {
+        apexSeries.push({ name: props.basicColumnsChartModel.labels[i], data: apexData[i] })
     }
     return apexSeries;
 };
@@ -51,7 +56,7 @@ const chartOptions = {
         title: {
             text: props.basicColumnsChartModel.xTitle,
         },
-        categories: props.basicColumnsChartModel.labels,
+        categories: props.basicColumnsChartModel.series.map((serie: Series) => serie.name),
         labels: {
             style: {
                 fontSize: '12px',
