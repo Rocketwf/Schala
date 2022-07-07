@@ -84,13 +84,13 @@ export class ProfileRepresentation {
         const series: Array<Series> = new Array<Series>();
         series.push(
             new Series('citations by others', [
-                // this._fullProfile.basicProfile.totalCitations -
-                //     this._fullProfile.citationsByYear-
-                //     this._fullProfile.getIndirectSelfCitationsCount(),
+                this._fullProfile.basicProfile.totalCitations -
+                    this.fullProfile.selfCitationsCount -
+                    this._fullProfile.indirectSelfCitationsCount,
             ]),
         );
-        // series.push(new Series('self-citations', [this._fullProfile.getSelfCitationsCount()]));
-        // series.push(new Series('indirect self-citations', [this._fullProfile.getIndirectSelfCitationsCount()]));
+        series.push(new Series('self-citations', [this.fullProfile.selfCitationsCount]));
+        series.push(new Series('indirect self-citations', [this._fullProfile.indirectSelfCitationsCount]));
 
         return new PieChartModel('Citations', '', ViewName.PieChartCard, 2, series);
     }
@@ -99,7 +99,7 @@ export class ProfileRepresentation {
         this.fullProfile.hIndex;
         const series: Array<Series> = new Array<Series>();
         const coAuthorIds: Set<string> = new Set();
-        
+
         // for (const article of this._fullProfile.articles) {
         //     for (const coAuthor of article.coAuthors) {
         //         coAuthorIds.add(coAuthor);
