@@ -17,7 +17,7 @@ export class PublicationByVenue {
     public get publicationCount(): number {
         return this._publicationCount;
     }
-    
+
     public set publicationCount(_publicationCount: number) {
         this._publicationCount = _publicationCount;
     }

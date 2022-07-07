@@ -9,7 +9,7 @@ export class PublicationByYear {
     public get year(): number {
         return this._year;
     }
-    
+
     public set year(_year: number) {
         this._year = _year;
     }

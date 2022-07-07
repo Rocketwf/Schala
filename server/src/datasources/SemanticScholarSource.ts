@@ -4,7 +4,7 @@ import rateLimit, { RateLimitedAxiosInstance } from 'axios-rate-limit';
 import axios, { AxiosResponse } from 'axios';
 
 const http: RateLimitedAxiosInstance = rateLimit(axios.create(), { maxRequests: 99, perMilliseconds: 1000 });
-http.defaults.headers.common['x-api-key'] = process.env.SCHALA_API_KEY;
+http.defaults.headers.common['x-api-key'] = process.env.SCHALA_API_KEY ? process.env.SCHALA_API_KEY : '';
 export class SemanticScholarSource implements DataSource {
     public async fetchSearchResults(query: string): Promise<APIBasicAuthor[]> {
         try {

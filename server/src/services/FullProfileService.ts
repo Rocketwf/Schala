@@ -12,9 +12,11 @@ import { PublicationByVenue } from '../models/profile/PublicationByVenue';
 import { ProfileService } from './ProfileService';
 import { CitationsByYear } from '../models/profile/CitationsByYear';
 import { ArticleCoAuthor } from '../models/profile/ArticleCoAuthor';
+import { GoogleScholarScraperSource } from '../datasources/GoogleScholarScraperSource';
 
 export class FullProfileService extends ProfileService {
     private _dataSource: DataSource = new SemanticScholarSource();
+    private _scraperDataSource: DataSource = new GoogleScholarScraperSource();
 
     private _fasterCitations: Map<number, CitationsByYear>;
 
@@ -30,6 +32,10 @@ export class FullProfileService extends ProfileService {
         const authorPapers: APIPaper[] = await this._dataSource.fetchPapers(authorPaperIds);
 
         const basicProfile: BasicProfile = this.buildBasicProfile(apiAuthor);
+
+        const googleProfile: APIAuthor = await this._scraperDataSource.fetchAuthor(basicProfile.name);
+        basicProfile.pictureUrl = googleProfile.profilePicture;
+        basicProfile.affiliations = googleProfile.affiliations;
 
         const coAuthors: Author[] = this.buildAuthors(apiAuthor, authorPapers);
 
@@ -187,9 +193,9 @@ export class FullProfileService extends ProfileService {
                 publicationMap.set(paper.year, 1);
             }
         }
-        publicationMap.forEach((value_count: number, key_year: number) => {
+        for (const [value_count, key_year] of publicationMap) {
             publicationsByYear.push(new PublicationByYear(key_year, value_count));
-        });
+        }
         publicationsByYear.sort((a: PublicationByYear, b: PublicationByYear) => (a.year < b.year ? -1 : 1));
         return publicationsByYear;
     }

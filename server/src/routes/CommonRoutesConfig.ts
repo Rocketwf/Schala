@@ -1,4 +1,4 @@
-import express, { Application } from 'express';
+import { Application } from 'express';
 /**
  * Allowed values for endpoints.
  */

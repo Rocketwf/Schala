@@ -1,4 +1,4 @@
-import { ArticleCoAuthor } from "./ArticleCoAuthor";
+import { ArticleCoAuthor } from './ArticleCoAuthor';
 
 export class Article {
     private _title: string;
@@ -8,13 +8,13 @@ export class Article {
     private _selfCitationsCount: number;
     private _url: string;
     private _abstract: string;
-    
+
     private _articlesCoAuthors: ArticleCoAuthor[];
 
     public get title(): string {
         return this._title;
     }
-    
+
     public set title(_title: string) {
         this._title = _title;
     }
@@ -62,7 +62,7 @@ export class Article {
     public get articlesCoAuthors(): ArticleCoAuthor[] {
         return this._articlesCoAuthors;
     }
-    
+
     public set articlesCoAuthors(_articlesCoAuthors: ArticleCoAuthor[]) {
         this._articlesCoAuthors = _articlesCoAuthors;
     }
@@ -70,7 +70,7 @@ export class Article {
     public get abstract(): string {
         return this._abstract;
     }
-    
+
     public set abstract(_abstract: string) {
         this._abstract = _abstract;
     }

@@ -10,7 +10,7 @@ export class CitedScholar {
     public get name(): string {
         return this._name;
     }
-    
+
     public set name(_name: string) {
         this._name = _name;
     }
@@ -22,5 +22,4 @@ export class CitedScholar {
     public set citationCount(_citationCount: number) {
         this._citationCount = _citationCount;
     }
-
 }
