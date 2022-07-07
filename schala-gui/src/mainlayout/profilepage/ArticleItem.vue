@@ -21,7 +21,7 @@
           <div class="text-grey-8 q-gutter-xs">
 
             <article-item-button v-slot="slotProps" :icon="'books'">
-              <cite-button :bibtex="props.article.bibTex" :button-icon="slotProps.icon"/>
+              <cite-button :bibtex="props.article.url" :button-icon="slotProps.icon"/>
             </article-item-button>
 
             <article-item-button v-slot="slotProps" :icon="'share'">

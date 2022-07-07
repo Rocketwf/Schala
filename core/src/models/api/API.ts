@@ -4,7 +4,12 @@ export interface APIArticle {
     _publicationYear: number;
     _citationCount: number;
     _url: string;
-    _coAuthors: string[];
+    _abstract: string;
+    _articlesCoAuthors: APICoAuthor[];
+}
+export interface APICoAuthor {
+    _id: string;
+    _name: string;
 }
 
 export interface APIAuthor {

@@ -5,13 +5,12 @@ import {
     BasicBarsChartModel,
     DistributedColumnsChartModel,
     LineColumnsMixedChartModel,
-    ObjectSeriesChartModel,
     PieChartModel,
     Series,
     StackedColumnsChartModel,
     ViewName,
 } from '../models';
-import { ExpertiseModel } from '../models/simplecardmodel/ExpertiseModel';
+import { Expertise, ExpertiseModel } from '../models/simplecardmodel/ExpertiseModel';
 import { PublicationByVenue, PublicationByYear } from '../models/profile/Profile';
 export class ProfileRepresentation {
     private _fullProfile: FullProfile;
@@ -21,10 +20,11 @@ export class ProfileRepresentation {
         this._rowModels = new Array<RowModel>();
     }
     renderProfile(): void {
+        this._rowModels = [];
         this.createFirstRow();
         this.createSecondRow();
         this.createThirdRow();
-        // this.createFourthRow();
+        this.createFourthRow();
     }
 
     public get fullProfile(): FullProfile {
@@ -127,7 +127,8 @@ export class ProfileRepresentation {
     }
 
     private createExpertiseCard(): ExpertiseModel {
-        return new ExpertiseModel(this._fullProfile.expertise, 'Expertise', '', ViewName.ExpertiseCard, 5);
+        const expertise: Expertise = new Expertise(this._fullProfile.basicProfile.name, this._fullProfile.expertise);
+        return new ExpertiseModel([expertise], 'Expertise', '', ViewName.ExpertiseCard, 5);
     }
 
     private createArticlesCard(): ArticlesModel {
@@ -205,14 +206,14 @@ export class ProfileRepresentation {
     private createThirdRow(): void {
         const rowModel: RowModel = new RowModel(10);
         rowModel.simpleCardModels.push(this.createCoAuthorsWithHighestHIndexCard());
-        // rowModel.simpleCardModels.push(this.createExpertiseCard());
+        rowModel.simpleCardModels.push(this.createExpertiseCard());
         this._rowModels.push(rowModel);
     }
 
     //This method creates the fourth row which renders the articles
     private createFourthRow(): void {
         const rowModel: RowModel = new RowModel(10);
-        // rowModel.simpleCardModels.push(this.createArticlesCard());
+        rowModel.simpleCardModels.push(this.createArticlesCard());
         this._rowModels.push(rowModel);
     }
 }

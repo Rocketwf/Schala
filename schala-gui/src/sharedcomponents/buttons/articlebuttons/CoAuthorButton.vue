@@ -1,9 +1,9 @@
 <template>
     <q-btn-dropdown size="12px" flat dense round :icon="buttonIcon">
         <q-list>
-            <q-item clickable v-close-popup @click="changeProfile">
+            <q-item v-for="coAuth in coAuthors" :key="coAuth.id" clickable v-close-popup @click="changeProfile(coAuth.id)">
                 <q-item-section>
-                    <q-item-label>Tobias Hey</q-item-label>
+                    <q-item-label>{{ coAuth.name }}</q-item-label>
                 </q-item-section>
             </q-item>
         </q-list>
@@ -11,15 +11,25 @@
 </template>
 
 <script setup charset="utf-8" lang="ts">
-import { CoAuthor } from 'schala-core/dist/models/articles/Article';
+import { ArticleCoAuthor } from 'schala-core';
+import { profilePageStore } from '../../../stores/profilePageStore';
+
+const profileStore = profilePageStore();
+//const pagination = ... TODO: Add Pagination
+
+const getProfilePageStore = () => {
+    return profileStore;
+};
+
 
 defineProps<{
-    coAuthors: CoAuthor[];
+    coAuthors: ArticleCoAuthor[];
     buttonIcon: string;
 }>()
 
-const changeProfile = (): void => {
-    return;
+
+const changeProfile = (value: string): void => {
+    getProfilePageStore().setProfileId(value);
 }
 
 </script>

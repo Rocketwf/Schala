@@ -26,8 +26,8 @@ export const profilePageStore = defineStore({
                     this.profileId,
                 );
                 this.profileRepresentation = new ProfileRepresentation(profile);
+                this.profileRepresentation.renderProfile();
             }
-            this.profileRepresentation.renderProfile();
         },
 
         getFullProfile() {

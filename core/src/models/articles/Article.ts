@@ -4,14 +4,14 @@ export class Article {
     private _publicationYear: number;
     private _citationsCount: number;
     private _url: string;
-    private _coAuthors: string[];
+    private _coAuthors: ArticleCoAuthor[];
     constructor(
         _title: string,
         _venue: string,
         _year: number,
         _citationsCount: number,
         _url: string,
-        _coAuthors: string[],
+        _coAuthors: ArticleCoAuthor[],
     ) {
         this._title = _title;
         this._venue = _venue;
@@ -51,11 +51,11 @@ export class Article {
         this._venue = venue;
     }
 
-    public get coAuthors(): string[] {
+    public get coAuthors(): ArticleCoAuthor[] {
         return this._coAuthors;
     }
 
-    public set coAuthors(coAuthors: string[]) {
+    public set coAuthors(coAuthors: ArticleCoAuthor[]) {
         this._coAuthors = coAuthors;
     }
 
@@ -64,5 +64,21 @@ export class Article {
     }
     public set urll(url: string) {
         this._url = url;
+    }
+}
+
+export class ArticleCoAuthor {
+    private _id: string;
+    private _name: string;
+    constructor(_id: string, _name: string) {
+        this._id = _id;
+        this._name = _name;
+    }
+
+    public get id(): string {
+        return this._id;
+    }
+    public get name(): string {
+        return this._name;
     }
 }

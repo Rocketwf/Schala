@@ -1,12 +1,12 @@
 <template>
     <div class="row justify-center bg-transparent">
         <div class="col-md-12 col-xs-12 self-center">
-            <profile-summary v-if="getFullProfile()" :profile="getFullProfile() as FullProfile" />
+            <profile-summary :profile="getFullProfile()" />
         </div>
     </div>
     <profile-content :profile-repr="getProfilePageStore().profileRepresentation as ProfileRepresentation" />
 </template>
-<script setup lang= "ts">
+<script setup lang="ts">
 import { profilePageStore } from '../../stores/profilePageStore';
 import ProfileSummary from '../../sharedcomponents/ProfileSummary.vue';
 import ProfileContent from './ProfileContent.vue';
@@ -22,6 +22,6 @@ const getProfilePageStore = () => {
 };
 
 const getFullProfile = () => {
-    return getProfilePageStore().profileRepresentation.fullProfile;
+    return getProfilePageStore().profileRepresentation.fullProfile as FullProfile;
 };
 </script>
