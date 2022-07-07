@@ -95,8 +95,4 @@ export class SemanticScholarSource implements DataSource {
             return papers;
         } catch (error) {}
     }
-    public async fetchPictureURL(authorId: string): Promise<string> {
-        authorId;
-        return;
-    }
 }

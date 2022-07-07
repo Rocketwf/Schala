@@ -11,6 +11,7 @@ export interface APIBasicAuthor {
     affiliations: string[];
     paperCount: string;
     citationCount: string;
+    profilePicture?: string;
 }
 export interface APIAuthor {
     authorId: string;
@@ -23,6 +24,7 @@ export interface APIAuthor {
     homepage: string;
     hIndex: number;
     papers: APIPapers;
+    profilePicture?: string;
 }
 export interface APIPapers {
     offset: number;
