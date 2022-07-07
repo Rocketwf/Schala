@@ -24,14 +24,14 @@
             <q-item-label class="vertical-top text-weight-bold text-h6">{{ name }}</q-item-label>
             <q-item-label caption> ID: {{ id }}</q-item-label>
             <q-item-label caption> Affiliation: {{ affiliation }}</q-item-label>
-            <q-item-label caption> H-Index: {{ hIndex.hIndex }}</q-item-label>
-            <q-item-label caption> H-Index without self-citations: {{ hIndex.hIndexWithoutSelfCitations }}</q-item-label>
+            <q-item-label caption> H-Index: {{ hIndex }}</q-item-label>
+            <q-item-label caption> H-Index without self-citations: {{ hIndexWithoutSelfCitations }}</q-item-label>
             <q-item-label caption> Total citations: {{ totalCitations }}</q-item-label>
             <q-item-label caption> Self citations: {{ selfCitations }}</q-item-label>
             <q-item-label caption> Indirect self citations: {{ indirectSelfCitations }}</q-item-label>
-            <q-item-label caption> I10-Index : {{ i10Index.i10Index }}</q-item-label>
+            <q-item-label caption> I10-Index : {{ i10Index }}</q-item-label>
             <q-item-label caption
-                >I10-Index without self citations : {{ i10Index.i10IndexWithoutSelfCitations }}</q-item-label
+                >I10-Index without self citations : {{ i10IndexWithoutSelfCitations }}</q-item-label
             >
             <q-item-label caption> Website: {{ 'www.google.com' }}</q-item-label>
             <q-item-label caption>
@@ -47,7 +47,6 @@
 <script setup lang="ts">
 import { useQuasar } from 'quasar';
 import { FullProfile } from 'schala-core';
-import { I10Index, HIndex } from 'schala-core/dist/models/profile';
 import { useRouter, Router } from 'vue-router';
 import { comparePageStore } from '../stores/comparePageStore';
 
@@ -106,12 +105,14 @@ const name: string = getFullProfile().basicProfile.name;
 const affiliation: string = getFullProfile().basicProfile.affiliation.length !== 0 ? getFullProfile().basicProfile.affiliation.reduce(
     (acc: string, curr: string) => acc + ',' + curr,
 ) : '';
-const hIndex: HIndex = getFullProfile().hIndex;
+const hIndex: number = getFullProfile().hIndex;
+const hIndexWithoutSelfCitations: number = getFullProfile().hIndexWithoutSelfCitations;
 
 const totalCitations: number = getFullProfile().basicProfile.totalCitations;
-const selfCitations: number = getFullProfile().getSelfCitationsCount();
-const indirectSelfCitations: number = getFullProfile().getIndirectSelfCitationsCount();
-const i10Index: I10Index = getFullProfile().i10Index;
+const selfCitations: number = getFullProfile().selfCitationsCount;
+const indirectSelfCitations: number = getFullProfile().indirectSelfCitationsCount;
+const i10Index: number = getFullProfile().i10Index;
+const i10IndexWithoutSelfCitations: number = getFullProfile().i10IndexWithoutSelfCitations;
 const website: string = 'http://www.google.com';
 //const Website: string = getFullProfile().website;
 </script>

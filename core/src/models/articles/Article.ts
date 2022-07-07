@@ -66,34 +66,3 @@ export class Article {
         this._url = url;
     }
 }
-
-export class Author {
-    private _name: string;
-    private _hIndex: number;
-    private _jointPublicationCount: number;
-
-    constructor(_name: string, _jointPublicationCount: number, _hIndex?: number) {
-        this._name = _name;
-        this._jointPublicationCount = _jointPublicationCount;
-        this._hIndex = _hIndex;
-    }
-    public get name(): string {
-        return this._name;
-    }
-    public set name(newName: string) {
-        this._name = newName;
-    }
-
-    public get jointPublicationCount(): number {
-        return this._jointPublicationCount;
-    }
-    public set jointPublicationCount(newJointPublicationCount: number) {
-        this._jointPublicationCount = newJointPublicationCount;
-    }
-    public get hIndex(): number {
-        return this._hIndex;
-    }
-    public set hIndex(newHIndex: number) {
-        this._hIndex = newHIndex;
-    }
-}

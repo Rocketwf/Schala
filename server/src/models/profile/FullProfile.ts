@@ -8,7 +8,7 @@ import { PublicationByVenue } from './PublicationByVenue';
 import { PublicationByYear } from './PublicationByYear';
 
 export class FullProfile extends Profile {
-    private _expertises: string[];
+    private _expertise: string[];
     private _hIndex: number;
     private _hIndexWithoutSelfCitations: number;
     private _i10Index: number;
@@ -26,7 +26,7 @@ export class FullProfile extends Profile {
     private _articles: Article[];
 
     constructor(
-        _expertises: string[],
+        _expertise: string[],
         _hIndex: number,
         _hIndexWithoutSelfCitations: number,
         _i10Index: number,
@@ -34,7 +34,6 @@ export class FullProfile extends Profile {
         _selfCitationsCount: number,
         _indirectSelfCitationsCount: number,
         _totalCitationsCount: number,
-
         _basicProfile: BasicProfile,
         _publicationsByYear: PublicationByYear[],
         _publicationsByVenue: PublicationByVenue[],
@@ -44,7 +43,7 @@ export class FullProfile extends Profile {
         _articles: Article[],
     ) {
         super();
-        this._expertises = _expertises;
+        this._expertise = _expertise;
         this._hIndex = _hIndex;
         this._hIndexWithoutSelfCitations = _hIndexWithoutSelfCitations;
         this._i10Index = _i10Index;
@@ -60,12 +59,12 @@ export class FullProfile extends Profile {
         this._authors = _authors;
         this._articles = _articles;
     }
-    public get expertises(): string[] {
-        return this._expertises;
+    public get expertise(): string[] {
+        return this._expertise;
     }
 
-    public set expertises(_expertises: string[]) {
-        this._expertises = _expertises;
+    public set expertises(_expertise: string[]) {
+        this._expertise = _expertise;
     }
 
     public get hIndex(): number {

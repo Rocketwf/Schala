@@ -60,7 +60,9 @@ export class FullProfileService extends ProfileService {
     }
 
     private buildBasicProfile(apiAuthor: APIAuthor): BasicProfile {
-        return new BasicProfile(apiAuthor.authorId, apiAuthor.name, apiAuthor.affiliations, apiAuthor.citationCount);
+        let name: string = apiAuthor.name;
+        if (apiAuthor.aliases) name = apiAuthor.aliases[apiAuthor.aliases.length - 1];
+        return new BasicProfile(apiAuthor.authorId, name, apiAuthor.affiliations, apiAuthor.citationCount);
     }
 
     private buildExpertise(apiPapers: APIPaper[]): string[] {
@@ -193,8 +195,9 @@ export class FullProfileService extends ProfileService {
                 publicationMap.set(paper.year, 1);
             }
         }
-        for (const [value_count, key_year] of publicationMap) {
-            publicationsByYear.push(new PublicationByYear(key_year, value_count));
+        for (const [year, pubCount] of publicationMap) {
+            if (!year) continue;
+            publicationsByYear.push(new PublicationByYear(year, pubCount));
         }
         publicationsByYear.sort((a: PublicationByYear, b: PublicationByYear) => (a.year < b.year ? -1 : 1));
         return publicationsByYear;

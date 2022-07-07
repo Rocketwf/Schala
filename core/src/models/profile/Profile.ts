@@ -37,57 +37,53 @@ export class BasicProfile {
     }
 }
 
-export type CoAuthorPublicationHIndex = {
-    name: string;
-    publicationCount: number;
-    hIndex: number;
-};
-
 export class FullProfile {
-    private _basicProfile: BasicProfile;
     private _expertise: string[];
     private _hIndex: number;
     private _hIndexWithoutSelfCitations: number;
     private _i10Index: number;
     private _i10IndexWithoutSelfCitations: number;
-    private _articles: Article[];
-    private _citedScholars: CitedScholar[];
-    private _citationsByYear: CitationByYear[];
-    private _publicationsByVenue: PublicationByVenue[];
-    private _publicationsByYear: PublicationByYear[];
-    private _indirectSelfCitationsCount: number;
     private _selfCitationsCount: number;
-    private _publicationsCount: number;
-    private _coAuthorPublicationHIndex: CoAuthorPublicationHIndex[];
+    private _indirectSelfCitationsCount: number;
+    private _basicProfile: BasicProfile;
+    private _publicationsByYear: PublicationByYear[];
+    private _publicationsByVenue: PublicationByVenue[];
+    private _citationsByYear: CitationByYear[];
+    private _citedScholars: CitedScholar[];
+    private _authors: Author[];
+    private _articles: Article[];
 
     constructor(
-        _basicProfile: BasicProfile,
         _expertise: string[],
         _hIndex: number,
+        _hIndexWithoutSelfCitations: number,
         _i10Index: number,
-        _articles: Article[],
+        _i10IndexWithoutSelfCitations: number,
+        _selfCitationsCount: number,
+        _indirectSelfCitationsCount: number,
+        _totalCitationsCount: number,
+        _basicProfile: BasicProfile,
         _publicationsByYear: PublicationByYear[],
         _publicationsByVenue: PublicationByVenue[],
         _citationsByYear: CitationByYear[],
         _citedScholars: CitedScholar[],
-        _indirectSelfCitationsCount: number,
-        _selfCitationsCount: number,
-        _publicationsCount: number,
-        _coAuthorPublicationHIndex: CoAuthorPublicationHIndex[],
+        _authors: Author[],
+        _articles: Article[],
     ) {
-        this._basicProfile = _basicProfile;
         this._expertise = _expertise;
         this._hIndex = _hIndex;
+        this._hIndexWithoutSelfCitations = _hIndexWithoutSelfCitations;
         this._i10Index = _i10Index;
-        this._articles = _articles;
+        this._i10IndexWithoutSelfCitations = _i10IndexWithoutSelfCitations;
+        this._selfCitationsCount = _selfCitationsCount;
+        this._indirectSelfCitationsCount = _indirectSelfCitationsCount;
+        this._basicProfile = _basicProfile;
         this._publicationsByYear = _publicationsByYear;
         this._publicationsByVenue = _publicationsByVenue;
         this._citationsByYear = _citationsByYear;
         this._citedScholars = _citedScholars;
-        this._indirectSelfCitationsCount = _indirectSelfCitationsCount;
-        this._selfCitationsCount = _selfCitationsCount;
-        this._publicationsCount = _publicationsCount;
-        this._coAuthorPublicationHIndex = _coAuthorPublicationHIndex;
+        this._authors = _authors;
+        this._articles = _articles;
     }
 
     public get publicationsByYear(): PublicationByYear[] {
@@ -173,19 +169,14 @@ export class FullProfile {
     }
 
     public get publicationsCount(): number {
-        return this._publicationsCount;
+        return this._articles.length;
     }
 
-    public set publicationsCount(publicationsCount: number) {
-        this._publicationsCount = publicationsCount;
+    public get authors(): Author[] {
+        return this._authors;
     }
-
-    public get coAuthorPublicationHIndex(): CoAuthorPublicationHIndex[] {
-        return this._coAuthorPublicationHIndex;
-    }
-
-    public set coAuthorPublicationHIndex(coAuthorPublicationHIndex: CoAuthorPublicationHIndex[]) {
-        this._coAuthorPublicationHIndex = coAuthorPublicationHIndex;
+    public set authors(authors: Author[]) {
+        this._authors = authors;
     }
 }
 
@@ -237,7 +228,7 @@ export class PublicationByYear {
     private _publicationsCount: number;
     constructor(_year: number, _publicationCount: number) {
         this._year = _year;
-        this.publicationsCount = _publicationCount;
+        this._publicationsCount = _publicationCount;
     }
 
     public get year(): number {
@@ -250,7 +241,7 @@ export class PublicationByYear {
         return this._publicationsCount;
     }
     public set publicationsCount(publicationsCount: number) {
-        this.publicationsCount = publicationsCount;
+        this._publicationsCount = publicationsCount;
     }
 }
 
@@ -295,5 +286,25 @@ export class CitedScholar {
     }
     public set publicationCount(newCount: number) {
         this._citationCount = newCount;
+    }
+}
+export class Author {
+    private _name: string;
+    private _jointPublicationCount: number;
+    private _hIndex: number;
+    constructor(_name: string, _jointPublicationCount: number, _hIndex: number) {
+        this._hIndex = _hIndex;
+        this._jointPublicationCount = _jointPublicationCount;
+        this._name = _name;
+    }
+
+    public get hIndex(): number {
+        return this._hIndex;
+    }
+    public get name(): string {
+        return this._name;
+    }
+    public get jointPublicationCount(): number {
+        return this._jointPublicationCount;
     }
 }

@@ -1,5 +1,5 @@
 import { Article } from '../models/articles/Article';
-import { PublicationByYear, PublicationByVenue, CitedScholar, CitationByYear } from '../models/profile/Profile';
+import { Author, PublicationByYear, PublicationByVenue, CitedScholar, CitationByYear } from '../models/profile/Profile';
 import { APIBasicProfile, APIFullProfile } from '../models/api/API';
 import { DataSource } from './DataSource';
 import axios, { AxiosResponse } from 'axios';
@@ -36,7 +36,7 @@ export class SemanticScholarSource implements DataSource {
         } else {
             try {
                 const { data: bp }: AxiosResponse<APIBasicProfile[], object> = await axios.get<APIBasicProfile[]>(
-                    this.URL + ':' + this.PORT + '/' + ENDPOINTS.SEARCHRESULTS + '?query=' + query,
+                    this.URL + ':' + this.PORT + '/' + ENDPOINTS.SEARCHRESULTS + '/' + query,
                     {
                         headers: {
                             Accept: 'application/json',
@@ -46,11 +46,11 @@ export class SemanticScholarSource implements DataSource {
                 const basicProfiles: BasicProfile[] = new Array<BasicProfile>();
                 for (const apiBasicProfile of bp) {
                     const basicProfile: BasicProfile = new BasicProfile(
-                        apiBasicProfile.id,
-                        apiBasicProfile.name,
-                        apiBasicProfile.affiliation,
-                        apiBasicProfile.totalCitations,
-                        apiBasicProfile.pictureURL,
+                        apiBasicProfile._id,
+                        apiBasicProfile._name,
+                        apiBasicProfile._affiliations,
+                        apiBasicProfile._totalCitations,
+                        apiBasicProfile._pictureURL,
                     );
                     basicProfiles.push(basicProfile);
                 }
@@ -74,7 +74,7 @@ export class SemanticScholarSource implements DataSource {
         } else {
             try {
                 const { data: fp }: AxiosResponse<APIFullProfile, object> = await axios.get<APIFullProfile>(
-                    this.URL + ':' + this.PORT + '/' + ENDPOINTS.FULLPROFILE + '?id=' + profileId,
+                    this.URL + ':' + this.PORT + '/' + ENDPOINTS.FULLPROFILE + '/' + profileId,
                     {
                         headers: {
                             Accept: 'application/json',
@@ -82,59 +82,69 @@ export class SemanticScholarSource implements DataSource {
                     },
                 );
                 const basicProfile: BasicProfile = new BasicProfile(
-                    fp.basicProfile.id,
-                    fp.basicProfile.name,
-                    fp.basicProfile.affiliation,
-                    fp.basicProfile.totalCitations,
-                    fp.basicProfile.pictureURL,
+                    fp._basicProfile._id,
+                    fp._basicProfile._name,
+                    fp._basicProfile._affiliations,
+                    fp._basicProfile._totalCitations,
+                    fp._basicProfile._pictureURL,
                 );
                 const articles: Article[] = new Array<Article>();
-                for (const art of fp.articles) {
+                for (const art of fp._articles) {
                     articles.push(
                         new Article(
-                            art.title,
-                            art.venue,
-                            art.publicationYear,
-                            art.citationCount,
-                            art.url,
-                            art.coAuthors,
+                            art._title,
+                            art._venue,
+                            art._publicationYear,
+                            art._citationCount,
+                            art._url,
+                            art._coAuthors,
                         ),
                     );
                 }
                 const pby: PublicationByYear[] = new Array<PublicationByYear>();
-                for (const apiPby of fp.publicationsByYear) {
-                    pby.push(new PublicationByYear(apiPby.year, apiPby.publicationsCount));
+                for (const apiPby of fp._publicationsByYear) {
+                    pby.push(new PublicationByYear(apiPby._year, apiPby._publicationsCount));
                 }
                 const pbv: PublicationByVenue[] = new Array<PublicationByVenue>();
-                for (const apiPbv of fp.publicationsByVenue) {
-                    pbv.push(new PublicationByVenue(apiPbv.venue, apiPbv.publicationCount));
+                for (const apiPbv of fp._publicationsByVenue) {
+                    pbv.push(new PublicationByVenue(apiPbv._venue, apiPbv._publicationCount));
                 }
                 const cby: CitationByYear[] = new Array<CitationByYear>();
-                for (const apiCby of fp.citationsByYear) {
+                for (const apiCby of fp._citationsByYear) {
                     cby.push(
                         new CitationByYear(
-                            apiCby.year,
-                            apiCby.selfCitationsCount,
-                            apiCby.indirectSelfCitationsCount,
-                            apiCby.totalCitationsCount,
+                            apiCby._year,
+                            apiCby._selfCitationsCount,
+                            apiCby._indirectSelfCitationsCount,
+                            apiCby._totalCitationCount,
                         ),
                     );
                 }
                 const citedScholars: CitedScholar[] = new Array<CitedScholar>();
-                for (const apiCs of fp.citedScholars) {
-                    citedScholars.push(new CitedScholar(apiCs.name, apiCs.citationCount));
+                for (const apiCs of fp._citedScholars) {
+                    citedScholars.push(new CitedScholar(apiCs._name, apiCs._citationCount));
                 }
-
+                const authors: Author[] = new Array<Author>();
+                for (const auth of fp._authors) {
+                    console.log(auth._name);
+                    authors.push(new Author(auth._name, auth._jointPublicationCount, auth._hIndex));
+                }
                 const fullProfile: FullProfile = new FullProfile(
+                    fp._expertise,
+                    fp._hIndex,
+                    fp._hIndexWithoutSelfCitations,
+                    fp._i10Index,
+                    fp._i10IndexWithoutSelfCitations,
+                    fp._selfCitationsCount,
+                    fp._indirectSelfCitationsCount,
+                    fp._totalCitationsCount,
                     basicProfile,
-                    fp.expertise,
-                    fp.hIndex,
-                    fp.i10Index,
-                    articles,
                     pby,
                     pbv,
                     cby,
                     citedScholars,
+                    authors,
+                    articles,
                 );
                 this._profileIdFullProfileMapping.set(profileId, fullProfile);
                 return fullProfile;
