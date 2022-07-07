@@ -1,5 +1,5 @@
 import { ArticlesModel } from './../models/articlesmodel/ArticlesModel';
-import { FullProfile } from '../models/profile';
+import { FullProfile, CoAuthorPublicationHIndex } from '../models/profile';
 import { RowModel } from '../models/viewmodels';
 import { LineColumnsMixedChartModel, ObjectSeriesChartModel, PieChartModel, Series, ViewName } from '../models';
 import { ExpertiseModel } from '../models/simplecardmodel/ExpertiseModel';
@@ -52,21 +52,22 @@ export class ProfileRepresentation {
     }
 
     private createExpertiseCard(): ExpertiseModel {
-        const expertiseAuthor: string = this._fullProfile.basicProfile.name;
-        const expertiseItems: string[] = this._fullProfile.expertise;
-        type Expertise = {
-            authorName: string;
-            items: string[];
-        };
-        const expertiseObject: Expertise = { authorName: expertiseAuthor, items: expertiseItems };
-        const expertiseModel: ExpertiseModel = new ExpertiseModel(
-            [expertiseObject],
-            'Expertise',
-            '',
-            ViewName.ExpertisesCard,
-            5,
-        );
-        return expertiseModel;
+        // const expertiseAuthor: string = this._fullProfile.basicProfile.name;
+        // const expertiseItems: string[] = this._fullProfile.expertise;
+        // type Expertise = {
+        //     authorName: string;
+        //     items: string[];
+        // };
+        // const expertiseObject: Expertise = { authorName: expertiseAuthor, items: expertiseItems };
+        // const expertiseModel: ExpertiseModel = new ExpertiseModel(
+        //     [expertiseObject],
+        //     'Expertise',
+        //     '',
+        //     ViewName.ExpertisesCard,
+        //     5,
+        // );
+        // return expertiseModel;
+        return null;
     }
 
     private createArticlesCard(): ArticlesModel {
@@ -96,20 +97,14 @@ export class ProfileRepresentation {
     }
 
     private createCoAuthorsWithHighestHIndexCard(): LineColumnsMixedChartModel {
-        this.fullProfile.hIndex;
         const series: Array<Series> = new Array<Series>();
-        const coAuthorIds: Set<string> = new Set();
+        const coAuthors: Array<CoAuthorPublicationHIndex> = new Array<CoAuthorPublicationHIndex>();
 
-        // for (const article of this._fullProfile.articles) {
-        //     for (const coAuthor of article.coAuthors) {
-        //         coAuthorIds.add(coAuthor);
-        //     }
-        // }
-
-        for (const [author, count] of authorsCount) {
-            series.push(new Series(author.name, [author.hIndex], 'line'));
-            series.push(new Series(author.name, [count], 'column'));
+        for (const coAuthor of coAuthors) {
+            series.push(new Series(coAuthor.name, [coAuthor.hIndex], 'line'));
+            series.push(new Series(coAuthor.name, [coAuthor.publicationCount], 'column'));
         }
+
         return new LineColumnsMixedChartModel(
             'Co-authors with highest h-index',
             '',
@@ -150,7 +145,7 @@ export class ProfileRepresentation {
     private createThirdRow(): void {
         const rowModel: RowModel = new RowModel(10);
         rowModel.simpleCardModels.push(this.createCoAuthorsWithHighestHIndexCard());
-        rowModel.simpleCardModels.push(this.createExpertiseCard());
+        //rowModel.simpleCardModels.push(this.createExpertiseCard());
         this._rowModels.push(rowModel);
     }
 

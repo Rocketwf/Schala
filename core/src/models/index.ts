@@ -10,7 +10,7 @@ export {
     Series,
     StackedColumns100ChartModel,
 } from './objectserieschartmodel';
-export { Profile, BasicProfile, FullProfile } from './profile';
+export { Profile, BasicProfile, FullProfile, CoAuthorPublicationHIndex } from './profile';
 export { SearchResultsModel } from './searchresultsmodel';
 export { SimpleCardModel, ViewName, PieChartModel, ExpertiseModel } from './simplecardmodel';
 export { RowModel, Tab } from './viewmodels';
