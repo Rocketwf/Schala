@@ -2,7 +2,7 @@
     <simple-card :simple-card-model="props.cardModel">
             <article-item
                 v-for="art in props.cardModel.articles" 
-                :key="art.id"
+                :key="art.title"
                 :article="art"
             />  
     </simple-card>

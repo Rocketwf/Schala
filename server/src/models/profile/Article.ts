@@ -11,6 +11,26 @@ export class Article {
 
     private _articlesCoAuthors: ArticleCoAuthor[];
 
+    constructor(
+        _title: string,
+        _venue: string,
+        _publicationYear: number,
+        _citationCount: number,
+        _selfCitationsCount: number,
+        _url: string,
+        _abstract: string,
+        _articlesCoAuthors: ArticleCoAuthor[],
+    ) {
+        this._title = _title;
+        this._venue = _venue;
+        this._publicationYear = _publicationYear;
+        this._citationCount = _citationCount;
+        this._selfCitationsCount = _selfCitationsCount;
+        this._url = _url;
+        this._abstract = _abstract;
+        this._articlesCoAuthors = _articlesCoAuthors;
+    }
+
     public get title(): string {
         return this._title;
     }

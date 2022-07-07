@@ -14,6 +14,7 @@ export {
 export {
     APIAuthor,
     Article,
+    ArticleCoAuthor,
     ArticlesModel,
     Input,
     CheckBox,

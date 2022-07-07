@@ -1,6 +1,6 @@
-import { Article } from '../models/articles/Article';
+import { Article, ArticleCoAuthor } from '../models/articles/Article';
 import { Author, PublicationByYear, PublicationByVenue, CitedScholar, CitationByYear } from '../models/profile/Profile';
-import { APIBasicProfile, APIFullProfile } from '../models/api/API';
+import { APIBasicProfile, APICoAuthor, APIFullProfile } from '../models/api/API';
 import { DataSource } from './DataSource';
 import axios, { AxiosResponse } from 'axios';
 import { BasicProfile, FullProfile } from '../models';
@@ -97,7 +97,9 @@ export class SemanticScholarSource implements DataSource {
                             art._publicationYear,
                             art._citationCount,
                             art._url,
-                            art._coAuthors,
+                            art._articlesCoAuthors.map(
+                                (coAuth: APICoAuthor) => new ArticleCoAuthor(coAuth._id, coAuth._name),
+                            ),
                         ),
                     );
                 }

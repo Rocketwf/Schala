@@ -1,5 +1,5 @@
 export { APIAuthor } from './api';
-export { Article } from './articles';
+export { Article, ArticleCoAuthor } from './articles';
 export { ArticlesModel } from './articlesmodel';
 export { ChartOptionsModel } from './chartoptionsmodel';
 export { CheckBox, TextField, SelectOption, Input, PopupEditButton } from './inputs';

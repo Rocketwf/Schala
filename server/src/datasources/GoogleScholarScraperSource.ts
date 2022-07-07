@@ -67,19 +67,36 @@ export class GoogleScholarScraperSource implements DataSource {
         const bestDistAPIBasicAuthor: APIBasicAuthor = this._cache
             .get(authorName)
             .find((apiBp: APIBasicAuthor) => apiBp.name === bestDistName.name);
-        const apiAuthor: APIAuthor = {
-            affiliations: bestDistAPIBasicAuthor.affiliations,
-            aliases: bestDistAPIBasicAuthor.aliases,
-            authorId: bestDistAPIBasicAuthor.authorId,
-            citationCount: +bestDistAPIBasicAuthor.citationCount,
-            hIndex: null,
-            homepage: null,
-            name: bestDistAPIBasicAuthor.name,
-            paperCount: +bestDistAPIBasicAuthor.paperCount,
-            papers: null,
-            url: null,
-            profilePicture: bestDistAPIBasicAuthor.profilePicture,
-        };
+        let apiAuthor: APIAuthor;
+        if (bestDistAPIBasicAuthor) {
+            apiAuthor = {
+                affiliations: bestDistAPIBasicAuthor.affiliations,
+                aliases: bestDistAPIBasicAuthor.aliases,
+                authorId: bestDistAPIBasicAuthor.authorId,
+                citationCount: +bestDistAPIBasicAuthor.citationCount,
+                hIndex: null,
+                homepage: null,
+                name: bestDistAPIBasicAuthor.name,
+                paperCount: +bestDistAPIBasicAuthor.paperCount,
+                papers: null,
+                url: null,
+                profilePicture: bestDistAPIBasicAuthor.profilePicture,
+            };
+        } else {
+            apiAuthor = {
+                affiliations: null,
+                aliases: null,
+                authorId: null,
+                citationCount: null,
+                hIndex: null,
+                homepage: null,
+                name: null,
+                paperCount: null,
+                papers: null,
+                url: null,
+                profilePicture: null,
+            };
+        }
         return apiAuthor;
     }
     public async fetchPapers(paperIds: string[]): Promise<APIPaper[]> {

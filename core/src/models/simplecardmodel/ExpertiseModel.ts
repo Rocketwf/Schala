@@ -2,13 +2,13 @@ import { SimpleCardModel, ViewName } from '../simplecardmodel';
 
 export class ExpertiseModel implements SimpleCardModel {
     private _id: string = 'a' + Math.random().toString(31);
-    private _expertise: Array<string>;
+    private _expertise: Expertise[];
     private _colWidth: number;
     private _title: string;
     private _sub: string;
     private _viewName: ViewName;
 
-    constructor(_expertise: Array<string>, _title: string, _sub: string, _viewName: ViewName, _colWidth: number) {
+    constructor(_expertise: Array<Expertise>, _title: string, _sub: string, _viewName: ViewName, _colWidth: number) {
         this._expertise = _expertise;
         this._title = _title;
         this._sub = _sub;
@@ -16,7 +16,7 @@ export class ExpertiseModel implements SimpleCardModel {
         this._colWidth = _colWidth;
     }
 
-    public get expertise(): Array<string> {
+    public get expertise(): Array<Expertise> {
         return this._expertise;
     }
 
@@ -34,5 +34,25 @@ export class ExpertiseModel implements SimpleCardModel {
     }
     public get viewName(): ViewName {
         return this._viewName;
+    }
+}
+
+export class Expertise {
+    private _id: string = '@' + Math.random().toString(31);
+    private _name: string;
+    private _expertise: string[];
+
+    constructor(_name: string, _expertise: string[]) {
+        this._name = _name;
+        this._expertise = _expertise;
+    }
+    public get name(): string {
+        return this._name;
+    }
+    public get expertise(): string[] {
+        return this._expertise;
+    }
+    public get id(): string {
+        return this._id;
     }
 }

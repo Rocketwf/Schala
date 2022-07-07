@@ -272,20 +272,22 @@ export class FullProfileService extends ProfileService {
     private buildArticles(apiAuthor: APIAuthor, apiPapers: APIPaper[]): Article[] {
         const articles: Article[] = new Array<Article>();
         for (const paper of apiPapers) {
-            const articleToPush: Article = new Article();
-            articleToPush.title = paper.title;
-            articleToPush.publicationYear = paper.year;
-            articleToPush.venue = paper.venue;
-            articleToPush.selfCitationsCount = this.getSelfCitationsInPaper(apiAuthor, paper);
-            articleToPush.citationCount = paper.citationCount;
-            articleToPush.abstract = paper.abstract;
             const paperCoauthors: ArticleCoAuthor[] = new Array<ArticleCoAuthor>();
             for (const author of paper.authors) {
-                if (author.authorId === apiAuthor.authorId) {
-                    continue;
-                }
-                paperCoauthors.push(new ArticleCoAuthor(author.authorId, author.name));
+                let name: string = author.name;
+                if (author.aliases) name = author.aliases[author.aliases.length - 1];
+                paperCoauthors.push(new ArticleCoAuthor(author.authorId, name));
             }
+            const articleToPush: Article = new Article(
+                paper.title,
+                paper.venue,
+                paper.year,
+                paper.citationCount,
+                this.getSelfCitationsInPaper(apiAuthor, paper),
+                paper.url,
+                paper.abstract,
+                paperCoauthors,
+            );
             articles.push(articleToPush);
         }
         return articles;
