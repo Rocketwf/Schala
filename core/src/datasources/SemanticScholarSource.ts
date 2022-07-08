@@ -50,7 +50,7 @@ export class SemanticScholarSource implements DataSource {
                         apiBasicProfile._name,
                         apiBasicProfile._affiliations,
                         apiBasicProfile._totalCitations,
-                        apiBasicProfile._pictureURL,
+                        apiBasicProfile._pictureUrl,
                     );
                     basicProfiles.push(basicProfile);
                 }
@@ -86,7 +86,7 @@ export class SemanticScholarSource implements DataSource {
                     fp._basicProfile._name,
                     fp._basicProfile._affiliations,
                     fp._basicProfile._totalCitations,
-                    fp._basicProfile._pictureURL,
+                    fp._basicProfile._pictureUrl,
                 );
                 const articles: Article[] = new Array<Article>();
                 for (const art of fp._articles) {

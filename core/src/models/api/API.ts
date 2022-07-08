@@ -84,5 +84,5 @@ export interface APIBasicProfile {
     _name: string;
     _affiliations: string[];
     _totalCitations: number;
-    _pictureURL: string;
+    _pictureUrl: string;
 }

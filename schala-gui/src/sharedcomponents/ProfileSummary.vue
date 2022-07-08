@@ -1,6 +1,10 @@
 <template>
     <q-item class="col-md-3 my-content" v-if="profile">
         <q-item-section side>
+            <q-avatar square style="width: 145px; height: 180px">
+                <img :src="props.profile.basicProfile.pictureURL" />
+            </q-avatar>
+
             <q-item-label class="full-width self-center">
                 <q-btn
                     v-if="!getComparePageStore().isBeingCompared(getFullProfile().basicProfile.id)"
@@ -21,17 +25,23 @@
             </q-item-label>
         </q-item-section>
         <q-item-section top>
-            <q-item-label class="vertical-top text-weight-bold text-h6">{{ name }}</q-item-label>
-            <q-item-label caption> ID: {{ id }}</q-item-label>
+            <q-item-label class="vertical-top text-weight-bold text-h6">{{
+                getFullProfile().basicProfile.name
+            }}</q-item-label>
+            <q-item-label caption> ID: {{ getFullProfile().basicProfile.id }}</q-item-label>
             <q-item-label caption> Affiliation: {{ affiliation }}</q-item-label>
-            <q-item-label caption> H-Index: {{ hIndex }}</q-item-label>
-            <q-item-label caption> H-Index without self-citations: {{ hIndexWithoutSelfCitations }}</q-item-label>
-            <q-item-label caption> Total citations: {{ totalCitations }}</q-item-label>
-            <q-item-label caption> Self citations: {{ selfCitations }}</q-item-label>
-            <q-item-label caption> Indirect self citations: {{ indirectSelfCitations }}</q-item-label>
-            <q-item-label caption> I10-Index : {{ i10Index }}</q-item-label>
+            <q-item-label caption> H-Index: {{ getFullProfile().hIndex }}</q-item-label>
+            <q-item-label caption>
+                H-Index without self-citations: {{ getFullProfile().hIndexWithoutSelfCitations }}</q-item-label
+            >
+            <q-item-label caption> Total citations: {{ getFullProfile().basicProfile.totalCitations }}</q-item-label>
+            <q-item-label caption> Self citations: {{ getFullProfile().selfCitationsCount }}</q-item-label>
+            <q-item-label caption>
+                Indirect self citations: {{ getFullProfile().indirectSelfCitationsCount }}</q-item-label
+            >
+            <q-item-label caption> I10-Index : {{ getFullProfile().i10Index }}</q-item-label>
             <q-item-label caption
-                >I10-Index without self citations : {{ i10IndexWithoutSelfCitations }}</q-item-label
+                >I10-Index without self citations : {{ getFullProfile().i10IndexWithoutSelfCitations }}</q-item-label
             >
             <q-item-label caption> Website: {{ 'www.google.com' }}</q-item-label>
             <q-item-label caption>
@@ -49,6 +59,7 @@ import { useQuasar } from 'quasar';
 import { FullProfile } from 'schala-core';
 import { useRouter, Router } from 'vue-router';
 import { comparePageStore } from '../stores/comparePageStore';
+import { computed } from 'vue';
 
 const $q = useQuasar();
 const router: Router = useRouter();
@@ -72,17 +83,18 @@ const triggerPositive = () => {
 
 // Methods
 
-const getFullProfile = (): FullProfile => {
-    return props.profile;
-};
+const getFullProfile = () => props.profile;
 
 const getComparePageStore = () => {
     return compareStore;
 };
 
 const redirectWebsite = () => {
-    window.open(website);
+    window.open(props.profile.basicProfile.pictureURL);
 };
+const affiliation = computed(() =>
+    getFullProfile().basicProfile.affiliation?.reduce((acc: string, curr: string) => acc + ',' + curr),
+);
 
 const handleClickButton = async () => {
     if (compareStore.isBeingCompared(props.profile.basicProfile.id)) {
@@ -99,21 +111,6 @@ const handleClickButton = async () => {
     }
 };
 
-// Attributes
-const id: string = getFullProfile().basicProfile.id;
-const name: string = getFullProfile().basicProfile.name;
-const affiliation: string = getFullProfile().basicProfile.affiliation.length !== 0 ? getFullProfile().basicProfile.affiliation.reduce(
-    (acc: string, curr: string) => acc + ',' + curr,
-) : '';
-const hIndex: number = getFullProfile().hIndex;
-const hIndexWithoutSelfCitations: number = getFullProfile().hIndexWithoutSelfCitations;
-
-const totalCitations: number = getFullProfile().basicProfile.totalCitations;
-const selfCitations: number = getFullProfile().selfCitationsCount;
-const indirectSelfCitations: number = getFullProfile().indirectSelfCitationsCount;
-const i10Index: number = getFullProfile().i10Index;
-const i10IndexWithoutSelfCitations: number = getFullProfile().i10IndexWithoutSelfCitations;
-const website: string = 'http://www.google.com';
 //const Website: string = getFullProfile().website;
 </script>
 <style lang="sass" scoped>
