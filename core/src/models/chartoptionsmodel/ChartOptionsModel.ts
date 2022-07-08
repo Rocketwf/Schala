@@ -1,4 +1,7 @@
+import { Filter } from '../../filters';
+
 import { Filterable } from '../../filters/Filterable';
+import { PopupEditButton } from '../inputs';
 import { ObjectSeriesChartModel } from '../objectserieschartmodel';
 
 export class ChartOptionsModel implements Filterable<ChartOptionsModel> {
@@ -8,6 +11,8 @@ export class ChartOptionsModel implements Filterable<ChartOptionsModel> {
     constructor(_objectSeriesChartModels: ObjectSeriesChartModel[]) {
         this._objectSeriesChartModels = _objectSeriesChartModels;
     }
+    filters: Filter<string | number | boolean, ChartOptionsModel>[];
+    popupButtons?: PopupEditButton<ChartOptionsModel>[];
 
     public get objectSeriesChartModels(): ObjectSeriesChartModel[] {
         return this._objectSeriesChartModels;

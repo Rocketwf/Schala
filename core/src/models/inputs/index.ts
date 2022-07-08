@@ -1,2 +1,2 @@
-export { Input, CheckBox, TextField, SelectOption } from './Inputs';
+export { Input, Field } from './Inputs';
 export { PopupEditButton } from './PopupEditButton';

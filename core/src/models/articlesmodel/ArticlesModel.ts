@@ -1,5 +1,6 @@
-import { Filterable } from '../../filters';
+import { Filter, Filterable } from '../../filters';
 import { Article } from '../articles/Article';
+import { PopupEditButton } from '../inputs';
 import { SimpleCardModel, ViewName } from '../simplecardmodel';
 
 export class ArticlesModel implements Filterable<ArticlesModel>, SimpleCardModel {
@@ -19,6 +20,8 @@ export class ArticlesModel implements Filterable<ArticlesModel>, SimpleCardModel
         // show only 10 for dev
         this.articles = this._articles.splice(0, 10);
     }
+    filters: Filter<string | number | boolean, ArticlesModel>[];
+    popupButtons?: PopupEditButton<ArticlesModel>[];
 
     applyAllFilters(): void {
         //filter.apply(this);

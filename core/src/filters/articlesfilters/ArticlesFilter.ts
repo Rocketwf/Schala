@@ -1,11 +1,12 @@
 import { Article, ArticlesModel } from '../../models';
 import { Filter } from '../Filter';
 
-export abstract class ArticlesFilter<S> extends Filter<S, ArticlesModel> {
-    abstract apply(model: ArticlesModel): void;
-}
+export abstract class ArticlesFilter<S> extends Filter<S, ArticlesModel> {}
 
 export class ArticlesPaginationFilter extends ArticlesFilter<number> {
+    validate(model: ArticlesModel): boolean {
+        return true;
+    }
     /**
      *  Integer representing the number of articles per page.
      */
@@ -92,6 +93,9 @@ export class ArticlesPaginationFilter extends ArticlesFilter<number> {
 }
 */
 export class WordsInTitleFilter extends ArticlesFilter<string[]> {
+    validate(model: ArticlesModel): boolean {
+        throw new Error('Method not implemented.');
+    }
     constructor(value: string[]) {
         super(value);
     }
@@ -118,8 +122,8 @@ export class WordsInTitleFilter extends ArticlesFilter<string[]> {
 }
 
 export class NumberOfCitationsFilter extends ArticlesFilter<number> {
-    constructor(value: number) {
-        super(value);
+    validate(model: ArticlesModel): boolean {
+        throw new Error('Method not implemented.');
     }
     apply(model: ArticlesModel): void {
         model;
@@ -129,8 +133,8 @@ export class NumberOfCitationsFilter extends ArticlesFilter<number> {
 }
 
 export class KeywordsFilter extends ArticlesFilter<string[]> {
-    constructor(value: string[]) {
-        super(value);
+    validate(model: ArticlesModel): boolean {
+        throw new Error('Method not implemented.');
     }
     apply(model: ArticlesModel): void {
         let newArticles: Article[] = model.articles;

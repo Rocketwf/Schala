@@ -12,6 +12,13 @@ export abstract class Filter<S, T extends Filterable<T>> {
      */
 
     abstract apply(model: T): void;
+    validate(model: T): boolean {
+        return true;
+    }
+
+    applyValidate(model: T): void {
+        if (this.validate(model)) this.apply(model);
+    }
 
     /**
      * Setter method of the value attribute.

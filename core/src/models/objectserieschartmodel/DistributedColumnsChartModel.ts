@@ -15,9 +15,6 @@ export class DistributedColumnsChartModel extends ObjectSeriesChartModel impleme
     ) {
         super(_title, _sub, _viewName, _colWidth, _series, _xTitle, _yTitle, _labels);
     }
-    applyAllFilters(): void {
-        return;
-    }
 
     deepCopy(): ObjectSeriesChartModel {
         const seriesCopy: Array<Series> = new Array<Series>();

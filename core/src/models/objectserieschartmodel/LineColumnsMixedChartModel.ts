@@ -1,4 +1,3 @@
-import { Filter } from '../../filters';
 import { ObjectSeriesChartModel, Series } from './ObjectSeriesChartModel';
 import { ViewName } from '../simplecardmodel';
 
@@ -54,8 +53,6 @@ export class LineColumnsMixedChartModel extends ObjectSeriesChartModel {
      * Applies all the filters with the current value on the cached data.
      */
     applyAllFilters(): void {
-        this.filters.forEach((filter: Filter<number, ObjectSeriesChartModel>) => {
-            filter.apply(this);
-        });
+        return;
     }
 }

@@ -1,7 +1,8 @@
 import { Filter, Filterable } from '../../filters';
-import { ViewName } from '../simplecardmodel/SimpleCardModel';
+import { PopupEditButton } from '../inputs';
+import { SimpleCardModel, ViewName } from '../simplecardmodel/SimpleCardModel';
 
-export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesChartModel> {
+export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesChartModel>, SimpleCardModel {
     private _id: string;
     private _colWidth: number;
     private _title: string;
@@ -32,6 +33,8 @@ export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesC
     /**
      * Contains the filters to be applied to the model
      */
+    private _popupButtons: PopupEditButton<ObjectSeriesChartModel>[];
+
     private _filters: Filter<number, ObjectSeriesChartModel>[];
 
     constructor(
@@ -43,6 +46,7 @@ export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesC
         _xTitle: string,
         _yTitle: string,
         _labels: string[],
+        _popupButtons?: PopupEditButton<ObjectSeriesChartModel>[],
     ) {
         this._title = _title;
         this._sub = _sub;
@@ -52,6 +56,8 @@ export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesC
         this._xTitle = _xTitle;
         this._yTitle = _yTitle;
         this._labels = _labels;
+
+        this._popupButtons = _popupButtons;
     }
 
     /**
@@ -59,10 +65,20 @@ export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesC
      */
     abstract deepCopy(): ObjectSeriesChartModel;
 
+    private persistOnce(): void {
+        if (!this._cachedModel) this.persist();
+    }
     /**
      * Applies all the filters with the current value on the cached data.
      */
-    abstract applyAllFilters(): void;
+    public applyAllFilters(): void {
+        this.persistOnce();
+
+        this.series = this._cachedModel.series;
+        for (const filter of this._filters) {
+            filter.applyValidate(this);
+        }
+    }
 
     /**
      * Getter method of the data that is currently being represented.
@@ -81,15 +97,15 @@ export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesC
     /**
      * Getter method of the filters to be applied.
      */
-    public get filters(): Filter<number, ObjectSeriesChartModel>[] {
-        return this._filters;
+    public get popupButtons(): PopupEditButton<ObjectSeriesChartModel>[] {
+        return this._popupButtons;
     }
 
     /**
      * Setter method of the filters to be applied.
      */
-    public set filters(newFilters: Filter<number, ObjectSeriesChartModel>[]) {
-        this._filters = newFilters;
+    public set popupButtons(popupButtons: PopupEditButton<ObjectSeriesChartModel>[]) {
+        this._popupButtons = popupButtons;
     }
 
     /**
@@ -149,6 +165,13 @@ export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesC
     }
     persist(): void {
         this._cachedModel = this.deepCopy();
+    }
+
+    public get filters(): Filter<number, ObjectSeriesChartModel>[] {
+        return this._filters;
+    }
+    public set filters(filters: Filter<number, ObjectSeriesChartModel>[]) {
+        this._filters = filters;
     }
 }
 

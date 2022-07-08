@@ -4,7 +4,7 @@ import { BasicProfile } from '../profile/Profile';
 
 export class SearchResultsModel implements Filterable<SearchResultsModel> {
     private _basicProfiles: Array<BasicProfile>;
-    filters: Filter<object, SearchResultsModel>[];
+    filters: Filter<number, SearchResultsModel>[];
 
     constructor(basicProfiles: Array<BasicProfile>) {
         this._basicProfiles = basicProfiles;

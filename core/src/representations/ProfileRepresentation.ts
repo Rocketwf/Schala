@@ -8,10 +8,14 @@ import {
     PieChartModel,
     Series,
     StackedColumnsChartModel,
+    Field,
     ViewName,
 } from '../models';
 import { Expertise, ExpertiseModel } from '../models/simplecardmodel/ExpertiseModel';
 import { PublicationByVenue, PublicationByYear } from '../models/profile/Profile';
+import { RangeButton } from '../models/inputs/PopupEditButton';
+import { Filter } from '../filters';
+import { FromFilter, ToFilter } from '../filters/objectserieschartfilters/ObjectSeriesFilter';
 export class ProfileRepresentation {
     private _fullProfile: FullProfile;
     private _rowModels: Array<RowModel>;
@@ -42,7 +46,7 @@ export class ProfileRepresentation {
         for (const pby of this._fullProfile.publicationsByYear) {
             series.push(new Series(pby.year + '', [pby.publicationsCount]));
         }
-        return new DistributedColumnsChartModel(
+        const pby: DistributedColumnsChartModel = new DistributedColumnsChartModel(
             'Publications by year',
             '',
             ViewName.DistributedColumnsChartCard,
@@ -52,6 +56,25 @@ export class ProfileRepresentation {
             'Number of publications',
             this._fullProfile.publicationsByYear.map((pby: PublicationByYear) => pby.year + ''),
         );
+
+        const firstValue: number = +pby.series[0]?.name;
+        const fromFilter: Filter<number, DistributedColumnsChartModel> = new FromFilter(firstValue);
+        const fromNumberField: Field<number, DistributedColumnsChartModel> = new Field<
+            number,
+            DistributedColumnsChartModel
+        >('from', firstValue, fromFilter);
+
+        const lastValue: number = +pby.series[pby.series.length - 1]?.name;
+        const toFilter: Filter<number, DistributedColumnsChartModel> = new ToFilter(lastValue);
+        const toNumberField: Field<number, DistributedColumnsChartModel> = new Field<
+            number,
+            DistributedColumnsChartModel
+        >('to', lastValue, toFilter);
+
+        const rangePopupEdit: RangeButton = new RangeButton('range', [fromNumberField, toNumberField]);
+        pby.popupButtons = [rangePopupEdit];
+        pby.filters = [fromFilter, toFilter];
+        return pby;
     }
 
     private createPublicationsByVenueCard(): DistributedColumnsChartModel {

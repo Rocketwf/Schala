@@ -6,6 +6,9 @@ export abstract class ChartOptionFilter<S> extends Filter<S, ChartOptionsModel> 
 }
 
 export class ScaleUpFilter extends ChartOptionFilter<boolean> {
+    validate(model: ChartOptionsModel): boolean {
+        throw new Error('Method not implemented.');
+    }
     apply(model: ChartOptionsModel): void {
         if (this.value) {
             const limits: number[] = [];

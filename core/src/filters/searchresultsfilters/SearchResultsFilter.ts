@@ -6,6 +6,9 @@ export abstract class SearchResultsFilter<S> extends Filter<S, SearchResultsMode
 }
 
 export class AffiliationFilter extends SearchResultsFilter<string> {
+    validate(model: SearchResultsModel): boolean {
+        throw new Error('Method not implemented.');
+    }
     apply(model: SearchResultsModel): void {
         const filtered: Array<BasicProfile> = model.basicProfiles.filter((profile: BasicProfile) => {
             return this.affiliationContainsSubstring(profile.affiliation, this.value).length !== 0;
@@ -35,6 +38,9 @@ export class WordsInTitleFilter extends SearchResultsFilter<string> {
     }
 }
 export class SearchResultsPaginationFilter extends SearchResultsFilter<number> {
+    validate(model: SearchResultsModel): boolean {
+        return true;
+    }
     /**
      *  Integer representing the number of articles per page.
      */
