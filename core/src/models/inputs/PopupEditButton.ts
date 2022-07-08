@@ -39,3 +39,31 @@ export class RangeButton implements PopupEditButton<ObjectSeriesChartModel> {
         return this._inputs;
     }
 }
+
+export class ShowingButton implements PopupEditButton<ObjectSeriesChartModel> {
+    private _id: string = '@' + Math.random().toString(31);
+    private _label: string;
+    private _inputs: Field<number, ObjectSeriesChartModel>[];
+    constructor(_label: string, _inputs: Field<number, ObjectSeriesChartModel>[]) {
+        this._label = _label;
+        this._inputs = _inputs;
+    }
+    public handleAll(data: ObjectSeriesChartModel[]): void {
+        this.inputs[0].handleInput(data);
+    }
+    setLabel(value: string): void {
+        this._label = value;
+    }
+
+    public get label(): string {
+        return this._label;
+    }
+
+    public get id(): string {
+        return this._id;
+    }
+
+    public get inputs(): Field<number, ObjectSeriesChartModel>[] {
+        return this._inputs;
+    }
+}

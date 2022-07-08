@@ -19,6 +19,7 @@ const getSeries = () => {
     }
     return [{ data: apexSeries }];
 };
+
 const getLabels = computed(() => {
     return props.distributedColumnsChartModel.series.map((s) => s.name);
 });

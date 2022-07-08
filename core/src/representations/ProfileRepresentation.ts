@@ -13,9 +13,9 @@ import {
 } from '../models';
 import { Expertise, ExpertiseModel } from '../models/simplecardmodel/ExpertiseModel';
 import { PublicationByVenue, PublicationByYear } from '../models/profile/Profile';
-import { RangeButton } from '../models/inputs/PopupEditButton';
+import { RangeButton, ShowingButton } from '../models/inputs/PopupEditButton';
 import { Filter } from '../filters';
-import { FromFilter, ToFilter } from '../filters/objectserieschartfilters/ObjectSeriesFilter';
+import { FromFilter, ShowingFilter, ToFilter } from '../filters/objectserieschartfilters/ObjectSeriesFilter';
 export class ProfileRepresentation {
     private _fullProfile: FullProfile;
     private _rowModels: Array<RowModel>;
@@ -100,7 +100,7 @@ export class ProfileRepresentation {
         for (const cs of this._fullProfile.citedScholars) {
             series.push(new Series(cs.name, [cs.citationsCount]));
         }
-        return new BasicBarsChartModel(
+        const mcs: BasicBarsChartModel = new BasicBarsChartModel(
             'Most cited scholars',
             '',
             ViewName.BasicBarsChartCard,
@@ -110,6 +110,21 @@ export class ProfileRepresentation {
             '',
             [],
         );
+
+        const firstValue: number = 5;
+        const showingFilter: Filter<number, BasicBarsChartModel> = new ShowingFilter(firstValue);
+        const showingNumberField: Field<number, BasicBarsChartModel> = new Field<number, BasicBarsChartModel>(
+            'showing',
+            firstValue,
+            showingFilter,
+        );
+
+        const showingPopupEdit: ShowingButton = new ShowingButton('showing', [showingNumberField]);
+        mcs.popupButtons = [showingPopupEdit];
+        mcs.filters = [showingFilter];
+        showingPopupEdit.handleAll([mcs]);
+
+        return mcs;
     }
 
     private createMostFrequentCoAuthorsCard(): BasicBarsChartModel {
@@ -117,7 +132,7 @@ export class ProfileRepresentation {
         for (const author of this._fullProfile.authors) {
             series.push(new Series(author.name, [author.jointPublicationCount]));
         }
-        return new BasicBarsChartModel(
+        const mfa: BasicBarsChartModel = new BasicBarsChartModel(
             'Most frequent co-authors',
             '',
             ViewName.BasicBarsChartCard,
@@ -127,17 +142,33 @@ export class ProfileRepresentation {
             '',
             [],
         );
+
+        const firstValue: number = 5;
+        const showingFilter: Filter<number, BasicBarsChartModel> = new ShowingFilter(firstValue);
+        const showingNumberField: Field<number, BasicBarsChartModel> = new Field<number, BasicBarsChartModel>(
+            'showing',
+            firstValue,
+            showingFilter,
+        );
+
+        const showingPopupEdit: ShowingButton = new ShowingButton('showing', [showingNumberField]);
+        mfa.popupButtons = [showingPopupEdit];
+        mfa.filters = [showingFilter];
+        showingPopupEdit.handleAll([mfa]);
+
+        return mfa;
     }
 
     private createCitationsByYearCard(): StackedColumnsChartModel {
-        const series: Array<Series> = new Array<Series>();
+        let series: Array<Series> = new Array<Series>();
         for (const cby of this._fullProfile.citationsByYear) {
             const isc: number = cby.indirectSelfCitationsCount;
             const sc: number = cby.selfCitationCount;
             const cbo: number = cby.totalCitationsCount - isc - sc;
             series.push(new Series(cby.year + '', [isc, sc, cbo]));
         }
-        return new StackedColumnsChartModel(
+        series = series.sort(this.sortSeries);
+        const cby: StackedColumnsChartModel = new StackedColumnsChartModel(
             'Citations by year',
             '',
             ViewName.StackedColumnsChartCard,
@@ -147,6 +178,28 @@ export class ProfileRepresentation {
             'Number of citations',
             ['indirect self-citations', 'self-citations', 'cited by others'],
         );
+
+        const firstValue: number = +cby.series[0]?.name;
+        const fromFilter: Filter<number, StackedColumnsChartModel> = new FromFilter(firstValue);
+        const fromNumberField: Field<number, StackedColumnsChartModel> = new Field<number, StackedColumnsChartModel>(
+            'from',
+            firstValue,
+            fromFilter,
+        );
+
+        const lastValue: number = +cby.series[cby.series.length - 1]?.name;
+        const toFilter: Filter<number, StackedColumnsChartModel> = new ToFilter(lastValue);
+        const toNumberField: Field<number, StackedColumnsChartModel> = new Field<number, StackedColumnsChartModel>(
+            'to',
+            lastValue,
+            toFilter,
+        );
+
+        const rangePopupEdit: RangeButton = new RangeButton('range', [fromNumberField, toNumberField]);
+        cby.popupButtons = [rangePopupEdit];
+        cby.filters = [fromFilter, toFilter];
+
+        return cby;
     }
 
     private createExpertiseCard(): ExpertiseModel {
@@ -238,5 +291,11 @@ export class ProfileRepresentation {
         const rowModel: RowModel = new RowModel(10);
         rowModel.simpleCardModels.push(this.createArticlesCard());
         this._rowModels.push(rowModel);
+    }
+
+    private sortSeries(a: Series, b: Series): number {
+        if (+a.name < +b.name) return -1;
+        if (+a.name > +b.name) return 1;
+        return 0;
     }
 }
