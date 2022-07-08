@@ -4,13 +4,13 @@
 
 <script setup charset="utf-8" lang="ts">
 
-defineProps<{
+const props = defineProps<{
     url: string,
     buttonIcon: string;
 }>()
 
 const share = (): void => {
-    return; //TODO: Implement me
+    window.open(props.url);
 };
 
 </script>

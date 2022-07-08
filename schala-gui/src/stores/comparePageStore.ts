@@ -10,22 +10,16 @@ export const comparePageStore = defineStore({
     id: 'comparePage',
     state: () => ({
         /**
-         * List of FullProfile that will be represented in ComparePage.
-         */
-        fullProfiles: [] as FullProfile[],
-
-        /**
          * class responsible for rendering a comparison.
          */
         comparisonRepresentation: new ComparisonRepresentation([] as FullProfile[]),
 
         /**
-        * Store where the info of ProfilePage is stored.
-        */
+         * Store where the info of ProfilePage is stored.
+         */
         profilePageStore: profilePageStore(),
     }),
     actions: {
-
         /**
          * Adds the profile with the given ID, if it is present in ProfilePageStore,
          * otherwise it uses the ProfileFactory from the ProfilePageStore
@@ -48,14 +42,14 @@ export const comparePageStore = defineStore({
          * @returns null
          */
         removeProfile(profileId: string) {
-            if (this.comparisonRepresentation.fullProfiles.length == 0) {
+            if (this.comparisonRepresentation.fullProfiles.length === 0) {
                 return;
             }
-            this.fullProfiles = this.fullProfiles.filter((p) => p.basicProfile.id !== profileId);
-            this.comparisonRepresentation.fullProfiles = this.fullProfiles;
+            this.comparisonRepresentation.fullProfiles = this.comparisonRepresentation.fullProfiles.filter(
+                (p) => p.basicProfile.id !== profileId,
+            );
             this.comparisonRepresentation.renderComparison();
         },
-
 
         /**
          * Getter method of ComparisonRepresentation.

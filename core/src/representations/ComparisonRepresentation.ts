@@ -11,6 +11,7 @@ import {
     ViewName,
 } from '../models';
 import { PublicationByVenue, PublicationByYear } from '../models/profile/Profile';
+import { Expertise, ExpertiseModel } from '../models/simplecardmodel/ExpertiseModel';
 
 /**
  * Builds the data structure that will be given to ComparePage.
@@ -270,6 +271,21 @@ export class ComparisonRepresentation {
             labels,
         );
         cerRow.simpleCardModels.push(stackedColumns100ChartModel);
+
+        const expertise: Expertise[] = new Array<Expertise>();
+        for (const fp of this._fullProfiles) {
+            expertise.push(new Expertise(fp.basicProfile.name, fp.expertise));
+        }
+
+        const expertiseModel: ExpertiseModel = new ExpertiseModel(
+            expertise,
+            'Expertise',
+            '',
+            ViewName.ExpertiseCard,
+            6,
+        );
+        cerRow.simpleCardModels.push(expertiseModel);
+
         this.rowModels.push(cerRow);
     }
 }

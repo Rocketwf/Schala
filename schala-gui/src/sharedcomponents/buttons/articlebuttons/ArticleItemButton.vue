@@ -1,11 +1,9 @@
 <template>
-        <slot :icon="props.icon" />
+    <slot :icon="props.icon" />
 </template>
 
 <script setup charset="utf-8" lang="ts">
-
 const props = defineProps<{
-    icon: string,
-}>()
-
+    icon: string;
+}>();
 </script>

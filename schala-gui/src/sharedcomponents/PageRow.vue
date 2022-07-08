@@ -1,5 +1,5 @@
 <template>
-    <div class="row q-col-gutter-md justify-center">
+    <div class="row q-gutter-y-md q-col-gutter-md justify-center">
         <component
             v-for="cardModel in rowModel.simpleCardModels"
             :key="cardModel.id"
