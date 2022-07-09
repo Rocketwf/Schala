@@ -134,7 +134,6 @@ export class NumberOfCitationsFilter extends ArticlesFilter<string> {
         return true;
     }
     apply(model: ArticlesModel): void {
-        model;
         const newArticles: Article[] = model.articles.filter(
             (article: Article) => article.citationCount >= +this.value,
         );
@@ -152,10 +151,13 @@ export class KeywordsFilter extends ArticlesFilter<string> {
     }
 
     apply(model: ArticlesModel): void {
+        if (this.value === '') {
+            return;
+        }
         let newArticles: Article[] = model.articles;
         for (const x of this.value.toLowerCase().split(',')) {
             newArticles = newArticles.filter((article: Article) => {
-                if (article.abstract === null) {
+                if (!article.abstract) {
                     return false;
                 }
                 const lowerCaseName: string = article.abstract.toLowerCase();
