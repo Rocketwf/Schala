@@ -211,6 +211,7 @@ module.exports = configure(function (ctx) {
             // optional; add/remove/change properties
             // of production generated package.json
             extendPackageJson(pkg) {
+                pkg.dependencies['schala-core'] = '../../../../core';
                 // directly change props of pkg;
                 // no need to return anything
             },

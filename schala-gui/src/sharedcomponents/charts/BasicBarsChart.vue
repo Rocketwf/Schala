@@ -1,6 +1,6 @@
 <template>
     <div id="chart">
-      <apexchart type="bar" height="400" :options="chartOptions" :series="getSeries()"></apexchart>
+      <apexchart type="bar" height="300" :options="chartOptions" :series="getSeries()"></apexchart>
     </div>
 </template>
 <script setup charset="utf-8" lang="ts">

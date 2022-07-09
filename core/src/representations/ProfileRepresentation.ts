@@ -203,10 +203,10 @@ export class ProfileRepresentation {
         }
 
         const pbv: DistributedColumnsChartModel = new DistributedColumnsChartModel(
-            CARDS.PUBLICATIONS_BY_YEAR.CARD_DATA.TITLE,
+            CARDS.PUBLICATIONS_BY_VENUE.CARD_DATA.TITLE,
             '',
             ViewName.DistributedColumnsChartCard,
-            CARDS.PUBLICATIONS_BY_YEAR.CARD_DATA.COLS,
+            CARDS.PUBLICATIONS_BY_VENUE.CARD_DATA.COLS,
             series,
             'Venues',
             'Number of publications',
@@ -320,11 +320,11 @@ export class ProfileRepresentation {
 
         const lastValue: number = +cby.series[cby.series.length - 1]?.name;
         const fromFilter: Filter<number, StackedColumnsChartModel> = new FromFilter(
-            lastValue - CARDS.CITATIONS_BY_YEAR.CARD_DATA.COLS,
+            lastValue - CARDS.CITATIONS_BY_YEAR.CARD_DATA.DEFAULT_NUM_OF_ENTRIES,
         );
         const fromNumberField: Field<number, StackedColumnsChartModel> = new Field<number, StackedColumnsChartModel>(
             'from',
-            lastValue - CARDS.CITATIONS_BY_YEAR.CARD_DATA.COLS,
+            lastValue - CARDS.CITATIONS_BY_YEAR.CARD_DATA.DEFAULT_NUM_OF_ENTRIES,
             fromFilter,
             [cby],
         );
