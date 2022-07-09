@@ -27,13 +27,13 @@
     </q-btn>
 </template>
 <script setup lang="ts">
-import { ObjectSeriesChartModel, PopupEditButton } from 'schala-core';
+import { ArticlesModel, ObjectSeriesChartModel, PopupEditButton } from 'schala-core';
 import { ref } from 'vue';
 
 
 const props = defineProps<{
-    popupButtonModel: PopupEditButton<ObjectSeriesChartModel>;
-    data: ObjectSeriesChartModel;
+    popupButtonModel: PopupEditButton<ObjectSeriesChartModel | ArticlesModel>;
+    data: ObjectSeriesChartModel | ArticlesModel;
 }>();
 
 const buttonModel = ref('');

@@ -1,4 +1,4 @@
-import { Article, ArticlesModel } from '../../models';
+import { Article, ArticleCoAuthor, ArticlesModel } from '../../models';
 import { Filter } from '../Filter';
 
 export abstract class ArticlesFilter<S> extends Filter<S, ArticlesModel> {}
@@ -67,42 +67,19 @@ export class ArticlesPaginationFilter extends ArticlesFilter<number> {
     }
 }*/
 
-/*export class CoauthorsFilter extends ArticlesFilter<string[]> {
-    constructor(value: string[]) {
+export class CoauthorsFilter extends ArticlesFilter<string> {
+    constructor(value: string) {
         super(value);
     }
-    apply(model: ArticlesModel): void {
-        let newArticles: Article[] = model.articles;
-        for (const x of this.value) {
-            newArticles = newArticles.filter((article: Article) => this.contains(article.authors, x));
-        }
-        model.articles = newArticles;
-    }
-*/
-/**
- * Method for checking if a string includes given substrings.
- */
-/*private contains(coAuthors: Author[], name: string): boolean {
-        for (const coAuthor of coAuthors) {
-            if (name.indexOf(coAuthor.name) >= 0) {
-                return true;
-            }
-        }
-        return false;
-    }
-}
-*/
-export class WordsInTitleFilter extends ArticlesFilter<string[]> {
+
     validate(model: ArticlesModel): boolean {
-        throw new Error('Method not implemented.');
+        return true;
     }
-    constructor(value: string[]) {
-        super(value);
-    }
+
     apply(model: ArticlesModel): void {
         let newArticles: Article[] = model.articles;
-        for (const x of this.value) {
-            newArticles = newArticles.filter((article: Article) => this.contains(article.title, x));
+        for (const x of this.value.toLowerCase().split(',')) {
+            newArticles = newArticles.filter((article: Article) => this.contains(article.coAuthors, x));
         }
         model.articles = newArticles;
     }
@@ -110,10 +87,9 @@ export class WordsInTitleFilter extends ArticlesFilter<string[]> {
     /**
      * Method for checking if a string includes given substrings.
      */
-    private contains(title: string, word: string): boolean {
-        const splitTitle: string[] = title.split(' ');
-        for (const part of splitTitle) {
-            if (part.indexOf(word) >= 0) {
+    private contains(coAuthors: ArticleCoAuthor[], name: string): boolean {
+        for (const coAuthor of coAuthors) {
+            if (coAuthor.name.toLowerCase().indexOf(name) >= 0) {
                 return true;
             }
         }
@@ -121,33 +97,69 @@ export class WordsInTitleFilter extends ArticlesFilter<string[]> {
     }
 }
 
-export class NumberOfCitationsFilter extends ArticlesFilter<number> {
-    validate(model: ArticlesModel): boolean {
-        throw new Error('Method not implemented.');
+export class WordsInArticleTitleFilter extends ArticlesFilter<string> {
+    constructor(value: string) {
+        super(value);
     }
+
+    validate(model: ArticlesModel): boolean {
+        return true;
+    }
+
     apply(model: ArticlesModel): void {
-        model;
-        //const newArticles: Article[] = model.articles.filter((article: Article) => article.citation >= this.value);
-        //model.articles = newArticles;
+        let newArticles: Article[] = model.articles;
+        for (const x of this.value.toLowerCase().split(',')) {
+            newArticles = newArticles.filter((article: Article) => this.contains(article, x));
+        }
+        model.articles = newArticles;
+    }
+
+    /**
+     * Method for checking if a string includes given substrings.
+     */
+    private contains(article: Article, word: string): boolean {
+        if (article.title.toLowerCase().indexOf(word) >= 0) {
+            return true;
+        }
+        return false;
     }
 }
 
-export class KeywordsFilter extends ArticlesFilter<string[]> {
+export class NumberOfCitationsFilter extends ArticlesFilter<string> {
+    constructor(value: string) {
+        super(value);
+    }
+
     validate(model: ArticlesModel): boolean {
-        throw new Error('Method not implemented.');
+        return true;
     }
     apply(model: ArticlesModel): void {
+        model;
+        const newArticles: Article[] = model.articles.filter(
+            (article: Article) => article.citationCount >= +this.value,
+        );
+        model.articles = newArticles;
+    }
+}
+
+export class KeywordsFilter extends ArticlesFilter<string> {
+    constructor(value: string) {
+        super(value);
+    }
+
+    validate(model: ArticlesModel): boolean {
+        return true;
+    }
+
+    apply(model: ArticlesModel): void {
         let newArticles: Article[] = model.articles;
-        for (const x of this.value) {
-            x;
+        for (const x of this.value.toLowerCase().split(',')) {
             newArticles = newArticles.filter((article: Article) => {
-                article;
-                /*if (article.abstract == null) {
+                if (article.abstract === null) {
                     return false;
                 }
-                const lowerCaseValue: string = x.toLowerCase();
                 const lowerCaseName: string = article.abstract.toLowerCase();
-                return lowerCaseName.indexOf(lowerCaseValue) >= 0;*/
+                return lowerCaseName.indexOf(x) >= 0;
             });
         }
         model.articles = newArticles;

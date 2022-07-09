@@ -1,11 +1,12 @@
 import { Filterable } from '../../filters';
+import { ArticlesModel } from '../articlesmodel';
 import { ObjectSeriesChartModel } from '../objectserieschartmodel';
 import { Field } from './Inputs';
 
 export interface PopupEditButton<S extends Filterable<S>> {
     id: string;
     label: string;
-    inputs: Field<number, S>[];
+    inputs: Field<number | string | string[], S>[];
     setLabel(value: string): void;
     handleAll(data: S[]): void;
 }
@@ -64,6 +65,37 @@ export class ShowingButton implements PopupEditButton<ObjectSeriesChartModel> {
     }
 
     public get inputs(): Field<number, ObjectSeriesChartModel>[] {
+        return this._inputs;
+    }
+}
+
+export class ArticlesFilterButton implements PopupEditButton<ArticlesModel> {
+    private _id: string = '@' + Math.random().toString(31);
+    private _label: string;
+    private _inputs: Field<string, ArticlesModel>[];
+    constructor(_label: string, _inputs: Field<string, ArticlesModel>[]) {
+        this._label = _label;
+        this._inputs = _inputs;
+    }
+
+    public handleAll(data: ArticlesModel[]): void {
+        for (const input of this.inputs) {
+            input.handleInput(data);
+        }
+    }
+    setLabel(value: string): void {
+        this._label = value;
+    }
+
+    public get label(): string {
+        return this._label;
+    }
+
+    public get id(): string {
+        return this._id;
+    }
+
+    public get inputs(): Field<string, ArticlesModel>[] {
         return this._inputs;
     }
 }

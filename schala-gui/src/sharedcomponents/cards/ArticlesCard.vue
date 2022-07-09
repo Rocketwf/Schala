@@ -1,10 +1,20 @@
 <template>
     <simple-card :simple-card-model="props.cardModel">
+        <template #buttons>
+            <popup-button
+                v-for="popupBtn in cardModel.popupButtons"
+                :key="popupBtn.id"
+                :popup-button-model="popupBtn"
+                :data="cardModel"
+            />
+        </template>
+        <template #model>
             <article-item
                 v-for="art in props.cardModel.articles" 
                 :key="art.title"
                 :article="art"
-            />  
+            />
+        </template>   
     </simple-card>
 </template>
 
@@ -12,6 +22,7 @@
 import { ArticlesModel } from 'schala-core'
 import ArticleItem from '../../mainlayout/profilepage/ArticleItem.vue'
 import SimpleCard from './SimpleCard.vue'
+import PopupButton from '../buttons/popupedit/PopupButton.vue';
 
 const props = defineProps<{
     cardModel: ArticlesModel,

@@ -35,7 +35,6 @@ export class ToFilter extends ObjectSeriesFilter<number> {
     apply(model: ObjectSeriesChartModel): void {
         const newSeries: Series[] = model.series.filter((serie: Series) => +serie.name <= this.value);
         model.series = newSeries;
-        console.log(newSeries);
     }
 }
 
@@ -43,16 +42,22 @@ export class ShowingFilter extends ObjectSeriesFilter<number> {
     constructor(value: number) {
         super(value);
     }
+
     validate(model: ObjectSeriesChartModel): boolean {
         if (!model.series || model.series.length === 0) return false;
         if (this._value >= model.series.length) return false;
         if (this._value <= 0) return false;
         return true;
     }
+
     apply(model: ObjectSeriesChartModel): void {
         this.validate(model);
-
-        const newSeries: Series[] = model.series.slice(0, this.value);
+        let newSeries: Series[] = new Array<Series>();
+        if (model.series[0].type) {
+            newSeries = model.series.slice(0, 2 * this.value);
+        } else {
+            newSeries = model.series.slice(0, this.value);
+        }
         model.series = newSeries;
     }
 }

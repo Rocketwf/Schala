@@ -1,7 +1,7 @@
 import { Filter, Filterable } from '../../filters';
 
 export interface Input<T, S extends Filterable<S>> {
-    filter: Filter<T, S>;
+    filter: Filter<T | T[], S>;
     /*
      Represents the input name as string
     */

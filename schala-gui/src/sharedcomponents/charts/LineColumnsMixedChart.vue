@@ -6,6 +6,7 @@
 
 <script setup charset="utf-8" lang="ts">
 import { LineColumnsMixedChartModel, Series } from 'schala-core';
+import { computed } from 'vue';
 
 const props = defineProps<{
     lineColumnsMixedChartModel: LineColumnsMixedChartModel;
@@ -25,12 +26,12 @@ const getSeries = () => {
         {
             name: props.lineColumnsMixedChartModel.labels[0],
             type: 'column',
-            data: columnData.splice(0, 10),
+            data: columnData,
         },
         {
             name: props.lineColumnsMixedChartModel.labels[1],
             type: 'line',
-            data: lineData.splice(0, 10),
+            data: lineData,
         },
     ];
     return series;
@@ -39,62 +40,63 @@ const getSeries = () => {
 /**
  * Getter method for LineColumnsMixedChart labels
  */
-const getLabels = () => {
+const getLabels = computed(() => {
     return props.lineColumnsMixedChartModel.series.filter(s => s.type == 'line')
-        .map((s: Series) => s.name).splice(0, 10);
-};
+        .map((s: Series) => s.name);
+});
 
 /**
  *  Options of the displayed apex-chart
  */
-const chartOptions = {
-    dataLabels: {
-        enabled: true,
-        enabledOnSeries: [1],
-    },
+const chartOptions = computed(() => {
+    return { chart: {
+            dataLabels: {
+                enabled: true,
+                enabledOnSeries: [1],
+            },
 
-    chart: {
-        height: 350,
-        type: 'line',
-        toolbar: {
-            offsetX: -52,
-            offsetY: -52,
-            show: true,
-            tools: {
-                download:
-                    '<i class="q-icon notranslate material-icons" aria-hidden="true" role="presentation" style="font-size: 24px;">download</i>',
-                zoom: false,
-                zoomin: false,
-                zoomout: false,
-                pan: false,
-                reset: false,
-                selection: false,
-                customIcons: [],
+            height: 350,
+            type: 'line',
+            toolbar: {
+                offsetX: -30,
+                offsetY: -30,
+                show: true,
+                tools: {
+                    download:
+                        '<i class="q-icon notranslate material-icons" aria-hidden="true" role="presentation" style="font-size: 24px;">download</i>',
+                    zoom: false,
+                    zoomin: false,
+                    zoomout: false,
+                    pan: false,
+                    reset: false,
+                    selection: false,
+                    customIcons: [],
+                },
             },
         },
-    },
-    stroke: {
-        width: [0, 4],
-    },
-    labels: getLabels(),
-    xaxis: {
-        type: 'category',
-        labels: {
-            rotate: -45,
-        }
-    },
-    yaxis: [
-        {
-            title: {
-                text: props.lineColumnsMixedChartModel.yTitle,
-            },
+        stroke: {
+            width: [0, 4],
         },
-        {
-            opposite: true,
-            title: {
-                text: props.lineColumnsMixedChartModel.xTitle,
-            },
+        labels: getLabels.value,
+        xaxis: {
+            type: 'category',
+            labels: {
+                rotate: -45,
+            }
         },
-    ],
-};
+        yaxis: [
+            {
+                title: {
+                    text: props.lineColumnsMixedChartModel.yTitle,
+                },
+            },
+            {
+                opposite: true,
+                title: {
+                    text: props.lineColumnsMixedChartModel.xTitle,
+                },
+            },
+        ],
+    }
+});
 </script>
