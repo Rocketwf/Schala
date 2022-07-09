@@ -6,13 +6,22 @@ export class BasicProfile extends Profile {
     private _affiliations: string[];
     private _totalCitations: number;
     private _pictureUrl: string;
+    private _paperCount: number;
 
-    constructor(_id: string, _name?: string, _affiliations?: string[], _totalCitations?: number, _pictureUrl?: string) {
+    constructor(
+        _id: string,
+        _name?: string,
+        _affiliations?: string[],
+        _totalCitations?: number,
+        _paperCount?: number,
+        _pictureUrl?: string,
+    ) {
         super();
         this._id = _id;
         this._name = _name;
         this._affiliations = _affiliations;
         this._totalCitations = _totalCitations;
+        this._paperCount = _paperCount;
         this._pictureUrl = _pictureUrl;
     }
 
@@ -30,6 +39,14 @@ export class BasicProfile extends Profile {
 
     public set totalCitations(totalCitations: number) {
         this._totalCitations = totalCitations;
+    }
+
+    public get paperCount(): number {
+        return this._paperCount;
+    }
+
+    public set paperCount(paperCount: number) {
+        this._paperCount = paperCount;
     }
 
     public get pictureUrl(): string {

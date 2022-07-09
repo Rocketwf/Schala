@@ -1,5 +1,5 @@
 <template>
-    <div class="row justify-center bg-transparent">
+    <div v-if="mount" class="row justify-center bg-transparent">
         <div class="col-md-12 col-xs-12 self-center">
             <profile-summary v-if="getFullProfile()" :profile="(getFullProfile() as FullProfile)" />
         </div>
@@ -11,7 +11,11 @@ import { profilePageStore } from '../../stores/profilePageStore';
 import ProfileSummary from '../../sharedcomponents/ProfileSummary.vue';
 import ProfileContent from './ProfileContent.vue';
 import { FullProfile, ProfileRepresentation } from 'schala-core';
-import { onMounted } from 'vue';
+import { ref, onBeforeMount } from 'vue';
+import { useRouter } from 'vue-router';
+import { useQuasar } from 'quasar';
+const router = useRouter();
+const $q = useQuasar();
 ProfileRepresentation;
 FullProfile;
 
@@ -25,7 +29,17 @@ const getProfilePageStore = () => {
 const getFullProfile = () => {
     return getProfilePageStore().profileRepresentation.fullProfile as FullProfile;
 };
-onMounted(() => {
-    profileStore.renderSaved();
+const mount = ref(false);
+onBeforeMount(() => {
+    if (!profileStore.profileId) {
+        $q.notify({
+            type: 'negative',
+            message: 'Please open a profile first'
+        });
+        router.push({ path: '/profile/search' });
+    } else {
+        mount.value = true;
+        profileStore.renderSaved();
+    }
 });
 </script>

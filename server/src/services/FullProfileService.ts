@@ -48,10 +48,14 @@ export class FullProfileService extends ProfileService {
             this.calculateSelfCitations(apiAuthor, authorPapers),
             this.calculateIndirectSelfCitations(apiAuthor, authorPapers),
             basicProfile.totalCitations,
+            googleProfile.url,
+
             basicProfile,
             this.buildPublicationsByYear(authorPapers),
             this.buildPublicationsByVenue(authorPapers),
-            Array.from(this.prepareFastCitations(apiAuthor, authorPapers).values()),
+            Array.from(this.prepareFastCitations(apiAuthor, authorPapers).values()).sort(
+                (c1: CitationsByYear, c2: CitationsByYear) => (c1.year > c2.year ? -1 : 1),
+            ),
             this.buildCitedScholars(apiAuthor, authorPapers),
             coAuthors,
             this.buildArticles(apiAuthor, authorPapers),
@@ -73,7 +77,7 @@ export class FullProfileService extends ProfileService {
                 expertise.add(fieldOfStudy);
             }
         }
-        return Array.from(expertise);
+        return Array.from(expertise).sort();
     }
 
     private calculateHIndex(apiPapers: APIPaper[]): number {
@@ -266,7 +270,7 @@ export class FullProfileService extends ProfileService {
                 authors.get(author.authorId).jointPublicationCount += 1;
             }
         }
-        return Array.from(authors.values());
+        return Array.from(authors.values()).sort((a1: Author, a2: Author) => (a1.hIndex > a2.hIndex ? -1 : 1));
     }
 
     private buildArticles(apiAuthor: APIAuthor, apiPapers: APIPaper[]): Article[] {

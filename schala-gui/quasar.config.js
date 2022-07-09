@@ -25,7 +25,7 @@ module.exports = configure(function (ctx) {
         },
 
         // https://v2.quasar.dev/quasar-cli-webpack/prefetch-feature
-         preFetch: true,
+        preFetch: true,
 
         // app boot file (/src/boot)
         // --> boot files are part of "main.js"
@@ -103,7 +103,7 @@ module.exports = configure(function (ctx) {
                 'LocalStorage',
                 'Notify',
                 'Loading'
-        ],
+            ],
         },
 
         // animations: 'all', // --- includes all animations
@@ -207,6 +207,12 @@ module.exports = configure(function (ctx) {
                 // https://www.electron.build/configuration/configuration
 
                 appId: 'schala-gui',
+            },
+            // optional; add/remove/change properties
+            // of production generated package.json
+            extendPackageJson(pkg) {
+                // directly change props of pkg;
+                // no need to return anything
             },
 
             // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain

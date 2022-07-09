@@ -48,6 +48,7 @@ export interface APIFullProfile {
     _selfCitationsCount: number;
     _indirectSelfCitationsCount: number;
     _totalCitationsCount: number;
+    _url: string;
     _basicProfile: APIBasicProfile;
     _publicationsByYear: APIPublicationByYear[];
     _publicationsByVenue: APIPublicationByVenue[];
@@ -84,5 +85,6 @@ export interface APIBasicProfile {
     _name: string;
     _affiliations: string[];
     _totalCitations: number;
+    _paperCount: number;
     _pictureUrl: string;
 }

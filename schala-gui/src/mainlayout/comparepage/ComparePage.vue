@@ -21,7 +21,11 @@ import ProfileSummary from '../../sharedcomponents/ProfileSummary.vue';
 import CompareContent from './CompareContent.vue';
 import { comparePageStore } from '../../stores/comparePageStore';
 import { FullProfile, ComparisonRepresentation } from 'schala-core';
-import { onMounted } from 'vue';
+import { ref, onBeforeMount } from 'vue';
+import { useQuasar } from 'quasar';
+import { useRouter } from 'vue-router';
+const $q = useQuasar();
+const router = useRouter();
 /**
  * Store for the state of the compare page.
  */
@@ -35,7 +39,17 @@ const compareStore = comparePageStore();
 const getComparePageStore = () => {
     return compareStore;
 };
-onMounted(() => {
-    compareStore.renderSaved();
+const mount = ref(false);
+onBeforeMount(() => {
+    if (compareStore.profileIds.length === 0) {
+        $q.notify({
+            type: 'negative',
+            message: 'Add a profile to the compare page first'
+        });
+        router.push({ path: '/profile/search' });
+    } else {
+        mount.value = true;
+        compareStore.renderSaved();
+    }
 });
 </script>

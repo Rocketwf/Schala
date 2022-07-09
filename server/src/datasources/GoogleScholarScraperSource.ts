@@ -82,6 +82,13 @@ export class GoogleScholarScraperSource implements DataSource {
                 url: null,
                 profilePicture: bestDistAPIBasicAuthor.profilePicture,
             };
+            const url: AxiosResponse<string, object> = await axios.get<string>(
+                'https://scholar.google.com/citations?user=' + apiAuthor.authorId,
+            );
+            const $: cheerio.Root = cheerio.load(url.data);
+
+            const scrapedUrl: string = $('#gsc_prf_ivh').find('a.gsc_prf_ila').attr('href');
+            if (scrapedUrl) apiAuthor.url = scrapedUrl;
         } else {
             apiAuthor = {
                 affiliations: null,

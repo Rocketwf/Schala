@@ -43,7 +43,6 @@
             <q-item-label caption
                 >I10-Index without self citations : {{ getFullProfile().i10IndexWithoutSelfCitations }}</q-item-label
             >
-            <q-item-label caption> Website: {{ 'www.google.com' }}</q-item-label>
             <q-item-label caption>
                 <q-btn round color="blue" icon="web" size="8px" class="q-mr-sm" @click="redirectWebsite">
                     <q-tooltip anchor="bottom middle" self="top middle"> visit website </q-tooltip>
@@ -90,7 +89,7 @@ const getComparePageStore = () => {
 };
 
 const redirectWebsite = () => {
-    window.open(props.profile.basicProfile.pictureURL);
+    window.open(props.profile.url);
 };
 const affiliation = computed(() =>
     getFullProfile().basicProfile.affiliation?.reduce((acc: string, curr: string) => acc + ',' + curr),
@@ -110,7 +109,6 @@ const handleClickButton = async () => {
         router.push({ path: '/profile/compare' });
     }
 };
-
 //const Website: string = getFullProfile().website;
 </script>
 <style lang="sass" scoped>

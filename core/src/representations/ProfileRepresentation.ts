@@ -23,6 +23,116 @@ import {
     WordsInArticleTitleFilter,
 } from '../filters/articlesfilters/ArticlesFilter';
 
+const PAGE_WIDTH: number = 12;
+type cardData = {
+    TITLE: string;
+    ROW: number;
+    COLS: number;
+    DEFAULT_NUM_OF_ENTRIES?: number;
+};
+type cards = {
+    PUBLICATIONS_BY_YEAR: {
+        CARD_DATA: cardData;
+    };
+    PUBLICATIONS_BY_VENUE: {
+        CARD_DATA: cardData;
+    };
+    CITATIONS_BY_YEAR: {
+        CARD_DATA: cardData;
+    };
+    MOST_CITED_SCHOLARS: {
+        CARD_DATA: cardData;
+    };
+    CITATIONS: {
+        CARD_DATA: cardData;
+    };
+    MOST_FREQUENT_CO_AUTHORS: {
+        CARD_DATA: cardData;
+    };
+    CO_AUTHORS_WITH_HIGHEST_HINDEX: {
+        CARD_DATA: cardData;
+    };
+    EXPERTISE: {
+        CARD_DATA: cardData;
+    };
+    ARTICLES: {
+        CARD_DATA: cardData;
+    };
+};
+const CARDS: cards = {
+    PUBLICATIONS_BY_YEAR: {
+        CARD_DATA: {
+            TITLE: 'Publications by year',
+            ROW: 1,
+            COLS: 4,
+            DEFAULT_NUM_OF_ENTRIES: 10,
+        },
+    },
+    PUBLICATIONS_BY_VENUE: {
+        CARD_DATA: {
+            TITLE: 'Publications by venue',
+            ROW: 1,
+            COLS: 4,
+            DEFAULT_NUM_OF_ENTRIES: 3,
+        },
+    },
+    CITATIONS_BY_YEAR: {
+        CARD_DATA: {
+            TITLE: 'Citations by year',
+            ROW: 1,
+            COLS: 4,
+            DEFAULT_NUM_OF_ENTRIES: 10,
+        },
+    },
+    MOST_CITED_SCHOLARS: {
+        CARD_DATA: {
+            TITLE: 'Most cited scholars',
+            ROW: 2,
+            COLS: 5,
+            DEFAULT_NUM_OF_ENTRIES: 10,
+        },
+    },
+    CITATIONS: {
+        CARD_DATA: {
+            TITLE: 'Citations',
+            ROW: 2,
+            COLS: 2,
+        },
+    },
+    MOST_FREQUENT_CO_AUTHORS: {
+        CARD_DATA: {
+            TITLE: 'Most frequent co-authors',
+            ROW: 2,
+            COLS: 5,
+            DEFAULT_NUM_OF_ENTRIES: 10,
+        },
+    },
+    CO_AUTHORS_WITH_HIGHEST_HINDEX: {
+        CARD_DATA: {
+            TITLE: 'Co-authors with highest h-index',
+            ROW: 3,
+            COLS: 6,
+            DEFAULT_NUM_OF_ENTRIES: 10,
+        },
+    },
+    EXPERTISE: {
+        CARD_DATA: {
+            TITLE: 'Expertise',
+            ROW: 3,
+            COLS: 6,
+            DEFAULT_NUM_OF_ENTRIES: 50,
+        },
+    },
+    ARTICLES: {
+        CARD_DATA: {
+            TITLE: 'All Articles',
+            ROW: 4,
+            COLS: 12,
+            DEFAULT_NUM_OF_ENTRIES: 15,
+        },
+    },
+};
+
 export class ProfileRepresentation {
     private _fullProfile: FullProfile;
     private _rowModels: Array<RowModel>;
@@ -54,10 +164,10 @@ export class ProfileRepresentation {
             series.push(new Series(pby.year + '', [pby.publicationsCount]));
         }
         const pby: DistributedColumnsChartModel = new DistributedColumnsChartModel(
-            'Publications by year',
+            CARDS.PUBLICATIONS_BY_YEAR.CARD_DATA.TITLE,
             '',
             ViewName.DistributedColumnsChartCard,
-            4,
+            CARDS.PUBLICATIONS_BY_YEAR.CARD_DATA.COLS,
             series,
             'Years',
             'Number of publications',
@@ -65,11 +175,13 @@ export class ProfileRepresentation {
         );
 
         const lastValue: number = +pby.series[pby.series.length - 1]?.name;
-        const fromFilter: Filter<number, DistributedColumnsChartModel> = new FromFilter(lastValue - 10);
+        const fromFilter: Filter<number, DistributedColumnsChartModel> = new FromFilter(
+            lastValue - CARDS.CITATIONS_BY_YEAR.CARD_DATA.DEFAULT_NUM_OF_ENTRIES,
+        );
         const fromNumberField: Field<number, DistributedColumnsChartModel> = new Field<
             number,
             DistributedColumnsChartModel
-        >('from', lastValue - 10, fromFilter, [pby]);
+        >('from', lastValue - CARDS.PUBLICATIONS_BY_YEAR.CARD_DATA.DEFAULT_NUM_OF_ENTRIES, fromFilter, [pby]);
 
         const toFilter: Filter<number, DistributedColumnsChartModel> = new ToFilter(lastValue);
         const toNumberField: Field<number, DistributedColumnsChartModel> = new Field<
@@ -91,21 +203,23 @@ export class ProfileRepresentation {
         }
 
         const pbv: DistributedColumnsChartModel = new DistributedColumnsChartModel(
-            'Publications by venue',
+            CARDS.PUBLICATIONS_BY_YEAR.CARD_DATA.TITLE,
             '',
             ViewName.DistributedColumnsChartCard,
-            2,
+            CARDS.PUBLICATIONS_BY_YEAR.CARD_DATA.COLS,
             series,
             'Venues',
             'Number of publications',
             this._fullProfile.publicationsByVenue.map((pbv: PublicationByVenue) => pbv.venue),
         );
-        const firstValue: number = 5;
-        const showingFilter: Filter<number, DistributedColumnsChartModel> = new ShowingFilter(firstValue);
+
+        const showingFilter: Filter<number, DistributedColumnsChartModel> = new ShowingFilter(
+            CARDS.PUBLICATIONS_BY_VENUE.CARD_DATA.DEFAULT_NUM_OF_ENTRIES,
+        );
         const showingNumberField: Field<number, DistributedColumnsChartModel> = new Field<
             number,
             DistributedColumnsChartModel
-        >('showing', firstValue, showingFilter, [pbv]);
+        >('showing', CARDS.PUBLICATIONS_BY_VENUE.CARD_DATA.DEFAULT_NUM_OF_ENTRIES, showingFilter, [pbv]);
 
         const showingPopupEdit: ShowingButton = new ShowingButton('showing', [showingNumberField]);
         pbv.popupButtons = [showingPopupEdit];
@@ -121,21 +235,22 @@ export class ProfileRepresentation {
             series.push(new Series(cs.name, [cs.citationsCount]));
         }
         const mcs: BasicBarsChartModel = new BasicBarsChartModel(
-            'Most cited scholars',
+            CARDS.MOST_CITED_SCHOLARS.CARD_DATA.TITLE,
             '',
             ViewName.BasicBarsChartCard,
-            4,
+            CARDS.MOST_CITED_SCHOLARS.CARD_DATA.COLS,
             series,
             'Number of citations',
             '',
             [],
         );
 
-        const firstValue: number = 5;
-        const showingFilter: Filter<number, BasicBarsChartModel> = new ShowingFilter(firstValue);
+        const showingFilter: Filter<number, BasicBarsChartModel> = new ShowingFilter(
+            CARDS.MOST_CITED_SCHOLARS.CARD_DATA.DEFAULT_NUM_OF_ENTRIES,
+        );
         const showingNumberField: Field<number, BasicBarsChartModel> = new Field<number, BasicBarsChartModel>(
             'showing',
-            firstValue,
+            CARDS.MOST_CITED_SCHOLARS.CARD_DATA.DEFAULT_NUM_OF_ENTRIES,
             showingFilter,
             [mcs],
         );
@@ -155,21 +270,22 @@ export class ProfileRepresentation {
         }
         series = series.sort(this.sortSeriesByData);
         const mfa: BasicBarsChartModel = new BasicBarsChartModel(
-            'Most frequent co-authors',
+            CARDS.MOST_FREQUENT_CO_AUTHORS.CARD_DATA.TITLE,
             '',
             ViewName.BasicBarsChartCard,
-            4,
+            CARDS.MOST_FREQUENT_CO_AUTHORS.CARD_DATA.COLS,
             series,
             'Number of co-authored publication',
             '',
             [],
         );
 
-        const firstValue: number = 5;
-        const showingFilter: Filter<number, BasicBarsChartModel> = new ShowingFilter(firstValue);
+        const showingFilter: Filter<number, BasicBarsChartModel> = new ShowingFilter(
+            CARDS.MOST_FREQUENT_CO_AUTHORS.CARD_DATA.DEFAULT_NUM_OF_ENTRIES,
+        );
         const showingNumberField: Field<number, BasicBarsChartModel> = new Field<number, BasicBarsChartModel>(
             'showing',
-            firstValue,
+            CARDS.MOST_FREQUENT_CO_AUTHORS.CARD_DATA.DEFAULT_NUM_OF_ENTRIES,
             showingFilter,
             [mfa],
         );
@@ -192,10 +308,10 @@ export class ProfileRepresentation {
         }
         series = series.sort(this.sortSeriesByName);
         const cby: StackedColumnsChartModel = new StackedColumnsChartModel(
-            'Citations by year',
+            CARDS.CITATIONS_BY_YEAR.CARD_DATA.TITLE,
             '',
             ViewName.StackedColumnsChartCard,
-            4,
+            CARDS.CITATIONS_BY_YEAR.CARD_DATA.COLS,
             series,
             'Years',
             'Number of citations',
@@ -203,10 +319,12 @@ export class ProfileRepresentation {
         );
 
         const lastValue: number = +cby.series[cby.series.length - 1]?.name;
-        const fromFilter: Filter<number, StackedColumnsChartModel> = new FromFilter(lastValue - 10);
+        const fromFilter: Filter<number, StackedColumnsChartModel> = new FromFilter(
+            lastValue - CARDS.CITATIONS_BY_YEAR.CARD_DATA.COLS,
+        );
         const fromNumberField: Field<number, StackedColumnsChartModel> = new Field<number, StackedColumnsChartModel>(
             'from',
-            lastValue - 10,
+            lastValue - CARDS.CITATIONS_BY_YEAR.CARD_DATA.COLS,
             fromFilter,
             [cby],
         );
@@ -229,16 +347,22 @@ export class ProfileRepresentation {
 
     private createExpertiseCard(): ExpertiseModel {
         const expertise: Expertise = new Expertise(this._fullProfile.basicProfile.name, this._fullProfile.expertise);
-        return new ExpertiseModel([expertise], 'Expertise', '', ViewName.ExpertiseCard, 5);
+        return new ExpertiseModel(
+            [expertise],
+            CARDS.EXPERTISE.CARD_DATA.TITLE,
+            '',
+            ViewName.ExpertiseCard,
+            CARDS.EXPERTISE.CARD_DATA.COLS,
+        );
     }
 
     private createArticlesCard(): ArticlesModel {
         const articlesModel: ArticlesModel = new ArticlesModel(
             this.fullProfile.articles,
-            'All Articles',
+            CARDS.ARTICLES.CARD_DATA.TITLE,
             '',
             ViewName.ArticlesCard,
-            10,
+            CARDS.ARTICLES.CARD_DATA.COLS,
         );
 
         const coAuthorsFilter: Filter<string, ArticlesModel> = new CoauthorsFilter('');
@@ -310,22 +434,23 @@ export class ProfileRepresentation {
         }
 
         const awhhi: LineColumnsMixedChartModel = new LineColumnsMixedChartModel(
-            'Co-authors with highest h-index',
+            CARDS.CO_AUTHORS_WITH_HIGHEST_HINDEX.CARD_DATA.TITLE,
             '',
             ViewName.LineColumnsMixedChartCard,
-            5,
+            CARDS.CO_AUTHORS_WITH_HIGHEST_HINDEX.CARD_DATA.COLS,
             series,
             'h-index',
             'Publications',
             ['Publications', 'h-index'],
         );
 
-        const firstValue: number = 5;
-        const showingFilter: Filter<number, LineColumnsMixedChartModel> = new ShowingFilter(firstValue);
+        const showingFilter: Filter<number, LineColumnsMixedChartModel> = new ShowingFilter(
+            CARDS.CO_AUTHORS_WITH_HIGHEST_HINDEX.CARD_DATA.DEFAULT_NUM_OF_ENTRIES,
+        );
         const showingNumberField: Field<number, LineColumnsMixedChartModel> = new Field<
             number,
             LineColumnsMixedChartModel
-        >('showing', firstValue, showingFilter, [awhhi]);
+        >('showing', CARDS.CO_AUTHORS_WITH_HIGHEST_HINDEX.CARD_DATA.DEFAULT_NUM_OF_ENTRIES, showingFilter, [awhhi]);
 
         const showingPopupEdit: ShowingButton = new ShowingButton('showing', [showingNumberField]);
         awhhi.popupButtons = [showingPopupEdit];

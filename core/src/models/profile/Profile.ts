@@ -6,13 +6,22 @@ export class BasicProfile {
     private _name: string;
     private _affiliation: string[];
     private _totalCitations: number;
+    private _paperCount: number;
     private _pictureURL: string;
 
-    constructor(_id: string, _name?: string, _affiliation?: string[], _totalCitations?: number, _pictureURL?: string) {
+    constructor(
+        _id: string,
+        _name?: string,
+        _affiliation?: string[],
+        _totalCitations?: number,
+        _paperCount?: number,
+        _pictureURL?: string,
+    ) {
         this._id = _id;
         this._name = _name;
         this._affiliation = _affiliation;
         this._totalCitations = _totalCitations;
+        this._paperCount = _paperCount;
         this._pictureURL = _pictureURL;
     }
 
@@ -35,6 +44,10 @@ export class BasicProfile {
     public get totalCitations(): number {
         return this._totalCitations;
     }
+
+    public get paperCount(): number {
+        return this._paperCount;
+    }
 }
 
 export class FullProfile {
@@ -45,6 +58,7 @@ export class FullProfile {
     private _i10IndexWithoutSelfCitations: number;
     private _selfCitationsCount: number;
     private _indirectSelfCitationsCount: number;
+    private _url: string;
     private _basicProfile: BasicProfile;
     private _publicationsByYear: PublicationByYear[];
     private _publicationsByVenue: PublicationByVenue[];
@@ -62,6 +76,7 @@ export class FullProfile {
         _selfCitationsCount: number,
         _indirectSelfCitationsCount: number,
         _totalCitationsCount: number,
+        _url: string,
         _basicProfile: BasicProfile,
         _publicationsByYear: PublicationByYear[],
         _publicationsByVenue: PublicationByVenue[],
@@ -77,6 +92,7 @@ export class FullProfile {
         this._i10IndexWithoutSelfCitations = _i10IndexWithoutSelfCitations;
         this._selfCitationsCount = _selfCitationsCount;
         this._indirectSelfCitationsCount = _indirectSelfCitationsCount;
+        this._url = _url;
         this._basicProfile = _basicProfile;
         this._publicationsByYear = _publicationsByYear;
         this._publicationsByVenue = _publicationsByVenue;
@@ -177,6 +193,13 @@ export class FullProfile {
     }
     public set authors(authors: Author[]) {
         this._authors = authors;
+    }
+
+    public get url(): string {
+        return this._url;
+    }
+    public set url(url: string) {
+        this._url = url;
     }
 }
 

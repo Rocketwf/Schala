@@ -19,6 +19,8 @@ export class SearchResultsModel implements Filterable<SearchResultsModel> {
                     basicProfile.name,
                     basicProfile.affiliation,
                     basicProfile.totalCitations,
+                    basicProfile.paperCount,
+                    basicProfile.pictureURL,
                 ),
             );
         });

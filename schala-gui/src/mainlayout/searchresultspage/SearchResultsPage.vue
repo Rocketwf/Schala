@@ -1,5 +1,5 @@
 <template>
-    <div class="row justify-center">
+    <div v-if="mount" class="row justify-center">
         <div class="col-xs-12 col-md-8">
             <q-page padding>
                 <filter-box />
@@ -28,8 +28,12 @@ import GenericPagination from '../../sharedcomponents/GenericPagination.vue';
 import { searchResultsStore } from '../../stores/searchResultsPageStore';
 import SearchResultsItem from './SearchResultItem.vue';
 import { BasicProfile } from 'schala-core';
-import { onMounted } from 'vue';
+import { onBeforeMount, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useQuasar } from 'quasar';
 BasicProfile;
+const router = useRouter();
+const $q = useQuasar();
 
 const searchStore = searchResultsStore();
 
@@ -51,7 +55,17 @@ const getBasicProfiles = () => {
 const handleSwitch = (value: number) => {
     getSearchResultsPageStore().setPaginationFilter(value);
 };
-onMounted(()=>{
-  searchStore.setSearchString(searchStore.searchString);
-})
+const mount = ref(false);
+onBeforeMount(async () => {
+    if (!searchStore.searchString) {
+        $q.notify({
+            type: 'negative',
+            message: 'Please enter a search query',
+        });
+        router.push({ path: '/' });
+    }else {
+        mount.value = true;
+        await searchStore.setSearchString(searchStore.searchString);
+    }
+});
 </script>

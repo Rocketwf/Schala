@@ -16,6 +16,7 @@ export class FullProfile extends Profile {
     private _selfCitationsCount: number;
     private _indirectSelfCitationsCount: number;
     private _totalCitationsCount: number;
+    private _url: string;
 
     private _basicProfile: BasicProfile;
     private _publicationsByYear: PublicationByYear[];
@@ -34,6 +35,7 @@ export class FullProfile extends Profile {
         _selfCitationsCount: number,
         _indirectSelfCitationsCount: number,
         _totalCitationsCount: number,
+        _url: string,
         _basicProfile: BasicProfile,
         _publicationsByYear: PublicationByYear[],
         _publicationsByVenue: PublicationByVenue[],
@@ -51,6 +53,8 @@ export class FullProfile extends Profile {
         this._selfCitationsCount = _selfCitationsCount;
         this._indirectSelfCitationsCount = _indirectSelfCitationsCount;
         this._totalCitationsCount = _totalCitationsCount;
+        this._url = _url;
+
         this._basicProfile = _basicProfile;
         this._publicationsByYear = _publicationsByYear;
         this._publicationsByVenue = _publicationsByVenue;

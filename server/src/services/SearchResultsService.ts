@@ -14,7 +14,13 @@ export class SearchResultsService extends ProfileService {
             let name: string = basicAuthor.name;
             if (basicAuthor.aliases) name = basicAuthor.aliases[basicAuthor.aliases.length - 1];
             basicProfiles.push(
-                new BasicProfile(basicAuthor.authorId, name, basicAuthor.affiliations, +basicAuthor.citationCount),
+                new BasicProfile(
+                    basicAuthor.authorId,
+                    name,
+                    basicAuthor.affiliations,
+                    +basicAuthor.citationCount,
+                    +basicAuthor.paperCount,
+                ),
             );
         }
         return basicProfiles;

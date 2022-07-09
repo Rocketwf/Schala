@@ -1,8 +1,7 @@
 <template>
     <q-btn
-        :fab="badge"
         :class="badge ? 'absolute' : 'full-width'"
-        :style="badge ? 'top: 0; right: 12px; transform: translateY(-20%);' : ''"
+        :style="badge ? 'top: 0; right: 12px; transform: translateY(-40%);' : ''"
         :label="popupButtonModel.label"
         color="primary"
         :icon="popupButtonModel.icon"

@@ -1,15 +1,8 @@
 <template>
     <q-item clickable :class="inComparison ? 'bg-accent' : ''">
-        <q-item-section avatar center @click="handleClick">
-            <q-avatar size="66px" rounded>
-                <img src="https://www.seekpng.com/png/detail/966-9665317_placeholder-image-person-jpg.png" />
-            </q-avatar>
-        </q-item-section>
-
         <q-item-section top class="q-ml-sm" @click="handleClick">
             <q-item-label class="q-mt-sm">{{ getBasicProfile().name }}</q-item-label>
-            <q-item-label caption lines="2"> @{{ getBasicProfile().affiliation }} </q-item-label>
-            <q-item-label caption lines="2"> 4 papers </q-item-label>
+            <q-item-label caption lines="2"> Published {{ getBasicProfile().paperCount }} papers </q-item-label>
             <q-item-label caption lines="2"> Cited by {{ getBasicProfile().totalCitations }} </q-item-label>
         </q-item-section>
 
