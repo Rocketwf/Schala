@@ -1,3 +1,5 @@
+import { Loading } from 'quasar';
+import { useStorage } from '@vueuse/core';
 import {
     SemanticScholarSource,
     SearchResultsPaginationFilter,
@@ -10,7 +12,7 @@ import { defineStore } from 'pinia';
 export const searchResultsStore = defineStore({
     id: 'searchResultsPage',
     state: () => ({
-        searchString: '',
+        searchString: useStorage('searchString', ''),
         maxPage: 0,
         searchResultsShowingModel: new SearchResultsModel(new Array<BasicProfile>()),
         searchResultsCachedModel: new SearchResultsModel(new Array<BasicProfile>()),
@@ -34,6 +36,7 @@ export const searchResultsStore = defineStore({
             this.applyAllFilters();
         },
         async setSearchString(passedSearchString: string) {
+            Loading.show();
             this.searchString = passedSearchString;
             const basicProfiles: BasicProfile[] = await SemanticScholarSource.getInstance().fetchSearchResults(
                 passedSearchString,
@@ -46,6 +49,7 @@ export const searchResultsStore = defineStore({
             this.setPaginationFilter(1);
 
             this.applyAllFilters();
+            Loading.hide();
         },
         fixNumberOfPages(): void {
             this.maxPage = Math.ceil(this.searchResultsShowingModel.basicProfiles.length / 15);

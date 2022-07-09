@@ -1,3 +1,5 @@
+import { Loading } from 'quasar';
+import { useStorage } from '@vueuse/core';
 import { defineStore } from 'pinia';
 import { FullProfile, ComparisonRepresentation, SemanticScholarSource } from 'schala-core';
 import { profilePageStore } from './profilePageStore';
@@ -9,6 +11,7 @@ const profileStore = profilePageStore();
 export const comparePageStore = defineStore({
     id: 'comparePage',
     state: () => ({
+        profileIds: useStorage('profileIds', [] as string[]),
         /**
          * class responsible for rendering a comparison.
          */
@@ -20,12 +23,24 @@ export const comparePageStore = defineStore({
         profilePageStore: profilePageStore(),
     }),
     actions: {
+        async renderSaved() {
+            Loading.show();
+            for (const id of this.profileIds) {
+                if(this.comparisonRepresentation.fullProfiles.find(fp => fp.basicProfile.id === id)) continue;
+                const fullProfile: FullProfile = await SemanticScholarSource.getInstance().fetchFullProfile(id);;
+                this.comparisonRepresentation.fullProfiles.push(fullProfile);
+            }
+            this.comparisonRepresentation.renderComparison();
+            Loading.hide();
+        },
         /**
          * Adds the profile with the given ID, if it is present in ProfilePageStore,
          * otherwise it uses the ProfileFactory from the ProfilePageStore
          * to build a FullProfile.
          */
         async addProfile(profileId: string) {
+            Loading.show();
+            this.profileIds.push(profileId);
             let fullProfile: FullProfile;
             if (this.profilePageStore.profileId === profileId) {
                 fullProfile = this.profilePageStore.getFullProfile();
@@ -34,6 +49,7 @@ export const comparePageStore = defineStore({
             }
             this.comparisonRepresentation.fullProfiles.push(fullProfile);
             this.comparisonRepresentation.renderComparison();
+            Loading.hide();
         },
 
         /**
@@ -42,6 +58,7 @@ export const comparePageStore = defineStore({
          * @returns null
          */
         removeProfile(profileId: string) {
+            this.profileIds.splice(this.profileIds.indexOf(profileId), 1);
             if (this.comparisonRepresentation.fullProfiles.length === 0) {
                 return;
             }

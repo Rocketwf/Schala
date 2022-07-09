@@ -4,13 +4,14 @@
             <profile-summary v-if="getFullProfile()" :profile="(getFullProfile() as FullProfile)" />
         </div>
     </div>
-    <profile-content :profile-repr="getProfilePageStore().profileRepresentation as ProfileRepresentation" />
+    <profile-content :profile-repr="(getProfilePageStore().profileRepresentation as ProfileRepresentation)" />
 </template>
 <script setup lang="ts">
 import { profilePageStore } from '../../stores/profilePageStore';
 import ProfileSummary from '../../sharedcomponents/ProfileSummary.vue';
 import ProfileContent from './ProfileContent.vue';
 import { FullProfile, ProfileRepresentation } from 'schala-core';
+import { onMounted } from 'vue';
 ProfileRepresentation;
 FullProfile;
 
@@ -24,4 +25,7 @@ const getProfilePageStore = () => {
 const getFullProfile = () => {
     return getProfilePageStore().profileRepresentation.fullProfile as FullProfile;
 };
+onMounted(() => {
+    profileStore.renderSaved();
+});
 </script>

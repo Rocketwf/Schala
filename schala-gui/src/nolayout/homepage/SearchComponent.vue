@@ -27,7 +27,7 @@ const getSearchString = (): string => {
 };
 
 const handleSearch = async () => {
-    getSearchPageResultsStore().setSearchString(getSearchString());
+    await getSearchPageResultsStore().setSearchString(getSearchString());
     router.push({ path: '/profile/search' });
 };
 

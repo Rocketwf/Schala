@@ -21,6 +21,7 @@ import ProfileSummary from '../../sharedcomponents/ProfileSummary.vue';
 import CompareContent from './CompareContent.vue';
 import { comparePageStore } from '../../stores/comparePageStore';
 import { FullProfile, ComparisonRepresentation } from 'schala-core';
+import { onMounted } from 'vue';
 /**
  * Store for the state of the compare page.
  */
@@ -34,4 +35,7 @@ const compareStore = comparePageStore();
 const getComparePageStore = () => {
     return compareStore;
 };
+onMounted(() => {
+    compareStore.renderSaved();
+});
 </script>
