@@ -1,6 +1,9 @@
 <template>
   <simple-card :simple-card-model="cardModel">
-    <pie-chart :pie-chart-model="cardModel" />
+      <template #buttons />
+      <template #model>
+          <pie-chart :pie-chart-model="cardModel" />
+      </template>
   </simple-card>
 </template>
 <script charset="utf-8" lang="ts" setup>

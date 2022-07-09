@@ -1,10 +1,10 @@
 import { ObjectSeriesChartModel, Series } from './ObjectSeriesChartModel';
-import { ViewName } from '../simplecardmodel';
+import { SimpleCardModel, ViewName } from '../simplecardmodel';
 
 /**
  * Data structure for the line columns mixed chart.
  */
-export class LineColumnsMixedChartModel extends ObjectSeriesChartModel {
+export class LineColumnsMixedChartModel extends ObjectSeriesChartModel implements SimpleCardModel {
     /**
      * Constructs the LineColumnsMixedChartModel
      * @param _title - title of the model
@@ -35,7 +35,7 @@ export class LineColumnsMixedChartModel extends ObjectSeriesChartModel {
     deepCopy(): ObjectSeriesChartModel {
         const seriesCopy: Array<Series> = new Array<Series>();
         this.series.forEach((serie: Series) => {
-            seriesCopy.push(new Series(serie.name, serie.data));
+            seriesCopy.push(new Series(serie.name, serie.data, serie.type));
         });
         return new LineColumnsMixedChartModel(
             this.title,
@@ -47,12 +47,5 @@ export class LineColumnsMixedChartModel extends ObjectSeriesChartModel {
             this.yTitle,
             this.labels,
         );
-    }
-
-    /**
-     * Applies all the filters with the current value on the cached data.
-     */
-    applyAllFilters(): void {
-        return;
     }
 }

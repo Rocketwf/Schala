@@ -100,6 +100,7 @@ export class SemanticScholarSource implements DataSource {
                             art._articlesCoAuthors.map(
                                 (coAuth: APICoAuthor) => new ArticleCoAuthor(coAuth._id, coAuth._name),
                             ),
+                            art._abstract,
                         ),
                     );
                 }

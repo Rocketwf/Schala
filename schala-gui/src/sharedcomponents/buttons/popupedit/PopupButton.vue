@@ -5,7 +5,7 @@
         :style="badge ? 'top: 0; right: 12px; transform: translateY(-20%);' : ''"
         :label="popupButtonModel.label"
         color="primary"
-        icon="people"
+        :icon="popupButtonModel.icon"
     >
         <q-popup-edit @before-hide="popupButtonModel.handleAll()" v-model="buttonModel" class="bg-secondary text-white">
             <q-input
@@ -27,10 +27,10 @@
     </q-btn>
 </template>
 <script setup lang="ts">
-import { ObjectSeriesChartModel, PopupEditButton } from 'schala-core';
+import { ArticlesModel, ObjectSeriesChartModel, PopupEditButton } from 'schala-core';
 import { ref } from 'vue';
 defineProps<{
-    popupButtonModel: PopupEditButton<ObjectSeriesChartModel>;
+    popupButtonModel: PopupEditButton<ArticlesModel | ObjectSeriesChartModel>;
     badge?: boolean;
 }>();
 

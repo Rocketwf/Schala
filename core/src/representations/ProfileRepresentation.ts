@@ -13,9 +13,16 @@ import {
 } from '../models';
 import { Expertise, ExpertiseModel } from '../models/simplecardmodel/ExpertiseModel';
 import { PublicationByVenue, PublicationByYear } from '../models/profile/Profile';
-import { RangeButton, ShowingButton } from '../models/inputs/PopupEditButton';
+import { ArticlesFilterButton, RangeButton, ShowingButton } from '../models/inputs/PopupEditButton';
 import { Filter } from '../filters';
 import { FromFilter, ShowingFilter, ToFilter } from '../filters/objectserieschartfilters/ObjectSeriesFilter';
+import {
+    CoauthorsFilter,
+    KeywordsFilter,
+    NumberOfCitationsFilter,
+    WordsInArticleTitleFilter,
+} from '../filters/articlesfilters/ArticlesFilter';
+
 export class ProfileRepresentation {
     private _fullProfile: FullProfile;
     private _rowModels: Array<RowModel>;
@@ -142,10 +149,11 @@ export class ProfileRepresentation {
     }
 
     private createMostFrequentCoAuthorsCard(): BasicBarsChartModel {
-        const series: Array<Series> = new Array<Series>();
+        let series: Array<Series> = new Array<Series>();
         for (const author of this._fullProfile.authors) {
             series.push(new Series(author.name, [author.jointPublicationCount]));
         }
+        series = series.sort(this.sortSeriesByData);
         const mfa: BasicBarsChartModel = new BasicBarsChartModel(
             'Most frequent co-authors',
             '',
@@ -182,7 +190,7 @@ export class ProfileRepresentation {
             const cbo: number = cby.totalCitationsCount - isc - sc;
             series.push(new Series(cby.year + '', [isc, sc, cbo]));
         }
-        series = series.sort(this.sortSeries);
+        series = series.sort(this.sortSeriesByName);
         const cby: StackedColumnsChartModel = new StackedColumnsChartModel(
             'Citations by year',
             '',
@@ -232,6 +240,49 @@ export class ProfileRepresentation {
             ViewName.ArticlesCard,
             10,
         );
+
+        const coAuthorsFilter: Filter<string, ArticlesModel> = new CoauthorsFilter('');
+        const coAuthorTextField: Field<string, ArticlesModel> = new Field<string, ArticlesModel>(
+            'Co-authors seperated by ,',
+            '',
+            coAuthorsFilter,
+            [articlesModel],
+        );
+
+        const keywordsFilter: Filter<string, ArticlesModel> = new KeywordsFilter('');
+        const keywordsTextField: Field<string, ArticlesModel> = new Field<string, ArticlesModel>(
+            'Keywords seperated by ,',
+            '',
+            keywordsFilter,
+            [articlesModel],
+        );
+
+        const wordsInTitleFilter: Filter<string, ArticlesModel> = new WordsInArticleTitleFilter('');
+        const wordsInTitleField: Field<string, ArticlesModel> = new Field<string, ArticlesModel>(
+            'Words in the title',
+            '',
+            wordsInTitleFilter,
+            [articlesModel],
+        );
+
+        const minCitationsFilter: Filter<string, ArticlesModel> = new NumberOfCitationsFilter('0');
+        const minCitationsField: Field<string, ArticlesModel> = new Field<string, ArticlesModel>(
+            'With a minimum number of citations',
+            '0',
+            minCitationsFilter,
+            [articlesModel],
+        );
+
+        const articlesFilterPopup: ArticlesFilterButton = new ArticlesFilterButton('', [
+            coAuthorTextField,
+            keywordsTextField,
+            wordsInTitleField,
+            minCitationsField,
+        ]);
+
+        articlesModel.popupButtons = [articlesFilterPopup];
+        articlesModel.filters = [coAuthorsFilter, keywordsFilter, wordsInTitleFilter, minCitationsFilter];
+
         return articlesModel;
     }
 
@@ -258,7 +309,7 @@ export class ProfileRepresentation {
             series.push(new Series(author.name, [author.jointPublicationCount], 'column'));
         }
 
-        return new LineColumnsMixedChartModel(
+        const awhhi: LineColumnsMixedChartModel = new LineColumnsMixedChartModel(
             'Co-authors with highest h-index',
             '',
             ViewName.LineColumnsMixedChartCard,
@@ -268,6 +319,20 @@ export class ProfileRepresentation {
             'Publications',
             ['Publications', 'h-index'],
         );
+
+        const firstValue: number = 5;
+        const showingFilter: Filter<number, LineColumnsMixedChartModel> = new ShowingFilter(firstValue);
+        const showingNumberField: Field<number, LineColumnsMixedChartModel> = new Field<
+            number,
+            LineColumnsMixedChartModel
+        >('showing', firstValue, showingFilter, [awhhi]);
+
+        const showingPopupEdit: ShowingButton = new ShowingButton('showing', [showingNumberField]);
+        awhhi.popupButtons = [showingPopupEdit];
+        awhhi.filters = [showingFilter];
+        showingPopupEdit.handleAll();
+
+        return awhhi;
     }
 
     //This method creates the first row which renders the following:
@@ -310,9 +375,15 @@ export class ProfileRepresentation {
         this._rowModels.push(rowModel);
     }
 
-    private sortSeries(a: Series, b: Series): number {
+    private sortSeriesByName(a: Series, b: Series): number {
         if (+a.name < +b.name) return -1;
         if (+a.name > +b.name) return 1;
+        return 0;
+    }
+
+    private sortSeriesByData(a: Series, b: Series): number {
+        if (+a.data[0] > +b.data[0]) return -1;
+        if (+a.data[0] < +b.data[0]) return 1;
         return 0;
     }
 }

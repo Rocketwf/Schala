@@ -5,6 +5,8 @@ export class Article {
     private _citationsCount: number;
     private _url: string;
     private _coAuthors: ArticleCoAuthor[];
+    private _abstract: string;
+
     constructor(
         _title: string,
         _venue: string,
@@ -12,6 +14,7 @@ export class Article {
         _citationsCount: number,
         _url: string,
         _coAuthors: ArticleCoAuthor[],
+        _abstract: string,
     ) {
         this._title = _title;
         this._venue = _venue;
@@ -19,6 +22,7 @@ export class Article {
         this._citationsCount = _citationsCount;
         this._url = _url;
         this._coAuthors = _coAuthors;
+        this._abstract = _abstract;
     }
 
     public get publicationYear(): number {
@@ -62,8 +66,17 @@ export class Article {
     public get url(): string {
         return this._url;
     }
-    public set urll(url: string) {
+
+    public set url(url: string) {
         this._url = url;
+    }
+
+    public get abstract(): string {
+        return this._abstract;
+    }
+
+    public set abstract(abstract: string) {
+        this._abstract = abstract;
     }
 }
 

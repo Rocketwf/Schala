@@ -1,40 +1,39 @@
 <template>
-  <q-input dark color="white" v-model="input" @update:model-value="update" :label="getInputName" dense autofocus >
+    <q-input dark color="white" v-model="input" @update:model-value="update" :label="getInputName" dense autofocus>
         <template #append>
-          <q-icon name="edit" />
+            <q-icon name="edit" />
         </template>
-  </q-input>
+    </q-input>
 </template>
 <script setup lang="ts">
-import { ArticlesModel,Filterable, ObjectSeriesChartModel, TextField } from 'schala-core';
+import { ArticlesModel, Filterable, ObjectSeriesChartModel, Field } from 'schala-core';
 import { ref } from 'vue';
 
 const props = defineProps<{
-    textField: TextField<ObjectSeriesChartModel | ArticlesModel>;
-    models: Filterable <ObjectSeriesChartModel | ArticlesModel>[];
+    textField: Field<number | string, ObjectSeriesChartModel | ArticlesModel>;
+    models: Filterable<ObjectSeriesChartModel | ArticlesModel>[];
 }>();
 
+const getInputName = (): string => {
+    return props.textField.inputName;
+};
 
-const getInputName = (): string =>{
-  return props.textField.inputName
-}
-
-const getInputId = (): string =>{
-  return props.textField.inputId
-}
+const getInputId = (): string => {
+    return props.textField.inputId;
+};
 getInputId;
 
-const getInputValue = (): string =>{
-  return props.textField.inputValue
-}
+const getInputValue = () => {
+    return props.textField.inputValue;
+};
 const input = ref(getInputValue());
 
-const handleInput = (value: string): void =>{
- if(value) {
-     props.textField.handleInput(input.value, props.models)
-  }
-}
-const update = (): void =>{
-  handleInput(input.value);
-}
+const handleInput = (): void => {
+    if (input.value) {
+        props.textField.handleInput();
+    }
+};
+const update = (): void => {
+    handleInput();
+};
 </script>
