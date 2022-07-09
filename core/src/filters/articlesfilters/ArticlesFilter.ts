@@ -23,6 +23,10 @@ export class ArticlesPaginationFilter extends ArticlesFilter<number> {
         this._hitsPerPage = newHitsPerPage;
     }
 
+    public get hitsPerPage(): number {
+        return this._hitsPerPage;
+    }
+
     apply(model: ArticlesModel): void {
         model.articles = model.articles.slice(
             (this.value - 1) * this._hitsPerPage,

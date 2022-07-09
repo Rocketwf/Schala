@@ -183,6 +183,9 @@ export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesC
     public set filters(filters: Filter<number, ObjectSeriesChartModel>[]) {
         this._filters = filters;
     }
+    public get entries(): number {
+        return this._series.length;
+    }
 }
 
 export class Series {

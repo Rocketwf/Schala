@@ -38,4 +38,7 @@ export class SearchResultsModel implements Filterable<SearchResultsModel> {
     public set basicProfiles(basicProfiles: Array<BasicProfile>) {
         this._basicProfiles = basicProfiles;
     }
+    public get entries(): number {
+        return this._basicProfiles.length;
+    }
 }

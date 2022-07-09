@@ -17,11 +17,13 @@ import { ArticlesFilterButton, RangeButton, ShowingButton } from '../models/inpu
 import { Filter } from '../filters';
 import { FromFilter, ShowingFilter, ToFilter } from '../filters/objectserieschartfilters/ObjectSeriesFilter';
 import {
+    ArticlesPaginationFilter,
     CoauthorsFilter,
     KeywordsFilter,
     NumberOfCitationsFilter,
     WordsInArticleTitleFilter,
 } from '../filters/articlesfilters/ArticlesFilter';
+import { Pagination } from '../models/viewmodels/Pagination';
 
 const PAGE_WIDTH: number = 12;
 type cardData = {
@@ -404,8 +406,15 @@ export class ProfileRepresentation {
             minCitationsField,
         ]);
 
+        const articlePaginationFilter: ArticlesPaginationFilter = new ArticlesPaginationFilter(1);
+        const articlePagination: Pagination<ArticlesModel> = new Pagination(articlePaginationFilter, articlesModel);
+        articlesModel.pagination = articlePagination;
+
         articlesModel.popupButtons = [articlesFilterPopup];
         articlesModel.filters = [coAuthorsFilter, keywordsFilter, wordsInTitleFilter, minCitationsFilter];
+        articlesModel.paginationFilter = articlePaginationFilter;
+
+        articlesModel.applyAllFilters();
 
         return articlesModel;
     }

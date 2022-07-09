@@ -5,12 +5,15 @@
                 <div class="text-h6 q-mb-xs">{{ simpleCardModel.title }}</div>
                 <q-item-label caption>{{ simpleCardModel.sub }}</q-item-label>
                 <slot name="buttons" />
-
             </q-card-section>
 
             <q-card-section class="justify-center" style="height: 80%">
                 <slot name="model" />
             </q-card-section>
+
+            <div class="q-pa-lg flex flex-center">
+                <slot name="pagination" />
+            </div>
         </q-card>
     </div>
 </template>

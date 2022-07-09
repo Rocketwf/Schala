@@ -35,6 +35,9 @@ export class ExpertiseModel implements SimpleCardModel {
     public get viewName(): ViewName {
         return this._viewName;
     }
+    public get entries(): number {
+        return this._expertise.length;
+    }
 }
 
 export class Expertise {

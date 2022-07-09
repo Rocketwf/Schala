@@ -1,9 +1,12 @@
-import { Filter, Filterable } from '../../filters';
+import { Filter } from '../../filters';
+import { ArticlesPaginationFilter } from '../../filters/articlesfilters/ArticlesFilter';
+import { Paginable } from '../../filters/Filterable';
 import { Article } from '../articles/Article';
 import { PopupEditButton } from '../inputs';
 import { SimpleCardModel, ViewName } from '../simplecardmodel';
+import { Pagination } from '../viewmodels/Pagination';
 
-export class ArticlesModel implements Filterable<ArticlesModel>, SimpleCardModel {
+export class ArticlesModel implements Paginable<ArticlesModel>, SimpleCardModel {
     private _id: string = 'a' + Math.random().toString(31);
     private _articles: Array<Article>;
     private _colWidth: number;
@@ -13,6 +16,10 @@ export class ArticlesModel implements Filterable<ArticlesModel>, SimpleCardModel
 
     private _cachedModel: ArticlesModel;
     private _filters: Filter<string, ArticlesModel>[];
+
+    private _paginationFilter: ArticlesPaginationFilter;
+    private _pagination: Pagination<ArticlesModel>;
+
     private _popupButtons: PopupEditButton<ArticlesModel>[];
 
     constructor(_articles: Array<Article>, _title: string, _sub: string, _viewName: ViewName, _colWidth: number) {
@@ -21,7 +28,7 @@ export class ArticlesModel implements Filterable<ArticlesModel>, SimpleCardModel
         this._sub = _sub;
         this._viewName = _viewName;
         this._colWidth = _colWidth;
-        this.articles = this._articles.slice(0, 10);
+        this.articles = this._articles;
     }
 
     persist(): void {
@@ -39,6 +46,24 @@ export class ArticlesModel implements Filterable<ArticlesModel>, SimpleCardModel
         for (const filter of this._filters) {
             filter.applyValidate(this);
         }
+        this.fixMaxPages();
+
+        this._pagination.currentPage = 1;
+        this._paginationFilter.applyValidate(this);
+    }
+    public applyPaginationFilter(): void {
+        this.persistOnce();
+
+        this.articles = this._cachedModel.articles;
+        for (const filter of this._filters) {
+            filter.applyValidate(this);
+        }
+        this.fixMaxPages();
+
+        this._paginationFilter.applyValidate(this);
+    }
+    public fixMaxPages(): void {
+        this.pagination.maxPage = Math.ceil(this.entries / this._paginationFilter.hitsPerPage);
     }
 
     deepCopy(): ArticlesModel {
@@ -107,5 +132,23 @@ export class ArticlesModel implements Filterable<ArticlesModel>, SimpleCardModel
 
     public set filters(filters: Filter<string, ArticlesModel>[]) {
         this._filters = filters;
+    }
+    public get paginationFilter(): ArticlesPaginationFilter {
+        return this._paginationFilter;
+    }
+
+    public set paginationFilter(paginationFilter: ArticlesPaginationFilter) {
+        this._paginationFilter = paginationFilter;
+    }
+    public get pagination(): Pagination<ArticlesModel> {
+        return this._pagination;
+    }
+
+    public set pagination(pagination: Pagination<ArticlesModel>) {
+        this._pagination = pagination;
+    }
+
+    public get entries(): number {
+        return this._articles.length;
     }
 }

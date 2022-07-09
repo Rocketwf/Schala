@@ -9,23 +9,24 @@
             />
         </template>
         <template #model>
-            <article-item
-                v-for="art in props.cardModel.articles" 
-                :key="art.title"
-                :article="art"
+            <article-item v-for="art in props.cardModel.articles" :key="art.title" :article="art" />
+        </template>
+        <template #pagination>
+            <experimental-generic-pagination
+                :pagination-model="cardModel.pagination"
             />
-        </template>   
+        </template>
     </simple-card>
 </template>
 
 <script setup charset="utf-8" lang="ts">
-import { ArticlesModel } from 'schala-core'
-import ArticleItem from '../../mainlayout/profilepage/ArticleItem.vue'
-import SimpleCard from './SimpleCard.vue'
+import { ArticlesModel } from 'schala-core';
+import ArticleItem from '../../mainlayout/profilepage/ArticleItem.vue';
+import SimpleCard from './SimpleCard.vue';
 import PopupButton from '../buttons/popupedit/PopupButton.vue';
+import ExperimentalGenericPagination from '../ExperimentalGenericPagination.vue';
 
 const props = defineProps<{
-    cardModel: ArticlesModel,
-}>()
-
+    cardModel: ArticlesModel;
+}>();
 </script>

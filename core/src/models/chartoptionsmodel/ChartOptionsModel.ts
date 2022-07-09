@@ -43,4 +43,7 @@ export class ChartOptionsModel implements Filterable<ChartOptionsModel> {
     public set filters(filters: Filter<boolean, ChartOptionsModel>[]) {
         this._filters = filters;
     }
+    public get entries(): number {
+        return 0;
+    }
 }
