@@ -1,4 +1,5 @@
 import { Filter, Filterable } from '../../filters';
+import { ChartOptionsModel } from '../chartoptionsmodel';
 import { PopupEditButton } from '../inputs';
 import { SimpleCardModel, ViewName } from '../simplecardmodel/SimpleCardModel';
 
@@ -36,6 +37,8 @@ export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesC
     private _popupButtons: PopupEditButton<ObjectSeriesChartModel>[];
 
     private _filters: Filter<number, ObjectSeriesChartModel>[];
+
+    private _chartOptionsModel: ChartOptionsModel;
 
     constructor(
         _title: string,
@@ -78,6 +81,13 @@ export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesC
         for (const filter of this._filters) {
             filter.applyValidate(this);
         }
+    }
+
+    public set chartOptionsModel(chartOptionModel: ChartOptionsModel) {
+        this._chartOptionsModel = chartOptionModel;
+    }
+    public get chartOptionsModel(): ChartOptionsModel {
+        return this._chartOptionsModel;
     }
 
     /**

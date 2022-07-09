@@ -7,14 +7,13 @@ export abstract class ChartOptionFilter<S> extends Filter<S, ChartOptionsModel> 
 
 export class ScaleUpFilter extends ChartOptionFilter<boolean> {
     validate(model: ChartOptionsModel): boolean {
-        throw new Error('Method not implemented.');
+        return true;
     }
     apply(model: ChartOptionsModel): void {
-        if (this.value) {
+        if (this._value) {
             const limits: number[] = [];
             for (const m of model.objectSeriesChartModels) {
                 for (const serie of m.series) {
-                    console.log(serie.data);
                     const sum: number = serie.data.reduce((accumulator: number, current: number) => {
                         return accumulator + current;
                     }, 0);
@@ -22,6 +21,8 @@ export class ScaleUpFilter extends ChartOptionFilter<boolean> {
                 }
             }
             model.maxLimit = Math.max(...limits);
+            return;
         }
+        model.maxLimit = 0;
     }
 }

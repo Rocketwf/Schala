@@ -57,23 +57,23 @@ export class ProfileRepresentation {
             this._fullProfile.publicationsByYear.map((pby: PublicationByYear) => pby.year + ''),
         );
 
-        const firstValue: number = +pby.series[0]?.name;
-        const fromFilter: Filter<number, DistributedColumnsChartModel> = new FromFilter(firstValue);
+        const lastValue: number = +pby.series[pby.series.length - 1]?.name;
+        const fromFilter: Filter<number, DistributedColumnsChartModel> = new FromFilter(lastValue - 10);
         const fromNumberField: Field<number, DistributedColumnsChartModel> = new Field<
             number,
             DistributedColumnsChartModel
-        >('from', firstValue, fromFilter);
+        >('from', lastValue - 10, fromFilter, [pby]);
 
-        const lastValue: number = +pby.series[pby.series.length - 1]?.name;
         const toFilter: Filter<number, DistributedColumnsChartModel> = new ToFilter(lastValue);
         const toNumberField: Field<number, DistributedColumnsChartModel> = new Field<
             number,
             DistributedColumnsChartModel
-        >('to', lastValue, toFilter);
+        >('to', lastValue, toFilter, [pby]);
 
         const rangePopupEdit: RangeButton = new RangeButton('range', [fromNumberField, toNumberField]);
         pby.popupButtons = [rangePopupEdit];
         pby.filters = [fromFilter, toFilter];
+        pby.applyAllFilters();
         return pby;
     }
 
@@ -83,7 +83,7 @@ export class ProfileRepresentation {
             series.push(new Series(pbv.venue, [pbv.publicationCount]));
         }
 
-        return new DistributedColumnsChartModel(
+        const pbv: DistributedColumnsChartModel = new DistributedColumnsChartModel(
             'Publications by venue',
             '',
             ViewName.DistributedColumnsChartCard,
@@ -93,6 +93,19 @@ export class ProfileRepresentation {
             'Number of publications',
             this._fullProfile.publicationsByVenue.map((pbv: PublicationByVenue) => pbv.venue),
         );
+        const firstValue: number = 5;
+        const showingFilter: Filter<number, DistributedColumnsChartModel> = new ShowingFilter(firstValue);
+        const showingNumberField: Field<number, DistributedColumnsChartModel> = new Field<
+            number,
+            DistributedColumnsChartModel
+        >('showing', firstValue, showingFilter, [pbv]);
+
+        const showingPopupEdit: ShowingButton = new ShowingButton('showing', [showingNumberField]);
+        pbv.popupButtons = [showingPopupEdit];
+        pbv.filters = [showingFilter];
+        showingPopupEdit.handleAll();
+
+        return pbv;
     }
 
     private createMostCitedScholarsCard(): BasicBarsChartModel {
@@ -117,12 +130,13 @@ export class ProfileRepresentation {
             'showing',
             firstValue,
             showingFilter,
+            [mcs],
         );
 
         const showingPopupEdit: ShowingButton = new ShowingButton('showing', [showingNumberField]);
         mcs.popupButtons = [showingPopupEdit];
         mcs.filters = [showingFilter];
-        showingPopupEdit.handleAll([mcs]);
+        showingPopupEdit.handleAll();
 
         return mcs;
     }
@@ -149,12 +163,13 @@ export class ProfileRepresentation {
             'showing',
             firstValue,
             showingFilter,
+            [mfa],
         );
 
         const showingPopupEdit: ShowingButton = new ShowingButton('showing', [showingNumberField]);
         mfa.popupButtons = [showingPopupEdit];
         mfa.filters = [showingFilter];
-        showingPopupEdit.handleAll([mfa]);
+        showingPopupEdit.handleAll();
 
         return mfa;
     }
@@ -179,25 +194,27 @@ export class ProfileRepresentation {
             ['indirect self-citations', 'self-citations', 'cited by others'],
         );
 
-        const firstValue: number = +cby.series[0]?.name;
-        const fromFilter: Filter<number, StackedColumnsChartModel> = new FromFilter(firstValue);
+        const lastValue: number = +cby.series[cby.series.length - 1]?.name;
+        const fromFilter: Filter<number, StackedColumnsChartModel> = new FromFilter(lastValue - 10);
         const fromNumberField: Field<number, StackedColumnsChartModel> = new Field<number, StackedColumnsChartModel>(
             'from',
-            firstValue,
+            lastValue - 10,
             fromFilter,
+            [cby],
         );
 
-        const lastValue: number = +cby.series[cby.series.length - 1]?.name;
         const toFilter: Filter<number, StackedColumnsChartModel> = new ToFilter(lastValue);
         const toNumberField: Field<number, StackedColumnsChartModel> = new Field<number, StackedColumnsChartModel>(
             'to',
             lastValue,
             toFilter,
+            [cby],
         );
 
         const rangePopupEdit: RangeButton = new RangeButton('range', [fromNumberField, toNumberField]);
         cby.popupButtons = [rangePopupEdit];
         cby.filters = [fromFilter, toFilter];
+        cby.applyAllFilters();
 
         return cby;
     }

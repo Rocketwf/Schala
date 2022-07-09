@@ -1,18 +1,16 @@
 import { Filter } from '../../filters';
 
 import { Filterable } from '../../filters/Filterable';
-import { PopupEditButton } from '../inputs';
 import { ObjectSeriesChartModel } from '../objectserieschartmodel';
 
 export class ChartOptionsModel implements Filterable<ChartOptionsModel> {
-    private _maxLimit: number = 0;
+    private _maxLimit: number;
     private _objectSeriesChartModels: Array<ObjectSeriesChartModel>;
 
     constructor(_objectSeriesChartModels: ObjectSeriesChartModel[]) {
         this._objectSeriesChartModels = _objectSeriesChartModels;
     }
-    filters: Filter<string | number | boolean, ChartOptionsModel>[];
-    popupButtons?: PopupEditButton<ChartOptionsModel>[];
+    private _filters: Filter<boolean, ChartOptionsModel>[];
 
     public get objectSeriesChartModels(): ObjectSeriesChartModel[] {
         return this._objectSeriesChartModels;
@@ -34,6 +32,15 @@ export class ChartOptionsModel implements Filterable<ChartOptionsModel> {
         throw new Error('Method not implemented.');
     }
     applyAllFilters(): void {
-        //filter.apply(this);
+        for (const filter of this._filters) {
+            filter.applyValidate(this);
+        }
+    }
+
+    public get filters(): Filter<boolean, ChartOptionsModel>[] {
+        return this._filters;
+    }
+    public set filters(filters: Filter<boolean, ChartOptionsModel>[]) {
+        this._filters = filters;
     }
 }

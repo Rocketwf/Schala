@@ -45,6 +45,12 @@ const getLabels = computed(() => {
     return props.stackedColumnsChartModel.series.map((s) => s.name);
 });
 
+const getmaxLimit = computed(() => {
+    if (props.stackedColumnsChartModel.chartOptionsModel) {
+        return props.stackedColumnsChartModel.chartOptionsModel.maxLimit;
+    }
+    return 0;
+});
 type ApexOptionsType = { seriesIndex: number; dataPointIndex: number; w: { config: { series: Array<Series> } } };
 const chartOptions = computed(() => {
     return { chart: {
@@ -107,7 +113,7 @@ const chartOptions = computed(() => {
             },
         },
         yaxis: {
-            max: (max: number) => max,
+            max: getmaxLimit.value !== 0 ? getmaxLimit.value : (max: number) => max,
             title: {
                 text: props.stackedColumnsChartModel.yTitle,
             },

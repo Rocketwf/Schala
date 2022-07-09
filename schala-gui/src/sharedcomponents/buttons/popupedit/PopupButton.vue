@@ -1,23 +1,23 @@
 <template>
     <q-btn
-        fab
+        :fab="badge"
+        :class="badge ? 'absolute' : 'full-width'"
+        :style="badge ? 'top: 0; right: 12px; transform: translateY(-20%);' : ''"
         :label="popupButtonModel.label"
         color="primary"
         icon="people"
-        class="absolute"
-        style="top: 0; right: 12px; transform: translateY(-20%)"
     >
-        <q-popup-edit @before-hide="popupButtonModel.handleAll([props.data])" v-model="buttonModel" class="bg-secondary text-white">
+        <q-popup-edit @before-hide="popupButtonModel.handleAll()" v-model="buttonModel" class="bg-secondary text-white">
             <q-input
                 v-for="input in popupButtonModel.inputs"
-                :key="input.inputName"
+                :key="input.inputId"
                 :label="input.inputName"
                 dark
                 color="white"
                 v-model="input.inputValue"
                 dense
                 autofocus
-                @blur="input.handleInput([props.data])"
+                @blur="input.handleInput()"
             >
                 <template #append>
                     <q-icon name="edit" />
@@ -29,11 +29,9 @@
 <script setup lang="ts">
 import { ObjectSeriesChartModel, PopupEditButton } from 'schala-core';
 import { ref } from 'vue';
-
-
-const props = defineProps<{
+defineProps<{
     popupButtonModel: PopupEditButton<ObjectSeriesChartModel>;
-    data: ObjectSeriesChartModel;
+    badge?: boolean;
 }>();
 
 const buttonModel = ref('');

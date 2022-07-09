@@ -24,6 +24,13 @@ const getSeries = () => {
 const getLabels = computed(() => {
     return props.basicBarsChartModel.series.map((s) => s.name);
 });
+const getmaxLimit = computed(() => {
+    if (props.basicBarsChartModel.chartOptionsModel) {
+        return props.basicBarsChartModel.chartOptionsModel.maxLimit;
+    }
+    return 0;
+});
+
 
 const chartOptions = computed(() => {
     return { chart: {
@@ -56,6 +63,7 @@ const chartOptions = computed(() => {
           }
         },
         yaxis: {
+          max: getmaxLimit.value !== 0 ? getmaxLimit.value : (max: number) => max,
           title: {
             text: props.basicBarsChartModel.yTitle,
           },

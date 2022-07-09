@@ -1,15 +1,23 @@
+import { Filter } from '../filters';
+import { ScaleUpFilter } from '../filters/chartoptionsfilters/ChartOptionFilter';
+import { FromFilter, ShowingFilter, ToFilter } from '../filters/objectserieschartfilters/ObjectSeriesFilter';
 import {
     BasicBarsChartModel,
     BasicColumnsChartModel,
+    ChartOptionsModel,
     DistributedColumnsChartModel,
+    Field,
     FullProfile,
     LineColumnsMixedChartModel,
+    ObjectSeriesChartModel,
     RowModel,
     Series,
     StackedColumns100ChartModel,
     StackedColumnsChartModel,
     ViewName,
 } from '../models';
+import { CheckBox } from '../models/inputs/Inputs';
+import { RangeButton } from '../models/inputs/PopupEditButton';
 import { PublicationByVenue, PublicationByYear } from '../models/profile/Profile';
 import { Expertise, ExpertiseModel } from '../models/simplecardmodel/ExpertiseModel';
 
@@ -134,6 +142,29 @@ export class ComparisonRepresentation {
             'Number of publications',
             this._fullProfiles.map((profile: FullProfile) => profile.basicProfile.name),
         );
+        yearModel.series = yearModel.series.sort(this.sortSeries);
+
+        const firstValue: number = +yearModel.series[0]?.name;
+        const fromFilter: Filter<number, StackedColumnsChartModel> = new FromFilter(firstValue);
+        const fromNumberField: Field<number, StackedColumnsChartModel> = new Field<number, StackedColumnsChartModel>(
+            'from',
+            firstValue,
+            fromFilter,
+            [yearModel],
+        );
+
+        const lastValue: number = +yearModel.series[yearModel.series.length - 1]?.name;
+        const toFilter: Filter<number, StackedColumnsChartModel> = new ToFilter(lastValue);
+        const toNumberField: Field<number, StackedColumnsChartModel> = new Field<number, StackedColumnsChartModel>(
+            'to',
+            lastValue,
+            toFilter,
+            [yearModel],
+        );
+
+        const rangePopupEdit: RangeButton = new RangeButton('range', [fromNumberField, toNumberField]);
+        yearModel.popupButtons = [rangePopupEdit];
+        yearModel.filters = [fromFilter, toFilter];
         rowModel.simpleCardModels.push(yearModel);
         this._rowModels.push(rowModel);
     }
@@ -141,13 +172,15 @@ export class ComparisonRepresentation {
     private createPublicationByVenueRow(): void {
         const rowModel: RowModel = new RowModel(12);
 
+        const models: DistributedColumnsChartModel[] = [];
+        const showing: Filter<number, StackedColumnsChartModel> = new ShowingFilter(10);
         this._fullProfiles.forEach((profile: FullProfile) => {
             const series: Array<Series> = new Array<Series>();
             for (const pbv of profile.publicationsByVenue) {
                 series.push(new Series(pbv.venue, [pbv.publicationCount]));
             }
 
-            const venueModel: DistributedColumnsChartModel = new DistributedColumnsChartModel(
+            const model: DistributedColumnsChartModel = new DistributedColumnsChartModel(
                 'Publications by venue',
                 '',
                 ViewName.DistributedColumnsChartCard,
@@ -157,14 +190,46 @@ export class ComparisonRepresentation {
                 'Number of publications',
                 profile.publicationsByVenue.map((pbv: PublicationByVenue) => pbv.venue),
             );
-            rowModel.simpleCardModels.push(venueModel);
+            model.filters = [showing];
+            models.push(model);
         });
 
+        rowModel.simpleCardModels.push(...models);
+
+        const showingNumberField: Field<number, BasicColumnsChartModel> = new Field<number, BasicColumnsChartModel>(
+            'showing',
+            10,
+            showing,
+            models,
+        );
+
+        const scale: Filter<boolean, ChartOptionsModel> = new ScaleUpFilter(false);
+        const showingPopupEdit: RangeButton = new RangeButton('range', [showingNumberField]);
+        const chartOptionsModel: ChartOptionsModel = new ChartOptionsModel(models);
+        chartOptionsModel.filters = [scale];
+
+        models.forEach((model: ObjectSeriesChartModel) => {
+            model.chartOptionsModel = chartOptionsModel;
+        });
+
+        const scalingCheckBox: CheckBox<ChartOptionsModel> = new CheckBox('scale name', 'scale', false, scale);
+        scalingCheckBox.data = [chartOptionsModel];
+        rowModel.popupButtons = [showingPopupEdit];
+        rowModel.checkBoxes = [scalingCheckBox];
+        showing.value = 10;
+        for (const model of models) {
+            model.applyAllFilters();
+        }
         this._rowModels.push(rowModel);
     }
 
     private createCitationsByYearRow(): void {
         const rowModel: RowModel = new RowModel(12);
+
+        const models: StackedColumnsChartModel[] = [];
+
+        let min: number = Number.MAX_SAFE_INTEGER;
+        let max: number = 0;
         this._fullProfiles.forEach((profile: FullProfile) => {
             const series: Array<Series> = new Array<Series>();
             for (const cby of profile.citationsByYear) {
@@ -172,8 +237,10 @@ export class ComparisonRepresentation {
                 const sc: number = cby.selfCitationCount;
                 const cbo: number = cby.totalCitationsCount - isc - sc;
                 series.push(new Series(cby.year + '', [isc, sc, cbo]));
+                if (+cby.year < min) min = +cby.year;
+                if (+cby.year > max) max = +cby.year;
             }
-            const citationByYearModel: StackedColumnsChartModel = new StackedColumnsChartModel(
+            const model: StackedColumnsChartModel = new StackedColumnsChartModel(
                 'Citations by year',
                 '',
                 ViewName.StackedColumnsChartCard,
@@ -183,19 +250,64 @@ export class ComparisonRepresentation {
                 'Number of citations',
                 ['indirect self-citations', 'self-citations', 'cited by others'],
             );
-            rowModel.simpleCardModels.push(citationByYearModel);
+            model.series.sort(this.sortSeries);
+            models.push(model);
         });
+
+        const fromFilter: Filter<number, StackedColumnsChartModel> = new FromFilter(max - 10);
+        const toFilter: Filter<number, StackedColumnsChartModel> = new ToFilter(max);
+
+        const fromNumberField: Field<number, StackedColumnsChartModel> = new Field<number, StackedColumnsChartModel>(
+            'from',
+            max - 10,
+            fromFilter,
+            models,
+        );
+
+        const toNumberField: Field<number, StackedColumnsChartModel> = new Field<number, StackedColumnsChartModel>(
+            'to',
+            max,
+            toFilter,
+            models,
+        );
+
+        const scale: Filter<boolean, ChartOptionsModel> = new ScaleUpFilter(false);
+
+        const rangePopupEdit: RangeButton = new RangeButton('range', [fromNumberField, toNumberField]);
+        const chartOptionsModel: ChartOptionsModel = new ChartOptionsModel(models);
+        chartOptionsModel.filters = [scale];
+
+        models.forEach((model: ObjectSeriesChartModel) => {
+            model.filters = [fromFilter, toFilter];
+            model.chartOptionsModel = chartOptionsModel;
+        });
+
+        const scalingCheckBox: CheckBox<ChartOptionsModel> = new CheckBox('scale name', 'scale', false, scale);
+        scalingCheckBox.data = [chartOptionsModel];
+
+        rowModel.popupButtons = [rangePopupEdit];
+        rowModel.checkBoxes = [scalingCheckBox];
+
+        for (const model of models) {
+            model.applyAllFilters();
+        }
+        rowModel.simpleCardModels.push(...models);
         this._rowModels.push(rowModel);
     }
 
     private createMostFrequentCoAuthorsRow(): void {
         const rowModel: RowModel = new RowModel(12);
+
+        const models: BasicBarsChartModel[] = [];
+        const showing: Filter<number, BasicBarsChartModel> = new ShowingFilter(10);
+        const scale: Filter<boolean, ChartOptionsModel> = new ScaleUpFilter(false);
+
         this._fullProfiles.forEach((profile: FullProfile) => {
             const series: Array<Series> = new Array<Series>();
             for (const author of profile.authors) {
                 series.push(new Series(author.name, [author.jointPublicationCount]));
             }
-            const mostFrequentCoAuthorsModel: BasicBarsChartModel = new BasicBarsChartModel(
+            const model: BasicBarsChartModel = new BasicBarsChartModel(
                 'Most frequent co-authors',
                 '',
                 ViewName.BasicBarsChartCard,
@@ -205,8 +317,35 @@ export class ComparisonRepresentation {
                 '',
                 [],
             );
-            rowModel.simpleCardModels.push(mostFrequentCoAuthorsModel);
+            model.filters = [showing];
+            models.push(model);
         });
+        rowModel.simpleCardModels.push(...models);
+
+        const chartOptionsModel: ChartOptionsModel = new ChartOptionsModel(models);
+        chartOptionsModel.filters = [scale];
+
+        models.forEach((model: ObjectSeriesChartModel) => {
+            model.chartOptionsModel = chartOptionsModel;
+        });
+
+        const showingNumberField: Field<number, BasicBarsChartModel> = new Field<number, BasicColumnsChartModel>(
+            'showing',
+            10,
+            showing,
+            models,
+        );
+
+        const showingPopupEdit: RangeButton = new RangeButton('range', [showingNumberField]);
+        const scalingCheckBox: CheckBox<ChartOptionsModel> = new CheckBox('scale name', 'scale', false, scale);
+        scalingCheckBox.data = [chartOptionsModel];
+        rowModel.popupButtons = [showingPopupEdit];
+        rowModel.checkBoxes = [scalingCheckBox];
+        rowModel.popupButtons = [showingPopupEdit];
+        showing.value = 10;
+        for (const model of models) {
+            model.applyAllFilters();
+        }
         this._rowModels.push(rowModel);
     }
 
@@ -287,5 +426,10 @@ export class ComparisonRepresentation {
         cerRow.simpleCardModels.push(expertiseModel);
 
         this.rowModels.push(cerRow);
+    }
+    private sortSeries(a: Series, b: Series): number {
+        if (+a.name < +b.name) return -1;
+        if (+a.name > +b.name) return 1;
+        return 0;
     }
 }

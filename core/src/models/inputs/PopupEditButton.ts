@@ -7,7 +7,7 @@ export interface PopupEditButton<S extends Filterable<S>> {
     label: string;
     inputs: Field<number, S>[];
     setLabel(value: string): void;
-    handleAll(data: S[]): void;
+    handleAll(): void;
 }
 
 export class RangeButton implements PopupEditButton<ObjectSeriesChartModel> {
@@ -18,9 +18,9 @@ export class RangeButton implements PopupEditButton<ObjectSeriesChartModel> {
         this._label = _label;
         this._inputs = _inputs;
     }
-    public handleAll(data: ObjectSeriesChartModel[]): void {
-        for (const input of this.inputs) {
-            input.handleInput(data);
+    public handleAll(): void {
+        for (const input of this._inputs) {
+            input.handleInput();
         }
     }
     setLabel(value: string): void {
@@ -48,8 +48,8 @@ export class ShowingButton implements PopupEditButton<ObjectSeriesChartModel> {
         this._label = _label;
         this._inputs = _inputs;
     }
-    public handleAll(data: ObjectSeriesChartModel[]): void {
-        this.inputs[0].handleInput(data);
+    public handleAll(): void {
+        this._inputs[0].handleInput();
     }
     setLabel(value: string): void {
         this._label = value;

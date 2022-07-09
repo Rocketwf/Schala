@@ -5,7 +5,7 @@
                 v-for="popupBtn in cardModel.popupButtons"
                 :key="popupBtn.id"
                 :popup-button-model="popupBtn"
-                :data="cardModel"
+                badge
             />
         </template>
         <template #model>

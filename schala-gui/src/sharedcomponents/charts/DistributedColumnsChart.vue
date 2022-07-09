@@ -21,15 +21,23 @@ const getSeries = () => {
 };
 
 const getLabels = computed(() => {
-    return props.distributedColumnsChartModel.series.map((s) => s.name);
+    return props.distributedColumnsChartModel.series.map((s) => (s.name ? s.name : 'N/A'));
+});
+const getmaxLimit = computed(() => {
+    if (props.distributedColumnsChartModel.chartOptionsModel) {
+        return props.distributedColumnsChartModel.chartOptionsModel.maxLimit;
+    }
+    return 0;
 });
 
-const chartOptions = computed(()=>{
+const chartOptions = computed(() => {
     return {
         chart: {
+            selection: {
+                enabled: true,
+            },
             height: 349,
             type: 'bar',
-            events: {},
             toolbar: {
                 tools: {
                     download:
@@ -56,12 +64,14 @@ const chartOptions = computed(()=>{
             },
             categories: getLabels.value,
             labels: {
+                trim: true,
                 style: {
                     fontSize: '11px',
                 },
             },
         },
         yaxis: {
+            max: getmaxLimit.value !== 0 ? getmaxLimit.value : (max: number) => max,
             title: {
                 text: props.distributedColumnsChartModel.yTitle,
             },
@@ -71,6 +81,6 @@ const chartOptions = computed(()=>{
                 },
             },
         },
-    }
+    };
 });
 </script>

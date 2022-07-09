@@ -13,10 +13,12 @@ export abstract class Filter<S, T extends Filterable<T>> {
 
     abstract apply(model: T): void;
     validate(model: T): boolean {
+        model;
         return true;
     }
 
     applyValidate(model: T): void {
+        console.log(this.validate(model));
         if (this.validate(model)) this.apply(model);
     }
 
