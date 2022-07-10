@@ -127,11 +127,19 @@ export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesC
         return this._colWidth;
     }
 
+    public set colWidth(v: number) {
+        this._colWidth = v;
+    }
+
     /**
      * Getter method of the title attribute.
      */
     public get title(): string {
         return this._title;
+    }
+
+    public set title(v: string) {
+        this._title = v;
     }
 
     /**
@@ -141,11 +149,19 @@ export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesC
         return this._id;
     }
 
+    public set id(v: string) {
+        this._id = v;
+    }
+
     /**
      * Getter method of the sub attribute.
      */
     public get sub(): string {
         return this._sub;
+    }
+
+    public set sub(v: string) {
+        this._sub = v;
     }
 
     /**
@@ -155,11 +171,19 @@ export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesC
         return this._viewName;
     }
 
+    public set viewName(v: ViewName) {
+        this._viewName = v;
+    }
+
     /**
      * Getter method of the xTitle attribute.
      */
     public get xTitle(): string {
         return this._xTitle;
+    }
+
+    public set xTitle(v: string) {
+        this._xTitle = v;
     }
 
     /**
@@ -168,6 +192,9 @@ export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesC
     public get yTitle(): string {
         return this._yTitle;
     }
+    public set yTitle(v: string) {
+        this._yTitle = v;
+    }
 
     /**
      * Getter method of the labels attribute.
@@ -175,7 +202,10 @@ export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesC
     public get labels(): string[] {
         return this._labels;
     }
-    persist(): void {
+    public set labels(v: string[]) {
+        this._labels = v;
+    }
+    public persist(): void {
         this._cachedModel = this.deepCopy();
     }
 
@@ -204,10 +234,24 @@ export class Series {
     public get name(): string {
         return this._name;
     }
+
+    public set name(v: string) {
+        this._name = v;
+    }
+
     public get data(): Array<number> {
         return this._data;
     }
+
+    public set data(v: number[]) {
+        this._data = v;
+    }
+
     public get type(): string {
         return this._type;
+    }
+
+    public set type(v: string) {
+        this._type = v;
     }
 }

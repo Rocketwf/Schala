@@ -29,24 +29,48 @@ export class BasicProfile {
         return this._id;
     }
 
+    public set id(v: string) {
+        this._id = v;
+    }
+
     public get name(): string {
         return this._name;
+    }
+
+    public set name(v: string) {
+        this._name = v;
     }
 
     public get affiliation(): string[] {
         return this._affiliation;
     }
 
+    public set affiliation(v: string[]) {
+        this._affiliation = v;
+    }
+
     public get pictureURL(): string {
         return this._pictureURL;
+    }
+
+    public set pictureURL(v: string) {
+        this._pictureURL = v;
     }
 
     public get totalCitations(): number {
         return this._totalCitations;
     }
 
+    public set totalCitations(v: number) {
+        this._totalCitations = v;
+    }
+
     public get paperCount(): number {
         return this._paperCount;
+    }
+
+    public set paperCount(v: number) {
+        this._paperCount = v;
     }
 }
 
@@ -138,6 +162,10 @@ export class FullProfile {
     }
     public get citationsByYear(): CitationByYear[] {
         return this._citationsByYear;
+    }
+
+    public set citationsByYear(v: CitationByYear[]) {
+        this._citationsByYear = v;
     }
 
     public get citedScholars(): CitedScholar[] {
@@ -346,10 +374,24 @@ export class Author {
     public get hIndex(): number {
         return this._hIndex;
     }
+
+    public set hIndex(v: number) {
+        this._hIndex = v;
+    }
+
     public get name(): string {
         return this._name;
     }
+
+    public set name(v: string) {
+        this._name = v;
+    }
+
     public get jointPublicationCount(): number {
         return this._jointPublicationCount;
+    }
+
+    public set jointPublicationCount(v: number) {
+        this._jointPublicationCount = v;
     }
 }

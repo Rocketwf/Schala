@@ -91,7 +91,16 @@ export class ArticleCoAuthor {
     public get id(): string {
         return this._id;
     }
+
+    public set id(v: string) {
+        this._id = v;
+    }
+
     public get name(): string {
         return this._name;
+    }
+
+    public set name(v: string) {
+        this._name = v;
     }
 }

@@ -17,22 +17,51 @@ export class PieChartModel implements SimpleCardModel {
         this._series = _series;
     }
 
-    public get id(): string {
-        return this._id;
-    }
     public get colWidth(): number {
         return this._colWidth;
     }
+
+    public set colWidth(v: number) {
+        this._colWidth = v;
+    }
+
     public get title(): string {
         return this._title;
     }
+
+    public set title(v: string) {
+        this._title = v;
+    }
+
+    public get id(): string {
+        return this._id;
+    }
+
+    public set id(v: string) {
+        this._id = v;
+    }
+
     public get sub(): string {
         return this._sub;
     }
+
+    public set sub(v: string) {
+        this._sub = v;
+    }
+
     public get viewName(): ViewName {
         return this._viewName;
     }
+
+    public set viewName(v: ViewName) {
+        this._viewName = v;
+    }
+
     public get series(): Array<Series> {
         return this._series;
+    }
+
+    public set series(v: Array<Series>) {
+        this._series = v;
     }
 }

@@ -19,13 +19,24 @@ export class RowModel {
     public get id(): string {
         return this._id;
     }
+
+    public set id(v: string) {
+        this._id = v;
+    }
+
     public get width(): number {
         return this._width;
+    }
+    public set width(v: number) {
+        this._width = v;
     }
     public get simpleCardModels(): Array<SimpleCardModel> {
         return this._simpleCardModels;
     }
 
+    public set simpleCardModels(v: Array<SimpleCardModel>) {
+        this._simpleCardModels = v;
+    }
     public get popupButtons(): PopupEditButton<ObjectSeriesChartModel>[] {
         return this._popupButtons;
     }

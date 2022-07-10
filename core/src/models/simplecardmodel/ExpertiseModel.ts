@@ -20,21 +20,50 @@ export class ExpertiseModel implements SimpleCardModel {
         return this._expertise;
     }
 
+    public set expertise(v: Array<Expertise>) {
+        this._expertise = v;
+    }
+
     public get colWidth(): number {
         return this._colWidth;
     }
+
+    public set colWidth(v: number) {
+        this._colWidth = v;
+    }
+
     public get title(): string {
         return this._title;
     }
+
+    public set title(v: string) {
+        this._title = v;
+    }
+
     public get id(): string {
         return this._id;
     }
+
+    public set id(v: string) {
+        this._id = v;
+    }
+
     public get sub(): string {
         return this._sub;
     }
+
+    public set sub(v: string) {
+        this._sub = v;
+    }
+
     public get viewName(): ViewName {
         return this._viewName;
     }
+
+    public set viewName(v: ViewName) {
+        this._viewName = v;
+    }
+
     public get entries(): number {
         return this._expertise.length;
     }
@@ -52,10 +81,21 @@ export class Expertise {
     public get name(): string {
         return this._name;
     }
+
+    public set name(v: string) {
+        this._name = v;
+    }
+
     public get expertise(): string[] {
         return this._expertise;
     }
+    public set expertise(v: string[]) {
+        this._expertise = v;
+    }
     public get id(): string {
         return this._id;
+    }
+    public set id(v: string) {
+        this._id = v;
     }
 }

@@ -8,7 +8,6 @@ export interface PopupEditButton<S extends Filterable<S>> {
     label: string;
     icon: string;
     inputs: Field<number | string, S>[];
-    setLabel(value: string): void;
     handleAll(): void;
 }
 
@@ -31,7 +30,7 @@ export class RangeButton implements PopupEditButton<ObjectSeriesChartModel> {
             input.handleInput();
         }
     }
-    setLabel(value: string): void {
+    public set label(value: string) {
         this._label = value;
     }
 
@@ -43,8 +42,16 @@ export class RangeButton implements PopupEditButton<ObjectSeriesChartModel> {
         return this._id;
     }
 
+    public set id(v: string) {
+        this._id = v;
+    }
+
     public get inputs(): Field<number, ObjectSeriesChartModel>[] {
         return this._inputs;
+    }
+
+    public set inputs(v: Field<number, ObjectSeriesChartModel>[]) {
+        this._inputs = v;
     }
 }
 
@@ -64,11 +71,15 @@ export class ShowingButton implements PopupEditButton<ObjectSeriesChartModel> {
         return this._icon;
     }
 
+    public set icon(v: string) {
+        this._icon = v;
+    }
+
     public handleAll(): void {
         this._label = this._cachedLabel + ': ' + this._inputs[0].inputValue;
         this._inputs[0].handleInput();
     }
-    setLabel(value: string): void {
+    public set label(value: string) {
         this._label = value;
     }
 
@@ -80,8 +91,16 @@ export class ShowingButton implements PopupEditButton<ObjectSeriesChartModel> {
         return this._id;
     }
 
+    public set id(v: string) {
+        this._id = v;
+    }
+
     public get inputs(): Field<number, ObjectSeriesChartModel>[] {
         return this._inputs;
+    }
+
+    public set inputs(v: Field<number, ObjectSeriesChartModel>[]) {
+        this._inputs = v;
     }
 }
 
@@ -99,12 +118,16 @@ export class ArticlesFilterButton implements PopupEditButton<ArticlesModel> {
         return this._icon;
     }
 
+    public set icon(v: string) {
+        this._icon = v;
+    }
+
     public handleAll(): void {
         for (const input of this.inputs) {
             input.handleInput();
         }
     }
-    setLabel(value: string): void {
+    public set label(value: string) {
         this._label = value;
     }
 
@@ -115,8 +138,14 @@ export class ArticlesFilterButton implements PopupEditButton<ArticlesModel> {
     public get id(): string {
         return this._id;
     }
+    public set id(v: string) {
+        this._id = v;
+    }
 
     public get inputs(): Field<string, ArticlesModel>[] {
         return this._inputs;
+    }
+    public set inputs(v: Field<string, ArticlesModel>[]) {
+        this._inputs = v;
     }
 }

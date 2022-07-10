@@ -4,13 +4,13 @@ import { BasicProfile } from '../profile/Profile';
 
 export class SearchResultsModel implements Filterable<SearchResultsModel> {
     private _basicProfiles: Array<BasicProfile>;
-    filters: Filter<number, SearchResultsModel>[];
+    private _filters: Filter<number, SearchResultsModel>[];
 
     constructor(basicProfiles: Array<BasicProfile>) {
         this._basicProfiles = basicProfiles;
     }
 
-    deepCopy(): SearchResultsModel {
+    public deepCopy(): SearchResultsModel {
         const basicProfilesCopy: Array<BasicProfile> = new Array<BasicProfile>();
         this._basicProfiles.forEach((basicProfile: BasicProfile) => {
             basicProfilesCopy.push(
@@ -27,8 +27,15 @@ export class SearchResultsModel implements Filterable<SearchResultsModel> {
         return new SearchResultsModel(basicProfilesCopy);
     }
 
-    applyAllFilters(): void {
+    public applyAllFilters(): void {
         return;
+    }
+
+    public get filters(): Filter<number, SearchResultsModel>[] {
+        return this._filters;
+    }
+    public set filters(filters: Filter<number, SearchResultsModel>[]) {
+        this._filters = filters;
     }
 
     public get basicProfiles(): Array<BasicProfile> {

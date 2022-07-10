@@ -42,6 +42,10 @@ export class Field<T, S extends Filterable<S>> implements Input<T, S> {
         return this._data;
     }
 
+    public set data(v: S[]) {
+        this._data = v;
+    }
+
     handleInput(): void {
         this._filter.value = this._inputValue;
         for (const entry of this._data) {
@@ -51,6 +55,10 @@ export class Field<T, S extends Filterable<S>> implements Input<T, S> {
 
     public get filter(): Filter<T, S> {
         return this._filter;
+    }
+
+    public set filter(v: Filter<T, S>) {
+        this._filter = v;
     }
 
     /*
@@ -72,6 +80,10 @@ export class Field<T, S extends Filterable<S>> implements Input<T, S> {
     */
     public get inputId(): string {
         return this._inputId;
+    }
+
+    public set inputId(v: string) {
+        this._inputId = v;
     }
 
     /*
@@ -120,6 +132,10 @@ export class CheckBox<S extends Filterable<S>> implements Input<boolean, S> {
         return this._filter;
     }
 
+    public set filter(v: Filter<boolean, S>) {
+        this._filter = v;
+    }
+
     /*
      Getter method of the input name as a string
     */
@@ -139,6 +155,10 @@ export class CheckBox<S extends Filterable<S>> implements Input<boolean, S> {
     */
     public get inputId(): string {
         return this._inputId;
+    }
+
+    public set inputId(v: string) {
+        this._inputId = v;
     }
 
     /*
@@ -184,15 +204,34 @@ export class SelectOptions<T, S extends Filterable<S>> implements Input<T, S> {
         return this._data;
     }
 
+    public set data(v: S[]) {
+        this._data = v;
+    }
+
     public get filter(): Filter<T, S> {
         return this._filter;
     }
+
+    public set filter(v: Filter<T, S>) {
+        this._filter = v;
+    }
+
     public get inputName(): string {
         return this._inputName;
     }
+
+    public set inputName(v: string) {
+        this._inputName = v;
+    }
+
     public get inputId(): string {
         return this._inputId;
     }
+
+    public set inputId(v: string) {
+        this._inputId = v;
+    }
+
     public get inputValue(): T {
         return this._inputValue;
     }
@@ -202,5 +241,9 @@ export class SelectOptions<T, S extends Filterable<S>> implements Input<T, S> {
 
     public get possibleOptions(): T[] {
         return this._possibeOptions;
+    }
+
+    public set possibleOptions(v: T[]) {
+        this._possibeOptions = v;
     }
 }

@@ -14,6 +14,10 @@ export class Pagination<S extends Paginable<S>> {
         this._currentPage = this._paginationFilter.value;
     }
 
+    public set paginationsFilter(v: ArticlesPaginationFilter) {
+        this._paginationFilter = v;
+    }
+
     public get paginationFilter(): ArticlesPaginationFilter {
         return this._paginationFilter;
     }
@@ -24,6 +28,7 @@ export class Pagination<S extends Paginable<S>> {
     public get maxPage(): number {
         return this._maxPage;
     }
+
     public get currentPage(): number {
         return this._currentPage;
     }
@@ -34,6 +39,11 @@ export class Pagination<S extends Paginable<S>> {
     public get model(): S {
         return this._model;
     }
+
+    public set model(v: S) {
+        this._model = v;
+    }
+
     public handleSwitch(): void {
         this._paginationFilter.value = this._currentPage;
         this._model.applyPaginationFilter();
