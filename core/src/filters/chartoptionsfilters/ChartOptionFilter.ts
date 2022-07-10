@@ -21,7 +21,13 @@ export class ScaleUpFilter extends ChartOptionFilter<boolean> {
                     limits.push(sum);
                 }
             }
-            model.maxLimit = Math.max(...limits);
+            let max: number = 0;
+            for (const val of limits) {
+                if (val > max) {
+                    max = val;
+                }
+            }
+            model.maxLimit = max;
             return;
         }
         model.maxLimit = 0;
@@ -37,6 +43,7 @@ export class ScaleUpMixedFilter extends ChartOptionFilter<boolean> {
     }
 
     validate(model: ChartOptionsModel): boolean {
+        model;
         return true;
     }
 
@@ -50,12 +57,32 @@ export class ScaleUpMixedFilter extends ChartOptionFilter<boolean> {
                     }
                 }
             }
-            if (this.type === 'column') model.maxLimit = Math.max(...limits);
-            if (this.type === 'line') model.maxLimitTwo = Math.max(...limits);
+            if (this.type === 'column') {
+                let max: number = 0;
+                for (const val of limits) {
+                    if (val > max) {
+                        max = val;
+                    }
+                }
+                model.maxLimit = max;
+            }
+            if (this.type === 'line') {
+                let max: number = 0;
+                for (const val of limits) {
+                    if (val > max) {
+                        max = val;
+                    }
+                }
+                model.maxLimitTwo = max;
+            }
             return;
         }
-        if (this.type === 'column') model.maxLimit = 0;
-        if (this.type === 'line') model.maxLimitTwo = 0;
+        if (this.type === 'column') {
+            model.maxLimit = 0;
+        }
+        if (this.type === 'line') {
+            model.maxLimitTwo = 0;
+        }
     }
 
     public get type(): TypeName {

@@ -22,7 +22,11 @@ const getSeries = () => {
 };
 
 const getLabels = computed(() => {
-    return props.basicBarsChartModel.series.map((s) => s.name);
+    const labels: string[] = new Array<string>();
+    for(const series of props.basicBarsChartModel.series) {
+      labels.push(series.name);
+    }
+    return labels;
 });
 const getmaxLimit = computed(() => {
     if (props.basicBarsChartModel.chartOptionsModel) {

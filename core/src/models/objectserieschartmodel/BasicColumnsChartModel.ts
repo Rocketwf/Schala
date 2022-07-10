@@ -16,7 +16,7 @@ export class BasicColumnsChartModel extends ObjectSeriesChartModel implements Si
         super(_title, _sub, _viewName, _colWidth, _series, _xTitle, _yTitle, _labels);
     }
 
-    deepCopy(): ObjectSeriesChartModel {
+    deepCopy(): BasicColumnsChartModel {
         const seriesCopy: Array<Series> = new Array<Series>();
         this.series.forEach((serie: Series) => {
             seriesCopy.push(new Series(serie.name, serie.data));

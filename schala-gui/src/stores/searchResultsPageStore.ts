@@ -24,7 +24,11 @@ export const searchResultsStore = defineStore({
         getSearchResultsShowingModel: (state) => state.searchResultsShowingModel as SearchResultsModel,
     },
     actions: {
-        setAffiliationFilter(affiliationFilter: string): void {
+        /**
+         * affiliation filter
+         * @param affiliationFilter -
+         */
+        etAffiliationFilter(affiliationFilter: string): void {
             this.affilationFilter.value = affiliationFilter;
 
             this.applyAllFilters();

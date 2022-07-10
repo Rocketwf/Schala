@@ -21,7 +21,15 @@ const getSeries = () => {
 };
 
 const getLabels = computed(() => {
-    return props.distributedColumnsChartModel.series.map((s) => (s.name ? s.name : 'N/A'));
+    const labels: string[] = new Array<string>();
+    for (const series of props.distributedColumnsChartModel.series) {
+        if (series.name) {
+            labels.push(series.name);
+        } else {
+            labels.push('N/A');
+        }
+    }
+    return labels;
 });
 const getmaxLimit = computed(() => {
     if (props.distributedColumnsChartModel.chartOptionsModel) {
@@ -29,6 +37,9 @@ const getmaxLimit = computed(() => {
     }
     return 0;
 });
+const defaultMax = (): ((max: number) => number) => {
+    return (max: number) => max;
+};
 
 const chartOptions = computed(() => {
     return {
@@ -64,14 +75,14 @@ const chartOptions = computed(() => {
             },
             categories: getLabels.value,
             labels: {
-                trim: true,
+                rotate: -45,
                 style: {
-                    fontSize: '11px',
+                    fontSize: '12px',
                 },
             },
         },
         yaxis: {
-            max: getmaxLimit.value !== 0 ? getmaxLimit.value : (max: number) => max,
+            max: getmaxLimit.value !== 0 ? getmaxLimit.value : defaultMax(),
             title: {
                 text: props.distributedColumnsChartModel.yTitle,
             },

@@ -39,7 +39,9 @@ export class ArticlesModel implements Paginable<ArticlesModel>, SimpleCardModel 
     }
 
     private persistOnce(): void {
-        if (!this._cachedModel) this.persist();
+        if (!this._cachedModel) {
+            this.persist();
+        }
     }
 
     public applyAllFilters(): void {
@@ -72,17 +74,16 @@ export class ArticlesModel implements Paginable<ArticlesModel>, SimpleCardModel 
     deepCopy(): ArticlesModel {
         const articlesCopy: Array<Article> = new Array<Article>();
         this._articles.forEach((article: Article) => {
-            articlesCopy.push(
-                new Article(
-                    article.title,
-                    article.venue,
-                    article.publicationYear,
-                    article.citationCount,
-                    article.url,
-                    article.coAuthors,
-                    article.abstract,
-                ),
+            const art: Article = new Article(
+                article.title,
+                article.venue,
+                article.publicationYear,
+                article.citationCount,
+                article.url,
+                article.coAuthors,
+                article.abstract,
             );
+            articlesCopy.push(art);
         });
         return new ArticlesModel(articlesCopy, this.title, this.sub, this.viewName, this._colWidth);
     }

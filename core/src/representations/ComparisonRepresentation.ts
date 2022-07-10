@@ -18,8 +18,97 @@ import {
 } from '../models';
 import { CheckBox } from '../models/inputs/Inputs';
 import { RangeButton } from '../models/inputs/PopupEditButton';
-import { PublicationByVenue, PublicationByYear } from '../models/profile/Profile';
+import { PublicationByYear } from '../models/profile/Profile';
 import { Expertise, ExpertiseModel } from '../models/simplecardmodel/ExpertiseModel';
+const PAGE_WIDTH: number = 12;
+type cardData = {
+    TITLE: string;
+    ROW: number;
+    DEFAULT_NUM_OF_ENTRIES?: number;
+};
+type cards = {
+    PUBLICATIONS_BY_YEAR: {
+        CARD_DATA: cardData;
+    };
+    PUBLICATIONS_BY_VENUE: {
+        CARD_DATA: cardData;
+    };
+    CITATIONS_BY_YEAR: {
+        CARD_DATA: cardData;
+    };
+    MOST_CITED_SCHOLARS: {
+        CARD_DATA: cardData;
+    };
+    CITATIONS: {
+        CARD_DATA: cardData;
+    };
+    MOST_FREQUENT_CO_AUTHORS: {
+        CARD_DATA: cardData;
+    };
+    CO_AUTHORS_WITH_HIGHEST_HINDEX: {
+        CARD_DATA: cardData;
+    };
+    EXPERTISE: {
+        CARD_DATA: cardData;
+    };
+};
+const CARDS: cards = {
+    PUBLICATIONS_BY_YEAR: {
+        CARD_DATA: {
+            TITLE: 'Publications by year',
+            ROW: 1,
+            DEFAULT_NUM_OF_ENTRIES: 10,
+        },
+    },
+    PUBLICATIONS_BY_VENUE: {
+        CARD_DATA: {
+            TITLE: 'Publications by venue',
+            ROW: 1,
+            DEFAULT_NUM_OF_ENTRIES: 3,
+        },
+    },
+    CITATIONS_BY_YEAR: {
+        CARD_DATA: {
+            TITLE: 'Citations by year',
+            ROW: 1,
+            DEFAULT_NUM_OF_ENTRIES: 10,
+        },
+    },
+    MOST_CITED_SCHOLARS: {
+        CARD_DATA: {
+            TITLE: 'Most cited scholars',
+            ROW: 2,
+            DEFAULT_NUM_OF_ENTRIES: 10,
+        },
+    },
+    CITATIONS: {
+        CARD_DATA: {
+            TITLE: 'Citations',
+            ROW: 2,
+        },
+    },
+    MOST_FREQUENT_CO_AUTHORS: {
+        CARD_DATA: {
+            TITLE: 'Most frequent co-authors',
+            ROW: 2,
+            DEFAULT_NUM_OF_ENTRIES: 10,
+        },
+    },
+    CO_AUTHORS_WITH_HIGHEST_HINDEX: {
+        CARD_DATA: {
+            TITLE: 'Co-authors with highest h-index',
+            ROW: 3,
+            DEFAULT_NUM_OF_ENTRIES: 10,
+        },
+    },
+    EXPERTISE: {
+        CARD_DATA: {
+            TITLE: 'Expertise',
+            ROW: 3,
+            DEFAULT_NUM_OF_ENTRIES: 50,
+        },
+    },
+};
 
 /**
  * Builds the data structure that will be given to ComparePage.
@@ -96,11 +185,11 @@ export class ComparisonRepresentation {
     }
 
     public getSummaryWidth(): number {
-        return 12 / this._fullProfiles.length;
+        return PAGE_WIDTH / this._fullProfiles.length;
     }
 
     private createPublicationByYearRow(): void {
-        const rowModel: RowModel = new RowModel(12);
+        const rowModel: RowModel = new RowModel(PAGE_WIDTH);
         const tempYearSeries: Array<Series> = new Array<Series>();
 
         for (let i: number = 0; i < this._fullProfiles.length; i++) {
@@ -113,7 +202,12 @@ export class ComparisonRepresentation {
         const yearSeries: Array<Series> = [];
 
         tempYearSeries.forEach((serie: Series) => {
-            const temp: Array<Series> = tempYearSeries.filter((yearSerie: Series) => yearSerie.name === serie.name);
+            const temp: Array<Series> = new Array<Series>();
+            for (const currTmpYearsSeries of tempYearSeries) {
+                if (currTmpYearsSeries.name === serie.name) {
+                    temp.push(currTmpYearsSeries);
+                }
+            }
             if (temp.length > 1) {
                 const data: Array<Array<number>> = [];
                 for (let i: number = 0; i < temp.length; i++) {
@@ -132,23 +226,29 @@ export class ComparisonRepresentation {
             }
         });
 
+        const profileName: string[] = new Array<string>();
+        for (const profile of this._fullProfiles) {
+            profileName.push(profile.basicProfile.name);
+        }
         const yearModel: BasicColumnsChartModel = new BasicColumnsChartModel(
-            'Publications by year',
+            CARDS.PUBLICATIONS_BY_YEAR.CARD_DATA.TITLE,
             '',
             ViewName.BasicColumnsChartCard,
-            12,
+            PAGE_WIDTH,
             yearSeries,
             'Years',
             'Number of publications',
-            this._fullProfiles.map((profile: FullProfile) => profile.basicProfile.name),
+            profileName,
         );
         yearModel.series = yearModel.series.sort(this.sortSeries);
 
         const lastValue: number = +yearModel.series[yearModel.series.length - 1]?.name;
-        const fromFilter: Filter<number, StackedColumnsChartModel> = new FromFilter(lastValue - 10);
+        const fromFilter: Filter<number, StackedColumnsChartModel> = new FromFilter(
+            lastValue - CARDS.PUBLICATIONS_BY_YEAR.CARD_DATA.DEFAULT_NUM_OF_ENTRIES,
+        );
         const fromNumberField: Field<number, StackedColumnsChartModel> = new Field<number, StackedColumnsChartModel>(
             'from',
-            lastValue - 10,
+            lastValue - CARDS.PUBLICATIONS_BY_YEAR.CARD_DATA.DEFAULT_NUM_OF_ENTRIES,
             fromFilter,
             [yearModel],
         );
@@ -170,25 +270,31 @@ export class ComparisonRepresentation {
     }
 
     private createPublicationByVenueRow(): void {
-        const rowModel: RowModel = new RowModel(12);
+        const rowModel: RowModel = new RowModel(PAGE_WIDTH);
 
         const models: DistributedColumnsChartModel[] = [];
-        const showing: Filter<number, StackedColumnsChartModel> = new ShowingFilter(10);
+        const showing: Filter<number, StackedColumnsChartModel> = new ShowingFilter(
+            CARDS.PUBLICATIONS_BY_VENUE.CARD_DATA.DEFAULT_NUM_OF_ENTRIES,
+        );
         this._fullProfiles.forEach((profile: FullProfile) => {
             const series: Array<Series> = new Array<Series>();
             for (const pbv of profile.publicationsByVenue) {
                 series.push(new Series(pbv.venue, [pbv.publicationCount]));
             }
 
+            const venus: string[] = [];
+            for (const pbv of profile.publicationsByVenue) {
+                venus.push(pbv.venue);
+            }
             const model: DistributedColumnsChartModel = new DistributedColumnsChartModel(
-                'Publications by venue',
-                '',
+                CARDS.PUBLICATIONS_BY_VENUE.CARD_DATA.TITLE,
+                profile.basicProfile.name,
                 ViewName.DistributedColumnsChartCard,
-                12 / this._fullProfiles.length,
+                PAGE_WIDTH / this._fullProfiles.length,
                 series,
                 'Venues',
                 'Number of publications',
-                profile.publicationsByVenue.map((pbv: PublicationByVenue) => pbv.venue),
+                venus,
             );
             model.filters = [showing];
             models.push(model);
@@ -221,7 +327,7 @@ export class ComparisonRepresentation {
         scalingCheckBox.data = [chartOptionsModel];
         rowModel.popupButtons = [showingPopupEdit];
         rowModel.checkBoxes = [scalingCheckBox];
-        showing.value = 10;
+        showing.value = CARDS.PUBLICATIONS_BY_VENUE.CARD_DATA.DEFAULT_NUM_OF_ENTRIES;
         for (const model of models) {
             model.applyAllFilters();
         }
@@ -229,7 +335,7 @@ export class ComparisonRepresentation {
     }
 
     private createCitationsByYearRow(): void {
-        const rowModel: RowModel = new RowModel(12);
+        const rowModel: RowModel = new RowModel(PAGE_WIDTH);
 
         const models: StackedColumnsChartModel[] = [];
 
@@ -246,10 +352,10 @@ export class ComparisonRepresentation {
                 if (+cby.year > max) max = +cby.year;
             }
             const model: StackedColumnsChartModel = new StackedColumnsChartModel(
-                'Citations by year',
-                '',
+                CARDS.CITATIONS_BY_YEAR.CARD_DATA.TITLE,
+                profile.basicProfile.name,
                 ViewName.StackedColumnsChartCard,
-                12 / this._fullProfiles.length,
+                PAGE_WIDTH / this._fullProfiles.length,
                 series,
                 'Years',
                 'Number of citations',
@@ -259,12 +365,14 @@ export class ComparisonRepresentation {
             models.push(model);
         });
 
-        const fromFilter: Filter<number, StackedColumnsChartModel> = new FromFilter(max - 10);
+        const fromFilter: Filter<number, StackedColumnsChartModel> = new FromFilter(
+            max - CARDS.CITATIONS_BY_YEAR.CARD_DATA.DEFAULT_NUM_OF_ENTRIES,
+        );
         const toFilter: Filter<number, StackedColumnsChartModel> = new ToFilter(max);
 
         const fromNumberField: Field<number, StackedColumnsChartModel> = new Field<number, StackedColumnsChartModel>(
             'from',
-            max - 10,
+            max - CARDS.CITATIONS_BY_YEAR.CARD_DATA.DEFAULT_NUM_OF_ENTRIES,
             fromFilter,
             models,
         );
@@ -306,10 +414,12 @@ export class ComparisonRepresentation {
     }
 
     private createMostFrequentCoAuthorsRow(): void {
-        const rowModel: RowModel = new RowModel(12);
+        const rowModel: RowModel = new RowModel(PAGE_WIDTH);
 
         const models: BasicBarsChartModel[] = [];
-        const showing: Filter<number, BasicBarsChartModel> = new ShowingFilter(10);
+        const showing: Filter<number, BasicBarsChartModel> = new ShowingFilter(
+            CARDS.MOST_FREQUENT_CO_AUTHORS.CARD_DATA.DEFAULT_NUM_OF_ENTRIES,
+        );
         const scale: Filter<boolean, ChartOptionsModel> = new ScaleUpFilter(false);
 
         this._fullProfiles.forEach((profile: FullProfile) => {
@@ -319,10 +429,10 @@ export class ComparisonRepresentation {
             }
             const sortedSeries: Array<Series> = series.sort(this.sortSeriesByData);
             const model: BasicBarsChartModel = new BasicBarsChartModel(
-                'Most frequent co-authors',
+                CARDS.MOST_FREQUENT_CO_AUTHORS.CARD_DATA.TITLE,
                 '',
                 ViewName.BasicBarsChartCard,
-                12 / this._fullProfiles.length,
+                PAGE_WIDTH / this._fullProfiles.length,
                 sortedSeries,
                 'Number of co-authored publication',
                 '',
@@ -342,7 +452,7 @@ export class ComparisonRepresentation {
 
         const showingNumberField: Field<number, BasicBarsChartModel> = new Field<number, BasicColumnsChartModel>(
             'showing',
-            10,
+            CARDS.MOST_FREQUENT_CO_AUTHORS.CARD_DATA.DEFAULT_NUM_OF_ENTRIES,
             showing,
             models,
         );
@@ -358,7 +468,7 @@ export class ComparisonRepresentation {
         rowModel.popupButtons = [showingPopupEdit];
         rowModel.checkBoxes = [scalingCheckBox];
         rowModel.popupButtons = [showingPopupEdit];
-        showing.value = 10;
+        showing.value = CARDS.MOST_FREQUENT_CO_AUTHORS.CARD_DATA.DEFAULT_NUM_OF_ENTRIES;
         for (const model of models) {
             model.applyAllFilters();
         }
@@ -366,7 +476,7 @@ export class ComparisonRepresentation {
     }
 
     private createCoAuthorsWithHighestHIndexRow(): void {
-        const rowModel: RowModel = new RowModel(12);
+        const rowModel: RowModel = new RowModel(PAGE_WIDTH);
 
         const models: LineColumnsMixedChartModel[] = [];
         const showing: Filter<number, BasicBarsChartModel> = new ShowingFilter(5);
@@ -383,10 +493,10 @@ export class ComparisonRepresentation {
             }
 
             const model: LineColumnsMixedChartModel = new LineColumnsMixedChartModel(
-                'Co-authors with highest h-index',
-                '',
+                CARDS.CO_AUTHORS_WITH_HIGHEST_HINDEX.CARD_DATA.TITLE,
+                profile.basicProfile.name,
                 ViewName.LineColumnsMixedChartCard,
-                12 / this._fullProfiles.length,
+                PAGE_WIDTH / this._fullProfiles.length,
                 series,
                 'h-index',
                 'Publications',
@@ -424,7 +534,7 @@ export class ComparisonRepresentation {
 
         const showingNumberField: Field<number, BasicBarsChartModel> = new Field<number, BasicColumnsChartModel>(
             'showing',
-            5,
+            CARDS.CO_AUTHORS_WITH_HIGHEST_HINDEX.CARD_DATA.DEFAULT_NUM_OF_ENTRIES,
             showing,
             models,
         );
@@ -447,7 +557,7 @@ export class ComparisonRepresentation {
      * @returns - RowModel containing the citations and expertise models
      */
     private createCitationsExpertiseRow(): void {
-        const cerRow: RowModel = new RowModel(12);
+        const cerRow: RowModel = new RowModel(PAGE_WIDTH);
         const series: Array<Series> = new Array<Series>();
 
         this.fullProfiles.forEach((profile: FullProfile) => {
@@ -468,10 +578,10 @@ export class ComparisonRepresentation {
         });
 
         const stackedColumns100ChartModel: StackedColumns100ChartModel = new StackedColumns100ChartModel(
-            'Citations',
+            CARDS.CITATIONS.CARD_DATA.TITLE,
             '',
             ViewName.StackedColumns100ChartCard,
-            6,
+            PAGE_WIDTH / 2,
             series,
             'Scholar Names',
             '',
@@ -486,10 +596,10 @@ export class ComparisonRepresentation {
 
         const expertiseModel: ExpertiseModel = new ExpertiseModel(
             expertise,
-            'Expertise',
+            CARDS.EXPERTISE.CARD_DATA.TITLE,
             '',
             ViewName.ExpertiseCard,
-            6,
+            PAGE_WIDTH / 2,
         );
         cerRow.simpleCardModels.push(expertiseModel);
 

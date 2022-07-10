@@ -1,9 +1,28 @@
 export class Author {
+    /**
+     * Id  of author
+     */
     private _id: string;
+    /**
+     * Name  of author
+     */
     private _name: string;
+    /**
+     * Joint publication count of author
+     */
     private _jointPublicationCount: number;
+    /**
+     * Determines whether index h
+     */
     private _hIndex: number;
 
+    /**
+     * Creates an instance of author.
+     * @param _id 
+     * @param _name 
+     * @param _jointPublicationCount 
+     * @param _hIndex 
+     */
     constructor(_id: string, _name: string, _jointPublicationCount: number, _hIndex: number) {
         this._id = _id;
         this._hIndex = _hIndex;

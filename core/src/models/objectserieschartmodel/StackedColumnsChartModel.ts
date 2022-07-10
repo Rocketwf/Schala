@@ -15,7 +15,7 @@ export class StackedColumnsChartModel extends ObjectSeriesChartModel implements 
         super(_title, _sub, _viewName, _colWidth, _series, _xTitle, _yTitle, _labels);
     }
 
-    deepCopy(): ObjectSeriesChartModel {
+    deepCopy(): StackedColumnsChartModel {
         const seriesCopy: Array<Series> = new Array<Series>();
         this.series.forEach((serie: Series) => {
             seriesCopy.push(new Series(serie.name, serie.data));

@@ -50,6 +50,9 @@ export class BasicProfile {
     }
 }
 
+/**
+ * Full profile
+ */
 export class FullProfile {
     private _expertise: string[];
     private _hIndex: number;
@@ -67,6 +70,25 @@ export class FullProfile {
     private _authors: Author[];
     private _articles: Article[];
 
+    /**
+     * Creates an instance of full profile.
+     * @param _expertise -
+     * @param _hIndex -
+     * @param _hIndexWithoutSelfCitations -
+     * @param _i10Index -
+     * @param _i10IndexWithoutSelfCitations -
+     * @param _selfCitationsCount --
+     * @param _indirectSelfCitationsCount -
+     * @param _totalCitationsCount -
+     * @param _url -
+     * @param _basicProfile -
+     * @param _publicationsByYear -
+     * @param _publicationsByVenue -
+     * @param _citationsByYear -
+     * @param _citedScholars -
+     * @param _authors -
+     * @param _articles -
+     */
     constructor(
         _expertise: string[],
         _hIndex: number,

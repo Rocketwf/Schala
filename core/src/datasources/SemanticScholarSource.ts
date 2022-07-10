@@ -1,6 +1,6 @@
 import { Article, ArticleCoAuthor } from '../models/articles/Article';
 import { Author, PublicationByYear, PublicationByVenue, CitedScholar, CitationByYear } from '../models/profile/Profile';
-import { APIBasicProfile, APICoAuthor, APIFullProfile } from '../models/api/API';
+import { APIBasicProfile, APIFullProfile } from '../models/api/API';
 import { DataSource } from './DataSource';
 import axios, { AxiosResponse } from 'axios';
 import { BasicProfile, FullProfile } from '../models';
@@ -10,6 +10,9 @@ enum ENDPOINTS {
     FULLPROFILE = 'fullprofile',
 }
 
+/**
+ * Semantic scholar source
+ */
 export class SemanticScholarSource implements DataSource {
     private URL: string = 'http://localhost';
     private PORT: number = 3000;
@@ -30,6 +33,11 @@ export class SemanticScholarSource implements DataSource {
         this._profileIdFullProfileMapping = new Map<string, FullProfile>();
     }
 
+    /**
+     * Fetchs search results
+     * @param query-
+     * @returns search results
+     */
     async fetchSearchResults(query: string): Promise<BasicProfile[]> {
         if (this._queryResultsMapping.has(query)) {
             return this._queryResultsMapping.get(query);
@@ -92,6 +100,12 @@ export class SemanticScholarSource implements DataSource {
                 );
                 const articles: Article[] = new Array<Article>();
                 for (const art of fp._articles) {
+                    const coAuthors: ArticleCoAuthor[] = new Array<ArticleCoAuthor>();
+                    for (const coAuth of art._articlesCoAuthors) {
+                        const artCoAuthor: ArticleCoAuthor = new ArticleCoAuthor(coAuth._id, coAuth._name);
+                        coAuthors.push(artCoAuthor);
+                    }
+
                     articles.push(
                         new Article(
                             art._title,
@@ -99,40 +113,40 @@ export class SemanticScholarSource implements DataSource {
                             art._publicationYear,
                             art._citationCount,
                             art._url,
-                            art._articlesCoAuthors.map(
-                                (coAuth: APICoAuthor) => new ArticleCoAuthor(coAuth._id, coAuth._name),
-                            ),
+                            coAuthors,
                             art._abstract,
                         ),
                     );
                 }
                 const pby: PublicationByYear[] = new Array<PublicationByYear>();
                 for (const apiPby of fp._publicationsByYear) {
-                    pby.push(new PublicationByYear(apiPby._year, apiPby._publicationsCount));
+                    const newPby: PublicationByYear = new PublicationByYear(apiPby._year, apiPby._publicationsCount);
+                    pby.push(newPby);
                 }
                 const pbv: PublicationByVenue[] = new Array<PublicationByVenue>();
                 for (const apiPbv of fp._publicationsByVenue) {
-                    pbv.push(new PublicationByVenue(apiPbv._venue, apiPbv._publicationCount));
+                    const newPbv: PublicationByVenue = new PublicationByVenue(apiPbv._venue, apiPbv._publicationCount);
+                    pbv.push(newPbv);
                 }
                 const cby: CitationByYear[] = new Array<CitationByYear>();
                 for (const apiCby of fp._citationsByYear) {
-                    cby.push(
-                        new CitationByYear(
-                            apiCby._year,
-                            apiCby._selfCitationsCount,
-                            apiCby._indirectSelfCitationsCount,
-                            apiCby._totalCitationCount,
-                        ),
+                    const newCbv: CitationByYear = new CitationByYear(
+                        apiCby._year,
+                        apiCby._selfCitationsCount,
+                        apiCby._indirectSelfCitationsCount,
+                        apiCby._totalCitationCount,
                     );
+                    cby.push(newCbv);
                 }
                 const citedScholars: CitedScholar[] = new Array<CitedScholar>();
                 for (const apiCs of fp._citedScholars) {
-                    citedScholars.push(new CitedScholar(apiCs._name, apiCs._citationCount));
+                    const newCitedScholar: CitedScholar = new CitedScholar(apiCs._name, apiCs._citationCount);
+                    citedScholars.push(newCitedScholar);
                 }
                 const authors: Author[] = new Array<Author>();
                 for (const auth of fp._authors) {
-                    console.log(auth._name);
-                    authors.push(new Author(auth._name, auth._jointPublicationCount, auth._hIndex));
+                    const newAuthor: Author = new Author(auth._name, auth._jointPublicationCount, auth._hIndex);
+                    authors.push(newAuthor);
                 }
                 const fullProfile: FullProfile = new FullProfile(
                     fp._expertise,
@@ -160,7 +174,7 @@ export class SemanticScholarSource implements DataSource {
                     throw new Error(error.message);
                 } else {
                     console.log('unexpected error: ', error);
-                    throw new Error('TODO: Implement me');
+                    throw new Error(error.message);
                 }
             }
         }

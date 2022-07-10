@@ -37,10 +37,16 @@ export class ChartOptionsModel implements Filterable<ChartOptionsModel> {
         this._maxLimitTwo = newLimit;
     }
 
+    // change the deepness of the copy according to need, for now this is not needed
     deepCopy(): ChartOptionsModel {
-        throw new Error('Method not implemented.');
+        const comCpy: ChartOptionsModel = new ChartOptionsModel(this._objectSeriesChartModels);
+        comCpy._filters = this._filters;
+        comCpy._maxLimit = this._maxLimit;
+        comCpy._maxLimitTwo = this._maxLimitTwo;
+        return comCpy;
     }
     applyAllFilters(): void {
+        // persist if needed
         for (const filter of this._filters) {
             filter.applyValidate(this);
         }
@@ -53,6 +59,6 @@ export class ChartOptionsModel implements Filterable<ChartOptionsModel> {
         this._filters = filters;
     }
     public get entries(): number {
-        return 0;
+        return this._objectSeriesChartModels.length;
     }
 }

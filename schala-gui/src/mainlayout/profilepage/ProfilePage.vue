@@ -20,7 +20,6 @@ ProfileRepresentation;
 FullProfile;
 
 const profileStore = profilePageStore();
-//const pagination = ... TODO: Add Pagination
 
 const getProfilePageStore = () => {
     return profileStore;

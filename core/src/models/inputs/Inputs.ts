@@ -1,6 +1,4 @@
 import { Filter, Filterable } from '../../filters';
-import { ArticlesPaginationFilter } from '../../filters/articlesfilters/ArticlesFilter';
-import { ArticlesModel } from '../articlesmodel';
 
 export interface Input<T, S extends Filterable<S>> {
     data: S[];
