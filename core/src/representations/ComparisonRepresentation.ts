@@ -144,16 +144,15 @@ export class ComparisonRepresentation {
         );
         yearModel.series = yearModel.series.sort(this.sortSeries);
 
-        const firstValue: number = +yearModel.series[0]?.name;
-        const fromFilter: Filter<number, StackedColumnsChartModel> = new FromFilter(firstValue);
+        const lastValue: number = +yearModel.series[yearModel.series.length - 1]?.name;
+        const fromFilter: Filter<number, StackedColumnsChartModel> = new FromFilter(lastValue - 10);
         const fromNumberField: Field<number, StackedColumnsChartModel> = new Field<number, StackedColumnsChartModel>(
             'from',
-            firstValue,
+            lastValue - 10,
             fromFilter,
             [yearModel],
         );
 
-        const lastValue: number = +yearModel.series[yearModel.series.length - 1]?.name;
         const toFilter: Filter<number, StackedColumnsChartModel> = new ToFilter(lastValue);
         const toNumberField: Field<number, StackedColumnsChartModel> = new Field<number, StackedColumnsChartModel>(
             'to',
@@ -165,6 +164,7 @@ export class ComparisonRepresentation {
         const rangePopupEdit: RangeButton = new RangeButton('range', [fromNumberField, toNumberField]);
         yearModel.popupButtons = [rangePopupEdit];
         yearModel.filters = [fromFilter, toFilter];
+        yearModel.applyAllFilters();
         rowModel.simpleCardModels.push(yearModel);
         this._rowModels.push(rowModel);
     }
