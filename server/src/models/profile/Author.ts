@@ -18,10 +18,10 @@ export class Author {
 
     /**
      * Creates an instance of author.
-     * @param _id 
-     * @param _name 
-     * @param _jointPublicationCount 
-     * @param _hIndex 
+     * @param _id-
+     * @param _name-
+     * @param _jointPublicationCount-
+     * @param _hIndex-
      */
     constructor(_id: string, _name: string, _jointPublicationCount: number, _hIndex: number) {
         this._id = _id;

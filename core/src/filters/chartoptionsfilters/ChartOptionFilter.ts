@@ -7,6 +7,7 @@ export abstract class ChartOptionFilter<S> extends Filter<S, ChartOptionsModel> 
 
 export class ScaleUpFilter extends ChartOptionFilter<boolean> {
     validate(model: ChartOptionsModel): boolean {
+        model;
         return true;
     }
 
