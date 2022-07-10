@@ -317,12 +317,13 @@ export class ComparisonRepresentation {
             for (const author of profile.authors) {
                 series.push(new Series(author.name, [author.jointPublicationCount]));
             }
+            const sortedSeries: Array<Series> = series.sort(this.sortSeriesByData);
             const model: BasicBarsChartModel = new BasicBarsChartModel(
                 'Most frequent co-authors',
                 '',
                 ViewName.BasicBarsChartCard,
                 12 / this._fullProfiles.length,
-                series,
+                sortedSeries,
                 'Number of co-authored publication',
                 '',
                 [],
@@ -494,9 +495,16 @@ export class ComparisonRepresentation {
 
         this.rowModels.push(cerRow);
     }
+
     private sortSeries(a: Series, b: Series): number {
         if (+a.name < +b.name) return -1;
         if (+a.name > +b.name) return 1;
+        return 0;
+    }
+
+    private sortSeriesByData(a: Series, b: Series): number {
+        if (+a.data[0] > +b.data[0]) return -1;
+        if (+a.data[0] < +b.data[0]) return 1;
         return 0;
     }
 }
