@@ -3,6 +3,7 @@ import { ArticlesPaginationFilter } from '../../filters/articlesfilters/Articles
 import { Paginable } from '../../filters/Filterable';
 import { Article } from '../articles/Article';
 import { PopupEditButton } from '../inputs';
+import { SelectOptions } from '../inputs/Inputs';
 import { SimpleCardModel, ViewName } from '../simplecardmodel';
 import { Pagination } from '../viewmodels/Pagination';
 
@@ -17,10 +18,12 @@ export class ArticlesModel implements Paginable<ArticlesModel>, SimpleCardModel 
     private _cachedModel: ArticlesModel;
     private _filters: Filter<string, ArticlesModel>[];
 
+    private _popupButtons: PopupEditButton<ArticlesModel>[];
+
+    private _selectOptions: SelectOptions<string, ArticlesModel>[];
+
     private _paginationFilter: ArticlesPaginationFilter;
     private _pagination: Pagination<ArticlesModel>;
-
-    private _popupButtons: PopupEditButton<ArticlesModel>[];
 
     constructor(_articles: Array<Article>, _title: string, _sub: string, _viewName: ViewName, _colWidth: number) {
         this._articles = _articles;
@@ -150,5 +153,16 @@ export class ArticlesModel implements Paginable<ArticlesModel>, SimpleCardModel 
 
     public get entries(): number {
         return this._articles.length;
+    }
+
+    public get selectOptions(): SelectOptions<string, ArticlesModel>[] {
+        return this._selectOptions;
+    }
+    public set selectOptions(selectOptions: SelectOptions<string, ArticlesModel>[]) {
+        this._selectOptions = selectOptions;
+    }
+    public updateHitsPerPage(value: number): void {
+        this.paginationFilter.hitsPerPage = value;
+        this.applyPaginationFilter();
     }
 }

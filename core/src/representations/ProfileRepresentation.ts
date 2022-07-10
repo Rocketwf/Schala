@@ -21,9 +21,11 @@ import {
     CoauthorsFilter,
     KeywordsFilter,
     NumberOfCitationsFilter,
+    SortByFilter,
     WordsInArticleTitleFilter,
 } from '../filters/articlesfilters/ArticlesFilter';
 import { Pagination } from '../models/viewmodels/Pagination';
+import { SelectOptions } from '../models/inputs/Inputs';
 
 const PAGE_WIDTH: number = 12;
 type cardData = {
@@ -405,15 +407,32 @@ export class ProfileRepresentation {
             wordsInTitleField,
             minCitationsField,
         ]);
+        articlesModel.popupButtons = [articlesFilterPopup];
 
         const articlePaginationFilter: ArticlesPaginationFilter = new ArticlesPaginationFilter(1);
         const articlePagination: Pagination<ArticlesModel> = new Pagination(articlePaginationFilter, articlesModel);
         articlesModel.pagination = articlePagination;
 
-        articlesModel.popupButtons = [articlesFilterPopup];
-        articlesModel.filters = [coAuthorsFilter, keywordsFilter, wordsInTitleFilter, minCitationsFilter];
         articlesModel.paginationFilter = articlePaginationFilter;
 
+        const articlesSortByFilter: SortByFilter = new SortByFilter('year');
+        const sortBySelectOptions: SelectOptions<string, ArticlesModel> = new SelectOptions<string, ArticlesModel>(
+            'Sort by',
+            'year',
+            ['year', 'citations', 'self-citations'],
+            articlesSortByFilter,
+            [articlesModel],
+        );
+
+        articlesModel.selectOptions = [sortBySelectOptions];
+
+        articlesModel.filters = [
+            coAuthorsFilter,
+            keywordsFilter,
+            wordsInTitleFilter,
+            minCitationsFilter,
+            articlesSortByFilter,
+        ];
         articlesModel.applyAllFilters();
 
         return articlesModel;

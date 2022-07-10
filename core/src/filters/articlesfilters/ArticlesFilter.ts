@@ -35,33 +35,33 @@ export class ArticlesPaginationFilter extends ArticlesFilter<number> {
     }
 }
 
-/*export class SortByFilter extends ArticlesFilter<string> {
+export class SortByFilter extends ArticlesFilter<string> {
     constructor(value: string) {
         super(value);
     }
     apply(model: ArticlesModel): void {
-       const newArticles: Article[] = model.articles.sort((n1: Article, n2: Article) => {
+        const newArticles: Article[] = model.articles.sort((n1: Article, n2: Article) => {
             if (this.value == 'year') {
-                if (n1.year < n2.year) {
+                if (n1.publicationYear < n2.publicationYear) {
                     return 1;
                 }
-                if (n1.year > n2.year) {
+                if (n1.publicationYear > n2.publicationYear) {
                     return -1;
                 }
                 return 0;
             } else if (this.value == 'citations') {
-                if (n1.getCitationCount() < n2.getCitationCount()) {
+                if (n1.citationCount < n2.citationCount) {
                     return 1;
                 }
-                if (n1.getCitationCount() > n2.getCitationCount()) {
+                if (n1.citationCount > n2.citationCount) {
                     return -1;
                 }
                 return 0;
             } else if (this.value == 'self-citations') {
-                if (n1.getSelfCitations() < n2.getSelfCitations()) {
+                if (n1.citationCount < n2.citationCount) {
                     return 1;
                 }
-                if (n1.getSelfCitations() > n2.getSelfCitations()) {
+                if (n1.citationCount > n2.citationCount) {
                     return -1;
                 }
                 return 0;
@@ -69,8 +69,7 @@ export class ArticlesPaginationFilter extends ArticlesFilter<number> {
         });
         model.articles = newArticles;
     }
-}*/
-
+}
 export class CoauthorsFilter extends ArticlesFilter<string> {
     constructor(value: string) {
         super(value);

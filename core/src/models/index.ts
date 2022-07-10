@@ -2,7 +2,7 @@ export { APIAuthor } from './api';
 export { Article, ArticleCoAuthor } from './articles';
 export { ArticlesModel } from './articlesmodel';
 export { ChartOptionsModel } from './chartoptionsmodel';
-export { Field, Input, PopupEditButton } from './inputs';
+export { Field, Input, PopupEditButton, SelectOptions } from './inputs';
 export {
     LineColumnsMixedChartModel,
     ObjectSeriesChartModel,
