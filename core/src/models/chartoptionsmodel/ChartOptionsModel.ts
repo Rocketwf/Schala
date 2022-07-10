@@ -5,6 +5,7 @@ import { ObjectSeriesChartModel } from '../objectserieschartmodel';
 
 export class ChartOptionsModel implements Filterable<ChartOptionsModel> {
     private _maxLimit: number;
+    private _maxLimitTwo: number;
     private _objectSeriesChartModels: Array<ObjectSeriesChartModel>;
 
     constructor(_objectSeriesChartModels: ObjectSeriesChartModel[]) {
@@ -26,6 +27,14 @@ export class ChartOptionsModel implements Filterable<ChartOptionsModel> {
 
     public set maxLimit(newLimit: number) {
         this._maxLimit = newLimit;
+    }
+
+    public get maxLimitTwo(): number {
+        return this._maxLimitTwo;
+    }
+
+    public set maxLimitTwo(newLimit: number) {
+        this._maxLimitTwo = newLimit;
     }
 
     deepCopy(): ChartOptionsModel {

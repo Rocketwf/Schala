@@ -8,7 +8,7 @@
                     v-for="checkBox in rowModel.checkBoxes"
                     v-model="checkBox.inputValue"
                     :key="checkBox.inputId"
-                    label="Scale up number of publications according to the scholar with highest entries"
+                    :label="checkBox.inputName"
                     @update:model-value="checkBox.handleInput()"
                 />
                 <q-separator vertical inset />

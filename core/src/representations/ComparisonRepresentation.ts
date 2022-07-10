@@ -1,5 +1,5 @@
 import { Filter } from '../filters';
-import { ScaleUpFilter } from '../filters/chartoptionsfilters/ChartOptionFilter';
+import { ScaleUpFilter, ScaleUpMixedFilter, TypeName } from '../filters/chartoptionsfilters/ChartOptionFilter';
 import { FromFilter, ShowingFilter, ToFilter } from '../filters/objectserieschartfilters/ObjectSeriesFilter';
 import {
     BasicBarsChartModel,
@@ -212,7 +212,12 @@ export class ComparisonRepresentation {
             model.chartOptionsModel = chartOptionsModel;
         });
 
-        const scalingCheckBox: CheckBox<ChartOptionsModel> = new CheckBox('scale name', 'scale', false, scale);
+        const scalingCheckBox: CheckBox<ChartOptionsModel> = new CheckBox(
+            'Scale up number of publications according to the scholar with highest entries',
+            'scale',
+            false,
+            scale,
+        );
         scalingCheckBox.data = [chartOptionsModel];
         rowModel.popupButtons = [showingPopupEdit];
         rowModel.checkBoxes = [scalingCheckBox];
@@ -282,7 +287,12 @@ export class ComparisonRepresentation {
             model.chartOptionsModel = chartOptionsModel;
         });
 
-        const scalingCheckBox: CheckBox<ChartOptionsModel> = new CheckBox('scale name', 'scale', false, scale);
+        const scalingCheckBox: CheckBox<ChartOptionsModel> = new CheckBox(
+            'Scale up number of publications according to the scholar with highest entries',
+            'scale',
+            false,
+            scale,
+        );
         scalingCheckBox.data = [chartOptionsModel];
 
         rowModel.popupButtons = [rangePopupEdit];
@@ -337,7 +347,12 @@ export class ComparisonRepresentation {
         );
 
         const showingPopupEdit: RangeButton = new RangeButton('range', [showingNumberField]);
-        const scalingCheckBox: CheckBox<ChartOptionsModel> = new CheckBox('scale name', 'scale', false, scale);
+        const scalingCheckBox: CheckBox<ChartOptionsModel> = new CheckBox(
+            'Scale up number of publications according to the scholar with highest entries',
+            'scale',
+            false,
+            scale,
+        );
         scalingCheckBox.data = [chartOptionsModel];
         rowModel.popupButtons = [showingPopupEdit];
         rowModel.checkBoxes = [scalingCheckBox];
@@ -351,15 +366,22 @@ export class ComparisonRepresentation {
 
     private createCoAuthorsWithHighestHIndexRow(): void {
         const rowModel: RowModel = new RowModel(12);
+
+        const models: LineColumnsMixedChartModel[] = [];
+        const showing: Filter<number, BasicBarsChartModel> = new ShowingFilter(5);
+
+        let min: number = Number.MAX_SAFE_INTEGER;
+        let max: number = 0;
         this._fullProfiles.forEach((profile: FullProfile) => {
             const series: Array<Series> = new Array<Series>();
-
             for (const author of profile.authors) {
                 series.push(new Series(author.name, [author.hIndex], 'line'));
                 series.push(new Series(author.name, [author.jointPublicationCount], 'column'));
+                if (author.hIndex < min) min = author.hIndex;
+                if (author.hIndex > max) max = author.hIndex;
             }
 
-            const highestHIndexModel: LineColumnsMixedChartModel = new LineColumnsMixedChartModel(
+            const model: LineColumnsMixedChartModel = new LineColumnsMixedChartModel(
                 'Co-authors with highest h-index',
                 '',
                 ViewName.LineColumnsMixedChartCard,
@@ -369,8 +391,53 @@ export class ComparisonRepresentation {
                 'Publications',
                 ['Publications', 'h-index'],
             );
-            rowModel.simpleCardModels.push(highestHIndexModel);
+            models.push(model);
         });
+
+        const scaleHIndex: Filter<boolean, ChartOptionsModel> = new ScaleUpMixedFilter(false, TypeName.Line);
+        const scalePublication: Filter<boolean, ChartOptionsModel> = new ScaleUpMixedFilter(false, TypeName.Column);
+
+        const chartOptionsModel: ChartOptionsModel = new ChartOptionsModel(models);
+        chartOptionsModel.filters = [scaleHIndex, scalePublication];
+
+        models.forEach((model: ObjectSeriesChartModel) => {
+            model.filters = [showing];
+            model.chartOptionsModel = chartOptionsModel;
+        });
+
+        const scalingPublicationCheckBox: CheckBox<ChartOptionsModel> = new CheckBox(
+            'Scale up number of publications according to the scholar with highest publication count',
+            'scale',
+            false,
+            scalePublication,
+        );
+        scalingPublicationCheckBox.data = [chartOptionsModel];
+
+        const scalingHIndexCheckBox: CheckBox<ChartOptionsModel> = new CheckBox(
+            'Scale up number of publications according to the scholar with highest h-index',
+            'scale',
+            false,
+            scaleHIndex,
+        );
+        scalingHIndexCheckBox.data = [chartOptionsModel];
+
+        const showingNumberField: Field<number, BasicBarsChartModel> = new Field<number, BasicColumnsChartModel>(
+            'showing',
+            5,
+            showing,
+            models,
+        );
+        const showingPopupEdit: RangeButton = new RangeButton('showing', [showingNumberField]);
+
+        rowModel.popupButtons = [showingPopupEdit];
+        rowModel.checkBoxes = [scalingPublicationCheckBox, scalingHIndexCheckBox];
+
+        for (const model of models) {
+            model.applyAllFilters();
+        }
+
+        rowModel.simpleCardModels.push(...models);
+
         this._rowModels.push(rowModel);
     }
 

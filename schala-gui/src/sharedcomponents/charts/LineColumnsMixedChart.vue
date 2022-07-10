@@ -45,6 +45,20 @@ const getLabels = computed(() => {
         .map((s: Series) => s.name);
 });
 
+const getmaxLimitLine = computed(() => {
+    if (props.lineColumnsMixedChartModel.chartOptionsModel) {
+        return props.lineColumnsMixedChartModel.chartOptionsModel.maxLimitTwo;
+    }
+    return 0;
+});
+
+const getmaxLimitColumn = computed(() => {
+    if (props.lineColumnsMixedChartModel.chartOptionsModel) {
+        return props.lineColumnsMixedChartModel.chartOptionsModel.maxLimit;
+    }
+    return 0;
+});
+
 /**
  *  Options of the displayed apex-chart
  */
@@ -86,11 +100,13 @@ const chartOptions = computed(() => {
         },
         yaxis: [
             {
+                max: getmaxLimitColumn.value !== 0 ? getmaxLimitColumn.value : (max: number) => max,
                 title: {
                     text: props.lineColumnsMixedChartModel.yTitle,
                 },
             },
             {
+                max: getmaxLimitLine.value !== 0 ? getmaxLimitLine.value : (max: number) => max,
                 opposite: true,
                 title: {
                     text: props.lineColumnsMixedChartModel.xTitle,
