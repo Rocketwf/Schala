@@ -7,21 +7,27 @@ export abstract class SearchResultsFilter<S> extends Filter<S, SearchResultsMode
 
 export class AffiliationFilter extends SearchResultsFilter<string> {
     validate(model: SearchResultsModel): boolean {
-        throw new Error('Method not implemented.');
+        model;
+        return true;
     }
     apply(model: SearchResultsModel): void {
-        const filtered: Array<BasicProfile> = model.basicProfiles.filter((profile: BasicProfile) => {
-            return this.affiliationContainsSubstring(profile.affiliation, this.value).length !== 0;
-        });
+        const filtered: Array<BasicProfile> = new Array<BasicProfile>();
+        for (const bp of model.basicProfiles) {
+            if (this.affiliationContainsSubstring(bp.affiliation, this._value).length !== 0) {
+                filtered.push(bp);
+            }
+        }
         model.basicProfiles = filtered;
     }
 
     private affiliationContainsSubstring(affiliations: Array<string>, substring: string): Array<string> {
-        return affiliations.filter((element: string) => {
-            if (element.indexOf(substring) !== -1) {
-                return true;
+        const filteredAffiliations: Array<string> = new Array<string>();
+        for (const aff of affiliations) {
+            if (aff.indexOf(substring) !== -1) {
+                filteredAffiliations.push(aff);
             }
-        });
+        }
+        return filteredAffiliations;
     }
 }
 
@@ -30,15 +36,20 @@ export class WordsInTitleFilter extends SearchResultsFilter<string> {
         super(value);
     }
     apply(model: SearchResultsModel): void {
-        model.basicProfiles = model.basicProfiles.filter((profile: BasicProfile) => {
+        const filteredBasicProfiles: Array<BasicProfile> = new Array<BasicProfile>();
+        for (const bp of model.basicProfiles) {
             const lowerCaseValue: string = this.value.toLowerCase();
-            const lowerCaseName: string = profile.name.toLowerCase();
-            return lowerCaseName.includes(lowerCaseValue);
-        });
+            const lowerCaseName: string = bp.name.toLowerCase();
+            if (lowerCaseName.includes(lowerCaseValue)) {
+                filteredBasicProfiles.push(bp);
+            }
+        }
+        model.basicProfiles = filteredBasicProfiles;
     }
 }
 export class SearchResultsPaginationFilter extends SearchResultsFilter<number> {
     validate(model: SearchResultsModel): boolean {
+        model;
         return true;
     }
     /**
@@ -57,9 +68,15 @@ export class SearchResultsPaginationFilter extends SearchResultsFilter<number> {
     }
 
     apply(model: SearchResultsModel): void {
-        model.basicProfiles = model.basicProfiles.slice(
-            (this.value - 1) * this._hitsPerPage,
-            (this.value - 1) * this._hitsPerPage + this._hitsPerPage,
-        );
+        const slicedBasicProfiles: BasicProfile[] = new Array<BasicProfile>();
+        let start: number = (this.value - 1) * this._hitsPerPage;
+        let end: number = (this.value - 1) * this._hitsPerPage + this._hitsPerPage;
+        if (end >= model.basicProfiles.length) {
+            end = model.basicProfiles.length;
+        }
+        for (start; start < end; ++start) {
+            slicedBasicProfiles.push(model.basicProfiles[start]);
+        }
+        model.basicProfiles = slicedBasicProfiles;
     }
 }

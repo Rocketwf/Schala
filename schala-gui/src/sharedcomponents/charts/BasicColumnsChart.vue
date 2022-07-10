@@ -4,7 +4,7 @@
     </div>
 </template>
 <script setup charset="utf-8" lang="ts">
-import { BasicColumnsChartModel, Series } from 'schala-core';
+import { BasicColumnsChartModel } from 'schala-core';
 import { computed } from 'vue';
 
 const props = defineProps<{
@@ -22,7 +22,13 @@ const getSeries = () => {
     }
     return apexSeries;
 };
-const getLabels = computed(()=>props.basicColumnsChartModel.series.map((serie: Series) => serie.name));
+const getLabels = computed(() => {
+    const labels: string[] = new Array<string>();
+    for (const series of props.basicColumnsChartModel.series) {
+        labels.push(series.name);
+    }
+    return labels;
+});
 
 const chartOptions = computed(() => {
     return {

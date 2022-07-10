@@ -69,7 +69,9 @@ export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesC
     abstract deepCopy(): ObjectSeriesChartModel;
 
     private persistOnce(): void {
-        if (!this._cachedModel) this.persist();
+        if (!this._cachedModel) {
+            this.persist();
+        }
     }
     /**
      * Applies all the filters with the current value on the cached data.

@@ -41,9 +41,18 @@ const getSeries = () => {
  * Getter method for LineColumnsMixedChart labels
  */
 const getLabels = computed(() => {
-    return props.lineColumnsMixedChartModel.series.filter(s => s.type == 'line')
-        .map((s: Series) => s.name);
+    const labels: string[] = new Array<string>();
+    for (const series of props.lineColumnsMixedChartModel.series) {
+        if (series.type === 'line') {
+            labels.push(series.name);
+        }
+    }
+    return labels;
 });
+
+const defaultMax = (): (max: number) => number => {
+    return (max: number) => max;
+}
 
 const getmaxLimitLine = computed(() => {
     if (props.lineColumnsMixedChartModel.chartOptionsModel) {
@@ -63,7 +72,8 @@ const getmaxLimitColumn = computed(() => {
  *  Options of the displayed apex-chart
  */
 const chartOptions = computed(() => {
-    return { chart: {
+    return {
+        chart: {
             dataLabels: {
                 enabled: true,
                 enabledOnSeries: [1],
@@ -96,23 +106,23 @@ const chartOptions = computed(() => {
             type: 'category',
             labels: {
                 rotate: -45,
-            }
+            },
         },
         yaxis: [
             {
-                max: getmaxLimitColumn.value !== 0 ? getmaxLimitColumn.value : (max: number) => max,
+                max: getmaxLimitColumn.value !== 0 ? getmaxLimitColumn.value : defaultMax(),
                 title: {
                     text: props.lineColumnsMixedChartModel.yTitle,
                 },
             },
             {
-                max: getmaxLimitLine.value !== 0 ? getmaxLimitLine.value : (max: number) => max,
+                max: getmaxLimitLine.value !== 0 ? getmaxLimitLine.value : defaultMax(),
                 opposite: true,
                 title: {
                     text: props.lineColumnsMixedChartModel.xTitle,
                 },
             },
         ],
-    }
+    };
 });
 </script>

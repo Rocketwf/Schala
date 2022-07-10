@@ -32,7 +32,7 @@ export class LineColumnsMixedChartModel extends ObjectSeriesChartModel implement
     /**
      * Creates a copy of the model
      */
-    deepCopy(): ObjectSeriesChartModel {
+    deepCopy(): LineColumnsMixedChartModel {
         const seriesCopy: Array<Series> = new Array<Series>();
         this.series.forEach((serie: Series) => {
             seriesCopy.push(new Series(serie.name, serie.data, serie.type));

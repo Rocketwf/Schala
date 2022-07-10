@@ -12,7 +12,6 @@ import {
     ViewName,
 } from '../models';
 import { Expertise, ExpertiseModel } from '../models/simplecardmodel/ExpertiseModel';
-import { PublicationByVenue, PublicationByYear } from '../models/profile/Profile';
 import { ArticlesFilterButton, RangeButton, ShowingButton } from '../models/inputs/PopupEditButton';
 import { Filter } from '../filters';
 import { FromFilter, ShowingFilter, ToFilter } from '../filters/objectserieschartfilters/ObjectSeriesFilter';
@@ -162,10 +161,18 @@ export class ProfileRepresentation {
         return this._rowModels;
     }
 
+    /**
+     * Creates publications by year card
+     * @returns publications by year card
+     */
     private createPublicationsByYearCard(): DistributedColumnsChartModel {
         const series: Array<Series> = new Array<Series>();
         for (const pby of this._fullProfile.publicationsByYear) {
             series.push(new Series(pby.year + '', [pby.publicationsCount]));
+        }
+        const years: string[] = new Array<string>();
+        for (const pby of this._fullProfile.publicationsByYear) {
+            years.push(pby.year + '');
         }
         const pby: DistributedColumnsChartModel = new DistributedColumnsChartModel(
             CARDS.PUBLICATIONS_BY_YEAR.CARD_DATA.TITLE,
@@ -175,7 +182,7 @@ export class ProfileRepresentation {
             series,
             'Years',
             'Number of publications',
-            this._fullProfile.publicationsByYear.map((pby: PublicationByYear) => pby.year + ''),
+            years,
         );
 
         const lastValue: number = +pby.series[pby.series.length - 1]?.name;
@@ -206,6 +213,10 @@ export class ProfileRepresentation {
             series.push(new Series(pbv.venue, [pbv.publicationCount]));
         }
 
+        const venues: string[] = new Array<string>();
+        for (const venue of this._fullProfile.publicationsByVenue) {
+            venues.push(venue.venue);
+        }
         const pbv: DistributedColumnsChartModel = new DistributedColumnsChartModel(
             CARDS.PUBLICATIONS_BY_VENUE.CARD_DATA.TITLE,
             '',
@@ -214,7 +225,7 @@ export class ProfileRepresentation {
             series,
             'Venues',
             'Number of publications',
-            this._fullProfile.publicationsByVenue.map((pbv: PublicationByVenue) => pbv.venue),
+            venues,
         );
 
         const showingFilter: Filter<number, DistributedColumnsChartModel> = new ShowingFilter(
@@ -493,10 +504,16 @@ export class ProfileRepresentation {
     //Publications by venue
     //Citations by year
     private createFirstRow(): void {
-        const rowModel: RowModel = new RowModel(10);
-        rowModel.simpleCardModels.push(this.createPublicationsByYearCard());
-        rowModel.simpleCardModels.push(this.createPublicationsByVenueCard());
-        rowModel.simpleCardModels.push(this.createCitationsByYearCard());
+        const rowModel: RowModel = new RowModel(PAGE_WIDTH);
+        const pbvCard: DistributedColumnsChartModel = this.createPublicationsByYearCard();
+        const pbyCard: DistributedColumnsChartModel = this.createPublicationsByVenueCard();
+        const cbyCard: DistributedColumnsChartModel = this.createCitationsByYearCard();
+
+        if (this.validateWidth(pbvCard.colWidth + pbvCard.colWidth + cbyCard.colWidth)) {
+            rowModel.simpleCardModels.push(pbvCard);
+            rowModel.simpleCardModels.push(pbyCard);
+            rowModel.simpleCardModels.push(cbyCard);
+        }
         this.rowModels.push(rowModel);
     }
     //This method creates the second row which renders the following:
@@ -504,10 +521,16 @@ export class ProfileRepresentation {
     //Citation breakdown
     //Most frequent co-authors
     private createSecondRow(): void {
-        const rowModel: RowModel = new RowModel(10);
-        rowModel.simpleCardModels.push(this.createMostCitedScholarsCard());
-        rowModel.simpleCardModels.push(this.createCitationsCard());
-        rowModel.simpleCardModels.push(this.createMostFrequentCoAuthorsCard());
+        const rowModel: RowModel = new RowModel(PAGE_WIDTH);
+        const mcsCard: BasicBarsChartModel = this.createMostCitedScholarsCard();
+        const citaitonsCard: PieChartModel = this.createCitationsCard();
+        const mfcaCard: BasicBarsChartModel = this.createMostFrequentCoAuthorsCard();
+
+        if (this.validateWidth(mcsCard.colWidth + citaitonsCard.colWidth + mfcaCard.colWidth)) {
+            rowModel.simpleCardModels.push(this.createMostCitedScholarsCard());
+            rowModel.simpleCardModels.push(this.createCitationsCard());
+            rowModel.simpleCardModels.push(this.createMostFrequentCoAuthorsCard());
+        }
         this.rowModels.push(rowModel);
     }
 
@@ -515,28 +538,47 @@ export class ProfileRepresentation {
     //Co-Authors with highest h-index
     //Expertise
     private createThirdRow(): void {
-        const rowModel: RowModel = new RowModel(10);
-        rowModel.simpleCardModels.push(this.createCoAuthorsWithHighestHIndexCard());
-        rowModel.simpleCardModels.push(this.createExpertiseCard());
+        const rowModel: RowModel = new RowModel(PAGE_WIDTH);
+        const awhhCard: LineColumnsMixedChartModel = this.createCoAuthorsWithHighestHIndexCard();
+        const expertiseCard: ExpertiseModel = this.createExpertiseCard();
+
+        if (this.validateWidth(expertiseCard.colWidth + awhhCard.colWidth)) {
+            rowModel.simpleCardModels.push(this.createCoAuthorsWithHighestHIndexCard());
+            rowModel.simpleCardModels.push(this.createExpertiseCard());
+        }
         this._rowModels.push(rowModel);
     }
 
     //This method creates the fourth row which renders the articles
     private createFourthRow(): void {
-        const rowModel: RowModel = new RowModel(10);
-        rowModel.simpleCardModels.push(this.createArticlesCard());
+        const rowModel: RowModel = new RowModel(PAGE_WIDTH);
+        const articlesCard: ArticlesModel = this.createArticlesCard();
+        if (this.validateWidth(articlesCard.colWidth)) {
+            rowModel.simpleCardModels.push(this.createArticlesCard());
+        }
         this._rowModels.push(rowModel);
     }
 
     private sortSeriesByName(a: Series, b: Series): number {
-        if (+a.name < +b.name) return -1;
-        if (+a.name > +b.name) return 1;
+        if (+a.name < +b.name) {
+            return -1;
+        }
+        if (+a.name > +b.name) {
+            return 1;
+        }
         return 0;
     }
 
     private sortSeriesByData(a: Series, b: Series): number {
-        if (+a.data[0] > +b.data[0]) return -1;
-        if (+a.data[0] < +b.data[0]) return 1;
+        if (+a.data[0] > +b.data[0]) {
+            return -1;
+        }
+        if (+a.data[0] < +b.data[0]) {
+            return 1;
+        }
         return 0;
+    }
+    validateWidth(value: number): boolean {
+        return value <= PAGE_WIDTH;
     }
 }

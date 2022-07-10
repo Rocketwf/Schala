@@ -30,5 +30,5 @@ const props = defineProps<{
     cardModel: ExpertiseModel;
 }>();
 
-let exp_tab = ref(props.cardModel.expertise[0].id);
+const exp_tab = ref(props.cardModel.expertise[0].id);
 </script>

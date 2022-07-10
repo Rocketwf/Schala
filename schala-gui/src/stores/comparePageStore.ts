@@ -62,9 +62,13 @@ export const comparePageStore = defineStore({
             if (this.comparisonRepresentation.fullProfiles.length === 0) {
                 return;
             }
-            this.comparisonRepresentation.fullProfiles = this.comparisonRepresentation.fullProfiles.filter(
-                (p) => p.basicProfile.id !== profileId,
-            );
+            const filteredFullProfiles: FullProfile[] = new Array<FullProfile>();
+            for (const fullProfile of this.comparisonRepresentation.fullProfiles as FullProfile[]) {
+                if(fullProfile.basicProfile.id !== profileId) {
+                    filteredFullProfiles.push(fullProfile);
+                }
+            }
+            this.comparisonRepresentation.fullProfiles = filteredFullProfiles;
             this.comparisonRepresentation.renderComparison();
         },
 
