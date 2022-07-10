@@ -13,8 +13,13 @@ export class GoogleScholarScraperSource implements DataSource {
     }
 
     public async fetchSearchResults(query: string): Promise<APIBasicAuthor[]> {
-        if (this._cache.has(query)) return this._cache.get(query);
-        if (!this._cache.has(query)) this._cache.set(query, new Array<APIBasicAuthor>());
+        if (this._cache.has(query)) {
+            return this._cache.get(query);
+        }
+
+        if (!this._cache.has(query)) {
+            this._cache.set(query, new Array<APIBasicAuthor>());
+        }
 
         const searchAuthors: AxiosResponse<string> = await axios.get<string>(
             'https://scholar.google.com/citations?view_op=search_authors&mauthors=' + query,
@@ -111,8 +116,13 @@ export class GoogleScholarScraperSource implements DataSource {
         return;
     }
     private levenshteinHelper(a: string, b: string): number {
-        if (a.length === 0) return b.length;
-        if (b.length === 0) return a.length;
+        if (a.length === 0) {
+            return b.length;
+        }
+
+        if (b.length === 0) {
+            return a.length;
+        }
 
         const matrix: number[][] = [];
 

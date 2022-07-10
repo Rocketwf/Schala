@@ -15,6 +15,7 @@ export class CitationsByYear {
         this._indirectSelfCitationsCount = _indirectSelfCitationsCount;
         this._totalCitationCount = _totalCitationCount;
     }
+
     public get year(): number {
         return this._year;
     }

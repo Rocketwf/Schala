@@ -10,6 +10,7 @@ export class Author {
         this._jointPublicationCount = _jointPublicationCount;
         this._name = _name;
     }
+
     public get id(): string {
         return this._id;
     }
@@ -20,6 +21,7 @@ export class Author {
     public get name(): string {
         return this._name;
     }
+
     public set name(_name: string) {
         this._name = _name;
     }
@@ -31,6 +33,7 @@ export class Author {
     public set jointPublicationCount(_jointPublicationCount: number) {
         this._jointPublicationCount = _jointPublicationCount;
     }
+
     public get hIndex(): number {
         return this._hIndex;
     }

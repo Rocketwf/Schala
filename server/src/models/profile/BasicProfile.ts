@@ -29,8 +29,16 @@ export class BasicProfile extends Profile {
         return this._id;
     }
 
+    public set id(newId: string) {
+        this._id = newId;
+    }
+
     public get name(): string {
         return this._name;
+    }
+
+    public set name(newName: string) {
+        this._name = newName;
     }
 
     public get totalCitations(): number {
@@ -52,12 +60,15 @@ export class BasicProfile extends Profile {
     public get pictureUrl(): string {
         return this._pictureUrl;
     }
+
     public set pictureUrl(url: string) {
         this._pictureUrl = url;
     }
+
     public get affiliations(): string[] {
         return this._affiliations;
     }
+
     public set affiliations(affiliations: string[]) {
         this._affiliations = affiliations;
     }

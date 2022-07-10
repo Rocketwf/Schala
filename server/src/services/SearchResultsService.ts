@@ -12,7 +12,11 @@ export class SearchResultsService extends ProfileService {
 
         for (const basicAuthor of apiBasicAuthors) {
             let name: string = basicAuthor.name;
-            if (basicAuthor.aliases) name = basicAuthor.aliases[basicAuthor.aliases.length - 1];
+
+            if (basicAuthor.aliases) {
+                name = basicAuthor.aliases[basicAuthor.aliases.length - 1];
+            }
+
             basicProfiles.push(
                 new BasicProfile(
                     basicAuthor.authorId,

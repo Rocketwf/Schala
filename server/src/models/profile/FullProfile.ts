@@ -182,4 +182,12 @@ export class FullProfile extends Profile {
     public set articles(_articles: Article[]) {
         this._articles = _articles;
     }
+
+    public get url(): string {
+        return this._url;
+    }
+
+    public set url(newUrl: string) {
+        this._url = newUrl;
+    }
 }
