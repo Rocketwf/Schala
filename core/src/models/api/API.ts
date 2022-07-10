@@ -1,270 +1,270 @@
 export interface APIArticle {
     /**
-     * It represents the title of the article
+     * Represents the title of the article as a string
      */
     _title: string;
     /**
-     * It represents the venue of the article
+     * Represents the venue of the article as a string
      */
     _venue: string;
     /**
-     * It represents the publication year of the article
+     * Represents the publication year of the article as a number
      */
     _publicationYear: number;
     /**
-     * It represents the citation number of the article
+     * Represents the citation number of the article as a number
      */
     _citationCount: number;
     /**
-     * It represents the url of the article
+     * Represents the url of the article as a number
      */
     _url: string;
     /**
-     * It represents the abstract of the article
+     * Represents the abstract of the article as a string
      */
     _abstract: string;
     /**
-     * It represents the co-authors of the article
+     * Represents the co-authors of the article as a APICoAuthor array
      */
     _articlesCoAuthors: APICoAuthor[];
 }
 export interface APICoAuthor {
     /**
-     * It represents the id of the co-author
+     * Represents the id of the co-author as a string
      */
     _id: string;
     /**
-     * It represents the name of the co-author
+     * Represents the name of the co-author as a string
      */
     _name: string;
 }
 
 export interface APIAuthor {
     /**
-     * It represents the name of the author
+     * Represents the name of the author as a string
      */
     _name: string;
     /**
-     * It represents the joint publication number of the author
+     * Represents the joint publication number of the author as a number
      */
     _jointPublicationCount: number;
     /**
-     * It represents the h-index of the author
+     * Represents the h-index of the author as a number
      */
     _hIndex: number;
 }
 export interface APIPaper {
     /**
-     * It represents the title of the paper
+     * Represents the title of the paper as a string
      */
     _title: string;
     /**
-     * It represents the venue of the paper
+     * Represents the venue of the paper as a string
      */
     _venue: string;
     /**
-     * It represents the publication year of the paper
+     * Represents the publication year of the paper as a number
      */
     _publicationYear: number;
     /**
-     * It represents the citation number of the paper
+     * Represents the citation number of the paper as a number
      */
     _citationCount: number;
     /**
-     * It represents the url of the paper
+     * Represents the url of the paper as a string
      */
     _url: string;
     /**
-     * It represents the co-authors of the paper
+     * Represents the co-authors of the paper as a string array
      */
     _coAuthors: string[];
 }
 export interface APIBasicAuthor {
     /**
-     * It represents the id of the author
+     * Represents the id of the author as a string
      */
     _authorId: string;
     /**
-     * It represents the name of the author
+     * Represents the name of the author as a string
      */
     _name: string;
     /**
-     * It represents the aliases of the author
+     * Represents the aliases of the author as a string array
      */
     _aliases: string[];
     /**
-     * It represents the affiliations of the author
+     * Represents the affiliations of the author as a string array
      */
     _affiliations: string[];
     /**
-     * It represents the paper count of the author
+     * Represents the paper count of the author as a number
      */
     _paperCount: number;
     /**
-     * It represents the citation count of the author
+     * Represents the citation count of the author as a number
      */
     _citationCount: number;
 }
 
 export interface APIPublicationByYear {
     /**
-     * It represents the year of the publication
+     * Represents the year of the publication as a number
      */
     _year: number;
     /**
-     * It represents the count of the publication
+     * Represents the count of the publication as a number
      */
     _publicationsCount: number;
 }
 
 export interface APIFullProfile {
     /**
-     * It represents the expertise of the full profile
+     * Represents the expertise of the full profile as a string array
      */
     _expertise: string[];
     /**
-     * It represents the h-index of the full profile
+     * Represents the h-index of the full profile as a number
      */
     _hIndex: number;
     /**
-     * It represents the h-index without self-citations of the full profile
+     * Represents the h-index without self-citations of the full profile as number
      */
     _hIndexWithoutSelfCitations: number;
     /**
-     * It represents the i10-index of the full profile
+     * Represents the i10-index of the full profile as a number
      */
     _i10Index: number;
     /**
-     * It represents the i10-index without self-citations of the full profile
+     * Represents the i10-index without self-citations of the full profile as a number
      */
     _i10IndexWithoutSelfCitations: number;
     /**
-     * It represents the self-citations count of the full profile
+     * Represents the self-citations count of the full profile as a number
      */
     _selfCitationsCount: number;
     /**
-     * It represents the indirect self-citations count of the full profile
+     * Represents the indirect self-citations count of the full profile as a number
      */
     _indirectSelfCitationsCount: number;
     /**
-     * It represents the total citations count of the full profile
+     * Represents the total citations count of the full profile as a number
      */
     _totalCitationsCount: number;
     /**
-     * It represents the url of the website  of the full profile
+     * Represents the url of the website  of the full profile as a string
      */
     _url: string;
     /**
-     * It represents the basic information of the full profile
+     * Represents the basic information of the full profile as a APIBasicProfile
      */
     _basicProfile: APIBasicProfile;
     /**
-     * It represents the publications by year of the full profile
+     * Represents the publications by year of the full profile as a APIPublicationByYear array
      */
     _publicationsByYear: APIPublicationByYear[];
     /**
-     * It represents the publications by venue of the full profile
+     * Represents the publications by venue of the full profile as a APIPublicationByVenue array
      */
     _publicationsByVenue: APIPublicationByVenue[];
     /**
-     * It represents the citations by year of the full profile
+     * Represents the citations by year of the full profile as a APICitationByYear array
      */
     _citationsByYear: APICitationsByYear[];
     /**
-     * It represents the cited scholars of the full profile
+     * Represents the cited scholars of the full profile as a APICitedScholar array
      */
     _citedScholars: APICitedScholar[];
     /**
-     * It represents the authors of the full profile
+     * Represents the authors of the full profile as a APIAuthor array
      */
     _authors: APIAuthor[];
     /**
-     * It represents the articles of the full profile
+     * Represents the articles of the full profile as a APIArticle array
      */
     _articles: APIArticle[];
 }
 export interface APICitationsByYear {
     /**
-     * It represents the year of citations
+     * Represents the year of citations as a number
      */
     _year: number;
     /**
-     * It represents the count of selfCitations
+     * Represents the count of selfCitations as a number
      */
     _selfCitationsCount: number;
     /**
-     * It represents the count of  indirect selfCitations
+     * Represents the count of  indirect selfCitations as a number
      */
     _indirectSelfCitationsCount: number;
     /**
-     * It represents the count of total citations
+     * Represents the count of total citations as a number
      */
     _totalCitationCount: number;
 }
 
 export interface APIPublicationByVenue {
     /**
-     * It represents the venue of publication
+     * Represents the venue of publication as a string
      */
     _venue: string;
     /**
-     * It represents the count of publications
+     * Represents the count of publications as a number
      */
     _publicationCount: number;
 }
 
 export interface APICitedScholar {
     /**
-     * It represents the name of cited scholars
+     * Represents the name of cited scholars as a string
      */
     _name: string;
     /**
-     * It represents the count of citations of the cited scholar
+     * Represents the count of citations of the cited scholar as a number
      */
     _citationCount: number;
 }
 
 export interface APICitationByYear {
     /**
-     * It represents the year of citation
+     * Represents the year of citation as a number
      */
     _year: number;
     /**
-     * It represents the count of self citations
+     * Represents the count of self citations as a number
      */
     _selfCitationsCount: number;
     /**
-     * It represents the count of indirect self citations
+     * Represents the count of indirect self citations as a number
      */
     _indirectSelfCitationsCount: number;
     /**
-     * It represents the count of total citations
+     * Represents the count of total citations as a number
      */
     _totalCitationsCount: number;
 }
 export interface APIBasicProfile {
     /**
-     * It represents the id of the basic profile
+     * Represents the id of the basic profile as a string
      */
     _id: string;
     /**
-     * It represents the name of the basic profile
+     * Represents the name of the basic profile as a string
      */
     _name: string;
     /**
-     * It represents the affiliations of the basic profile
+     * Represents the affiliations of the basic profile as a string array
      */
     _affiliations: string[];
     /**
-     * It represents the number of total citations of the basic profile
+     * Represents the number of total citations of the basic profile as a number
      */
     _totalCitations: number;
     /**
-     * It represents the paper count of the basic profile
+     * Represents the paper count of the basic profile as a number
      */
     _paperCount: number;
     /**
-     * It represents the picture url of the basic profile
+     * Represents the picture url of the basic profile as a string
      */
     _pictureUrl: string;
 }
