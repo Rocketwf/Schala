@@ -1,5 +1,5 @@
 <template>
-    <div class="q-pa-lg flex flex-center" @click="switchPage">
+    <div class="flex flex-center" @click="switchPage">
         <q-pagination
             v-for="pagination of [paginationModel]"
             :key="pagination.currentPage + Math.random().toString(22)"

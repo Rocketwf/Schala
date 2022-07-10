@@ -18,6 +18,7 @@ export {
     Input,
     Field,
     PopupEditButton,
+    SelectOptions,
     Profile,
     BasicProfile,
     FullProfile,
