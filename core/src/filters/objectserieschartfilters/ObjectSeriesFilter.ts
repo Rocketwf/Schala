@@ -3,10 +3,19 @@ import { ObjectSeriesChartModel } from '../../models';
 import { Series } from '../../models/objectserieschartmodel/ObjectSeriesChartModel';
 
 export abstract class ObjectSeriesFilter<S> extends Filter<S, ObjectSeriesChartModel> {
+    /**
+     * Applys object series filter on the given model
+     * @param model - the given ObjectSeriesChartModel
+     */
     abstract apply(model: ObjectSeriesChartModel): void;
 }
 
 export class FromFilter extends ObjectSeriesFilter<number> {
+    /**
+     * It checks if the given model is valid
+     * @param model - the given ObjectSeriesChartModel
+     * @returns true if the given model is valid
+     */
     validate(model: ObjectSeriesChartModel): boolean {
         if (!model.series || model.series.length === 0) {
             return false;
@@ -19,9 +28,17 @@ export class FromFilter extends ObjectSeriesFilter<number> {
         }
         return true;
     }
+    /**
+     * Creates an instance of from filter.
+     * @param value - value of the filter
+     */
     constructor(value: number) {
         super(value);
     }
+    /**
+     * Applys from filter on the given model
+     * @param model - the given ObjectSeriesChartModel
+     */
     apply(model: ObjectSeriesChartModel): void {
         const newSeries: Series[] = new Array<Series>();
         for (const series of model.series) {
@@ -34,6 +51,11 @@ export class FromFilter extends ObjectSeriesFilter<number> {
 }
 
 export class ToFilter extends ObjectSeriesFilter<number> {
+    /**
+     * It checks if the given model is valid
+     * @param model - the given ObjectSeriesChartModel
+     * @returns true if the given model is valid
+     */
     validate(model: ObjectSeriesChartModel): boolean {
         if (!model.series || model.series.length === 0) {
             return false;
@@ -46,9 +68,17 @@ export class ToFilter extends ObjectSeriesFilter<number> {
         }
         return true;
     }
+    /**
+     * Creates an instance of to filter.
+     * @param value - value of the filter
+     */
     constructor(value: number) {
         super(value);
     }
+    /**
+     * Applys to filter on the given model
+     * @param model - the given ObjectSeriesChartModel
+     */
     apply(model: ObjectSeriesChartModel): void {
         const newSeries: Series[] = new Array<Series>();
         for (const series of model.series) {
@@ -61,10 +91,19 @@ export class ToFilter extends ObjectSeriesFilter<number> {
 }
 
 export class ShowingFilter extends ObjectSeriesFilter<number> {
+    /**
+     * Creates an instance of showing filter.
+     * @param value - value of the filter
+     */
     constructor(value: number) {
         super(value);
     }
 
+    /**
+     * It checks if the given model is valid
+     * @param model - the given ObjectSeriesChartModel
+     * @returns true if the given model is valid
+     */
     validate(model: ObjectSeriesChartModel): boolean {
         if (!model.series || model.series.length === 0) {
             return false;
@@ -78,6 +117,10 @@ export class ShowingFilter extends ObjectSeriesFilter<number> {
         return true;
     }
 
+    /**
+     * Applys showing filter on the given filter
+     * @param model - the given ObjectSeriesChartModel
+     */
     apply(model: ObjectSeriesChartModel): void {
         this.validate(model);
         const newSeries: Series[] = new Array<Series>();

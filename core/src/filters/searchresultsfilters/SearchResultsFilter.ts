@@ -2,14 +2,27 @@ import { BasicProfile, SearchResultsModel } from '../../models';
 import { Filter } from '../';
 
 export abstract class SearchResultsFilter<S> extends Filter<S, SearchResultsModel> {
+    /**
+     * Applys search results filter on the given model
+     * @param model - the given SearchResultsModel
+     */
     abstract apply(model: SearchResultsModel): void;
 }
 
 export class AffiliationFilter extends SearchResultsFilter<string> {
+    /**
+     * It checks if the given model is valid
+     * @param model - the given SearchResultsModel
+     * @returns true if the given model is valid
+     */
     validate(model: SearchResultsModel): boolean {
         model;
         return true;
     }
+    /**
+     * Applys affiliation filter on the given model
+     * @param model - the given SearchResultsModel
+     */
     apply(model: SearchResultsModel): void {
         const filtered: Array<BasicProfile> = new Array<BasicProfile>();
         for (const bp of model.basicProfiles) {
@@ -20,6 +33,12 @@ export class AffiliationFilter extends SearchResultsFilter<string> {
         model.basicProfiles = filtered;
     }
 
+    /**
+     * Affiliations contains substring
+     * @param affiliations - the affiliations of an author
+     * @param substring - an affiliation or substring of an affiliation
+     * @returns true if affiliations of an author contains the given affiliation or substring of the given affiliation
+     */
     private affiliationContainsSubstring(affiliations: Array<string>, substring: string): Array<string> {
         const filteredAffiliations: Array<string> = new Array<string>();
         for (const aff of affiliations) {
@@ -32,9 +51,17 @@ export class AffiliationFilter extends SearchResultsFilter<string> {
 }
 
 export class WordsInTitleFilter extends SearchResultsFilter<string> {
+    /**
+     * Creates an instance of words in title filter.
+     * @param value - value of the filter
+     */
     constructor(value: string) {
         super(value);
     }
+    /**
+     * Applys words in title filter on the given model
+     * @param model -the given SearchResultsModel
+     */
     apply(model: SearchResultsModel): void {
         const filteredBasicProfiles: Array<BasicProfile> = new Array<BasicProfile>();
         for (const bp of model.basicProfiles) {
@@ -48,6 +75,11 @@ export class WordsInTitleFilter extends SearchResultsFilter<string> {
     }
 }
 export class SearchResultsPaginationFilter extends SearchResultsFilter<number> {
+    /**
+     * It checks if the given model is valid
+     * @param model - the given SearchResultsModel
+     * @returns true if the given model is valid
+     */
     validate(model: SearchResultsModel): boolean {
         model;
         return true;
@@ -56,6 +88,11 @@ export class SearchResultsPaginationFilter extends SearchResultsFilter<number> {
      *  Integer representing the number of articles per page.
      */
     private _hitsPerPage: number;
+    /**
+     * Creates an instance of search results pagination filter.
+     * @param value - value of the filter
+     * @param hitsPerPage - number of elements of a page
+     */
     constructor(value: number, hitsPerPage: number) {
         super(value);
         this._hitsPerPage = hitsPerPage;
@@ -67,6 +104,10 @@ export class SearchResultsPaginationFilter extends SearchResultsFilter<number> {
         this._hitsPerPage = newHitsPerPage;
     }
 
+    /**
+     * Applys search results pagination filter on the given model
+     * @param model - the given SearchResultsModel
+     */
     apply(model: SearchResultsModel): void {
         const slicedBasicProfiles: BasicProfile[] = new Array<BasicProfile>();
         let start: number = (this.value - 1) * this._hitsPerPage;
