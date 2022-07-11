@@ -5,7 +5,17 @@ import axios, { AxiosResponse } from 'axios';
 
 const http: RateLimitedAxiosInstance = rateLimit(axios.create(), { maxRequests: 99, perMilliseconds: 1000 });
 http.defaults.headers.common['x-api-key'] = process.env.SCHALA_API_KEY ? process.env.SCHALA_API_KEY : '';
+/**
+ * Class responsible for making requests to the SemanticScholar and feching information
+ * related to an author.
+ */
 export class SemanticScholarSource implements DataSource {
+    /**
+     * Method responsible for fetching the profiles for a given search query from
+     * the SemanticScholarSource
+     * @param query - The user profile query to search for
+     * @returns search results - A promise of a list of APIBasicAuthor profiles
+     */
     public async fetchSearchResults(query: string): Promise<APIBasicAuthor[]> {
         try {
             const { data: searchResults }: AxiosResponse<APISearch, object> = await http.get<APISearch>(
@@ -29,6 +39,12 @@ export class SemanticScholarSource implements DataSource {
             }
         }
     }
+    /**
+     * Method responsible for fetching the profiles for a given author ID from 
+     * the SemanticScholarSource
+     * @param authorId - The author with the ID being queried
+     * @returns author - A promise of a APIAuthor profile
+     */
     public async fetchAuthor(authorId: string): Promise<APIAuthor> {
         try {
             const { data: author }: AxiosResponse<APIAuthor, object> = await http.get<APIAuthor>(
@@ -52,6 +68,12 @@ export class SemanticScholarSource implements DataSource {
             }
         }
     }
+    /**
+     * Method responsible for fetching the article informations for given articles from
+     * the SemanticScholarSource
+     * @param paperIds - The papers being searched for
+     * @returns papers - A promise of a list of APIPaper articles
+     */
     public async fetchPapers(paperIds: string[]): Promise<APIPaper[]> {
         const papers: APIPaper[] = new Array<APIPaper>();
         const promises: Promise<void | APIPaper>[] = new Array<Promise<void | APIPaper>>();

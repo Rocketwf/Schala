@@ -4,14 +4,33 @@ import cheerio from 'cheerio';
 import axios from 'axios';
 import { AxiosResponse } from 'axios';
 type TagElement = cheerio.TagElement;
+/**
+ * Class responsible for scraping information off google scholar.
+ */
 export class GoogleScholarScraperSource implements DataSource {
+    /**
+     * Singleton instance of google scholar scraper source.
+     */
     private static instance: GoogleScholarScraperSource;
+    /**
+     * Cache of the search results received from the instance.
+     */
     private _cache: Map<string, APIBasicAuthor[]> = new Map<string, APIBasicAuthor[]>();
 
+    /**
+     * Constructor of the GoogleScholarScraperSource used to initialize the cache data
+     * structure.
+     */
     constructor() {
         this._cache = new Map<string, APIBasicAuthor[]>();
     }
 
+    /**
+     * Method responsible for fetching the profiles for a given search query from
+     * the GoogleScholarScraperSource
+     * @param query - The user profile query to search for
+     * @returns search results - A promise of a list of APIBasicAuthor profiles
+     */
     public async fetchSearchResults(query: string): Promise<APIBasicAuthor[]> {
         if (this._cache.has(query)) {
             return this._cache.get(query);
@@ -59,6 +78,12 @@ export class GoogleScholarScraperSource implements DataSource {
         });
         return this._cache.get(query);
     }
+    /**
+     * Method responsible for fetching the profiles for a given author ID from 
+     * the GoogleScholarScraperSource
+     * @param authorName - The author with the ID being queried
+     * @returns author - A promise of a APIAuthor profile
+     */
     public async fetchAuthor(authorName: string): Promise<APIAuthor> {
         const matchList: APIBasicAuthor[] = await this.fetchSearchResults(authorName);
         const bestDistName: { name: string; dist: number } = { name: '', dist: Number.MAX_SAFE_INTEGER };
@@ -111,10 +136,22 @@ export class GoogleScholarScraperSource implements DataSource {
         }
         return apiAuthor;
     }
+    /**
+     * Method responsible for fetching the article informations for given articles from
+     * the GoogleScholarScraperSource
+     * @param paperIds - The papers being searched for
+     * @returns papers - A promise of a list of APIPaper articles
+     */
     public async fetchPapers(paperIds: string[]): Promise<APIPaper[]> {
         paperIds;
         return;
     }
+    /**
+     * Method for calculating the Levehenshtein distance between two string
+     * @param a - First string
+     * @param b - Second string
+     * @returns The Levehenshtein distance of the two strings
+     */
     private levenshteinHelper(a: string, b: string): number {
         if (a.length === 0) {
             return b.length;
