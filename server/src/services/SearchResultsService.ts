@@ -4,8 +4,19 @@ import { APIBasicAuthor } from '../models/API';
 import { BasicProfile } from '../models/profile/BasicProfile';
 import { ProfileService } from './ProfileService';
 
+/**
+ * This class is responsible for building the search results for a given query
+ */
 export class SearchResultsService extends ProfileService {
+    /**
+     * The used data source for the query
+     */
     private dataSource: DataSource = new SemanticScholarSource();
+    /**
+     * Builds the search results data for the given query
+     * @param query - Query to build
+     * @returns - The data of the built profiles
+     */
     async build(query: string): Promise<BasicProfile[]> {
         const apiBasicAuthors: APIBasicAuthor[] = await this.dataSource.fetchSearchResults(query);
         const basicProfiles: BasicProfile[] = new Array<BasicProfile>();
