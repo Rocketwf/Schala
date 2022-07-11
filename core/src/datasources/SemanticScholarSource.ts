@@ -5,22 +5,50 @@ import { DataSource } from './DataSource';
 import axios, { AxiosResponse } from 'axios';
 import { BasicProfile, FullProfile } from '../models';
 
+/**
+ * enumeration of the following endpoints:
+ * search results
+ * full profile
+ */
 enum ENDPOINTS {
     SEARCHRESULTS = 'searchResults',
     FULLPROFILE = 'fullprofile',
 }
 
 /**
- * Semantic scholar source
+ * An implementation of a DataSource that uses api.semanticscholar.com.
  */
 export class SemanticScholarSource implements DataSource {
+    /**
+     * Represtents the URL address
+     */
     private URL: string = 'http://localhost';
+
+    /**
+     * Represtents the port number
+     */
     private PORT: number = 3000;
 
+    /**
+     * Represtents a map for query results where key is the search string and value is an array consisting of BasicProfile objects
+     */
     private _queryResultsMapping: Map<string, BasicProfile[]>;
+
+    /**
+     * Represtents a map for profile id and full profiles where key is a number displaying profile id
+     * and value is a FullProfile object matching with the given profile id
+     */
     private _profileIdFullProfileMapping: Map<string, FullProfile>;
+
+    /**
+     * Represtents instance of SemanticScholarSource
+     */
     private static instance: SemanticScholarSource;
 
+    /**
+     * Getter method of the instance attribute
+     * @returns the semantic scholar source instance
+     */
     public static getInstance(): SemanticScholarSource {
         if (!SemanticScholarSource.instance) {
             SemanticScholarSource.instance = new SemanticScholarSource();
@@ -28,14 +56,17 @@ export class SemanticScholarSource implements DataSource {
         return SemanticScholarSource.instance;
     }
 
+    /**
+     * Constructs an instance of semantic scholar source
+     */
     private constructor() {
         this._queryResultsMapping = new Map<string, BasicProfile[]>();
         this._profileIdFullProfileMapping = new Map<string, FullProfile>();
     }
 
     /**
-     * Fetchs search results
-     * @param query-
+     * Fetchs search results according to the query string
+     * @param query - search string
      * @returns search results
      */
     async fetchSearchResults(query: string): Promise<BasicProfile[]> {
@@ -77,6 +108,11 @@ export class SemanticScholarSource implements DataSource {
         }
     }
 
+    /**
+     * Fetchs full profiles according to the given profile id
+     * @param profileId - profile id
+     * @returns full profiles matching the given profile id
+     */
     async fetchFullProfile(profileId: string): Promise<FullProfile> {
         if (this._profileIdFullProfileMapping.has(profileId)) {
             return this._profileIdFullProfileMapping.get(profileId);
