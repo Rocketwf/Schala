@@ -26,13 +26,30 @@ import {
 import { Pagination } from '../models/viewmodels/Pagination';
 import { SelectOptions } from '../models/inputs/Inputs';
 
+/**
+ * Represents page width constant with a value of 12
+ */
 const PAGE_WIDTH: number = 12;
+
+/**
+ * Type defining the following data for each card:
+ * title
+ * row number
+ * number of columns
+ * default number of entries
+ */
 type cardData = {
     TITLE: string;
     ROW: number;
     COLS: number;
     DEFAULT_NUM_OF_ENTRIES?: number;
 };
+
+/**
+ * Possible types of cards using type cardData:
+ * publications by year, publications by venue, citations by year, most cited scholars,
+ * citations, most frequent co-authors, co-authors with highest h-index, expertise, articles
+ */
 type cards = {
     PUBLICATIONS_BY_YEAR: {
         CARD_DATA: cardData;
@@ -62,6 +79,10 @@ type cards = {
         CARD_DATA: cardData;
     };
 };
+
+/**
+ * Cards constant defining each type of card and their card data which includes their title, row number, number of columns and default number of entries
+ */
 const CARDS: cards = {
     PUBLICATIONS_BY_YEAR: {
         CARD_DATA: {
@@ -136,6 +157,9 @@ const CARDS: cards = {
     },
 };
 
+/**
+ * Builds the data structure that will be given to ProfilePage.
+ */
 export class ProfileRepresentation {
     private _fullProfile: FullProfile;
     private _rowModels: Array<RowModel>;
@@ -143,6 +167,10 @@ export class ProfileRepresentation {
         this._fullProfile = _fullProfile;
         this._rowModels = new Array<RowModel>();
     }
+
+    /**
+     * Updates the RowModel list according to the given FullProfile.
+     */
     renderProfile(): void {
         this._rowModels = [];
         this.createFirstRow();
@@ -151,19 +179,30 @@ export class ProfileRepresentation {
         this.createFourthRow();
     }
 
+    /**
+     * Getter method of the FullProfile.
+     */
     public get fullProfile(): FullProfile {
         return this._fullProfile;
     }
+
+    /**
+     * Setter method of the FullProfile.
+     */
     public set fullProfile(fullProfile: FullProfile) {
         this._fullProfile = fullProfile;
     }
+
+    /**
+     * Getter method of the list of RowModel.
+     */
     public get rowModels(): RowModel[] {
         return this._rowModels;
     }
 
     /**
-     * Creates publications by year card
-     * @returns publications by year card
+     * Creates publications by year card with from, to and range filters.
+     * @returns publications by year card as DistributedColumnsChartModel
      */
     private createPublicationsByYearCard(): DistributedColumnsChartModel {
         const series: Array<Series> = new Array<Series>();
@@ -207,6 +246,10 @@ export class ProfileRepresentation {
         return pby;
     }
 
+    /**
+     * Creates publications by venue card with a showing filter.
+     * @returns publications by venue card as DistributedColumnsChartModel
+     */
     private createPublicationsByVenueCard(): DistributedColumnsChartModel {
         const series: Array<Series> = new Array<Series>();
         for (const pbv of this._fullProfile.publicationsByVenue) {
@@ -244,6 +287,10 @@ export class ProfileRepresentation {
         return pbv;
     }
 
+    /**
+     * Creates most cited scholars card with a showing filter.
+     * @returns most cited scholars card as BasicBarsChartModel
+     */
     private createMostCitedScholarsCard(): BasicBarsChartModel {
         const series: Array<Series> = new Array<Series>();
         for (const cs of this._fullProfile.citedScholars) {
@@ -278,6 +325,10 @@ export class ProfileRepresentation {
         return mcs;
     }
 
+    /**
+     * Creates most frequent co-authors card with a showing filter.
+     * @returns most frequent co-authors card as BasicBarsChartModel
+     */
     private createMostFrequentCoAuthorsCard(): BasicBarsChartModel {
         let series: Array<Series> = new Array<Series>();
         for (const author of this._fullProfile.authors) {
@@ -313,6 +364,10 @@ export class ProfileRepresentation {
         return mfa;
     }
 
+    /**
+     * Creates citation by year card with from, to and range filters.
+     * @returns citation by year card as StackedColumnsChartModel
+     */
     private createCitationsByYearCard(): StackedColumnsChartModel {
         let series: Array<Series> = new Array<Series>();
         for (const cby of this._fullProfile.citationsByYear) {
@@ -360,6 +415,10 @@ export class ProfileRepresentation {
         return cby;
     }
 
+    /**
+     * Creates expertise card to be used in .
+     * @returns expertise card as ExpertiseModel
+     */
     private createExpertiseCard(): ExpertiseModel {
         const expertise: Expertise = new Expertise(this._fullProfile.basicProfile.name, this._fullProfile.expertise);
         return new ExpertiseModel(
@@ -371,6 +430,10 @@ export class ProfileRepresentation {
         );
     }
 
+    /**
+     * Creates articles card with co-authors, keywords, words in title, minimum number of citations, sort by and pagiantion filters.
+     * @returns articles card as ArticlesModel
+     */
     private createArticlesCard(): ArticlesModel {
         const articlesModel: ArticlesModel = new ArticlesModel(
             this.fullProfile.articles,
@@ -449,6 +512,10 @@ export class ProfileRepresentation {
         return articlesModel;
     }
 
+    /**
+     * Creates citations card.
+     * @returns citatons card as PieChartModel
+     */
     private createCitationsCard(): PieChartModel {
         const series: Array<Series> = new Array<Series>();
         series.push(
@@ -464,6 +531,10 @@ export class ProfileRepresentation {
         return new PieChartModel('Citations', '', ViewName.PieChartCard, 2, series);
     }
 
+    /**
+     * Creates co-authors with highest h-index card with a showing filter.
+     * @returns co-authors with highest h-index card as LineColumnsMixedChartModel
+     */
     private createCoAuthorsWithHighestHIndexCard(): LineColumnsMixedChartModel {
         const series: Array<Series> = new Array<Series>();
 
@@ -499,7 +570,7 @@ export class ProfileRepresentation {
         return awhhi;
     }
 
-    //This method creates the first row which renders the following:
+    //Creates the first row which renders the following:
     //Publications by year
     //Publications by venue
     //Citations by year
@@ -516,7 +587,7 @@ export class ProfileRepresentation {
         }
         this.rowModels.push(rowModel);
     }
-    //This method creates the second row which renders the following:
+    //Creates the second row which renders the following:
     //Most cited scholars
     //Citation breakdown
     //Most frequent co-authors
@@ -534,7 +605,7 @@ export class ProfileRepresentation {
         this.rowModels.push(rowModel);
     }
 
-    //This method creates the third row which renders the following:
+    //Creates the third row which renders the following:
     //Co-Authors with highest h-index
     //Expertise
     private createThirdRow(): void {
@@ -549,7 +620,7 @@ export class ProfileRepresentation {
         this._rowModels.push(rowModel);
     }
 
-    //This method creates the fourth row which renders the articles
+    //Creates the fourth row which renders the articles
     private createFourthRow(): void {
         const rowModel: RowModel = new RowModel(PAGE_WIDTH);
         const articlesCard: ArticlesModel = this.createArticlesCard();
@@ -559,6 +630,12 @@ export class ProfileRepresentation {
         this._rowModels.push(rowModel);
     }
 
+    /**
+     * Sorts the given series according to their names in ascending order.
+     * @param a the first series to be sorted
+     * @param b the second series to be sorted
+     * @returns the sorted series
+     */
     private sortSeriesByName(a: Series, b: Series): number {
         if (+a.name < +b.name) {
             return -1;
@@ -569,6 +646,12 @@ export class ProfileRepresentation {
         return 0;
     }
 
+    /**
+     * Sorts the given series' data in ascending order and checks if the page width is valid.
+     * @param a the first series whose data is to be sorted
+     * @param b the second series whose data is to be sorted
+     * @returns the sorted series data
+     */
     private sortSeriesByData(a: Series, b: Series): number {
         if (+a.data[0] > +b.data[0]) {
             return -1;
