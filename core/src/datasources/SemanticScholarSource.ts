@@ -20,28 +20,28 @@ enum ENDPOINTS {
  */
 export class SemanticScholarSource implements DataSource {
     /**
-     * Represtents the URL address
+     * Represents the URL address
      */
     private URL: string = 'http://localhost';
 
     /**
-     * Represtents the port number
+     * Represents the port number
      */
     private PORT: number = 3000;
 
     /**
-     * Represtents a map for query results where key is the search string and value is an array consisting of BasicProfile objects
+     * Represents a map for query results where key is the search string and value is an array consisting of BasicProfile objects
      */
     private _queryResultsMapping: Map<string, BasicProfile[]>;
 
     /**
-     * Represtents a map for profile id and full profiles where key is a number displaying profile id
+     * Represents a map for profile id and full profiles where key is a number displaying profile id
      * and value is a FullProfile object matching with the given profile id
      */
     private _profileIdFullProfileMapping: Map<string, FullProfile>;
 
     /**
-     * Represtents instance of SemanticScholarSource
+     * Represents instance of SemanticScholarSource
      */
     private static instance: SemanticScholarSource;
 
@@ -65,7 +65,7 @@ export class SemanticScholarSource implements DataSource {
     }
 
     /**
-     * Fetchs search results according to the query string
+     * Fetches search results according to the query string
      * @param query - search string
      * @returns search results
      */
@@ -109,7 +109,7 @@ export class SemanticScholarSource implements DataSource {
     }
 
     /**
-     * Fetchs full profiles according to the given profile id
+     * Fetches full profiles according to the given profile id
      * @param profileId - profile id
      * @returns full profiles matching the given profile id
      */

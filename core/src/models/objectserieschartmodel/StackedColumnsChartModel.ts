@@ -1,6 +1,9 @@
 import { SimpleCardModel, ViewName } from '../simplecardmodel';
 import { ObjectSeriesChartModel, Series } from './ObjectSeriesChartModel';
 
+/**
+ * Data structure for the stacked columns chart.
+ */
 export class StackedColumnsChartModel extends ObjectSeriesChartModel implements SimpleCardModel {
     constructor(
         _title: string,
@@ -15,6 +18,10 @@ export class StackedColumnsChartModel extends ObjectSeriesChartModel implements 
         super(_title, _sub, _viewName, _colWidth, _series, _xTitle, _yTitle, _labels);
     }
 
+    /**
+     * Creates a carbon copy of the model.
+     * @returns the created copy as StackedColumnsChartModel
+     */
     deepCopy(): StackedColumnsChartModel {
         const seriesCopy: Array<Series> = new Array<Series>();
         this.series.forEach((serie: Series) => {

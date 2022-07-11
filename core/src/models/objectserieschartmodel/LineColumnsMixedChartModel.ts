@@ -6,15 +6,15 @@ import { SimpleCardModel, ViewName } from '../simplecardmodel';
  */
 export class LineColumnsMixedChartModel extends ObjectSeriesChartModel implements SimpleCardModel {
     /**
-     * Constructs the LineColumnsMixedChartModel
-     * @param _title - title of the model
-     * @param _sub - subtitle of the model
-     * @param _viewName - type of the model
-     * @param _colWidth - width of the model
-     * @param _series - data of the model
-     * @param _xTitle - name of the x-axis
-     * @param _yTitle - name of the y-axis
-     * @param _labels - labels of the model
+     * Creates an instance of BasicBarsChartModel.
+     * @param _title - Represents the title value as a string
+     * @param _sub - Represents the subtitle value as a string
+     * @param _viewName - Represents the view name value as a ViewName
+     * @param _colWidth - Represents the column width value as a number
+     * @param _series - Represents the series value as a series array
+     * @param _xTitle - Represents the x-axis title value as a string
+     * @param _yTitle - Represents the y-axis title value as a string
+     * @param _labels - Represents the labels value as a string array
      */
     constructor(
         _title: string,
@@ -30,7 +30,8 @@ export class LineColumnsMixedChartModel extends ObjectSeriesChartModel implement
     }
 
     /**
-     * Creates a copy of the model
+     * Creates a carbon copy of the model.
+     * @returns the created copy as LineColumnsMixedChartModel
      */
     deepCopy(): LineColumnsMixedChartModel {
         const seriesCopy: Array<Series> = new Array<Series>();
