@@ -565,7 +565,7 @@ export class ComparisonRepresentation
         const rowModel: RowModel = new RowModel(PAGE_WIDTH);
 
         const models: LineColumnsMixedChartModel[] = [];
-        const showing: Filter<number, BasicBarsChartModel> = new ShowingFilter(5);
+        const showing: Filter<number, BasicBarsChartModel> = new ShowingFilter(CARDS.CO_AUTHORS_WITH_HIGHEST_HINDEX.CARD_DATA.DEFAULT_NUM_OF_ENTRIES);
 
         let min: number = Number.MAX_SAFE_INTEGER;
         let max: number = 0;
