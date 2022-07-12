@@ -604,7 +604,6 @@ export class ProfileRepresentation
         {
             if (article.publicationDate)
             {
-                console.log(article.publicationDate);
                 const date: string[] = article.publicationDate.split('-');
                 const newSerie: Series = new Series(date[0], [+date[1]]);
                 tempSeries.push(newSerie);
@@ -635,6 +634,7 @@ export class ProfileRepresentation
         }
 
         series = series.sort(this.sortSeriesByName);
+        console.log(series);
 
         const heatmapChartModel: HeatmapChartModel = new HeatmapChartModel(
             'Publications by Quarter',

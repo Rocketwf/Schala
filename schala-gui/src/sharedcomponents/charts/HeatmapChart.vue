@@ -60,12 +60,31 @@ const chartOptions = computed(() =>
         chart: {
             height: 350,
             type: 'heatmap',
+            toolbar: {
+                offsetX: 0,
+                offsetY: -10,
+                show: true,
+                tools: {
+                    download:
+                    '<i class="q-icon notranslate material-icons" aria-hidden="true" role="presentation" style="font-size: 24px;">download</i>',
+                },
+            },
+        },
+        xaxis: {
+            title: {
+                text: 'Years',
+            },
+            categories: getLabels.value,
+            labels: {
+                style: {
+                    fontSize: '12px',
+                },
+            },
         },
         dataLabels: {
             enabled: false
         },
         colors: ['#875f9A'],
-        labels: getLabels,
     };
 });
 </script>
