@@ -5,9 +5,9 @@ export abstract class ArticlesFilter<S> extends Filter<S, ArticlesModel> {}
 
 export class ArticlesPaginationFilter extends ArticlesFilter<number> {
     /**
-     * Validates articles pagination filter
-     * @param model -
-     * @returns true if validate -
+     * It checks if the given model is valid
+     * @param model -The given ArticlesModel
+     * @returns true if the given model is valid
      */
     validate(model: ArticlesModel): boolean {
         model;
@@ -17,7 +17,10 @@ export class ArticlesPaginationFilter extends ArticlesFilter<number> {
      *  Integer representing the number of articles per page.
      */
     private _hitsPerPage: number = 10;
-
+    /**
+     * Creates an instance of articles pagination filter.
+     * @param value - the given filter value
+     */
     constructor(value: number) {
         super(value);
     }
@@ -29,10 +32,17 @@ export class ArticlesPaginationFilter extends ArticlesFilter<number> {
         this._hitsPerPage = newHitsPerPage;
     }
 
+    /**
+     * Getter method of the hitsPerPage attribute
+     */
     public get hitsPerPage(): number {
         return this._hitsPerPage;
     }
 
+    /**
+     * Applys articles pagination filter on the given model
+     * @param model - the given ArticlesModel
+     */
     apply(model: ArticlesModel): void {
         const slicedArticles: Article[] = new Array<Article>();
         let start: number = (this.value - 1) * this._hitsPerPage;
@@ -48,9 +58,17 @@ export class ArticlesPaginationFilter extends ArticlesFilter<number> {
 }
 
 export class SortByFilter extends ArticlesFilter<string> {
+    /**
+     * Creates an instance of sort by filter.
+     * @param value - the given filter value
+     */
     constructor(value: string) {
         super(value);
     }
+    /**
+     * Applys sort by filter on the given model
+     * @param model - the given ArticlesModel
+     */
     apply(model: ArticlesModel): void {
         const newArticles: Article[] = model.articles.sort((n1: Article, n2: Article) => {
             if (this.value == 'year') {
@@ -83,15 +101,28 @@ export class SortByFilter extends ArticlesFilter<string> {
     }
 }
 export class CoauthorsFilter extends ArticlesFilter<string> {
+    /**
+     * Creates an instance of coauthors filter.
+     * @param value - the given filter value
+     */
     constructor(value: string) {
         super(value);
     }
 
+    /**
+     * It checks if the given model is valid
+     * @param model - the given ArticlesModel
+     * @returns true if the given model is valid
+     */
     validate(model: ArticlesModel): boolean {
         model;
         return true;
     }
 
+    /**
+     * Applys coauthors filter on the given model
+     * @param model - the given ArticlesModel
+     */
     apply(model: ArticlesModel): void {
         if (this.value === '') {
             return;
@@ -111,6 +142,12 @@ export class CoauthorsFilter extends ArticlesFilter<string> {
     /**
      * Method for checking if a string includes given substrings.
      */
+    /**
+     *  Method for checking if a string includes given substrings
+     * @param coAuthors - the article's co-authors' names
+     * @param name - the given co-author name
+     * @returns true if the article's co-authors' names contain the given co-author name
+     */
     private contains(coAuthors: ArticleCoAuthor[], name: string): boolean {
         for (const coAuthor of coAuthors) {
             if (coAuthor.name.toLowerCase().indexOf(name) >= 0) {
@@ -122,15 +159,28 @@ export class CoauthorsFilter extends ArticlesFilter<string> {
 }
 
 export class WordsInArticleTitleFilter extends ArticlesFilter<string> {
+    /**
+     * Creates an instance of words in article title filter.
+     * @param value - the given filter value
+     */
     constructor(value: string) {
         super(value);
     }
 
+    /**
+     * It checks if the given model is valid
+     * @param model - the given ArticlesModel
+     * @returns true if the given model is valid
+     */
     validate(model: ArticlesModel): boolean {
         model;
         return true;
     }
 
+    /**
+     * Applys words in article title filter on the given model
+     * @param model - the given ArticlesModel
+     */
     apply(model: ArticlesModel): void {
         if (this.value === '') {
             return;
@@ -148,7 +198,10 @@ export class WordsInArticleTitleFilter extends ArticlesFilter<string> {
     }
 
     /**
-     * Method for checking if a string includes given substrings.
+     * Method for checking if given word in the title
+     * @param title - the given title of the article
+     * @param word - the given word that is searched for
+     * @returns true if title contains the given word
      */
     private contains(title: string, word: string): boolean {
         if (title.toLowerCase().indexOf(word) >= 0) {
@@ -159,14 +212,27 @@ export class WordsInArticleTitleFilter extends ArticlesFilter<string> {
 }
 
 export class NumberOfCitationsFilter extends ArticlesFilter<string> {
+    /**
+     * Creates an instance of number of citations filter.
+     * @param value - value of the filter
+     */
     constructor(value: string) {
         super(value);
     }
 
+    /**
+     * It checks if the given model is valid
+     * @param model - the given ArticlesModel
+     * @returns true if the given model is valid
+     */
     validate(model: ArticlesModel): boolean {
         model;
         return true;
     }
+    /**
+     * Applys number of citations filter
+     * @param model - the given ArticlesModel
+     */
     apply(model: ArticlesModel): void {
         if (this.value === '') {
             return;
@@ -182,15 +248,28 @@ export class NumberOfCitationsFilter extends ArticlesFilter<string> {
 }
 
 export class KeywordsFilter extends ArticlesFilter<string> {
+    /**
+     * Creates an instance of keywords filter.
+     * @param value - the given value of the filter
+     */
     constructor(value: string) {
         super(value);
     }
 
+    /**
+     * It checks if the given model is valid
+     * @param model - the given ArticlesModel
+     * @returns true if the given model is valid
+     */
     validate(model: ArticlesModel): boolean {
         model;
         return true;
     }
 
+    /**
+     * Applys keywords filter on the given model
+     * @param model - the given ArticlesModel
+     */
     apply(model: ArticlesModel): void {
         if (this.value === '') {
             return;

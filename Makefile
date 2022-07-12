@@ -39,6 +39,9 @@ core_test:
 server_test:
 	(cd server;tsc -b --verbose; yarn test)
 
+gui_test:
+	(cd schala-gui; yarn test:unit:ci)
+
 build_skip_test: core_deps core gui_deps update_core_in_gui
 	(cd schala-gui; yarn build)
 

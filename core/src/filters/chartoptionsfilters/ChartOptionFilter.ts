@@ -2,15 +2,28 @@ import { ChartOptionsModel } from '../../models';
 import { Filter } from '../Filter';
 
 export abstract class ChartOptionFilter<S> extends Filter<S, ChartOptionsModel> {
+    /**
+     * Applys chart option filter on the given model
+     * @param model - the given ChartOptionsModel
+     */
     abstract apply(model: ChartOptionsModel): void;
 }
 
 export class ScaleUpFilter extends ChartOptionFilter<boolean> {
+    /**
+     * It checks if the given model is valid
+     * @param model -The given ChartOptionsModel
+     * @returns true if the given model is valid
+     */
     validate(model: ChartOptionsModel): boolean {
         model;
         return true;
     }
 
+    /**
+     * Applys scale up filter on the given model
+     * @param model - the given ChartOptionsModel
+     */
     apply(model: ChartOptionsModel): void {
         if (this._value) {
             const limits: number[] = [];
@@ -36,18 +49,35 @@ export class ScaleUpFilter extends ChartOptionFilter<boolean> {
 }
 
 export class ScaleUpMixedFilter extends ChartOptionFilter<boolean> {
+    /**
+     * It represents type of ScaleUpMixedFilter
+     */
     private _type: TypeName;
 
+    /**
+     * Creates an instance of scale up mixed filter.
+     * @param state - the state of filter
+     * @param type - the type of filter
+     */
     constructor(state: boolean, type: TypeName) {
         super(state);
         this._type = type;
     }
 
+    /**
+     * It checks if the given model is valid
+     * @param model -The given ChartOptionsModel
+     * @returns true if the given model is valid
+     */
     validate(model: ChartOptionsModel): boolean {
         model;
         return true;
     }
 
+    /**
+     * Applys scale up mixed filter on the given model
+     * @param model - the given ChartOptionsModel
+     */
     apply(model: ChartOptionsModel): void {
         if (this._value) {
             const limits: number[] = [];
@@ -86,6 +116,9 @@ export class ScaleUpMixedFilter extends ChartOptionFilter<boolean> {
         }
     }
 
+    /**
+     * Getter method of the type attribute
+     */
     public get type(): TypeName {
         return this._type;
     }

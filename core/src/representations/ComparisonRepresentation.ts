@@ -20,12 +20,29 @@ import { CheckBox } from '../models/inputs/Inputs';
 import { RangeButton } from '../models/inputs/PopupEditButton';
 import { PublicationByYear } from '../models/profile/Profile';
 import { Expertise, ExpertiseModel } from '../models/simplecardmodel/ExpertiseModel';
+
+/**
+ * Represents page width constant with a value of 12
+ */
 const PAGE_WIDTH: number = 12;
+
+/**
+ * Type defining the following data for each card:
+ * title
+ * row number
+ * default number of entries
+ */
 type cardData = {
     TITLE: string;
     ROW: number;
     DEFAULT_NUM_OF_ENTRIES?: number;
 };
+
+/**
+ * Possible types of cards using type cardData:
+ * publications by year, publications by venue, citations by year, most cited scholars,
+ * citations, most frequent co-authors, co-authors with highest h-index, expertise
+ */
 type cards = {
     PUBLICATIONS_BY_YEAR: {
         CARD_DATA: cardData;
@@ -52,6 +69,10 @@ type cards = {
         CARD_DATA: cardData;
     };
 };
+
+/**
+ * Cards constant defining each type of card and their card data which includes their title, row number and default number of entries
+ */
 const CARDS: cards = {
     PUBLICATIONS_BY_YEAR: {
         CARD_DATA: {
@@ -114,10 +135,13 @@ const CARDS: cards = {
  * Builds the data structure that will be given to ComparePage.
  */
 export class ComparisonRepresentation {
+    /**
+     * Represtents fullProfiles to be displayed in the comparison.
+     */
     private _fullProfiles: FullProfile[];
 
     /**
-     * Rows to be displayed in the comparison.
+     * Represtents rows to be displayed in the comparison.
      */
     private _rowModels: RowModel[];
 
@@ -184,10 +208,17 @@ export class ComparisonRepresentation {
         this._fullProfiles = fullProfile;
     }
 
+    /**
+     * Getter method of the summary width
+     */
     public getSummaryWidth(): number {
         return PAGE_WIDTH / this._fullProfiles.length;
     }
 
+    /**
+     * Creates a row that will display publications by year card which is to be rendered on the gui
+     * This row also includes from, to and range filters.
+     */
     private createPublicationByYearRow(): void {
         const rowModel: RowModel = new RowModel(PAGE_WIDTH);
         const tempYearSeries: Array<Series> = new Array<Series>();
@@ -269,6 +300,10 @@ export class ComparisonRepresentation {
         this._rowModels.push(rowModel);
     }
 
+    /**
+     * Creates a row that will display publications by venue card which is to be rendered on the gui
+     * This row also includes showing and scale filters.
+     */
     private createPublicationByVenueRow(): void {
         const rowModel: RowModel = new RowModel(PAGE_WIDTH);
 
@@ -334,6 +369,10 @@ export class ComparisonRepresentation {
         this._rowModels.push(rowModel);
     }
 
+    /**
+     * Creates a row that will display citations by year card which is to be rendered on the gui
+     * This row also includes from, to, from number and to number filters.
+     */
     private createCitationsByYearRow(): void {
         const rowModel: RowModel = new RowModel(PAGE_WIDTH);
 
@@ -413,6 +452,10 @@ export class ComparisonRepresentation {
         this._rowModels.push(rowModel);
     }
 
+    /**
+     * Creates a row that will display most frequent co-author card which is to be rendered on the gui
+     * This row also includes showing and scale filters.
+     */
     private createMostFrequentCoAuthorsRow(): void {
         const rowModel: RowModel = new RowModel(PAGE_WIDTH);
 
@@ -475,6 +518,10 @@ export class ComparisonRepresentation {
         this._rowModels.push(rowModel);
     }
 
+    /**
+     * Creates a row that will display  co-authors with highest h-index card which is to be rendered on the gui
+     * This row also includes scale according to h-index, scale according to publication number and showing filters.
+     */
     private createCoAuthorsWithHighestHIndexRow(): void {
         const rowModel: RowModel = new RowModel(PAGE_WIDTH);
 
@@ -553,8 +600,7 @@ export class ComparisonRepresentation {
     }
 
     /**
-     * Creates citations and expertise rows.
-     * @returns - RowModel containing the citations and expertise models
+     * Creates a row that will display citations and expertise cards which is to be rendered on the gui
      */
     private createCitationsExpertiseRow(): void {
         const cerRow: RowModel = new RowModel(PAGE_WIDTH);
@@ -606,12 +652,24 @@ export class ComparisonRepresentation {
         this.rowModels.push(cerRow);
     }
 
+    /**
+     * Sorts the given series according to their names in ascending order.
+     * @param a the first series to be sorted
+     * @param b the second series to be sorted
+     * @returns the sorted series
+     */
     private sortSeries(a: Series, b: Series): number {
         if (+a.name < +b.name) return -1;
         if (+a.name > +b.name) return 1;
         return 0;
     }
 
+    /**
+     * Sorts the given series' data in ascending order.
+     * @param a the first series whose data is to be sorted
+     * @param b the second series whose data is to be sorted
+     * @returns the sorted series data
+     */
     private sortSeriesByData(a: Series, b: Series): number {
         if (+a.data[0] > +b.data[0]) return -1;
         if (+a.data[0] < +b.data[0]) return 1;
