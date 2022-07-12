@@ -20,6 +20,9 @@ yarn.lock
 /src-bex/www
 /src-bex/js/core
 
+# Ignore coverage
+/coverage
+
 # Log files
 npm-debug.log*
 yarn-debug.log*

@@ -5,5 +5,8 @@
       "^.+\\.(t|j)sx?$": "ts-jest"
   },
   "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"],
-  "modulePathIgnorePatterns": ["dist/"]
+  "modulePathIgnorePatterns": ["dist/"],
+  "collectCoverage": true,
+  "coverageReporters": ["json", "html"]
+
 }
