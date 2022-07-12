@@ -27,3 +27,11 @@ jobs:
       - name: Run server tests
         run: yarn test
         working-directory: server
+
+      - name: Install gui dependencies
+        run: yarn
+        working-directory: schala-gui
+
+      - name: Run gui tests
+        run: yarn test:unit:ci
+        working-directory: schala-gui
