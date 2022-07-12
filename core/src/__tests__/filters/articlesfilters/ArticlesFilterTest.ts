@@ -90,7 +90,7 @@ describe('articles filter test', () =>
     }, 30000);
     it('paginates articles', () => 
     {
-        const  page: ArticlesPaginationFilter = new ArticlesPaginationFilter(15);
+        const page: ArticlesPaginationFilter = new ArticlesPaginationFilter(15);
         page.apply(articleModel);
         expect(articleModel.articles.length == 10 ).toBe(true);
     }, 30000);
