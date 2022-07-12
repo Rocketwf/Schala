@@ -27,6 +27,7 @@ export interface APIArticle {
      * Represents the co-authors of the article as a APICoAuthor array
      */
     _articlesCoAuthors: APICoAuthor[];
+    _publicationDate: string;
 }
 export interface APICoAuthor {
     /**

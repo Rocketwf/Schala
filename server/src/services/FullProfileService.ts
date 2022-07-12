@@ -637,6 +637,7 @@ export class FullProfileService extends ProfileService
                 paper.url,
                 paper.abstract,
                 paperCoauthors,
+                paper.publicationDate,
             );
             articles.push(articleToPush);
         }

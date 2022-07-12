@@ -39,6 +39,8 @@ export class Article
      */
     private _articlesCoAuthors: ArticleCoAuthor[];
 
+    private _publicationDate: string;
+
     /**
      * Creates an instance of article.
      * @param _title - The title of the article
@@ -59,6 +61,7 @@ export class Article
         _url: string,
         _abstract: string,
         _articlesCoAuthors: ArticleCoAuthor[],
+        _publicationDate?: string,
     ) 
     {
         this._title = _title;
@@ -69,6 +72,10 @@ export class Article
         this._url = _url;
         this._abstract = _abstract;
         this._articlesCoAuthors = _articlesCoAuthors;
+        if (_publicationDate) 
+        {
+            this._publicationDate = _publicationDate;
+        }
     }
 
     /**
@@ -197,5 +204,21 @@ export class Article
     public set abstract(_abstract: string) 
     {
         this._abstract = _abstract;
+    }
+
+    /**
+     * Getter method of the publicationDate attribute
+     */
+    public get publicationDate(): string 
+    {
+        return this._publicationDate;
+    }
+     
+    /**
+    * Setter method of the publicationDate attribute
+    */
+    public set publicationDate(_newDate: string) 
+    {
+        this._publicationDate = _newDate;
     }
 }

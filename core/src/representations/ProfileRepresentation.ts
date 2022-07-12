@@ -10,6 +10,7 @@ import {
     StackedColumnsChartModel,
     Field,
     ViewName,
+    HeatmapChartModel,
 } from '../models';
 import { Expertise, ExpertiseModel } from '../models/simplecardmodel/ExpertiseModel';
 import { ArticlesFilterButton, RangeButton, ShowingButton } from '../models/inputs/PopupEditButton';
@@ -177,6 +178,7 @@ export class ProfileRepresentation
     {
         this._rowModels = [];
         this.createFirstRow();
+        this.createHeatmapRow();
         this.createSecondRow();
         this.createThirdRow();
         this.createFourthRow();
@@ -593,6 +595,82 @@ export class ProfileRepresentation
         return awhhi;
     }
 
+    private createPublicationsByQuarterCard(): HeatmapChartModel
+    {
+        let series: Array<Series> = new Array<Series>();
+        const tempSeries: Array<Series> = new Array<Series>();
+
+        for (const article of this._fullProfile.articles) 
+        {
+            if (article.publicationDate)
+            {
+                console.log(article.publicationDate);
+                const date: string[] = article.publicationDate.split('-');
+                const newSerie: Series = new Series(date[0], [+date[1]]);
+                tempSeries.push(newSerie);
+            }
+            else
+            {
+                const newSerie: Series = new Series(article.publicationYear + '', [0]);
+                tempSeries.push(newSerie);
+            }
+        }
+
+        for (const tempSerie of tempSeries)
+        {   
+            const yearSeries: Array<Series> = tempSeries.filter((serie: Series) => serie.name === tempSerie.name);
+            if (series.filter((serie: Series) => serie.name === tempSerie.name).length > 0)
+            {
+                continue;
+            }
+            else
+            {
+                const newSerie: Series = new Series(tempSerie.name, new Array(5).fill(0));
+                for (const yearSerie of yearSeries)
+                {
+                    newSerie.data[this.getQuarter(yearSerie.data[0])]++;
+                }
+                series.push(newSerie);
+            }
+        }
+
+        series = series.sort(this.sortSeriesByName);
+
+        const heatmapChartModel: HeatmapChartModel = new HeatmapChartModel(
+            'Publications by Quarter',
+            '',
+            ViewName.HeatmapChartCard,
+            12,
+            series,
+        );
+
+        return heatmapChartModel;
+    }
+
+    private getQuarter(month: number): number
+    {
+        if (1 <= month && month <= 3)
+        {
+            return 0;
+        }
+        else if (4 <= month && month <= 6)
+        {
+            return 1;
+        }
+        else if (7 <= month && month <= 9)
+        {
+            return 2;
+        }
+        else if (10 <= month && month <= 12)
+        {
+            return 3;
+        }
+        else
+        {
+            return 4;
+        }
+    }
+
     //Creates the first row which renders the following:
     //Publications by year
     //Publications by venue
@@ -625,9 +703,9 @@ export class ProfileRepresentation
 
         if (this.validateWidth(mcsCard.colWidth + citaitonsCard.colWidth + mfcaCard.colWidth)) 
         {
-            rowModel.simpleCardModels.push(this.createMostCitedScholarsCard());
-            rowModel.simpleCardModels.push(this.createCitationsCard());
-            rowModel.simpleCardModels.push(this.createMostFrequentCoAuthorsCard());
+            rowModel.simpleCardModels.push(mcsCard);
+            rowModel.simpleCardModels.push(citaitonsCard);
+            rowModel.simpleCardModels.push(mfcaCard);
         }
         this.rowModels.push(rowModel);
     }
@@ -643,8 +721,8 @@ export class ProfileRepresentation
 
         if (this.validateWidth(expertiseCard.colWidth + awhhCard.colWidth)) 
         {
-            rowModel.simpleCardModels.push(this.createCoAuthorsWithHighestHIndexCard());
-            rowModel.simpleCardModels.push(this.createExpertiseCard());
+            rowModel.simpleCardModels.push(awhhCard);
+            rowModel.simpleCardModels.push(expertiseCard);
         }
         this._rowModels.push(rowModel);
     }
@@ -656,7 +734,18 @@ export class ProfileRepresentation
         const articlesCard: ArticlesModel = this.createArticlesCard();
         if (this.validateWidth(articlesCard.colWidth)) 
         {
-            rowModel.simpleCardModels.push(this.createArticlesCard());
+            rowModel.simpleCardModels.push(articlesCard);
+        }
+        this._rowModels.push(rowModel);
+    }
+
+    private createHeatmapRow(): void
+    {
+        const rowModel: RowModel = new RowModel(PAGE_WIDTH);
+        const heatmapCard: HeatmapChartModel = this.createPublicationsByQuarterCard();
+        if (this.validateWidth(heatmapCard.colWidth)) 
+        {
+            rowModel.simpleCardModels.push(heatmapCard);
         }
         this._rowModels.push(rowModel);
     }
@@ -698,6 +787,7 @@ export class ProfileRepresentation
         }
         return 0;
     }
+
     validateWidth(value: number): boolean 
     {
         return value <= PAGE_WIDTH;

@@ -39,5 +39,6 @@ export {
     DistributedColumnsChartModel,
     BasicBarsChartModel,
     ExpertiseModel,
+    HeatmapChartModel,
 } from './models';
 export { ProfileRepresentation, ComparisonRepresentation } from './representations';
