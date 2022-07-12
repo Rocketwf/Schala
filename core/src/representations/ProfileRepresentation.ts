@@ -610,8 +610,11 @@ export class ProfileRepresentation
             }
             else
             {
-                const newSerie: Series = new Series(article.publicationYear + '', [0]);
-                tempSeries.push(newSerie);
+                if (article.publicationYear)
+                {
+                    const newSerie: Series = new Series(article.publicationYear + '', [0]);
+                    tempSeries.push(newSerie);
+                }
             }
         }
 
@@ -634,7 +637,6 @@ export class ProfileRepresentation
         }
 
         series = series.sort(this.sortSeriesByName);
-        console.log(series);
 
         const heatmapChartModel: HeatmapChartModel = new HeatmapChartModel(
             'Publications by Quarter',

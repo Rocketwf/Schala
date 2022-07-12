@@ -40,12 +40,11 @@ const getSeries = () =>
     apexSeries.push(q3);
     apexSeries.push(q4);
     apexSeries.push(na);
-    console.log(apexSeries);
     return apexSeries;
 };
 
 const getLabels = computed(() => 
-{
+{   
     const labels: string[] = new Array<string>();
     for (const series of props.heatmapChartModel.series) 
     {
