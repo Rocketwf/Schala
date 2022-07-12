@@ -66,7 +66,6 @@ describe('inputs test', () =>
         const check: CheckBox<ChartOptionsModel> = new CheckBox('first Diagram','2', true, scale);
         check.data = chartMods;
         check.handleInput();
-        console.log(chartMods[0].maxLimit);
         expect(chartMods[0].maxLimit).toBe(50);
     }, 30000);
     it('checks inputName of Checkbox', async () => 
