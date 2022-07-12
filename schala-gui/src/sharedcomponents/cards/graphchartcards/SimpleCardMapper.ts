@@ -7,7 +7,7 @@ import StackedColumnsChartCard from './StackedColumnsChartCard.vue';
 import BasicColumnsChartCard from './BasicColumnsChartCard.vue';
 import DistributedColumnsChartCard from './DistributedColumnsChartCard.vue';
 import BasicBarsChartCard from './BasicBarsChartCard.vue';
-import ExpertiseCard from '../ExpertiseCard.vue'
+import ExpertiseCard from '../ExpertiseCard.vue';
 
 export const mapper = new Map<string, Component>();
 mapper.set('PieChartCard', PieChartCard);

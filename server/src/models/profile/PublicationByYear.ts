@@ -2,7 +2,8 @@
  * This class represents a tuple of a year and the number of
  * publications for that year
  */
-export class PublicationByYear {
+export class PublicationByYear 
+{
     /**
      * Year of the publication by year data
      */
@@ -17,35 +18,40 @@ export class PublicationByYear {
      * @param _year - Year of the publication by year data
      * @param _publicationCount - Publication count of the scholar
      */
-    constructor(_year: number, _publicationCount: number) {
+    constructor(_year: number, _publicationCount: number) 
+    {
         this._year = _year;
         this._publicationsCount = _publicationCount;
     }
     /**
      * Gets year
      */
-    public get year(): number {
+    public get year(): number 
+    {
         return this._year;
     }
 
     /**
      * Sets year
      */
-    public set year(_year: number) {
+    public set year(_year: number) 
+    {
         this._year = _year;
     }
 
     /**
      * Gets publications count
      */
-    public get publicationsCount(): number {
+    public get publicationsCount(): number 
+    {
         return this._publicationsCount;
     }
 
     /**
      * Sets publications count
      */
-    public set publicationsCount(_publicationsCount: number) {
+    public set publicationsCount(_publicationsCount: number) 
+    {
         this._publicationsCount = _publicationsCount;
     }
 }

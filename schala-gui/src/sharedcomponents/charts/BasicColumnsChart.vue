@@ -1,7 +1,12 @@
 <template>
-    <div id="chart">
-        <apexchart type="bar" height="350" :options="chartOptions" :series="getSeries()"></apexchart>
-    </div>
+  <div id="chart">
+    <apexchart
+      type="bar"
+      height="350"
+      :options="chartOptions"
+      :series="getSeries()"
+    />
+  </div>
 </template>
 <script setup charset="utf-8" lang="ts">
 import { BasicColumnsChartModel } from 'schala-core';
@@ -10,27 +15,33 @@ import { computed } from 'vue';
 const props = defineProps<{
     basicColumnsChartModel: BasicColumnsChartModel;
 }>();
-const getSeries = () => {
+const getSeries = () => 
+{
     const apexSeries: { name: string; data: number[] }[] = [];
     let apexData: Array<Array<number>> = [];
-    for (const series of props.basicColumnsChartModel.series) {
+    for (const series of props.basicColumnsChartModel.series) 
+    {
         apexData.push(series.data);
     }
     apexData = apexData[0].map((_, colIndex) => apexData.map((row) => row[colIndex]));
-    for (let i: number = 0; i < apexData.length; i++) {
+    for (let i: number = 0; i < apexData.length; i++) 
+    {
         apexSeries.push({ name: props.basicColumnsChartModel.labels[i], data: apexData[i] });
     }
     return apexSeries;
 };
-const getLabels = computed(() => {
+const getLabels = computed(() => 
+{
     const labels: string[] = new Array<string>();
-    for (const series of props.basicColumnsChartModel.series) {
+    for (const series of props.basicColumnsChartModel.series) 
+    {
         labels.push(series.name);
     }
     return labels;
 });
 
-const chartOptions = computed(() => {
+const chartOptions = computed(() => 
+{
     return {
         dataLabels: {
             enabled: true,

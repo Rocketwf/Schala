@@ -9,15 +9,18 @@ http.defaults.headers.common['x-api-key'] = process.env.SCHALA_API_KEY ? process
  * Class responsible for making requests to the SemanticScholar and feching information
  * related to an author.
  */
-export class SemanticScholarSource implements DataSource {
+export class SemanticScholarSource implements DataSource 
+{
     /**
      * Method responsible for fetching the profiles for a given search query from
      * the SemanticScholarSource
      * @param query - The user profile query to search for
      * @returns search results - A promise of a list of APIBasicAuthor profiles
      */
-    public async fetchSearchResults(query: string): Promise<APIBasicAuthor[]> {
-        try {
+    public async fetchSearchResults(query: string): Promise<APIBasicAuthor[]> 
+    {
+        try 
+        {
             const { data: searchResults }: AxiosResponse<APISearch, object> = await http.get<APISearch>(
                 'https://api.semanticscholar.org/graph/v1/author/search?query=' +
                     query +
@@ -29,11 +32,16 @@ export class SemanticScholarSource implements DataSource {
                 },
             );
             return searchResults.data;
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
+        }
+        catch (error) 
+        {
+            if (axios.isAxiosError(error)) 
+            {
                 console.log('error message: ', error.message);
                 throw new Error(error.message);
-            } else {
+            }
+            else 
+            {
                 console.log('unexpected error: ', error);
                 throw new Error('TODO: Implement me');
             }
@@ -45,8 +53,10 @@ export class SemanticScholarSource implements DataSource {
      * @param authorId - The author with the ID being queried
      * @returns author - A promise of a APIAuthor profile
      */
-    public async fetchAuthor(authorId: string): Promise<APIAuthor> {
-        try {
+    public async fetchAuthor(authorId: string): Promise<APIAuthor> 
+    {
+        try 
+        {
             const { data: author }: AxiosResponse<APIAuthor, object> = await http.get<APIAuthor>(
                 'https://api.semanticscholar.org/graph/v1/author/' +
                     authorId +
@@ -58,11 +68,16 @@ export class SemanticScholarSource implements DataSource {
                 },
             );
             return author;
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
+        }
+        catch (error) 
+        {
+            if (axios.isAxiosError(error)) 
+            {
                 console.log('error message: ', error.message);
                 throw new Error(error.message);
-            } else {
+            }
+            else 
+            {
                 console.log('unexpected error: ', error);
                 throw new Error('TODO: Implement me');
             }
@@ -74,12 +89,16 @@ export class SemanticScholarSource implements DataSource {
      * @param paperIds - The papers being searched for
      * @returns papers - A promise of a list of APIPaper articles
      */
-    public async fetchPapers(paperIds: string[]): Promise<APIPaper[]> {
+    public async fetchPapers(paperIds: string[]): Promise<APIPaper[]> 
+    {
         const papers: APIPaper[] = new Array<APIPaper>();
         const promises: Promise<void | APIPaper>[] = new Array<Promise<void | APIPaper>>();
-        try {
-            for (const paperId of paperIds) {
-                try {
+        try 
+        {
+            for (const paperId of paperIds) 
+            {
+                try 
+                {
                     promises.push(
                         http
                             .get<APIPaper>(
@@ -92,20 +111,28 @@ export class SemanticScholarSource implements DataSource {
                                     },
                                 },
                             )
-                            .then((paper: AxiosResponse<APIPaper, object>) => {
+                            .then((paper: AxiosResponse<APIPaper, object>) => 
+                            {
                                 papers.push(paper.data);
                             }),
                     );
-                } catch (error) {
-                    if (axios.isAxiosError(error)) {
+                }
+                catch (error) 
+                {
+                    if (axios.isAxiosError(error)) 
+                    {
                         console.log('error message: ', error.message);
-                    } else {
+                    }
+                    else 
+                    {
                         console.log('unexpected error: ', error);
                     }
                 }
             }
             await Promise.allSettled(promises);
             return papers;
-        } catch (error) {}
+        }
+        catch (error) 
+        {}
     }
 }

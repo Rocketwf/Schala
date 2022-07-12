@@ -28,7 +28,8 @@ export interface Input<T, S extends Filterable<S>> {
     handleInput(): void;
 }
 
-export class Field<T, S extends Filterable<S>> implements Input<T, S> {
+export class Field<T, S extends Filterable<S>> implements Input<T, S> 
+{
     /**
      *Represents the input name as string
      */
@@ -57,7 +58,8 @@ export class Field<T, S extends Filterable<S>> implements Input<T, S> {
      * @param _filter - Represents the filter value as a Filter
      * @param _data - Represents the data as the array of type bound to S
      */
-    constructor(_inputName: string, inputValue: T, _filter: Filter<T, S>, _data: S[]) {
+    constructor(_inputName: string, inputValue: T, _filter: Filter<T, S>, _data: S[]) 
+    {
         this._inputName = _inputName;
         this._inputValue = inputValue;
         this._filter = _filter;
@@ -67,80 +69,93 @@ export class Field<T, S extends Filterable<S>> implements Input<T, S> {
     /**
      * Getter method of data attribute
      */
-    public get data(): S[] {
+    public get data(): S[] 
+    {
         return this._data;
     }
     /**
      * Setter method of data attribute
      */
-    public set data(v: S[]) {
+    public set data(v: S[]) 
+    {
         this._data = v;
     }
     /**
      *Defines a handler for a new input, it changes the current value of the corresponding filter object, and calls applyAllFilters on the data
      */
-    handleInput(): void {
+    handleInput(): void 
+    {
         this._filter.value = this._inputValue;
-        for (const entry of this._data) {
+        for (const entry of this._data) 
+        {
             entry.applyAllFilters();
         }
     }
     /**
      * Getter method of filter attribute
      */
-    public get filter(): Filter<T, S> {
+    public get filter(): Filter<T, S> 
+    {
         return this._filter;
     }
     /**
      * Setter method of filter attribute
      */
-    public set filter(v: Filter<T, S>) {
+    public set filter(v: Filter<T, S>) 
+    {
         this._filter = v;
     }
 
     /**
      * Getter method of inputName attribute
      */
-    public get inputName(): string {
+    public get inputName(): string 
+    {
         return this._inputName;
     }
 
     /**
      * Setter method of inputName attribute
      */
-    public set inputName(name: string) {
+    public set inputName(name: string) 
+    {
         this._inputName = name;
     }
 
     /**
      * Getter method of inputId attribute
      */
-    public get inputId(): string {
+    public get inputId(): string 
+    {
         return this._inputId;
     }
     /**
      * Setter method of inputId attribute
      */
-    public set inputId(v: string) {
+    public set inputId(v: string) 
+    {
         this._inputId = v;
     }
 
     /**
      * Getter method of inputValue attribute
      */
-    public get inputValue(): T {
+    public get inputValue(): T 
+    {
         return this._inputValue;
     }
 
     /**
      *Setter method of inputValue attribute
      */
-    public set inputValue(value: T) {
+    public set inputValue(value: T) 
+    {
         this._inputValue = value;
     }
 }
 
-export class CheckBox<S extends Filterable<S>> implements Input<boolean, S> {
+export class CheckBox<S extends Filterable<S>> implements Input<boolean, S> 
+{
     /**
      *Represents the input name as string
      */
@@ -169,7 +184,8 @@ export class CheckBox<S extends Filterable<S>> implements Input<boolean, S> {
      * @param inputValue - Represents the input value as a boolean
      * @param _filter - Represents the filter value as a Filter
      */
-    constructor(_inputName: string, _inputId: string, inputValue: boolean, _filter: Filter<boolean, S>) {
+    constructor(_inputName: string, _inputId: string, inputValue: boolean, _filter: Filter<boolean, S>) 
+    {
         this._inputName = _inputName;
         this._inputId = _inputId;
         this._inputValue = inputValue;
@@ -178,80 +194,93 @@ export class CheckBox<S extends Filterable<S>> implements Input<boolean, S> {
     /**
      * Getter method of data attribute
      */
-    public get data(): S[] {
+    public get data(): S[] 
+    {
         return this._data;
     }
     /**
      * Setter method of data attribute
      */
-    public set data(data: S[]) {
+    public set data(data: S[]) 
+    {
         this._data = data;
     }
     /**
      *Defines a handler for a new input, it changes the current value of the corresponding filter object, and calls applyAllFilters on the data
      */
-    handleInput(): void {
+    handleInput(): void 
+    {
         this._filter.value = this._inputValue;
-        for (const entry of this._data) {
+        for (const entry of this._data) 
+        {
             entry.applyAllFilters();
         }
     }
     /**
      * Getter method of filter attribute
      */
-    public get filter(): Filter<boolean, S> {
+    public get filter(): Filter<boolean, S> 
+    {
         return this._filter;
     }
     /**
      * Setter method of filter attribute
      */
-    public set filter(v: Filter<boolean, S>) {
+    public set filter(v: Filter<boolean, S>) 
+    {
         this._filter = v;
     }
 
     /**
      * Getter method of inputId attribute
      */
-    public get inputName(): string {
+    public get inputName(): string 
+    {
         return this._inputName;
     }
 
     /**
      * Setter method of inputName attribute
      */
-    public set inputName(name: string) {
+    public set inputName(name: string) 
+    {
         this._inputName = name;
     }
 
     /**
      * Getter method of inputId attribute
      */
-    public get inputId(): string {
+    public get inputId(): string 
+    {
         return this._inputId;
     }
     /**
      * Setter method of inputId attribute
      */
-    public set inputId(v: string) {
+    public set inputId(v: string) 
+    {
         this._inputId = v;
     }
 
     /**
      * Getter method of inputValue attribute
      */
-    public get inputValue(): boolean {
+    public get inputValue(): boolean 
+    {
         return this._inputValue;
     }
 
     /**
      * Setter method of inputId attribute
      */
-    public set inputValue(value: boolean) {
+    public set inputValue(value: boolean) 
+    {
         this._inputValue = value;
     }
 }
 
-export class SelectOptions<T, S extends Filterable<S>> implements Input<T, S> {
+export class SelectOptions<T, S extends Filterable<S>> implements Input<T, S> 
+{
     /**
      *Represents the data as the array of type bound to S
      */
@@ -285,7 +314,8 @@ export class SelectOptions<T, S extends Filterable<S>> implements Input<T, S> {
      * @param _filter - Represents the filter value as a Filter
      * @param _data - Represents the data as the array of type bound to S
      */
-    constructor(_inputName: string, _inputValue: T, _possibleOptions: T[], _filter: Filter<T, S>, _data: S[]) {
+    constructor(_inputName: string, _inputValue: T, _possibleOptions: T[], _filter: Filter<T, S>, _data: S[]) 
+    {
         this._inputName = _inputName;
         this._inputValue = _inputValue;
         this._possibeOptions = _possibleOptions;
@@ -295,82 +325,96 @@ export class SelectOptions<T, S extends Filterable<S>> implements Input<T, S> {
     /**
      *Defines a handler for a new input, it changes the current value of the corresponding filter object, and calls applyAllFilters on the data
      */
-    public handleInput(): void {
+    public handleInput(): void 
+    {
         this._filter.value = this._inputValue;
-        for (const entry of this._data) {
+        for (const entry of this._data) 
+        {
             entry.applyAllFilters();
         }
     }
     /**
      * Getter method of data attribute
      */
-    public get data(): S[] {
+    public get data(): S[] 
+    {
         return this._data;
     }
     /**
      * Setter method of data attribute
      */
-    public set data(v: S[]) {
+    public set data(v: S[]) 
+    {
         this._data = v;
     }
     /**
      * Getter method of filter attribute
      */
-    public get filter(): Filter<T, S> {
+    public get filter(): Filter<T, S> 
+    {
         return this._filter;
     }
     /**
      * Setter method of filter attribute
      */
-    public set filter(v: Filter<T, S>) {
+    public set filter(v: Filter<T, S>) 
+    {
         this._filter = v;
     }
     /**
      * Getter method of inputName attribute
      */
-    public get inputName(): string {
+    public get inputName(): string 
+    {
         return this._inputName;
     }
     /**
      * Setter method of inputName attribute
      */
-    public set inputName(v: string) {
+    public set inputName(v: string) 
+    {
         this._inputName = v;
     }
     /**
      * Getter method of inputId attribute
      */
-    public get inputId(): string {
+    public get inputId(): string 
+    {
         return this._inputId;
     }
     /**
      * Setter method of inputId attribute
      */
-    public set inputId(v: string) {
+    public set inputId(v: string) 
+    {
         this._inputId = v;
     }
     /**
      * Getter method of inputValue attribute
      */
-    public get inputValue(): T {
+    public get inputValue(): T 
+    {
         return this._inputValue;
     }
     /**
      * Getter method of inputValue attribute
      */
-    public set inputValue(inputValue: T) {
+    public set inputValue(inputValue: T) 
+    {
         this._inputValue = inputValue;
     }
     /**
      * Getter method of possibleOptions attribute
      */
-    public get possibleOptions(): T[] {
+    public get possibleOptions(): T[] 
+    {
         return this._possibeOptions;
     }
     /**
      * Setter method of possibleOptions attribute
      */
-    public set possibleOptions(v: T[]) {
+    public set possibleOptions(v: T[]) 
+    {
         this._possibeOptions = v;
     }
 }

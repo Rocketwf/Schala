@@ -1,9 +1,9 @@
 <template>
-    <simple-card :simple-card-model="cardModel">
-        <template #model>
-            <stacked-columns100-chart :stacked-columns-100-chart-model="cardModel" />
-        </template>
-    </simple-card>
+  <simple-card :simple-card-model="cardModel">
+    <template #model>
+      <stacked-columns100-chart :stacked-columns-100-chart-model="cardModel" />
+    </template>
+  </simple-card>
 </template>
 
 <script charset="utf-8" lang="ts" setup>

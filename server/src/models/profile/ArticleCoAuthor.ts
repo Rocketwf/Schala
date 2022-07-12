@@ -1,7 +1,8 @@
 /**
  * This class represents a co-author for an article
  */
-export class ArticleCoAuthor {
+export class ArticleCoAuthor 
+{
     /**
      * Id the co-author
      */
@@ -16,7 +17,8 @@ export class ArticleCoAuthor {
      * @param _id - The ID of the author
      * @param _name - The name of the author
      */
-    constructor(_id: string, _name: string) {
+    constructor(_id: string, _name: string) 
+    {
         this._id = _id;
         this._name = _name;
     }
@@ -24,28 +26,32 @@ export class ArticleCoAuthor {
     /**
      * Gets id
      */
-    public get id(): string {
+    public get id(): string 
+    {
         return this._id;
     }
 
     /**
      * Sets id
      */
-    public set id(_id: string) {
+    public set id(_id: string) 
+    {
         this._id = _id;
     }
 
     /**
      * Gets name
      */
-    public get name(): string {
+    public get name(): string 
+    {
         return this._name;
     }
 
     /**
      * Sets name
      */
-    public set name(_name: string) {
+    public set name(_name: string) 
+    {
         this._name = _name;
     }
 }

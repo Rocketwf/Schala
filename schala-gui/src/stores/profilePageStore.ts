@@ -10,26 +10,32 @@ export const profilePageStore = defineStore({
         profileRepresentation: {} as ProfileRepresentation,
     }),
     actions: {
-        setProfileRepresentation(passedRepr: ProfileRepresentation) {
+        setProfileRepresentation(passedRepr: ProfileRepresentation) 
+        {
             this.profileRepresentation = passedRepr;
         },
 
-        getProfileRepresentation() {
+        getProfileRepresentation() 
+        {
             return this.profileRepresentation;
         },
-        getProfileId(): string {
+        getProfileId(): string 
+        {
             return this.profileId;
         },
-        async renderSaved() {
+        async renderSaved() 
+        {
             Loading.show();
             const profile: FullProfile = await SemanticScholarSource.getInstance().fetchFullProfile(this.profileId);
             this.profileRepresentation = new ProfileRepresentation(profile);
             this.profileRepresentation.renderProfile();
             Loading.hide();
         },
-        async setProfileId(newId: string) {
+        async setProfileId(newId: string) 
+        {
             Loading.show();
-            if (newId !== this.profileId) {
+            if (newId !== this.profileId) 
+            {
                 this.profileId = newId;
                 const profile: FullProfile = await SemanticScholarSource.getInstance().fetchFullProfile(this.profileId);
                 this.profileRepresentation = new ProfileRepresentation(profile);
@@ -38,11 +44,13 @@ export const profilePageStore = defineStore({
             Loading.hide();
         },
 
-        getFullProfile() {
+        getFullProfile() 
+        {
             return this.getProfileRepresentation().fullProfile as FullProfile;
         },
 
-        getBasicProfile() {
+        getBasicProfile() 
+        {
             return this.getProfileRepresentation().fullProfile.basicProfile;
         },
     },

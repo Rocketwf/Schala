@@ -1,6 +1,7 @@
 import { Filterable } from './Filterable';
 
-export abstract class Filter<S, T extends Filterable<T>> {
+export abstract class Filter<S, T extends Filterable<T>> 
+{
     /**
      * The value  of a filter
      */
@@ -10,7 +11,8 @@ export abstract class Filter<S, T extends Filterable<T>> {
      * Creates an instance of filter.
      * @param value - value of the filter
      */
-    constructor(value: S) {
+    constructor(value: S) 
+    {
         this._value = value;
     }
 
@@ -24,7 +26,8 @@ export abstract class Filter<S, T extends Filterable<T>> {
      * @param model - the given model
      * @returns true if the given model is valid
      */
-    validate(model: T): boolean {
+    validate(model: T): boolean 
+    {
         model;
         return true;
     }
@@ -33,7 +36,8 @@ export abstract class Filter<S, T extends Filterable<T>> {
      * If the model is valid it calls apply method on the moodel
      * @param model - the given model
      */
-    applyValidate(model: T): void {
+    applyValidate(model: T): void 
+    {
         console.log(this.validate(model));
         if (this.validate(model)) this.apply(model);
     }
@@ -41,14 +45,16 @@ export abstract class Filter<S, T extends Filterable<T>> {
     /**
      * Setter method of the value attribute.
      */
-    public set value(newValue: S) {
+    public set value(newValue: S) 
+    {
         this._value = newValue;
     }
 
     /**
      * Getter method of the value attribute.
      */
-    public get value(): S {
+    public get value(): S 
+    {
         return this._value;
     }
 }

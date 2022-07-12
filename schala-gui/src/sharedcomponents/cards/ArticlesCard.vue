@@ -1,32 +1,36 @@
 <template>
-    <simple-card :simple-card-model="props.cardModel">
-        <template #selectOptions>
-            <select-options :select-options-models="cardModel.selectOptions" />
-            <div class="col-md-2 col-xs-12 vertical-middle">
-                <q-select
-                    standout
-                    v-model="hitsPerPage"
-                    :options="[10, 15, 20, 25, 30, 50]"
-                    label="Hits per page"
-                    @update:model-value="updateHitsPerPage"
-                />
-            </div>
-        </template>
-        <template #buttons>
-            <popup-button
-                v-for="popupBtn in cardModel.popupButtons"
-                :key="popupBtn.id"
-                :popup-button-model="popupBtn"
-                badge
-            />
-        </template>
-        <template #model>
-            <article-item v-for="art in props.cardModel.articles" :key="art.title" :article="art" />
-        </template>
-        <template #pagination>
-            <experimental-generic-pagination :pagination-model="cardModel.pagination" />
-        </template>
-    </simple-card>
+  <simple-card :simple-card-model="props.cardModel">
+    <template #selectOptions>
+      <select-options :select-options-models="cardModel.selectOptions" />
+      <div class="col-md-2 col-xs-12 vertical-middle">
+        <q-select
+          standout
+          v-model="hitsPerPage"
+          :options="[10, 15, 20, 25, 30, 50]"
+          label="Hits per page"
+          @update:model-value="updateHitsPerPage"
+        />
+      </div>
+    </template>
+    <template #buttons>
+      <popup-button
+        v-for="popupBtn in cardModel.popupButtons"
+        :key="popupBtn.id"
+        :popup-button-model="popupBtn"
+        badge
+      />
+    </template>
+    <template #model>
+      <article-item
+        v-for="art in props.cardModel.articles"
+        :key="art.title"
+        :article="art"
+      />
+    </template>
+    <template #pagination>
+      <experimental-generic-pagination :pagination-model="cardModel.pagination" />
+    </template>
+  </simple-card>
 </template>
 
 <script setup charset="utf-8" lang="ts">
@@ -42,7 +46,8 @@ const props = defineProps<{
     cardModel: ArticlesModel;
 }>();
 const hitsPerPage = ref(props.cardModel.paginationFilter.hitsPerPage);
-const updateHitsPerPage = () => {
+const updateHitsPerPage = () => 
+{
     props.cardModel.updateHitsPerPage(hitsPerPage.value);
 };
 </script>

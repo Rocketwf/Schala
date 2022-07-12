@@ -12,7 +12,8 @@
 
 const { configure } = require('quasar/wrappers');
 
-module.exports = configure(function (ctx) {
+module.exports = configure(function (ctx) 
+{
     return {
         // https://v2.quasar.dev/quasar-cli-webpack/supporting-ts
         supportTS: {
@@ -210,20 +211,23 @@ module.exports = configure(function (ctx) {
             },
             // optional; add/remove/change properties
             // of production generated package.json
-            extendPackageJson(pkg) {
+            extendPackageJson(pkg) 
+            {
                 pkg.dependencies['schala-core'] = '../../../../core';
                 // directly change props of pkg;
                 // no need to return anything
             },
 
             // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
-            chainWebpackMain(/* chain */) {
+            chainWebpackMain(/* chain */) 
+            {
                 // do something with the Electron main process Webpack cfg
                 // extendWebpackMain also available besides this chainWebpackMain
             },
 
             // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
-            chainWebpackPreload(/* chain */) {
+            chainWebpackPreload(/* chain */) 
+            {
                 // do something with the Electron main process Webpack cfg
                 // extendWebpackPreload also available besides this chainWebpackPreload
             },

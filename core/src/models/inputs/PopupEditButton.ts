@@ -26,7 +26,8 @@ export interface PopupEditButton<S extends Filterable<S>> {
     handleAll(): void;
 }
 
-export class RangeButton implements PopupEditButton<ObjectSeriesChartModel> {
+export class RangeButton implements PopupEditButton<ObjectSeriesChartModel> 
+{
     /**
      * Represents the id value as a string
      */
@@ -48,63 +49,74 @@ export class RangeButton implements PopupEditButton<ObjectSeriesChartModel> {
      * @param _label - Represents the label value as a string
      * @param _inputs - Represents the inputs value as a Field Array
      */
-    constructor(_label: string, _inputs: Field<number, ObjectSeriesChartModel>[]) {
+    constructor(_label: string, _inputs: Field<number, ObjectSeriesChartModel>[]) 
+    {
         this._label = _label;
         this._inputs = _inputs;
     }
     /**
      * Getter method of the icon attribute
      */
-    public get icon(): string {
+    public get icon(): string 
+    {
         return this._icon;
     }
     /**
      * Method for hadnling all inputs
      */
-    public handleAll(): void {
-        for (const input of this._inputs) {
+    public handleAll(): void 
+    {
+        for (const input of this._inputs) 
+        {
             input.handleInput();
         }
     }
     /**
      * Setter method of the label attribute
      */
-    public set label(value: string) {
+    public set label(value: string) 
+    {
         this._label = value;
     }
     /**
      * Getter method of the label attribute
      */
-    public get label(): string {
+    public get label(): string 
+    {
         return this._label;
     }
     /**
      * Getter method of the id attribute
      */
-    public get id(): string {
+    public get id(): string 
+    {
         return this._id;
     }
     /**
      * Setter method of the id attribute
      */
-    public set id(v: string) {
+    public set id(v: string) 
+    {
         this._id = v;
     }
     /**
      * Getter method of the inputs attribute
      */
-    public get inputs(): Field<number, ObjectSeriesChartModel>[] {
+    public get inputs(): Field<number, ObjectSeriesChartModel>[] 
+    {
         return this._inputs;
     }
     /**
      * Setter method of the inputs attribute
      */
-    public set inputs(v: Field<number, ObjectSeriesChartModel>[]) {
+    public set inputs(v: Field<number, ObjectSeriesChartModel>[]) 
+    {
         this._inputs = v;
     }
 }
 
-export class ShowingButton implements PopupEditButton<ObjectSeriesChartModel> {
+export class ShowingButton implements PopupEditButton<ObjectSeriesChartModel> 
+{
     /**
      * Represents the id value as a string
      */
@@ -130,7 +142,8 @@ export class ShowingButton implements PopupEditButton<ObjectSeriesChartModel> {
      * @param _label - Represents the label value as a string
      * @param _inputs - Represents the inputs value as a Field Array
      */
-    constructor(_label: string, _inputs: Field<number, ObjectSeriesChartModel>[]) {
+    constructor(_label: string, _inputs: Field<number, ObjectSeriesChartModel>[]) 
+    {
         this._cachedLabel = _label;
         this._inputs = _inputs;
         this._label = _label + this._inputs[0].inputValue;
@@ -138,61 +151,71 @@ export class ShowingButton implements PopupEditButton<ObjectSeriesChartModel> {
     /**
      * Getter method of the icon attribute
      */
-    public get icon(): string {
+    public get icon(): string 
+    {
         return this._icon;
     }
     /**
      * Setter method of the icon attribute
      */
-    public set icon(v: string) {
+    public set icon(v: string) 
+    {
         this._icon = v;
     }
     /**
      * Method for handling all inputs
      */
-    public handleAll(): void {
+    public handleAll(): void 
+    {
         this._label = this._cachedLabel + ': ' + this._inputs[0].inputValue;
         this._inputs[0].handleInput();
     }
     /**
      * Setter method of the label attribute
      */
-    public set label(value: string) {
+    public set label(value: string) 
+    {
         this._label = value;
     }
     /**
      * Getter method of the label attribute
      */
-    public get label(): string {
+    public get label(): string 
+    {
         return this._label;
     }
     /**
      * Getter method of the id attribute
      */
-    public get id(): string {
+    public get id(): string 
+    {
         return this._id;
     }
     /**
      * Setter method of the id attribute
      */
-    public set id(v: string) {
+    public set id(v: string) 
+    {
         this._id = v;
     }
     /**
      * Getter method of the inputs attribute
      */
-    public get inputs(): Field<number, ObjectSeriesChartModel>[] {
+    public get inputs(): Field<number, ObjectSeriesChartModel>[] 
+    {
         return this._inputs;
     }
     /**
      * Setter method of the inputs attribute
      */
-    public set inputs(v: Field<number, ObjectSeriesChartModel>[]) {
+    public set inputs(v: Field<number, ObjectSeriesChartModel>[]) 
+    {
         this._inputs = v;
     }
 }
 
-export class ArticlesFilterButton implements PopupEditButton<ArticlesModel> {
+export class ArticlesFilterButton implements PopupEditButton<ArticlesModel> 
+{
     /**
      * Represents the id value as a string
      */
@@ -214,64 +237,75 @@ export class ArticlesFilterButton implements PopupEditButton<ArticlesModel> {
      * @param _label - Represents the inputs value as a Field Array
      * @param _inputs - Represents the inputs value as a Field Array
      */
-    constructor(_label: string, _inputs: Field<string, ArticlesModel>[]) {
+    constructor(_label: string, _inputs: Field<string, ArticlesModel>[]) 
+    {
         this._label = _label;
         this._inputs = _inputs;
     }
     /**
      * Getter method of the icon attribute
      */
-    public get icon(): string {
+    public get icon(): string 
+    {
         return this._icon;
     }
     /**
      * Setter method of the icon attribute
      */
-    public set icon(v: string) {
+    public set icon(v: string) 
+    {
         this._icon = v;
     }
     /**
      * Method for handling all inputs
      */
-    public handleAll(): void {
-        for (const input of this.inputs) {
+    public handleAll(): void 
+    {
+        for (const input of this.inputs) 
+        {
             input.handleInput();
         }
     }
     /**
      * Setter method of the label attribute
      */
-    public set label(value: string) {
+    public set label(value: string) 
+    {
         this._label = value;
     }
     /**
      * Getter method of the label attribute
      */
-    public get label(): string {
+    public get label(): string 
+    {
         return this._label;
     }
     /**
      * Getter method of the id attribute
      */
-    public get id(): string {
+    public get id(): string 
+    {
         return this._id;
     }
     /**
      * Setter method of the id attribute
      */
-    public set id(v: string) {
+    public set id(v: string) 
+    {
         this._id = v;
     }
     /**
      * Getter method of the inputs attribute
      */
-    public get inputs(): Field<string, ArticlesModel>[] {
+    public get inputs(): Field<string, ArticlesModel>[] 
+    {
         return this._inputs;
     }
     /**
      * Setter method of the inputs attribute
      */
-    public set inputs(v: Field<string, ArticlesModel>[]) {
+    public set inputs(v: Field<string, ArticlesModel>[]) 
+    {
         this._inputs = v;
     }
 }

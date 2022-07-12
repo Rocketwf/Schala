@@ -3,7 +3,8 @@ import { ChartOptionsModel } from '../chartoptionsmodel';
 import { PopupEditButton } from '../inputs';
 import { SimpleCardModel, ViewName } from '../simplecardmodel/SimpleCardModel';
 
-export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesChartModel>, SimpleCardModel {
+export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesChartModel>, SimpleCardModel 
+{
     /**
      * Represents the id as a string.
      */
@@ -91,7 +92,8 @@ export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesC
         _yTitle: string,
         _labels: string[],
         _popupButtons?: PopupEditButton<ObjectSeriesChartModel>[],
-    ) {
+    ) 
+    {
         this._title = _title;
         this._sub = _sub;
         this._viewName = _viewName;
@@ -113,8 +115,10 @@ export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesC
     /**
      * If the cachedModel is null, call persist method
      */
-    private persistOnce(): void {
-        if (!this._cachedModel) {
+    private persistOnce(): void 
+    {
+        if (!this._cachedModel) 
+        {
             this.persist();
         }
     }
@@ -122,11 +126,13 @@ export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesC
     /**
      * Applies all the filters with the current value on the cached data.
      */
-    public applyAllFilters(): void {
+    public applyAllFilters(): void 
+    {
         this.persistOnce();
 
         this.series = this._cachedModel.series;
-        for (const filter of this._filters) {
+        for (const filter of this._filters) 
+        {
             filter.applyValidate(this);
         }
     }
@@ -134,187 +140,214 @@ export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesC
     /**
      * Setter method of the chartOptionsModel.
      */
-    public set chartOptionsModel(chartOptionModel: ChartOptionsModel) {
+    public set chartOptionsModel(chartOptionModel: ChartOptionsModel) 
+    {
         this._chartOptionsModel = chartOptionModel;
     }
 
     /**
      * Getter method of the chartOptionsModel.
      */
-    public get chartOptionsModel(): ChartOptionsModel {
+    public get chartOptionsModel(): ChartOptionsModel 
+    {
         return this._chartOptionsModel;
     }
 
     /**
      * Getter method of the data that is currently being represented.
      */
-    public get series(): Series[] {
+    public get series(): Series[] 
+    {
         return this._series;
     }
 
     /**
      * Setter method of the data to be represented.
      */
-    public set series(newSeries: Series[]) {
+    public set series(newSeries: Series[]) 
+    {
         this._series = newSeries;
     }
 
     /**
      * Getter method of the popup buttons to be added.
      */
-    public get popupButtons(): PopupEditButton<ObjectSeriesChartModel>[] {
+    public get popupButtons(): PopupEditButton<ObjectSeriesChartModel>[] 
+    {
         return this._popupButtons;
     }
 
     /**
      * Setter method of the filters to be applied.
      */
-    public set popupButtons(popupButtons: PopupEditButton<ObjectSeriesChartModel>[]) {
+    public set popupButtons(popupButtons: PopupEditButton<ObjectSeriesChartModel>[]) 
+    {
         this._popupButtons = popupButtons;
     }
 
     /**
      * Getter method of the colWidth attribute.
      */
-    public get colWidth(): number {
+    public get colWidth(): number 
+    {
         return this._colWidth;
     }
 
     /**
      * Setter method of the colWidth attribute.
      */
-    public set colWidth(v: number) {
+    public set colWidth(v: number) 
+    {
         this._colWidth = v;
     }
 
     /**
      * Getter method of the title attribute.
      */
-    public get title(): string {
+    public get title(): string 
+    {
         return this._title;
     }
 
     /**
      * Setter method of the title attribute.
      */
-    public set title(v: string) {
+    public set title(v: string) 
+    {
         this._title = v;
     }
 
     /**
      * Getter method of the id attribute.
      */
-    public get id(): string {
+    public get id(): string 
+    {
         return this._id;
     }
 
     /**
      * Setter method of the id attribute.
      */
-    public set id(v: string) {
+    public set id(v: string) 
+    {
         this._id = v;
     }
 
     /**
      * Getter method of the sub attribute.
      */
-    public get sub(): string {
+    public get sub(): string 
+    {
         return this._sub;
     }
 
     /**
      * Setter method of the sub attribute.
      */
-    public set sub(v: string) {
+    public set sub(v: string) 
+    {
         this._sub = v;
     }
 
     /**
      * Getter method of the viewName attribute.
      */
-    public get viewName(): ViewName {
+    public get viewName(): ViewName 
+    {
         return this._viewName;
     }
 
     /**
      * Setter method of the viewName attribute.
      */
-    public set viewName(v: ViewName) {
+    public set viewName(v: ViewName) 
+    {
         this._viewName = v;
     }
 
     /**
      * Getter method of the xTitle attribute.
      */
-    public get xTitle(): string {
+    public get xTitle(): string 
+    {
         return this._xTitle;
     }
 
     /**
      * Setter method of the xTitle attribute.
      */
-    public set xTitle(v: string) {
+    public set xTitle(v: string) 
+    {
         this._xTitle = v;
     }
 
     /**
      * Getter method of the yTitle attribute.
      */
-    public get yTitle(): string {
+    public get yTitle(): string 
+    {
         return this._yTitle;
     }
 
     /**
      * Setter method of the yTitle attribute.
      */
-    public set yTitle(v: string) {
+    public set yTitle(v: string) 
+    {
         this._yTitle = v;
     }
 
     /**
      * Getter method of the labels attribute.
      */
-    public get labels(): string[] {
+    public get labels(): string[] 
+    {
         return this._labels;
     }
 
     /**
      * Setter method of the labels attribute.
      */
-    public set labels(v: string[]) {
+    public set labels(v: string[]) 
+    {
         this._labels = v;
     }
 
     /**
      * Save copy of model to the cachedModel
      */
-    public persist(): void {
+    public persist(): void 
+    {
         this._cachedModel = this.deepCopy();
     }
 
     /**
      * Getter method of the filters attribute.
      */
-    public get filters(): Filter<number, ObjectSeriesChartModel>[] {
+    public get filters(): Filter<number, ObjectSeriesChartModel>[] 
+    {
         return this._filters;
     }
 
     /**
      * Setter method of the filters attribute.
      */
-    public set filters(filters: Filter<number, ObjectSeriesChartModel>[]) {
+    public set filters(filters: Filter<number, ObjectSeriesChartModel>[]) 
+    {
         this._filters = filters;
     }
 
     /**
      * Getter method of the entries attribute.
      */
-    public get entries(): number {
+    public get entries(): number 
+    {
         return this._series.length;
     }
 }
 
-export class Series {
+export class Series 
+{
     /**
      * Represents the name of the series as a string.
      */
@@ -336,7 +369,8 @@ export class Series {
      * @param _data - data of the series as a number list.
      * @param _type - type of the series as a string.
      */
-    constructor(_name: string, _data: number[], _type?: string) {
+    constructor(_name: string, _data: number[], _type?: string) 
+    {
         this._name = _name;
         this._data = _data;
         this._type = _type;
@@ -345,42 +379,48 @@ export class Series {
     /**
      * Getter method of the name attribute.
      */
-    public get name(): string {
+    public get name(): string 
+    {
         return this._name;
     }
 
     /**
      * Setter method of the name attribute.
      */
-    public set name(v: string) {
+    public set name(v: string) 
+    {
         this._name = v;
     }
 
     /**
      * Getter method of the data attribute.
      */
-    public get data(): Array<number> {
+    public get data(): Array<number> 
+    {
         return this._data;
     }
 
     /**
      * Setter method of the data attribute.
      */
-    public set data(v: number[]) {
+    public set data(v: number[]) 
+    {
         this._data = v;
     }
 
     /**
      * Getter method of the type attribute.
      */
-    public get type(): string {
+    public get type(): string 
+    {
         return this._type;
     }
 
     /**
      * Setter method of the type attribute.
      */
-    public set type(v: string) {
+    public set type(v: string) 
+    {
         this._type = v;
     }
 }

@@ -3,7 +3,8 @@ import { Profile } from './Profile';
 /**
  * This class represents a basic profile containing the basic information of a scholar
  */
-export class BasicProfile extends Profile {
+export class BasicProfile extends Profile 
+{
     /**
      * Id of the basic profile
      */
@@ -45,7 +46,8 @@ export class BasicProfile extends Profile {
         _totalCitations?: number,
         _paperCount?: number,
         _pictureUrl?: string,
-    ) {
+    ) 
+    {
         super();
         this._id = _id;
         this._name = _name;
@@ -58,84 +60,96 @@ export class BasicProfile extends Profile {
     /**
      * Gets id
      */
-    public get id(): string {
+    public get id(): string 
+    {
         return this._id;
     }
 
     /**
      * Sets id
      */
-    public set id(newId: string) {
+    public set id(newId: string) 
+    {
         this._id = newId;
     }
 
     /**
      * Gets name
      */
-    public get name(): string {
+    public get name(): string 
+    {
         return this._name;
     }
 
     /**
      * Sets name
      */
-    public set name(newName: string) {
+    public set name(newName: string) 
+    {
         this._name = newName;
     }
 
     /**
      * Gets total citations
      */
-    public get totalCitations(): number {
+    public get totalCitations(): number 
+    {
         return this._totalCitations;
     }
 
     /**
      * Sets total citations
      */
-    public set totalCitations(totalCitations: number) {
+    public set totalCitations(totalCitations: number) 
+    {
         this._totalCitations = totalCitations;
     }
 
     /**
      * Gets paper count
      */
-    public get paperCount(): number {
+    public get paperCount(): number 
+    {
         return this._paperCount;
     }
 
     /**
      * Sets paper count
      */
-    public set paperCount(paperCount: number) {
+    public set paperCount(paperCount: number) 
+    {
         this._paperCount = paperCount;
     }
 
     /**
      * Gets picture url
      */
-    public get pictureUrl(): string {
+    public get pictureUrl(): string 
+    {
         return this._pictureUrl;
     }
 
     /**
      * Sets picture url
      */
-    public set pictureUrl(url: string) {
+    public set pictureUrl(url: string) 
+    {
         this._pictureUrl = url;
     }
 
     /**
      * Gets affiliations
      */
-    public get affiliations(): string[] {
+    public get affiliations(): string[] 
+    {
         return this._affiliations;
     }
 
     /**
      * Sets affiliations
      */
-    public set affiliations(affiliations: string[]) {
+    public set affiliations(affiliations: string[]) 
+    {
         this._affiliations = affiliations;
     }
 }

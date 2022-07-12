@@ -1,10 +1,16 @@
 <template>
-    <div v-if="mount" class="row justify-center bg-transparent">
-        <div class="col-md-12 col-xs-12 self-center">
-            <profile-summary v-if="getFullProfile()" :profile="(getFullProfile() as FullProfile)" />
-        </div>
+  <div
+    v-if="mount"
+    class="row justify-center bg-transparent"
+  >
+    <div class="col-md-12 col-xs-12 self-center">
+      <profile-summary
+        v-if="getFullProfile()"
+        :profile="(getFullProfile() as FullProfile)"
+      />
     </div>
-    <profile-content :profile-repr="(getProfilePageStore().profileRepresentation as ProfileRepresentation)" />
+  </div>
+  <profile-content :profile-repr="(getProfilePageStore().profileRepresentation as ProfileRepresentation)" />
 </template>
 <script setup lang="ts">
 import { profilePageStore } from '../../stores/profilePageStore';
@@ -21,22 +27,28 @@ FullProfile;
 
 const profileStore = profilePageStore();
 
-const getProfilePageStore = () => {
+const getProfilePageStore = () => 
+{
     return profileStore;
 };
 
-const getFullProfile = () => {
+const getFullProfile = () => 
+{
     return getProfilePageStore().profileRepresentation.fullProfile as FullProfile;
 };
 const mount = ref(false);
-onBeforeMount(() => {
-    if (!profileStore.profileId) {
+onBeforeMount(() => 
+{
+    if (!profileStore.profileId) 
+    {
         $q.notify({
             type: 'negative',
             message: 'Please open a profile first'
         });
         router.push({ path: '/profile/search' });
-    } else {
+    }
+    else 
+    {
         mount.value = true;
         profileStore.renderSaved();
     }

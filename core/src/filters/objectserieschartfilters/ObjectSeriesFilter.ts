@@ -2,7 +2,8 @@ import { Filter } from '../../filters';
 import { ObjectSeriesChartModel } from '../../models';
 import { Series } from '../../models/objectserieschartmodel/ObjectSeriesChartModel';
 
-export abstract class ObjectSeriesFilter<S> extends Filter<S, ObjectSeriesChartModel> {
+export abstract class ObjectSeriesFilter<S> extends Filter<S, ObjectSeriesChartModel> 
+{
     /**
      * Applys object series filter on the given model
      * @param model - the given ObjectSeriesChartModel
@@ -10,20 +11,25 @@ export abstract class ObjectSeriesFilter<S> extends Filter<S, ObjectSeriesChartM
     abstract apply(model: ObjectSeriesChartModel): void;
 }
 
-export class FromFilter extends ObjectSeriesFilter<number> {
+export class FromFilter extends ObjectSeriesFilter<number> 
+{
     /**
      * It checks if the given model is valid
      * @param model - the given ObjectSeriesChartModel
      * @returns true if the given model is valid
      */
-    validate(model: ObjectSeriesChartModel): boolean {
-        if (!model.series || model.series.length === 0) {
+    validate(model: ObjectSeriesChartModel): boolean 
+    {
+        if (!model.series || model.series.length === 0) 
+        {
             return false;
         }
-        if (this._value >= +model.series[model.series.length - 1].name) {
+        if (this._value >= +model.series[model.series.length - 1].name) 
+        {
             return false;
         }
-        if (this._value < +model.series[0].name) {
+        if (this._value < +model.series[0].name) 
+        {
             return false;
         }
         return true;
@@ -32,17 +38,21 @@ export class FromFilter extends ObjectSeriesFilter<number> {
      * Creates an instance of from filter.
      * @param value - value of the filter
      */
-    constructor(value: number) {
+    constructor(value: number) 
+    {
         super(value);
     }
     /**
      * Applys from filter on the given model
      * @param model - the given ObjectSeriesChartModel
      */
-    apply(model: ObjectSeriesChartModel): void {
+    apply(model: ObjectSeriesChartModel): void 
+    {
         const newSeries: Series[] = new Array<Series>();
-        for (const series of model.series) {
-            if (+series.name >= this._value) {
+        for (const series of model.series) 
+        {
+            if (+series.name >= this._value) 
+            {
                 newSeries.push(series);
             }
         }
@@ -50,20 +60,25 @@ export class FromFilter extends ObjectSeriesFilter<number> {
     }
 }
 
-export class ToFilter extends ObjectSeriesFilter<number> {
+export class ToFilter extends ObjectSeriesFilter<number> 
+{
     /**
      * It checks if the given model is valid
      * @param model - the given ObjectSeriesChartModel
      * @returns true if the given model is valid
      */
-    validate(model: ObjectSeriesChartModel): boolean {
-        if (!model.series || model.series.length === 0) {
+    validate(model: ObjectSeriesChartModel): boolean 
+    {
+        if (!model.series || model.series.length === 0) 
+        {
             return false;
         }
-        if (this._value >= +model.series[model.series.length - 1].name) {
+        if (this._value >= +model.series[model.series.length - 1].name) 
+        {
             return false;
         }
-        if (this._value < +model.series[0].name) {
+        if (this._value < +model.series[0].name) 
+        {
             return false;
         }
         return true;
@@ -72,17 +87,21 @@ export class ToFilter extends ObjectSeriesFilter<number> {
      * Creates an instance of to filter.
      * @param value - value of the filter
      */
-    constructor(value: number) {
+    constructor(value: number) 
+    {
         super(value);
     }
     /**
      * Applys to filter on the given model
      * @param model - the given ObjectSeriesChartModel
      */
-    apply(model: ObjectSeriesChartModel): void {
+    apply(model: ObjectSeriesChartModel): void 
+    {
         const newSeries: Series[] = new Array<Series>();
-        for (const series of model.series) {
-            if (+series.name <= this.value) {
+        for (const series of model.series) 
+        {
+            if (+series.name <= this.value) 
+            {
                 newSeries.push(series);
             }
         }
@@ -90,12 +109,14 @@ export class ToFilter extends ObjectSeriesFilter<number> {
     }
 }
 
-export class ShowingFilter extends ObjectSeriesFilter<number> {
+export class ShowingFilter extends ObjectSeriesFilter<number> 
+{
     /**
      * Creates an instance of showing filter.
      * @param value - value of the filter
      */
-    constructor(value: number) {
+    constructor(value: number) 
+    {
         super(value);
     }
 
@@ -104,14 +125,18 @@ export class ShowingFilter extends ObjectSeriesFilter<number> {
      * @param model - the given ObjectSeriesChartModel
      * @returns true if the given model is valid
      */
-    validate(model: ObjectSeriesChartModel): boolean {
-        if (!model.series || model.series.length === 0) {
+    validate(model: ObjectSeriesChartModel): boolean 
+    {
+        if (!model.series || model.series.length === 0) 
+        {
             return false;
         }
-        if (this._value >= model.series.length) {
+        if (this._value >= model.series.length) 
+        {
             return false;
         }
-        if (this._value <= 0) {
+        if (this._value <= 0) 
+        {
             return false;
         }
         return true;
@@ -121,25 +146,33 @@ export class ShowingFilter extends ObjectSeriesFilter<number> {
      * Applys showing filter on the given filter
      * @param model - the given ObjectSeriesChartModel
      */
-    apply(model: ObjectSeriesChartModel): void {
+    apply(model: ObjectSeriesChartModel): void 
+    {
         this.validate(model);
         const newSeries: Series[] = new Array<Series>();
-        if (model.series[0].type) {
+        if (model.series[0].type) 
+        {
             let i: number = 0;
             let end: number = 2 * this.value;
-            if (end >= model.series.length) {
+            if (end >= model.series.length) 
+            {
                 end = model.series.length;
             }
-            for (i = 0; i < end; ++i) {
+            for (i = 0; i < end; ++i) 
+            {
                 newSeries.push(model.series[i]);
             }
-        } else {
+        }
+        else 
+        {
             let i: number = 0;
             let end: number = this.value;
-            if (end >= model.series.length) {
+            if (end >= model.series.length) 
+            {
                 end = model.series.length;
             }
-            for (i = 0; i < end; ++i) {
+            for (i = 0; i < end; ++i) 
+            {
                 newSeries.push(model.series[i]);
             }
         }

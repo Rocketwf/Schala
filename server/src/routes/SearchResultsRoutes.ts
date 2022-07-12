@@ -6,7 +6,8 @@ import { BasicProfile } from '../models/profile/BasicProfile';
 /**
  * Manages the search results routes of the given app.
  */
-export class SearchResultsRoutes extends CommonRoutesConfig {
+export class SearchResultsRoutes extends CommonRoutesConfig 
+{
     /**
      * Service to get the search results
      */
@@ -16,7 +17,8 @@ export class SearchResultsRoutes extends CommonRoutesConfig {
      * Constructs the SearchResultsRoutes.
      * @param app - app to configure
      */
-    constructor(app: Application) {
+    constructor(app: Application) 
+    {
         super(app, 'SearchResultsRoutes');
     }
 
@@ -24,8 +26,10 @@ export class SearchResultsRoutes extends CommonRoutesConfig {
      * Configures the routes of the given app.
      * @returns - application
      */
-    configureRoutes(): Application {
-        this.app.route('/' + EndPoints.SEARCHRESULTS + '/:query').get(async (req: Request, res: Response) => {
+    configureRoutes(): Application 
+    {
+        this.app.route('/' + EndPoints.SEARCHRESULTS + '/:query').get(async (req: Request, res: Response) => 
+        {
             const bp: BasicProfile[] = await this.searchResultsService.build(req.params.query);
             res.status(200).send(bp);
         });

@@ -2,47 +2,68 @@
   <q-item clickable>
     <q-item-section>
       <q-item-label>{{ article.title }}</q-item-label>
-      <q-item-label v-if="article.venue" caption lines="2">Published at {{article.venue}}</q-item-label>
+      <q-item-label
+        v-if="article.venue"
+        caption
+        lines="2"
+      >
+        Published at {{ article.venue }}
+      </q-item-label>
     </q-item-section>
 
     <div class="mobile-hide">
       <q-item class="vertical-middle">
         <q-item-section side>
-          <q-item-label >Year: <span class="text-bold inline">{{article.publicationYear}}</span></q-item-label>
+          <q-item-label>Year: <span class="text-bold inline">{{ article.publicationYear }}</span></q-item-label>
         </q-item-section>
-        <q-item-section class="q-mr-xl" side>
-          <q-item-label >Cited: <span class="text-bold inline">{{article.citationCount}}</span></q-item-label>
+        <q-item-section
+          class="q-mr-xl"
+          side
+        >
+          <q-item-label>Cited: <span class="text-bold inline">{{ article.citationCount }}</span></q-item-label>
         </q-item-section>
       </q-item>
       <q-space />
     </div>
 
     <q-item-section side>
-          <div class="text-grey-8 q-gutter-xs">
+      <div class="text-grey-8 q-gutter-xs">
+        <article-item-button
+          v-slot="slotProps"
+          icon="menu_book"
+        >
+          <cite-button
+            :bibtex="props.article.url"
+            :button-icon="slotProps.icon"
+          />
+        </article-item-button>
 
-            <article-item-button v-slot="slotProps" icon="menu_book">
-              <cite-button :bibtex="props.article.url" :button-icon="slotProps.icon"/>
-            </article-item-button>
-
-            <!--<article-item-button v-slot="slotProps" :icon="'share'">
+        <!--<article-item-button v-slot="slotProps" :icon="'share'">
               <share-button :url="props.article.url" :button-icon="slotProps.icon"/>
             </article-item-button>-->
 
-            <article-item-button v-slot="slotProps" :icon="'people'">
-              <co-author-button :co-authors="props.article.coAuthors" :button-icon="slotProps.icon"/>
-            </article-item-button>
+        <article-item-button
+          v-slot="slotProps"
+          :icon="'people'"
+        >
+          <co-author-button
+            :co-authors="props.article.coAuthors"
+            :button-icon="slotProps.icon"
+          />
+        </article-item-button>
+      </div>
 
-          </div>
-
-          <div class="desktop-hide q-mx-auto q-my-none">
-            <q-item-label >Year: <span class="text-bold inline">2021</span></q-item-label>
-            <q-item-label >Cited: <span class="text-bold inline">364</span></q-item-label>
-          </div>
-        </q-item-section>
+      <div class="desktop-hide q-mx-auto q-my-none">
+        <q-item-label>Year: <span class="text-bold inline">2021</span></q-item-label>
+        <q-item-label>Cited: <span class="text-bold inline">364</span></q-item-label>
+      </div>
+    </q-item-section>
   </q-item>
 
-  <q-separator spaced inset />
-
+  <q-separator
+    spaced
+    inset
+  />
 </template>
 
 <script setup charset="utf-8" lang="ts">
@@ -55,9 +76,10 @@ import CoAuthorButton from 'src/sharedcomponents/buttons/articlebuttons/CoAuthor
 
 const props = defineProps<{
   article: Article,
-}>()
+}>();
 
-const goToArticle = (): void => {
+const goToArticle = (): void => 
+{
     return; //TODO: Implement me
 };
 goToArticle();

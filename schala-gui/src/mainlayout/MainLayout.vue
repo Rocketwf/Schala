@@ -1,6 +1,5 @@
 <template>
   <q-layout view="hHr lpR ffr">
-
     <sticky-header-vue />
 
 

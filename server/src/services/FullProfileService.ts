@@ -18,7 +18,8 @@ import { GoogleScholarScraperSource } from '../datasources/GoogleScholarScraperS
  * Class responsible for requesting the data source for information about a particular
  * scholar and building the data structures related to the respresenation of the scholar.
  */
-export class FullProfileService extends ProfileService {
+export class FullProfileService extends ProfileService 
+{
     /**
      * The primary data source for fetching information about a scholar
      */
@@ -38,14 +39,16 @@ export class FullProfileService extends ProfileService {
      * @param authorId - The author with the ID to build
      * @returns A promise of an array of the FullProfiles
      */
-    async build(authorId: string): Promise<FullProfile[]> {
+    async build(authorId: string): Promise<FullProfile[]> 
+    {
         this._fasterCitations = null;
 
         const apiAuthor: APIAuthor = await this._dataSource.fetchAuthor(authorId);
 
         const authorPaperIds: string[] = new Array<string>();
 
-        for (const paper of apiAuthor.papers) {
+        for (const paper of apiAuthor.papers) 
+        {
             authorPaperIds.push(paper.paperId);
         }
 
@@ -87,10 +90,14 @@ export class FullProfileService extends ProfileService {
      * @param c2 - Second number to be compared
      * @returns -1 or 1 whether the first parameter is bigger than the second parameter or not respectively
      */
-    private sortCitationByYear(c1: CitationsByYear, c2: CitationsByYear): number {
-        if (c1.year > c2.year) {
+    private sortCitationByYear(c1: CitationsByYear, c2: CitationsByYear): number 
+    {
+        if (c1.year > c2.year) 
+        {
             return -1;
-        } else {
+        }
+        else 
+        {
             return 1;
         }
     }
@@ -100,7 +107,8 @@ export class FullProfileService extends ProfileService {
      * @param apiAuthor - apiAuthor object of the author to build
      * @returns BasicProfile object of the scholar with the basic information
      */
-    private buildBasicProfile(apiAuthor: APIAuthor): BasicProfile {
+    private buildBasicProfile(apiAuthor: APIAuthor): BasicProfile 
+    {
         let name: string = apiAuthor.name;
         if (apiAuthor.aliases) name = apiAuthor.aliases[apiAuthor.aliases.length - 1];
         const basicProfile: BasicProfile = new BasicProfile(
@@ -117,11 +125,14 @@ export class FullProfileService extends ProfileService {
      * @param apiPapers - apiPapers object array of the papers to build
      * @returns Array of the expertises from the papers 
      */
-    private buildExpertise(apiPapers: APIPaper[]): string[] {
+    private buildExpertise(apiPapers: APIPaper[]): string[] 
+    {
         const expertise: Set<string> = new Set<string>();
-        for (const apiPaper of apiPapers) {
+        for (const apiPaper of apiPapers) 
+        {
             if (!apiPaper.fieldsOfStudy) continue;
-            for (const fieldOfStudy of apiPaper.fieldsOfStudy) {
+            for (const fieldOfStudy of apiPaper.fieldsOfStudy) 
+            {
                 expertise.add(fieldOfStudy);
             }
         }
@@ -134,13 +145,16 @@ export class FullProfileService extends ProfileService {
      * @param apiPapers - apiPapers object array of the papers to build
      * @returns hindex from the papers
      */
-    private calculateHIndex(apiPapers: APIPaper[]): number {
+    private calculateHIndex(apiPapers: APIPaper[]): number 
+    {
         let hIndex: number = 0;
 
         apiPapers.sort(this.sortAPIPaper);
 
-        apiPapers.forEach((articles: APIPaper, index: number) => {
-            if (articles.citationCount >= index) {
+        apiPapers.forEach((articles: APIPaper, index: number) => 
+        {
+            if (articles.citationCount >= index) 
+            {
                 hIndex++;
             }
         });
@@ -155,10 +169,14 @@ export class FullProfileService extends ProfileService {
      * @returns -1 or 1 whether the first parameters citationsCount
      * is bigger than the second parameters or not respectively
      */
-    private sortAPIPaper(a: APIPaper, b: APIPaper): number {
-        if (a.citationCount > b.citationCount) {
+    private sortAPIPaper(a: APIPaper, b: APIPaper): number 
+    {
+        if (a.citationCount > b.citationCount) 
+        {
             return -1;
-        } else {
+        }
+        else 
+        {
             return 1;
         }
     }
@@ -170,10 +188,13 @@ export class FullProfileService extends ProfileService {
      * @param ref - The object of references or citations to check against
      * @returns true if it is a self citation
      */
-    private isOwnRefOrCit(apiAuthor: APIAuthor, ref: APIRefCit): boolean {
+    private isOwnRefOrCit(apiAuthor: APIAuthor, ref: APIRefCit): boolean 
+    {
         const toReturn: APICoAuthor[] = [];
-        for (const author of ref.authors) {
-            if (author.authorId === apiAuthor.authorId) {
+        for (const author of ref.authors) 
+        {
+            if (author.authorId === apiAuthor.authorId) 
+            {
                 toReturn.push(author);
             }
         }
@@ -186,10 +207,13 @@ export class FullProfileService extends ProfileService {
      * @param paper - The APIPaper paper to check against
      * @returns Number of self citations for the paper
      */
-    private getSelfCitationsInPaper(apiAuthor: APIAuthor, paper: APIPaper): number {
+    private getSelfCitationsInPaper(apiAuthor: APIAuthor, paper: APIPaper): number 
+    {
         let selfCitationCount: number = 0;
-        paper.references.forEach((refOrCit: APIRefCit) => {
-            if (this.isOwnRefOrCit(apiAuthor, refOrCit)) {
+        paper.references.forEach((refOrCit: APIRefCit) => 
+        {
+            if (this.isOwnRefOrCit(apiAuthor, refOrCit)) 
+            {
                 ++selfCitationCount;
             }
         });
@@ -202,10 +226,13 @@ export class FullProfileService extends ProfileService {
      * @param apiPaper - The APIPaper papers to check against
      * @returns hindex without self citations 
      */
-    private calculateHIndexWithoutSelfCitations(apiAuthor: APIAuthor, apiPaper: APIPaper[]): number {
+    private calculateHIndexWithoutSelfCitations(apiAuthor: APIAuthor, apiPaper: APIPaper[]): number 
+    {
         let hIndexWithoutSelfCitations: number = 0;
-        apiPaper.forEach((article: APIPaper, index: number) => {
-            if (article.citationCount - this.getSelfCitationsInPaper(apiAuthor, article) >= index) {
+        apiPaper.forEach((article: APIPaper, index: number) => 
+        {
+            if (article.citationCount - this.getSelfCitationsInPaper(apiAuthor, article) >= index) 
+            {
                 hIndexWithoutSelfCitations++;
             }
         });
@@ -217,10 +244,13 @@ export class FullProfileService extends ProfileService {
      * @param apiPapers - The APIPaper papers to check against
      * @returns The i10 index for the papers
      */
-    private calculateI10Index(apiPapers: APIPaper[]): number {
+    private calculateI10Index(apiPapers: APIPaper[]): number 
+    {
         let i10Index: number = 0;
-        for (const paper of apiPapers) {
-            if (paper.citationCount >= 10) {
+        for (const paper of apiPapers) 
+        {
+            if (paper.citationCount >= 10) 
+            {
                 i10Index++;
             }
         }
@@ -232,10 +262,13 @@ export class FullProfileService extends ProfileService {
      * @param apiPapers - The APIPaper papers to check against
      * @returns The i10 index for the papers
      */
-    private calculateI10IndexWithoutSelfCitations(apiAuthor: APIAuthor, apiPapers: APIPaper[]): number {
+    private calculateI10IndexWithoutSelfCitations(apiAuthor: APIAuthor, apiPapers: APIPaper[]): number 
+    {
         let i10IndexWithoutSelfCitations: number = 0;
-        for (const article of apiPapers) {
-            if (article.citationCount - this.getSelfCitationsInPaper(apiAuthor, article) >= 10) {
+        for (const article of apiPapers) 
+        {
+            if (article.citationCount - this.getSelfCitationsInPaper(apiAuthor, article) >= 10) 
+            {
                 i10IndexWithoutSelfCitations++;
             }
         }
@@ -248,20 +281,24 @@ export class FullProfileService extends ProfileService {
      * @param apiPapers - The APIPaper papers to check against
      * @returns Number of self citations
      */
-    private calculateSelfCitations(apiAuthor: APIAuthor, apiPapers: APIPaper[]): number {
-        if (!this._fasterCitations) {
+    private calculateSelfCitations(apiAuthor: APIAuthor, apiPapers: APIPaper[]): number 
+    {
+        if (!this._fasterCitations) 
+        {
             this._fasterCitations = this.prepareFastCitations(apiAuthor, apiPapers);
         }
 
         const citationsByYear: CitationsByYear[] = Array.from(this.prepareFastCitations(apiAuthor, apiPapers).values());
         const selfCitations: number[] = [];
-        for (const cby of citationsByYear) {
+        for (const cby of citationsByYear) 
+        {
             const count: number = cby.selfCitationsCount;
             selfCitations.push(count);
         }
 
         let sum: number = 0;
-        for (const sc of selfCitations) {
+        for (const sc of selfCitations) 
+        {
             sum += sc;
         }
 
@@ -274,33 +311,43 @@ export class FullProfileService extends ProfileService {
      * @param apiPapers - The APIPaper papers to check against
      * @returns A mapping from count to CitationsByYear
      */
-    public prepareFastCitations(apiAuthor: APIAuthor, apiPapers: APIPaper[]): Map<number, CitationsByYear> {
-        if (this._fasterCitations) {
+    public prepareFastCitations(apiAuthor: APIAuthor, apiPapers: APIPaper[]): Map<number, CitationsByYear> 
+    {
+        if (this._fasterCitations) 
+        {
             return this._fasterCitations;
         }
         const fasterCitations: Map<number, CitationsByYear> = new Map<number, CitationsByYear>();
-        for (const article of apiPapers) {
+        for (const article of apiPapers) 
+        {
             let citations: CitationsByYear = fasterCitations.get(article.year);
 
-            if (!citations) {
+            if (!citations) 
+            {
                 citations = new CitationsByYear(+article.year, 0, 0, 0);
                 fasterCitations.set(article.year, citations);
             }
 
-            for (const citation of article.citations) {
+            for (const citation of article.citations) 
+            {
                 let totalCite: CitationsByYear = fasterCitations.get(citation.year);
-                if (!totalCite) {
+                if (!totalCite) 
+                {
                     totalCite = new CitationsByYear(+citation.year, 0, 0, 0);
                     fasterCitations.set(citation.year, totalCite);
                 }
                 totalCite.totalCitationCount++;
-                if (this.isOwnRefOrCit(apiAuthor, citation)) {
+                if (this.isOwnRefOrCit(apiAuthor, citation)) 
+                {
                     continue;
                 }
-                for (const author of citation.authors) {
-                    if (article.authors.find((e: APIAuthor) => e.authorId === author.authorId)) {
+                for (const author of citation.authors) 
+                {
+                    if (article.authors.find((e: APIAuthor) => e.authorId === author.authorId)) 
+                    {
                         let indSelfCite: CitationsByYear = fasterCitations.get(citation.year);
-                        if (!indSelfCite) {
+                        if (!indSelfCite) 
+                        {
                             indSelfCite = new CitationsByYear(+article.year, 0, 0, 0);
                             fasterCitations.set(citation.year, indSelfCite);
                         }
@@ -322,20 +369,24 @@ export class FullProfileService extends ProfileService {
      * @param apiPapers - The APIPaper papers to check against
      * @returns Number of indirect self citations 
      */
-    private calculateIndirectSelfCitations(apiAuthor: APIAuthor, apiPapers: APIPaper[]): number {
-        if (!this._fasterCitations) {
+    private calculateIndirectSelfCitations(apiAuthor: APIAuthor, apiPapers: APIPaper[]): number 
+    {
+        if (!this._fasterCitations) 
+        {
             this._fasterCitations = this.prepareFastCitations(apiAuthor, apiPapers);
         }
 
         const citationsByYear: CitationsByYear[] = Array.from(this.prepareFastCitations(apiAuthor, apiPapers).values());
         const indirectSelfCitations: number[] = [];
-        for (const cby of citationsByYear) {
+        for (const cby of citationsByYear) 
+        {
             const count: number = cby.indirectSelfCitationsCount;
             indirectSelfCitations.push(count);
         }
 
         let sum: number = 0;
-        for (const isc of indirectSelfCitations) {
+        for (const isc of indirectSelfCitations) 
+        {
             sum += isc;
         }
 
@@ -347,18 +398,25 @@ export class FullProfileService extends ProfileService {
      * @param apiPapers - The APIPapers to check
      * @returns Data for the publications by year 
      */
-    private buildPublicationsByYear(apiPapers: APIPaper[]): PublicationByYear[] {
+    private buildPublicationsByYear(apiPapers: APIPaper[]): PublicationByYear[] 
+    {
         const publicationsByYear: PublicationByYear[] = new Array<PublicationByYear>();
         const publicationMap: Map<number, number> = new Map<number, number>(); //Pairs of years and publication counts
-        for (const paper of apiPapers) {
-            if (publicationMap.has(paper.year)) {
+        for (const paper of apiPapers) 
+        {
+            if (publicationMap.has(paper.year)) 
+            {
                 publicationMap.set(paper.year, publicationMap.get(paper.year) + 1);
-            } else {
+            }
+            else 
+            {
                 publicationMap.set(paper.year, 1);
             }
         }
-        for (const [year, pubCount] of publicationMap) {
-            if (!year) {
+        for (const [year, pubCount] of publicationMap) 
+        {
+            if (!year) 
+            {
                 continue;
             }
             publicationsByYear.push(new PublicationByYear(year, pubCount));
@@ -375,10 +433,14 @@ export class FullProfileService extends ProfileService {
      * @returns -1 or 1 whether the first parameters year
      * is bigger than the second parameters or not respectively
      */
-    private sortPublicationByYear(a: PublicationByYear, b: PublicationByYear): number {
-        if (a.year < b.year) {
+    private sortPublicationByYear(a: PublicationByYear, b: PublicationByYear): number 
+    {
+        if (a.year < b.year) 
+        {
             return -1;
-        } else {
+        }
+        else 
+        {
             return 1;
         }
     }
@@ -388,17 +450,23 @@ export class FullProfileService extends ProfileService {
      * @param apiPapers - The APIPaper papers to check
      * @returns Data for the publications by venue 
      */
-    private buildPublicationsByVenue(apiPapers: APIPaper[]): PublicationByVenue[] {
+    private buildPublicationsByVenue(apiPapers: APIPaper[]): PublicationByVenue[] 
+    {
         const publicationsByVenue: PublicationByVenue[] = new Array<PublicationByVenue>();
         const publicationMap: Map<string, number> = new Map<string, number>(); //Pairs of venues and publication counts
-        for (const paper of apiPapers) {
-            if (publicationMap.has(paper.venue)) {
+        for (const paper of apiPapers) 
+        {
+            if (publicationMap.has(paper.venue)) 
+            {
                 publicationMap.set(paper.venue, publicationMap.get(paper.venue) + 1);
-            } else {
+            }
+            else 
+            {
                 publicationMap.set(paper.venue, 1);
             }
         }
-        publicationMap.forEach((value_count: number, key_year: string) => {
+        publicationMap.forEach((value_count: number, key_year: string) => 
+        {
             publicationsByVenue.push(new PublicationByVenue(key_year, value_count));
         });
         publicationsByVenue.sort(this.sortPublicationByVenue);
@@ -413,10 +481,14 @@ export class FullProfileService extends ProfileService {
      * @returns -1 or 1 whether the first parameters publication count
      * is bigger than the second parameters or not respectively
      */
-    private sortPublicationByVenue(a: PublicationByVenue, b: PublicationByVenue): number {
-        if (a.publicationCount > b.publicationCount) {
+    private sortPublicationByVenue(a: PublicationByVenue, b: PublicationByVenue): number 
+    {
+        if (a.publicationCount > b.publicationCount) 
+        {
             return -1;
-        } else {
+        }
+        else 
+        {
             return 1;
         }
     }
@@ -427,26 +499,35 @@ export class FullProfileService extends ProfileService {
      * @param apiPapers - The papers of the author
      * @returns Data for the cited scholars 
      */
-    private buildCitedScholars(apiAuthor: APIAuthor, apiPapers: APIPaper[]): CitedScholar[] {
+    private buildCitedScholars(apiAuthor: APIAuthor, apiPapers: APIPaper[]): CitedScholar[] 
+    {
         const citedScholars: CitedScholar[] = new Array<CitedScholar>();
         const citationsMap: Map<string, number> = new Map<string, number>();
 
-        for (const paper of apiPapers) {
-            for (const ref of paper.references) {
-                for (const coauthors of ref.authors) {
-                    if (coauthors.authorId === apiAuthor.authorId) {
+        for (const paper of apiPapers) 
+        {
+            for (const ref of paper.references) 
+            {
+                for (const coauthors of ref.authors) 
+                {
+                    if (coauthors.authorId === apiAuthor.authorId) 
+                    {
                         continue;
                     }
-                    if (citationsMap.has(coauthors.name)) {
+                    if (citationsMap.has(coauthors.name)) 
+                    {
                         citationsMap.set(coauthors.name, citationsMap.get(coauthors.name) + 1);
-                    } else {
+                    }
+                    else 
+                    {
                         citationsMap.set(coauthors.name, 1);
                     }
                 }
             }
         }
 
-        citationsMap.forEach((value_count: number, key_author: string) => {
+        citationsMap.forEach((value_count: number, key_author: string) => 
+        {
             citedScholars.push(new CitedScholar(key_author, value_count));
         });
 
@@ -463,10 +544,14 @@ export class FullProfileService extends ProfileService {
      * @returns -1 or 1 whether the first parameters year
      * is bigger than the second parameters or not respectively
      */
-    private sortCitedScholars(a: CitedScholar, b: CitedScholar): number {
-        if (a.citationCount > b.citationCount) {
+    private sortCitedScholars(a: CitedScholar, b: CitedScholar): number 
+    {
+        if (a.citationCount > b.citationCount) 
+        {
             return -1;
-        } else {
+        }
+        else 
+        {
             return 1;
         }
     }
@@ -477,16 +562,22 @@ export class FullProfileService extends ProfileService {
      * @param apiPapers - The papers of the author
      * @returns The data of the Authors
      */
-    private buildAuthors(apiAuthor: APIAuthor, apiPapers: APIPaper[]): Author[] {
+    private buildAuthors(apiAuthor: APIAuthor, apiPapers: APIPaper[]): Author[] 
+    {
         const authors: Map<string, Author> = new Map<string, Author>();
-        for (const paper of apiPapers) {
-            for (const author of paper.authors) {
-                if (author.authorId === apiAuthor.authorId) {
+        for (const paper of apiPapers) 
+        {
+            for (const author of paper.authors) 
+            {
+                if (author.authorId === apiAuthor.authorId) 
+                {
                     continue;
                 }
-                if (!authors.has(author.authorId)) {
+                if (!authors.has(author.authorId)) 
+                {
                     let name: string = author.name;
-                    if (author.aliases) {
+                    if (author.aliases) 
+                    {
                         name = author.aliases[author.aliases.length - 1];
                     }
                     authors.set(author.authorId, new Author(author.authorId, name, 1, author.hIndex));
@@ -507,10 +598,14 @@ export class FullProfileService extends ProfileService {
      * @returns -1 or 1 whether the first parameters h-index
      * is bigger than the second parameters or not respectively
      */
-    private sortAuthors(a1: Author, a2: Author): number {
-        if (a1.hIndex > a2.hIndex) {
+    private sortAuthors(a1: Author, a2: Author): number 
+    {
+        if (a1.hIndex > a2.hIndex) 
+        {
             return -1;
-        } else {
+        }
+        else 
+        {
             return 1;
         }
     }
@@ -521,11 +616,14 @@ export class FullProfileService extends ProfileService {
      * @param apiPapers - The papers of the scholar
      * @returns The data of the articles
      */
-    private buildArticles(apiAuthor: APIAuthor, apiPapers: APIPaper[]): Article[] {
+    private buildArticles(apiAuthor: APIAuthor, apiPapers: APIPaper[]): Article[] 
+    {
         const articles: Article[] = new Array<Article>();
-        for (const paper of apiPapers) {
+        for (const paper of apiPapers) 
+        {
             const paperCoauthors: ArticleCoAuthor[] = new Array<ArticleCoAuthor>();
-            for (const author of paper.authors) {
+            for (const author of paper.authors) 
+            {
                 let name: string = author.name;
                 if (author.aliases) name = author.aliases[author.aliases.length - 1];
                 paperCoauthors.push(new ArticleCoAuthor(author.authorId, name));

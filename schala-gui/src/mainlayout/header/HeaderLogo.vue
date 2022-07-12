@@ -1,3 +1,3 @@
 <template>
-    <img src="../../assets/sticky_logo.png" />
+  <img src="../../assets/sticky_logo.png">
 </template>

@@ -1,7 +1,12 @@
 <template>
-    <div id="chart">
-      <apexchart type="bar" height="300" :options="chartOptions" :series="getSeries()"></apexchart>
-    </div>
+  <div id="chart">
+    <apexchart
+      type="bar"
+      height="300"
+      :options="chartOptions"
+      :series="getSeries()"
+    />
+  </div>
 </template>
 <script setup charset="utf-8" lang="ts">
 import { BasicBarsChartModel } from 'schala-core';
@@ -11,72 +16,79 @@ const props = defineProps<{
     basicBarsChartModel: BasicBarsChartModel;
 }>();
 
-const getSeries = () => {
+const getSeries = () => 
+{
     const apexSeries: number[] = [];
-    for(const cs of props.basicBarsChartModel.series){
-      apexSeries.push(cs.data[0]);
+    for(const cs of props.basicBarsChartModel.series)
+    {
+        apexSeries.push(cs.data[0]);
     }
     return [{
-          data: apexSeries
-        }];
+        data: apexSeries
+    }];
 };
 
-const getLabels = computed(() => {
+const getLabels = computed(() => 
+{
     const labels: string[] = new Array<string>();
-    for(const series of props.basicBarsChartModel.series) {
-      labels.push(series.name);
+    for(const series of props.basicBarsChartModel.series) 
+    {
+        labels.push(series.name);
     }
     return labels;
 });
-const getmaxLimit = computed(() => {
-    if (props.basicBarsChartModel.chartOptionsModel) {
+const getmaxLimit = computed(() => 
+{
+    if (props.basicBarsChartModel.chartOptionsModel) 
+    {
         return props.basicBarsChartModel.chartOptionsModel.maxLimit;
     }
     return 0;
 });
 
 
-const chartOptions = computed(() => {
+const chartOptions = computed(() => 
+{
     return { chart: {
-          type: 'bar',
-          toolbar: {
+        type: 'bar',
+        toolbar: {
             tools: {
-              download: '<i class="q-icon notranslate material-icons" aria-hidden="true" role="presentation" style="font-size: 24px;">download</i>',
+                download: '<i class="q-icon notranslate material-icons" aria-hidden="true" role="presentation" style="font-size: 24px;">download</i>',
             },
-          }
-        },
-        plotOptions: {
-          bar: {
+        }
+    },
+    plotOptions: {
+        bar: {
             borderRadius: 4,
             horizontal: true,
-          }
-        },
-        dataLabels: {
-          enabled: true
-        },
-        xaxis: {
-          title: {
+        }
+    },
+    dataLabels: {
+        enabled: true
+    },
+    xaxis: {
+        title: {
             text: props.basicBarsChartModel.xTitle,
             offsetY: 0,
-          },
-          categories: getLabels.value,
-          labels: {
-            style: {
-              fontSize: '12px'
-            }
-          }
         },
-        yaxis: {
-          max: getmaxLimit.value !== 0 ? getmaxLimit.value : (max: number) => max,
-          title: {
+        categories: getLabels.value,
+        labels: {
+            style: {
+                fontSize: '12px'
+            }
+        }
+    },
+    yaxis: {
+        max: getmaxLimit.value !== 0 ? getmaxLimit.value : (max: number) => max,
+        title: {
             text: props.basicBarsChartModel.yTitle,
-          },
-          labels: {
-            style: {
-              fontSize: '12px'
-            }
-          }
         },
-      }
-  });
+        labels: {
+            style: {
+                fontSize: '12px'
+            }
+        }
+    },
+    };
+});
 </script>

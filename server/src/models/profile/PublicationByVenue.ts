@@ -1,7 +1,8 @@
 /**
  * This class represents a tuple of a venue and the total publication count for that venue
  */
-export class PublicationByVenue {
+export class PublicationByVenue 
+{
     /**
      * Venue of the publication
      */
@@ -16,35 +17,40 @@ export class PublicationByVenue {
      * @param _venue - Venue of the publication
      * @param _publicationCount - Publication count for the venue
      */
-    constructor(_venue: string, _publicationCount: number) {
+    constructor(_venue: string, _publicationCount: number) 
+    {
         this._venue = _venue;
         this._publicationCount = _publicationCount;
     }
     /**
      * Gets venue
      */
-    public get venue(): string {
+    public get venue(): string 
+    {
         return this._venue;
     }
 
     /**
      * Sets venue
      */
-    public set venue(_venue: string) {
+    public set venue(_venue: string) 
+    {
         this._venue = _venue;
     }
 
     /**
      * Gets publication count
      */
-    public get publicationCount(): number {
+    public get publicationCount(): number 
+    {
         return this._publicationCount;
     }
 
     /**
      * Sets publication count
      */
-    public set publicationCount(_publicationCount: number) {
+    public set publicationCount(_publicationCount: number) 
+    {
         this._publicationCount = _publicationCount;
     }
 }

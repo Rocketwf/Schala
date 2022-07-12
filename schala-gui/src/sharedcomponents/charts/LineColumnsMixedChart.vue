@@ -1,7 +1,11 @@
 <template>
-    <div id="chart">
-        <apexchart height="350" :options="chartOptions" :series="getSeries()"></apexchart>
-    </div>
+  <div id="chart">
+    <apexchart
+      height="350"
+      :options="chartOptions"
+      :series="getSeries()"
+    />
+  </div>
 </template>
 
 <script setup charset="utf-8" lang="ts">
@@ -15,7 +19,8 @@ const props = defineProps<{
 /**
  * Converts the series to the form specific to the LineColumnsMixedChart.
  */
-const getSeries = () => {
+const getSeries = () => 
+{
     const columnData: Array<number> = props.lineColumnsMixedChartModel.series
         .filter((s: Series) => s.type === 'column')
         .map((s: Series) => s.data[0]);
@@ -40,29 +45,37 @@ const getSeries = () => {
 /**
  * Getter method for LineColumnsMixedChart labels
  */
-const getLabels = computed(() => {
+const getLabels = computed(() => 
+{
     const labels: string[] = new Array<string>();
-    for (const series of props.lineColumnsMixedChartModel.series) {
-        if (series.type === 'line') {
+    for (const series of props.lineColumnsMixedChartModel.series) 
+    {
+        if (series.type === 'line') 
+        {
             labels.push(series.name);
         }
     }
     return labels;
 });
 
-const defaultMax = (): (max: number) => number => {
+const defaultMax = (): (max: number) => number => 
+{
     return (max: number) => max;
-}
+};
 
-const getmaxLimitLine = computed(() => {
-    if (props.lineColumnsMixedChartModel.chartOptionsModel) {
+const getmaxLimitLine = computed(() => 
+{
+    if (props.lineColumnsMixedChartModel.chartOptionsModel) 
+    {
         return props.lineColumnsMixedChartModel.chartOptionsModel.maxLimitTwo;
     }
     return 0;
 });
 
-const getmaxLimitColumn = computed(() => {
-    if (props.lineColumnsMixedChartModel.chartOptionsModel) {
+const getmaxLimitColumn = computed(() => 
+{
+    if (props.lineColumnsMixedChartModel.chartOptionsModel) 
+    {
         return props.lineColumnsMixedChartModel.chartOptionsModel.maxLimit;
     }
     return 0;
@@ -71,7 +84,8 @@ const getmaxLimitColumn = computed(() => {
 /**
  *  Options of the displayed apex-chart
  */
-const chartOptions = computed(() => {
+const chartOptions = computed(() => 
+{
     return {
         chart: {
             dataLabels: {

@@ -134,7 +134,8 @@ const CARDS: cards = {
 /**
  * Builds the data structure that will be given to ComparePage.
  */
-export class ComparisonRepresentation {
+export class ComparisonRepresentation 
+{
     /**
      * Represtents fullProfiles to be displayed in the comparison.
      */
@@ -149,7 +150,8 @@ export class ComparisonRepresentation {
      *  Constructs the ComparisonRepresentation
      * @param _fullProfiles - FullProfiles present in the ComparePage
      */
-    constructor(_fullProfiles: FullProfile[]) {
+    constructor(_fullProfiles: FullProfile[]) 
+    {
         this._fullProfiles = _fullProfiles;
         this._rowModels = new Array<RowModel>();
     }
@@ -158,8 +160,10 @@ export class ComparisonRepresentation {
      * Updates the rows of ComparePage.
      * @returns void
      */
-    renderComparison(): void {
-        if (this._fullProfiles.length === 0) {
+    renderComparison(): void 
+    {
+        if (this._fullProfiles.length === 0) 
+        {
             this._rowModels = [];
             return;
         }
@@ -175,14 +179,16 @@ export class ComparisonRepresentation {
     /**
      * Getter method of RowModels.
      */
-    public get rowModels(): RowModel[] {
+    public get rowModels(): RowModel[] 
+    {
         return this._rowModels;
     }
 
     /**
      * Setter method of RowModel list.
      */
-    public set rowModels(rowModels: RowModel[]) {
+    public set rowModels(rowModels: RowModel[]) 
+    {
         this._rowModels = rowModels;
     }
 
@@ -190,28 +196,32 @@ export class ComparisonRepresentation {
      * Adds a row into the RowModel list.
      * @param rowModel - Rowmodel to push
      */
-    public pushRow(rowModel: RowModel): void {
+    public pushRow(rowModel: RowModel): void 
+    {
         this._rowModels.push(rowModel);
     }
 
     /**
      * Getter method of the fullProfiles
      */
-    public get fullProfiles(): FullProfile[] {
+    public get fullProfiles(): FullProfile[] 
+    {
         return this._fullProfiles;
     }
 
     /**
      * Setter method of the fullProfiles
      */
-    public set fullProfiles(fullProfile: FullProfile[]) {
+    public set fullProfiles(fullProfile: FullProfile[]) 
+    {
         this._fullProfiles = fullProfile;
     }
 
     /**
      * Getter method of the summary width
      */
-    public getSummaryWidth(): number {
+    public getSummaryWidth(): number 
+    {
         return PAGE_WIDTH / this._fullProfiles.length;
     }
 
@@ -219,12 +229,15 @@ export class ComparisonRepresentation {
      * Creates a row that will display publications by year card which is to be rendered on the gui
      * This row also includes from, to and range filters.
      */
-    private createPublicationByYearRow(): void {
+    private createPublicationByYearRow(): void 
+    {
         const rowModel: RowModel = new RowModel(PAGE_WIDTH);
         const tempYearSeries: Array<Series> = new Array<Series>();
 
-        for (let i: number = 0; i < this._fullProfiles.length; i++) {
-            this._fullProfiles[i].publicationsByYear.forEach((pby: PublicationByYear) => {
+        for (let i: number = 0; i < this._fullProfiles.length; i++) 
+        {
+            this._fullProfiles[i].publicationsByYear.forEach((pby: PublicationByYear) => 
+            {
                 const serie: Series = new Series(pby.year + '', new Array(this._fullProfiles.length).fill(0));
                 serie.data[i] = pby.publicationsCount;
                 tempYearSeries.push(serie);
@@ -232,33 +245,42 @@ export class ComparisonRepresentation {
         }
         const yearSeries: Array<Series> = [];
 
-        tempYearSeries.forEach((serie: Series) => {
+        tempYearSeries.forEach((serie: Series) => 
+        {
             const temp: Array<Series> = new Array<Series>();
-            for (const currTmpYearsSeries of tempYearSeries) {
-                if (currTmpYearsSeries.name === serie.name) {
+            for (const currTmpYearsSeries of tempYearSeries) 
+            {
+                if (currTmpYearsSeries.name === serie.name) 
+                {
                     temp.push(currTmpYearsSeries);
                 }
             }
-            if (temp.length > 1) {
+            if (temp.length > 1) 
+            {
                 const data: Array<Array<number>> = [];
-                for (let i: number = 0; i < temp.length; i++) {
+                for (let i: number = 0; i < temp.length; i++) 
+                {
                     data.push(temp[i].data);
                 }
                 const newData: Array<number> = data[0].map((x: number, idx: number) =>
                     data.reduce((sum: number, curr: Array<number>) => sum + curr[idx], 0),
                 );
                 const newSeries: Series = new Series(temp[0].name, newData);
-                if (yearSeries.filter((yearSerie: Series) => yearSerie.name === newSeries.name).length === 0) {
+                if (yearSeries.filter((yearSerie: Series) => yearSerie.name === newSeries.name).length === 0) 
+                {
                     yearSeries.push(newSeries);
                 }
-            } else {
+            }
+            else 
+            {
                 const newSeries: Series = new Series(temp[0].name, temp[0].data);
                 yearSeries.push(newSeries);
             }
         });
 
         const profileName: string[] = new Array<string>();
-        for (const profile of this._fullProfiles) {
+        for (const profile of this._fullProfiles) 
+        {
             profileName.push(profile.basicProfile.name);
         }
         const yearModel: BasicColumnsChartModel = new BasicColumnsChartModel(
@@ -304,21 +326,25 @@ export class ComparisonRepresentation {
      * Creates a row that will display publications by venue card which is to be rendered on the gui
      * This row also includes showing and scale filters.
      */
-    private createPublicationByVenueRow(): void {
+    private createPublicationByVenueRow(): void 
+    {
         const rowModel: RowModel = new RowModel(PAGE_WIDTH);
 
         const models: DistributedColumnsChartModel[] = [];
         const showing: Filter<number, StackedColumnsChartModel> = new ShowingFilter(
             CARDS.PUBLICATIONS_BY_VENUE.CARD_DATA.DEFAULT_NUM_OF_ENTRIES,
         );
-        this._fullProfiles.forEach((profile: FullProfile) => {
+        this._fullProfiles.forEach((profile: FullProfile) => 
+        {
             const series: Array<Series> = new Array<Series>();
-            for (const pbv of profile.publicationsByVenue) {
+            for (const pbv of profile.publicationsByVenue) 
+            {
                 series.push(new Series(pbv.venue, [pbv.publicationCount]));
             }
 
             const venus: string[] = [];
-            for (const pbv of profile.publicationsByVenue) {
+            for (const pbv of profile.publicationsByVenue) 
+            {
                 venus.push(pbv.venue);
             }
             const model: DistributedColumnsChartModel = new DistributedColumnsChartModel(
@@ -349,7 +375,8 @@ export class ComparisonRepresentation {
         const chartOptionsModel: ChartOptionsModel = new ChartOptionsModel(models);
         chartOptionsModel.filters = [scale];
 
-        models.forEach((model: ObjectSeriesChartModel) => {
+        models.forEach((model: ObjectSeriesChartModel) => 
+        {
             model.chartOptionsModel = chartOptionsModel;
         });
 
@@ -363,7 +390,8 @@ export class ComparisonRepresentation {
         rowModel.popupButtons = [showingPopupEdit];
         rowModel.checkBoxes = [scalingCheckBox];
         showing.value = CARDS.PUBLICATIONS_BY_VENUE.CARD_DATA.DEFAULT_NUM_OF_ENTRIES;
-        for (const model of models) {
+        for (const model of models) 
+        {
             model.applyAllFilters();
         }
         this._rowModels.push(rowModel);
@@ -373,16 +401,19 @@ export class ComparisonRepresentation {
      * Creates a row that will display citations by year card which is to be rendered on the gui
      * This row also includes from, to, from number and to number filters.
      */
-    private createCitationsByYearRow(): void {
+    private createCitationsByYearRow(): void 
+    {
         const rowModel: RowModel = new RowModel(PAGE_WIDTH);
 
         const models: StackedColumnsChartModel[] = [];
 
         let min: number = Number.MAX_SAFE_INTEGER;
         let max: number = 0;
-        this._fullProfiles.forEach((profile: FullProfile) => {
+        this._fullProfiles.forEach((profile: FullProfile) => 
+        {
             const series: Array<Series> = new Array<Series>();
-            for (const cby of profile.citationsByYear) {
+            for (const cby of profile.citationsByYear) 
+            {
                 const isc: number = cby.indirectSelfCitationsCount;
                 const sc: number = cby.selfCitationCount;
                 const cbo: number = cby.totalCitationsCount - isc - sc;
@@ -429,7 +460,8 @@ export class ComparisonRepresentation {
         const chartOptionsModel: ChartOptionsModel = new ChartOptionsModel(models);
         chartOptionsModel.filters = [scale];
 
-        models.forEach((model: ObjectSeriesChartModel) => {
+        models.forEach((model: ObjectSeriesChartModel) => 
+        {
             model.filters = [fromFilter, toFilter];
             model.chartOptionsModel = chartOptionsModel;
         });
@@ -445,7 +477,8 @@ export class ComparisonRepresentation {
         rowModel.popupButtons = [rangePopupEdit];
         rowModel.checkBoxes = [scalingCheckBox];
 
-        for (const model of models) {
+        for (const model of models) 
+        {
             model.applyAllFilters();
         }
         rowModel.simpleCardModels.push(...models);
@@ -456,7 +489,8 @@ export class ComparisonRepresentation {
      * Creates a row that will display most frequent co-author card which is to be rendered on the gui
      * This row also includes showing and scale filters.
      */
-    private createMostFrequentCoAuthorsRow(): void {
+    private createMostFrequentCoAuthorsRow(): void 
+    {
         const rowModel: RowModel = new RowModel(PAGE_WIDTH);
 
         const models: BasicBarsChartModel[] = [];
@@ -465,9 +499,11 @@ export class ComparisonRepresentation {
         );
         const scale: Filter<boolean, ChartOptionsModel> = new ScaleUpFilter(false);
 
-        this._fullProfiles.forEach((profile: FullProfile) => {
+        this._fullProfiles.forEach((profile: FullProfile) => 
+        {
             const series: Array<Series> = new Array<Series>();
-            for (const author of profile.authors) {
+            for (const author of profile.authors) 
+            {
                 series.push(new Series(author.name, [author.jointPublicationCount]));
             }
             const sortedSeries: Array<Series> = series.sort(this.sortSeriesByData);
@@ -489,7 +525,8 @@ export class ComparisonRepresentation {
         const chartOptionsModel: ChartOptionsModel = new ChartOptionsModel(models);
         chartOptionsModel.filters = [scale];
 
-        models.forEach((model: ObjectSeriesChartModel) => {
+        models.forEach((model: ObjectSeriesChartModel) => 
+        {
             model.chartOptionsModel = chartOptionsModel;
         });
 
@@ -512,7 +549,8 @@ export class ComparisonRepresentation {
         rowModel.checkBoxes = [scalingCheckBox];
         rowModel.popupButtons = [showingPopupEdit];
         showing.value = CARDS.MOST_FREQUENT_CO_AUTHORS.CARD_DATA.DEFAULT_NUM_OF_ENTRIES;
-        for (const model of models) {
+        for (const model of models) 
+        {
             model.applyAllFilters();
         }
         this._rowModels.push(rowModel);
@@ -522,7 +560,8 @@ export class ComparisonRepresentation {
      * Creates a row that will display  co-authors with highest h-index card which is to be rendered on the gui
      * This row also includes scale according to h-index, scale according to publication number and showing filters.
      */
-    private createCoAuthorsWithHighestHIndexRow(): void {
+    private createCoAuthorsWithHighestHIndexRow(): void 
+    {
         const rowModel: RowModel = new RowModel(PAGE_WIDTH);
 
         const models: LineColumnsMixedChartModel[] = [];
@@ -530,9 +569,11 @@ export class ComparisonRepresentation {
 
         let min: number = Number.MAX_SAFE_INTEGER;
         let max: number = 0;
-        this._fullProfiles.forEach((profile: FullProfile) => {
+        this._fullProfiles.forEach((profile: FullProfile) => 
+        {
             const series: Array<Series> = new Array<Series>();
-            for (const author of profile.authors) {
+            for (const author of profile.authors) 
+            {
                 series.push(new Series(author.name, [author.hIndex], 'line'));
                 series.push(new Series(author.name, [author.jointPublicationCount], 'column'));
                 if (author.hIndex < min) min = author.hIndex;
@@ -558,7 +599,8 @@ export class ComparisonRepresentation {
         const chartOptionsModel: ChartOptionsModel = new ChartOptionsModel(models);
         chartOptionsModel.filters = [scaleHIndex, scalePublication];
 
-        models.forEach((model: ObjectSeriesChartModel) => {
+        models.forEach((model: ObjectSeriesChartModel) => 
+        {
             model.filters = [showing];
             model.chartOptionsModel = chartOptionsModel;
         });
@@ -590,7 +632,8 @@ export class ComparisonRepresentation {
         rowModel.popupButtons = [showingPopupEdit];
         rowModel.checkBoxes = [scalingPublicationCheckBox, scalingHIndexCheckBox];
 
-        for (const model of models) {
+        for (const model of models) 
+        {
             model.applyAllFilters();
         }
 
@@ -602,11 +645,13 @@ export class ComparisonRepresentation {
     /**
      * Creates a row that will display citations and expertise cards which is to be rendered on the gui
      */
-    private createCitationsExpertiseRow(): void {
+    private createCitationsExpertiseRow(): void 
+    {
         const cerRow: RowModel = new RowModel(PAGE_WIDTH);
         const series: Array<Series> = new Array<Series>();
 
-        this.fullProfiles.forEach((profile: FullProfile) => {
+        this.fullProfiles.forEach((profile: FullProfile) => 
+        {
             series.push(
                 new Series(profile.basicProfile.name, [
                     profile.basicProfile.totalCitations -
@@ -619,7 +664,8 @@ export class ComparisonRepresentation {
         });
 
         const labels: string[] = [];
-        this.fullProfiles.forEach((profile: FullProfile) => {
+        this.fullProfiles.forEach((profile: FullProfile) => 
+        {
             labels.push(profile.basicProfile.name);
         });
 
@@ -636,7 +682,8 @@ export class ComparisonRepresentation {
         cerRow.simpleCardModels.push(stackedColumns100ChartModel);
 
         const expertise: Expertise[] = new Array<Expertise>();
-        for (const fp of this._fullProfiles) {
+        for (const fp of this._fullProfiles) 
+        {
             expertise.push(new Expertise(fp.basicProfile.name, fp.expertise));
         }
 
@@ -658,7 +705,8 @@ export class ComparisonRepresentation {
      * @param b the second series to be sorted
      * @returns the sorted series
      */
-    private sortSeries(a: Series, b: Series): number {
+    private sortSeries(a: Series, b: Series): number 
+    {
         if (+a.name < +b.name) return -1;
         if (+a.name > +b.name) return 1;
         return 0;
@@ -670,7 +718,8 @@ export class ComparisonRepresentation {
      * @param b the second series whose data is to be sorted
      * @returns the sorted series data
      */
-    private sortSeriesByData(a: Series, b: Series): number {
+    private sortSeriesByData(a: Series, b: Series): number 
+    {
         if (+a.data[0] > +b.data[0]) return -1;
         if (+a.data[0] < +b.data[0]) return 1;
         return 0;

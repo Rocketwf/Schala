@@ -28,18 +28,21 @@ export const searchResultsStore = defineStore({
          * affiliation filter
          * @param affiliationFilter -
          */
-        etAffiliationFilter(affiliationFilter: string): void {
+        etAffiliationFilter(affiliationFilter: string): void 
+        {
             this.affilationFilter.value = affiliationFilter;
 
             this.applyAllFilters();
         },
-        setWordsInTitleFilter(wordsInTitleFilter: string): void {
+        setWordsInTitleFilter(wordsInTitleFilter: string): void 
+        {
             this.wordsInTitleFilter.value = wordsInTitleFilter;
             this.paginationFilter.value = 1;
 
             this.applyAllFilters();
         },
-        async setSearchString(passedSearchString: string) {
+        async setSearchString(passedSearchString: string) 
+        {
             Loading.show();
             this.searchString = passedSearchString;
             const basicProfiles: BasicProfile[] = await SemanticScholarSource.getInstance().fetchSearchResults(
@@ -55,24 +58,30 @@ export const searchResultsStore = defineStore({
             this.applyAllFilters();
             Loading.hide();
         },
-        fixNumberOfPages(): void {
+        fixNumberOfPages(): void 
+        {
             this.maxPage = Math.ceil(this.searchResultsShowingModel.basicProfiles.length / 15);
         },
-        setPaginationFilter(value: number): void {
+        setPaginationFilter(value: number): void 
+        {
             this.paginationFilter.value = value;
 
             this.applyAllFilters();
         },
-        setSearchResultsShowingModel(model: SearchResultsModel) {
+        setSearchResultsShowingModel(model: SearchResultsModel) 
+        {
             this.searchResultsShowingModel = model;
         },
-        setSearchResultsCachedModel(model: SearchResultsModel) {
+        setSearchResultsCachedModel(model: SearchResultsModel) 
+        {
             this.searchResultsCachedModel = model;
         },
-        resetFromCache(): void {
+        resetFromCache(): void 
+        {
             this.searchResultsShowingModel = this.searchResultsCachedModel.deepCopy();
         },
-        applyAllFilters(): void {
+        applyAllFilters(): void 
+        {
             this.resetFromCache();
             this.wordsInTitleFilter.apply(this.getSearchResultsShowingModel);
 

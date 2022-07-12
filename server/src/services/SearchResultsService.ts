@@ -7,7 +7,8 @@ import { ProfileService } from './ProfileService';
 /**
  * This class is responsible for building the search results for a given query
  */
-export class SearchResultsService extends ProfileService {
+export class SearchResultsService extends ProfileService 
+{
     /**
      * The used data source for the query
      */
@@ -17,14 +18,17 @@ export class SearchResultsService extends ProfileService {
      * @param query - Query to build
      * @returns - The data of the built profiles
      */
-    async build(query: string): Promise<BasicProfile[]> {
+    async build(query: string): Promise<BasicProfile[]> 
+    {
         const apiBasicAuthors: APIBasicAuthor[] = await this.dataSource.fetchSearchResults(query);
         const basicProfiles: BasicProfile[] = new Array<BasicProfile>();
 
-        for (const basicAuthor of apiBasicAuthors) {
+        for (const basicAuthor of apiBasicAuthors) 
+        {
             let name: string = basicAuthor.name;
 
-            if (basicAuthor.aliases) {
+            if (basicAuthor.aliases) 
+            {
                 name = basicAuthor.aliases[basicAuthor.aliases.length - 1];
             }
 

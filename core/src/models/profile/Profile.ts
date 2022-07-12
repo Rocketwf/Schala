@@ -1,7 +1,9 @@
 import { Article } from '../articles';
 
-export abstract class Profile {}
-export class BasicProfile {
+export abstract class Profile 
+{}
+export class BasicProfile 
+{
     private _id: string;
     private _name: string;
     private _affiliation: string[];
@@ -16,7 +18,8 @@ export class BasicProfile {
         _totalCitations?: number,
         _paperCount?: number,
         _pictureURL?: string,
-    ) {
+    ) 
+    {
         this._id = _id;
         this._name = _name;
         this._affiliation = _affiliation;
@@ -25,51 +28,63 @@ export class BasicProfile {
         this._pictureURL = _pictureURL;
     }
 
-    public get id(): string {
+    public get id(): string 
+    {
         return this._id;
     }
 
-    public set id(v: string) {
+    public set id(v: string) 
+    {
         this._id = v;
     }
 
-    public get name(): string {
+    public get name(): string 
+    {
         return this._name;
     }
 
-    public set name(v: string) {
+    public set name(v: string) 
+    {
         this._name = v;
     }
 
-    public get affiliation(): string[] {
+    public get affiliation(): string[] 
+    {
         return this._affiliation;
     }
 
-    public set affiliation(v: string[]) {
+    public set affiliation(v: string[]) 
+    {
         this._affiliation = v;
     }
 
-    public get pictureURL(): string {
+    public get pictureURL(): string 
+    {
         return this._pictureURL;
     }
 
-    public set pictureURL(v: string) {
+    public set pictureURL(v: string) 
+    {
         this._pictureURL = v;
     }
 
-    public get totalCitations(): number {
+    public get totalCitations(): number 
+    {
         return this._totalCitations;
     }
 
-    public set totalCitations(v: number) {
+    public set totalCitations(v: number) 
+    {
         this._totalCitations = v;
     }
 
-    public get paperCount(): number {
+    public get paperCount(): number 
+    {
         return this._paperCount;
     }
 
-    public set paperCount(v: number) {
+    public set paperCount(v: number) 
+    {
         this._paperCount = v;
     }
 }
@@ -77,7 +92,8 @@ export class BasicProfile {
 /**
  * Full profile
  */
-export class FullProfile {
+export class FullProfile 
+{
     private _expertise: string[];
     private _hIndex: number;
     private _hIndexWithoutSelfCitations: number;
@@ -130,7 +146,8 @@ export class FullProfile {
         _citedScholars: CitedScholar[],
         _authors: Author[],
         _articles: Article[],
-    ) {
+    ) 
+    {
         this._expertise = _expertise;
         this._hIndex = _hIndex;
         this._hIndexWithoutSelfCitations = _hIndexWithoutSelfCitations;
@@ -148,112 +165,144 @@ export class FullProfile {
         this._articles = _articles;
     }
 
-    public get publicationsByYear(): PublicationByYear[] {
+    public get publicationsByYear(): PublicationByYear[] 
+    {
         return this._publicationsByYear;
     }
-    public set publicationsByYear(newPublicationsByYear: PublicationByYear[]) {
+    public set publicationsByYear(newPublicationsByYear: PublicationByYear[]) 
+    {
         this._publicationsByYear = newPublicationsByYear;
     }
-    public get publicationsByVenue(): PublicationByVenue[] {
+    public get publicationsByVenue(): PublicationByVenue[] 
+    {
         return this._publicationsByVenue;
     }
-    public set publicationsByVenue(newPublicationsByVenue: PublicationByVenue[]) {
+    public set publicationsByVenue(newPublicationsByVenue: PublicationByVenue[]) 
+    {
         this._publicationsByVenue = newPublicationsByVenue;
     }
-    public get citationsByYear(): CitationByYear[] {
+    public get citationsByYear(): CitationByYear[] 
+    {
         return this._citationsByYear;
     }
 
-    public set citationsByYear(v: CitationByYear[]) {
+    public set citationsByYear(v: CitationByYear[]) 
+    {
         this._citationsByYear = v;
     }
 
-    public get citedScholars(): CitedScholar[] {
+    public get citedScholars(): CitedScholar[] 
+    {
         return this._citedScholars;
     }
-    public set citedScholars(newCitedScholars: CitedScholar[]) {
+    public set citedScholars(newCitedScholars: CitedScholar[]) 
+    {
         this._citedScholars = newCitedScholars;
     }
 
-    public get articles(): Article[] {
+    public get articles(): Article[] 
+    {
         return this._articles;
     }
-    public set articles(articles: Article[]) {
+    public set articles(articles: Article[]) 
+    {
         this._articles = articles;
     }
-    public get i10IndexWithoutSelfCitations(): number {
+    public get i10IndexWithoutSelfCitations(): number 
+    {
         return this._i10IndexWithoutSelfCitations;
     }
-    public set i10IndexWithoutSelfCitations(i10IndexWithoutSelfCitations: number) {
+    public set i10IndexWithoutSelfCitations(i10IndexWithoutSelfCitations: number) 
+    {
         this._i10IndexWithoutSelfCitations = i10IndexWithoutSelfCitations;
     }
-    public get i10Index(): number {
+    public get i10Index(): number 
+    {
         return this._i10Index;
     }
-    public set i10Index(i10Index: number) {
+    public set i10Index(i10Index: number) 
+    {
         this.i10Index = i10Index;
     }
-    public get expertise(): string[] {
+    public get expertise(): string[] 
+    {
         return this._expertise;
     }
-    public set expertise(expertise: string[]) {
+    public set expertise(expertise: string[]) 
+    {
         this._expertise = expertise;
     }
-    public get hIndex(): number {
+    public get hIndex(): number 
+    {
         return this._hIndex;
     }
-    public set hIndex(hIndex: number) {
+    public set hIndex(hIndex: number) 
+    {
         this.hIndex = hIndex;
     }
-    public get hIndexWithoutSelfCitations(): number {
+    public get hIndexWithoutSelfCitations(): number 
+    {
         return this._hIndexWithoutSelfCitations;
     }
-    public set hIndexWithoutSelfCitations(hIndexWithoutSelfCitations: number) {
+    public set hIndexWithoutSelfCitations(hIndexWithoutSelfCitations: number) 
+    {
         this._hIndexWithoutSelfCitations = hIndexWithoutSelfCitations;
     }
-    public get basicProfile(): BasicProfile {
+    public get basicProfile(): BasicProfile 
+    {
         return this._basicProfile;
     }
-    public set basicProfile(basicProfile: BasicProfile) {
+    public set basicProfile(basicProfile: BasicProfile) 
+    {
         this.basicProfile = basicProfile;
     }
 
-    public get selfCitationsCount(): number {
+    public get selfCitationsCount(): number 
+    {
         return this._selfCitationsCount;
     }
 
-    public set selfCitationsCount(selfCitationsCount: number) {
+    public set selfCitationsCount(selfCitationsCount: number) 
+    {
         this._selfCitationsCount = selfCitationsCount;
     }
 
-    public get indirectSelfCitationsCount(): number {
+    public get indirectSelfCitationsCount(): number 
+    {
         return this._indirectSelfCitationsCount;
     }
 
-    public set indirectSelfCitationsCount(indirectSelfCitationsCount: number) {
+    public set indirectSelfCitationsCount(indirectSelfCitationsCount: number) 
+    {
         this._indirectSelfCitationsCount = indirectSelfCitationsCount;
     }
 
-    public get publicationsCount(): number {
+    public get publicationsCount(): number 
+    {
         return this._articles.length;
     }
 
-    public get authors(): Author[] {
+    public get authors(): Author[] 
+    {
         return this._authors;
     }
-    public set authors(authors: Author[]) {
+    public set authors(authors: Author[]) 
+    {
         this._authors = authors;
     }
 
-    public get url(): string {
+    public get url(): string 
+    {
         return this._url;
     }
-    public set url(url: string) {
+    public set url(url: string) 
+    {
         this._url = url;
     }
 }
 
-export class CitationByYear {
+export class CitationByYear 
+{
     private _year: number;
     private _selfCitationsCount: number;
     private _indirectSelfCitationsCount: number;
@@ -263,135 +312,170 @@ export class CitationByYear {
         _selfCitationsCount: number,
         _indirectSelfCitationsCount: number,
         _totalCitationsCount: number,
-    ) {
+    ) 
+    {
         this._year = _year;
         this._selfCitationsCount = _selfCitationsCount;
         this._indirectSelfCitationsCount = _indirectSelfCitationsCount;
         this._totalCitationsCount = _totalCitationsCount;
     }
 
-    public get year(): number {
+    public get year(): number 
+    {
         return this._year;
     }
-    public set year(newYear: number) {
+    public set year(newYear: number) 
+    {
         this._year = newYear;
     }
-    public get selfCitationCount(): number {
+    public get selfCitationCount(): number 
+    {
         return this._selfCitationsCount;
     }
-    public set selfCitationCount(newSelfCitationCount: number) {
+    public set selfCitationCount(newSelfCitationCount: number) 
+    {
         this._selfCitationsCount = newSelfCitationCount;
     }
-    public get indirectSelfCitationsCount(): number {
+    public get indirectSelfCitationsCount(): number 
+    {
         return this._indirectSelfCitationsCount;
     }
-    public set indirectSelfCitationsCount(newIndirectSelfCitationsCount: number) {
+    public set indirectSelfCitationsCount(newIndirectSelfCitationsCount: number) 
+    {
         this._indirectSelfCitationsCount = newIndirectSelfCitationsCount;
     }
-    public get totalCitationsCount(): number {
+    public get totalCitationsCount(): number 
+    {
         return this._totalCitationsCount;
     }
-    public set totalCitationsCount(newTotalCitationsCount: number) {
+    public set totalCitationsCount(newTotalCitationsCount: number) 
+    {
         this._totalCitationsCount = newTotalCitationsCount;
     }
 }
 
-export class PublicationByYear {
+export class PublicationByYear 
+{
     private _year: number;
     private _publicationsCount: number;
-    constructor(_year: number, _publicationCount: number) {
+    constructor(_year: number, _publicationCount: number) 
+    {
         this._year = _year;
         this._publicationsCount = _publicationCount;
     }
 
-    public get year(): number {
+    public get year(): number 
+    {
         return this._year;
     }
-    public set year(newYear: number) {
+    public set year(newYear: number) 
+    {
         this._year = newYear;
     }
-    public get publicationsCount(): number {
+    public get publicationsCount(): number 
+    {
         return this._publicationsCount;
     }
-    public set publicationsCount(publicationsCount: number) {
+    public set publicationsCount(publicationsCount: number) 
+    {
         this._publicationsCount = publicationsCount;
     }
 }
 
-export class PublicationByVenue {
+export class PublicationByVenue 
+{
     private _venue: string;
     private _publicationCount: number;
-    constructor(_venue: string, _publicationCount: number) {
+    constructor(_venue: string, _publicationCount: number) 
+    {
         this._venue = _venue;
         this._publicationCount = _publicationCount;
     }
 
-    public get venue(): string {
+    public get venue(): string 
+    {
         return this._venue;
     }
-    public set venue(newYear: string) {
+    public set venue(newYear: string) 
+    {
         this._venue = newYear;
     }
-    public get publicationCount(): number {
+    public get publicationCount(): number 
+    {
         return this._publicationCount;
     }
-    public set publicationCount(newCount: number) {
+    public set publicationCount(newCount: number) 
+    {
         this._publicationCount = newCount;
     }
 }
 
-export class CitedScholar {
+export class CitedScholar 
+{
     private _name: string;
     private _citationCount: number;
-    constructor(_name: string, _citationCount: number) {
+    constructor(_name: string, _citationCount: number) 
+    {
         this._name = _name;
         this._citationCount = _citationCount;
     }
 
-    public get name(): string {
+    public get name(): string 
+    {
         return this._name;
     }
-    public set name(newName: string) {
+    public set name(newName: string) 
+    {
         this._name = newName;
     }
-    public get citationsCount(): number {
+    public get citationsCount(): number 
+    {
         return this._citationCount;
     }
-    public set citationsCount(newCount: number) {
+    public set citationsCount(newCount: number) 
+    {
         this._citationCount = newCount;
     }
 }
-export class Author {
+export class Author 
+{
     private _name: string;
     private _jointPublicationCount: number;
     private _hIndex: number;
-    constructor(_name: string, _jointPublicationCount: number, _hIndex: number) {
+    constructor(_name: string, _jointPublicationCount: number, _hIndex: number) 
+    {
         this._hIndex = _hIndex;
         this._jointPublicationCount = _jointPublicationCount;
         this._name = _name;
     }
 
-    public get hIndex(): number {
+    public get hIndex(): number 
+    {
         return this._hIndex;
     }
 
-    public set hIndex(v: number) {
+    public set hIndex(v: number) 
+    {
         this._hIndex = v;
     }
 
-    public get name(): string {
+    public get name(): string 
+    {
         return this._name;
     }
 
-    public set name(v: string) {
+    public set name(v: string) 
+    {
         this._name = v;
     }
 
-    public get jointPublicationCount(): number {
+    public get jointPublicationCount(): number 
+    {
         return this._jointPublicationCount;
     }
 
-    public set jointPublicationCount(v: number) {
+    public set jointPublicationCount(v: number) 
+    {
         this._jointPublicationCount = v;
     }
 }

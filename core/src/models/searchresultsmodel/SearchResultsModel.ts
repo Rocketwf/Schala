@@ -2,17 +2,21 @@ import { Filter } from '../../filters';
 import { Filterable } from '../../filters/Filterable';
 import { BasicProfile } from '../profile/Profile';
 
-export class SearchResultsModel implements Filterable<SearchResultsModel> {
+export class SearchResultsModel implements Filterable<SearchResultsModel> 
+{
     private _basicProfiles: Array<BasicProfile>;
     private _filters: Filter<number, SearchResultsModel>[];
 
-    constructor(basicProfiles: Array<BasicProfile>) {
+    constructor(basicProfiles: Array<BasicProfile>) 
+    {
         this._basicProfiles = basicProfiles;
     }
 
-    public deepCopy(): SearchResultsModel {
+    public deepCopy(): SearchResultsModel 
+    {
         const basicProfilesCopy: Array<BasicProfile> = new Array<BasicProfile>();
-        this._basicProfiles.forEach((basicProfile: BasicProfile) => {
+        this._basicProfiles.forEach((basicProfile: BasicProfile) => 
+        {
             basicProfilesCopy.push(
                 new BasicProfile(
                     basicProfile.id,
@@ -27,25 +31,31 @@ export class SearchResultsModel implements Filterable<SearchResultsModel> {
         return new SearchResultsModel(basicProfilesCopy);
     }
 
-    public applyAllFilters(): void {
+    public applyAllFilters(): void 
+    {
         return;
     }
 
-    public get filters(): Filter<number, SearchResultsModel>[] {
+    public get filters(): Filter<number, SearchResultsModel>[] 
+    {
         return this._filters;
     }
-    public set filters(filters: Filter<number, SearchResultsModel>[]) {
+    public set filters(filters: Filter<number, SearchResultsModel>[]) 
+    {
         this._filters = filters;
     }
 
-    public get basicProfiles(): Array<BasicProfile> {
+    public get basicProfiles(): Array<BasicProfile> 
+    {
         return this._basicProfiles;
     }
 
-    public set basicProfiles(basicProfiles: Array<BasicProfile>) {
+    public set basicProfiles(basicProfiles: Array<BasicProfile>) 
+    {
         this._basicProfiles = basicProfiles;
     }
-    public get entries(): number {
+    public get entries(): number 
+    {
         return this._basicProfiles.length;
     }
 }

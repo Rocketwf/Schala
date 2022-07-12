@@ -1,10 +1,10 @@
 <template>
-    <div id="mainPageContainer">
-        <div id="logoSearch">
-            <img src="../../assets/logo.png" />
-        </div>
-        <search-component />
+  <div id="mainPageContainer">
+    <div id="logoSearch">
+      <img src="../../assets/logo.png">
     </div>
+    <search-component />
+  </div>
 </template>
 <script setup lang="ts">
 import SearchComponent from './SearchComponent.vue';

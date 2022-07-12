@@ -1,7 +1,8 @@
 // import { SemanticScholarSource } from '../../datasources';
 // import { Article } from '../../models';
 
-describe('findOrCreate method', () => {
+describe('findOrCreate method', () => 
+{
     // it('fetches author ids', async () => {
     //     const basicAuthors: APIBasicAuthor[] = await SemanticScholarSource.getInstance().fetchSearchResults('walter tichy');
     //     const authorIDs: string[] =[];
@@ -55,7 +56,8 @@ describe('findOrCreate method', () => {
     //     const authors: APIAuthor[] = await SemanticScholarSource.getInstance().fetchAuthor('1679754');
     //     expect(authors[0].homepage != null).toBe(true);
     // });
-    it('fetches author articles', async () => {
+    it('fetches author articles', async () => 
+    {
         expect(true).toBe(true);
     }, 30000);
 });

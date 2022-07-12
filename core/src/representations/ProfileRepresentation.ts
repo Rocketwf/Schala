@@ -160,10 +160,12 @@ const CARDS: cards = {
 /**
  * Builds the data structure that will be given to ProfilePage.
  */
-export class ProfileRepresentation {
+export class ProfileRepresentation 
+{
     private _fullProfile: FullProfile;
     private _rowModels: Array<RowModel>;
-    constructor(_fullProfile: FullProfile) {
+    constructor(_fullProfile: FullProfile) 
+    {
         this._fullProfile = _fullProfile;
         this._rowModels = new Array<RowModel>();
     }
@@ -171,7 +173,8 @@ export class ProfileRepresentation {
     /**
      * Updates the RowModel list according to the given FullProfile.
      */
-    renderProfile(): void {
+    renderProfile(): void 
+    {
         this._rowModels = [];
         this.createFirstRow();
         this.createSecondRow();
@@ -182,21 +185,24 @@ export class ProfileRepresentation {
     /**
      * Getter method of the FullProfile.
      */
-    public get fullProfile(): FullProfile {
+    public get fullProfile(): FullProfile 
+    {
         return this._fullProfile;
     }
 
     /**
      * Setter method of the FullProfile.
      */
-    public set fullProfile(fullProfile: FullProfile) {
+    public set fullProfile(fullProfile: FullProfile) 
+    {
         this._fullProfile = fullProfile;
     }
 
     /**
      * Getter method of the list of RowModel.
      */
-    public get rowModels(): RowModel[] {
+    public get rowModels(): RowModel[] 
+    {
         return this._rowModels;
     }
 
@@ -204,13 +210,16 @@ export class ProfileRepresentation {
      * Creates publications by year card with from, to and range filters.
      * @returns publications by year card as DistributedColumnsChartModel
      */
-    private createPublicationsByYearCard(): DistributedColumnsChartModel {
+    private createPublicationsByYearCard(): DistributedColumnsChartModel 
+    {
         const series: Array<Series> = new Array<Series>();
-        for (const pby of this._fullProfile.publicationsByYear) {
+        for (const pby of this._fullProfile.publicationsByYear) 
+        {
             series.push(new Series(pby.year + '', [pby.publicationsCount]));
         }
         const years: string[] = new Array<string>();
-        for (const pby of this._fullProfile.publicationsByYear) {
+        for (const pby of this._fullProfile.publicationsByYear) 
+        {
             years.push(pby.year + '');
         }
         const pby: DistributedColumnsChartModel = new DistributedColumnsChartModel(
@@ -250,14 +259,17 @@ export class ProfileRepresentation {
      * Creates publications by venue card with a showing filter.
      * @returns publications by venue card as DistributedColumnsChartModel
      */
-    private createPublicationsByVenueCard(): DistributedColumnsChartModel {
+    private createPublicationsByVenueCard(): DistributedColumnsChartModel 
+    {
         const series: Array<Series> = new Array<Series>();
-        for (const pbv of this._fullProfile.publicationsByVenue) {
+        for (const pbv of this._fullProfile.publicationsByVenue) 
+        {
             series.push(new Series(pbv.venue, [pbv.publicationCount]));
         }
 
         const venues: string[] = new Array<string>();
-        for (const venue of this._fullProfile.publicationsByVenue) {
+        for (const venue of this._fullProfile.publicationsByVenue) 
+        {
             venues.push(venue.venue);
         }
         const pbv: DistributedColumnsChartModel = new DistributedColumnsChartModel(
@@ -291,9 +303,11 @@ export class ProfileRepresentation {
      * Creates most cited scholars card with a showing filter.
      * @returns most cited scholars card as BasicBarsChartModel
      */
-    private createMostCitedScholarsCard(): BasicBarsChartModel {
+    private createMostCitedScholarsCard(): BasicBarsChartModel 
+    {
         const series: Array<Series> = new Array<Series>();
-        for (const cs of this._fullProfile.citedScholars) {
+        for (const cs of this._fullProfile.citedScholars) 
+        {
             series.push(new Series(cs.name, [cs.citationsCount]));
         }
         const mcs: BasicBarsChartModel = new BasicBarsChartModel(
@@ -329,9 +343,11 @@ export class ProfileRepresentation {
      * Creates most frequent co-authors card with a showing filter.
      * @returns most frequent co-authors card as BasicBarsChartModel
      */
-    private createMostFrequentCoAuthorsCard(): BasicBarsChartModel {
+    private createMostFrequentCoAuthorsCard(): BasicBarsChartModel 
+    {
         let series: Array<Series> = new Array<Series>();
-        for (const author of this._fullProfile.authors) {
+        for (const author of this._fullProfile.authors) 
+        {
             series.push(new Series(author.name, [author.jointPublicationCount]));
         }
         series = series.sort(this.sortSeriesByData);
@@ -368,9 +384,11 @@ export class ProfileRepresentation {
      * Creates citation by year card with from, to and range filters.
      * @returns citation by year card as StackedColumnsChartModel
      */
-    private createCitationsByYearCard(): StackedColumnsChartModel {
+    private createCitationsByYearCard(): StackedColumnsChartModel 
+    {
         let series: Array<Series> = new Array<Series>();
-        for (const cby of this._fullProfile.citationsByYear) {
+        for (const cby of this._fullProfile.citationsByYear) 
+        {
             const isc: number = cby.indirectSelfCitationsCount;
             const sc: number = cby.selfCitationCount;
             const cbo: number = cby.totalCitationsCount - isc - sc;
@@ -419,7 +437,8 @@ export class ProfileRepresentation {
      * Creates expertise card to be used in .
      * @returns expertise card as ExpertiseModel
      */
-    private createExpertiseCard(): ExpertiseModel {
+    private createExpertiseCard(): ExpertiseModel 
+    {
         const expertise: Expertise = new Expertise(this._fullProfile.basicProfile.name, this._fullProfile.expertise);
         return new ExpertiseModel(
             [expertise],
@@ -434,7 +453,8 @@ export class ProfileRepresentation {
      * Creates articles card with co-authors, keywords, words in title, minimum number of citations, sort by and pagiantion filters.
      * @returns articles card as ArticlesModel
      */
-    private createArticlesCard(): ArticlesModel {
+    private createArticlesCard(): ArticlesModel 
+    {
         const articlesModel: ArticlesModel = new ArticlesModel(
             this.fullProfile.articles,
             CARDS.ARTICLES.CARD_DATA.TITLE,
@@ -516,7 +536,8 @@ export class ProfileRepresentation {
      * Creates citations card.
      * @returns citatons card as PieChartModel
      */
-    private createCitationsCard(): PieChartModel {
+    private createCitationsCard(): PieChartModel 
+    {
         const series: Array<Series> = new Array<Series>();
         series.push(
             new Series('citations by others', [
@@ -535,10 +556,12 @@ export class ProfileRepresentation {
      * Creates co-authors with highest h-index card with a showing filter.
      * @returns co-authors with highest h-index card as LineColumnsMixedChartModel
      */
-    private createCoAuthorsWithHighestHIndexCard(): LineColumnsMixedChartModel {
+    private createCoAuthorsWithHighestHIndexCard(): LineColumnsMixedChartModel 
+    {
         const series: Array<Series> = new Array<Series>();
 
-        for (const author of this._fullProfile.authors) {
+        for (const author of this._fullProfile.authors) 
+        {
             series.push(new Series(author.name, [author.hIndex], 'line'));
             series.push(new Series(author.name, [author.jointPublicationCount], 'column'));
         }
@@ -574,13 +597,15 @@ export class ProfileRepresentation {
     //Publications by year
     //Publications by venue
     //Citations by year
-    private createFirstRow(): void {
+    private createFirstRow(): void 
+    {
         const rowModel: RowModel = new RowModel(PAGE_WIDTH);
         const pbvCard: DistributedColumnsChartModel = this.createPublicationsByYearCard();
         const pbyCard: DistributedColumnsChartModel = this.createPublicationsByVenueCard();
         const cbyCard: DistributedColumnsChartModel = this.createCitationsByYearCard();
 
-        if (this.validateWidth(pbvCard.colWidth + pbvCard.colWidth + cbyCard.colWidth)) {
+        if (this.validateWidth(pbvCard.colWidth + pbvCard.colWidth + cbyCard.colWidth)) 
+        {
             rowModel.simpleCardModels.push(pbvCard);
             rowModel.simpleCardModels.push(pbyCard);
             rowModel.simpleCardModels.push(cbyCard);
@@ -591,13 +616,15 @@ export class ProfileRepresentation {
     //Most cited scholars
     //Citation breakdown
     //Most frequent co-authors
-    private createSecondRow(): void {
+    private createSecondRow(): void 
+    {
         const rowModel: RowModel = new RowModel(PAGE_WIDTH);
         const mcsCard: BasicBarsChartModel = this.createMostCitedScholarsCard();
         const citaitonsCard: PieChartModel = this.createCitationsCard();
         const mfcaCard: BasicBarsChartModel = this.createMostFrequentCoAuthorsCard();
 
-        if (this.validateWidth(mcsCard.colWidth + citaitonsCard.colWidth + mfcaCard.colWidth)) {
+        if (this.validateWidth(mcsCard.colWidth + citaitonsCard.colWidth + mfcaCard.colWidth)) 
+        {
             rowModel.simpleCardModels.push(this.createMostCitedScholarsCard());
             rowModel.simpleCardModels.push(this.createCitationsCard());
             rowModel.simpleCardModels.push(this.createMostFrequentCoAuthorsCard());
@@ -608,12 +635,14 @@ export class ProfileRepresentation {
     //Creates the third row which renders the following:
     //Co-Authors with highest h-index
     //Expertise
-    private createThirdRow(): void {
+    private createThirdRow(): void 
+    {
         const rowModel: RowModel = new RowModel(PAGE_WIDTH);
         const awhhCard: LineColumnsMixedChartModel = this.createCoAuthorsWithHighestHIndexCard();
         const expertiseCard: ExpertiseModel = this.createExpertiseCard();
 
-        if (this.validateWidth(expertiseCard.colWidth + awhhCard.colWidth)) {
+        if (this.validateWidth(expertiseCard.colWidth + awhhCard.colWidth)) 
+        {
             rowModel.simpleCardModels.push(this.createCoAuthorsWithHighestHIndexCard());
             rowModel.simpleCardModels.push(this.createExpertiseCard());
         }
@@ -621,10 +650,12 @@ export class ProfileRepresentation {
     }
 
     //Creates the fourth row which renders the articles
-    private createFourthRow(): void {
+    private createFourthRow(): void 
+    {
         const rowModel: RowModel = new RowModel(PAGE_WIDTH);
         const articlesCard: ArticlesModel = this.createArticlesCard();
-        if (this.validateWidth(articlesCard.colWidth)) {
+        if (this.validateWidth(articlesCard.colWidth)) 
+        {
             rowModel.simpleCardModels.push(this.createArticlesCard());
         }
         this._rowModels.push(rowModel);
@@ -636,11 +667,14 @@ export class ProfileRepresentation {
      * @param b the second series to be sorted
      * @returns the sorted series
      */
-    private sortSeriesByName(a: Series, b: Series): number {
-        if (+a.name < +b.name) {
+    private sortSeriesByName(a: Series, b: Series): number 
+    {
+        if (+a.name < +b.name) 
+        {
             return -1;
         }
-        if (+a.name > +b.name) {
+        if (+a.name > +b.name) 
+        {
             return 1;
         }
         return 0;
@@ -652,16 +686,20 @@ export class ProfileRepresentation {
      * @param b the second series whose data is to be sorted
      * @returns the sorted series data
      */
-    private sortSeriesByData(a: Series, b: Series): number {
-        if (+a.data[0] > +b.data[0]) {
+    private sortSeriesByData(a: Series, b: Series): number 
+    {
+        if (+a.data[0] > +b.data[0]) 
+        {
             return -1;
         }
-        if (+a.data[0] < +b.data[0]) {
+        if (+a.data[0] < +b.data[0]) 
+        {
             return 1;
         }
         return 0;
     }
-    validateWidth(value: number): boolean {
+    validateWidth(value: number): boolean 
+    {
         return value <= PAGE_WIDTH;
     }
 }

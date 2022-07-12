@@ -18,7 +18,8 @@ enum ENDPOINTS {
 /**
  * An implementation of a DataSource that uses api.semanticscholar.com.
  */
-export class SemanticScholarSource implements DataSource {
+export class SemanticScholarSource implements DataSource 
+{
     /**
      * Represents the URL address
      */
@@ -49,8 +50,10 @@ export class SemanticScholarSource implements DataSource {
      * Getter method of the instance attribute
      * @returns the semantic scholar source instance
      */
-    public static getInstance(): SemanticScholarSource {
-        if (!SemanticScholarSource.instance) {
+    public static getInstance(): SemanticScholarSource 
+    {
+        if (!SemanticScholarSource.instance) 
+        {
             SemanticScholarSource.instance = new SemanticScholarSource();
         }
         return SemanticScholarSource.instance;
@@ -59,7 +62,8 @@ export class SemanticScholarSource implements DataSource {
     /**
      * Constructs an instance of semantic scholar source
      */
-    private constructor() {
+    private constructor() 
+    {
         this._queryResultsMapping = new Map<string, BasicProfile[]>();
         this._profileIdFullProfileMapping = new Map<string, FullProfile>();
     }
@@ -69,11 +73,16 @@ export class SemanticScholarSource implements DataSource {
      * @param query - search string
      * @returns search results
      */
-    async fetchSearchResults(query: string): Promise<BasicProfile[]> {
-        if (this._queryResultsMapping.has(query)) {
+    async fetchSearchResults(query: string): Promise<BasicProfile[]> 
+    {
+        if (this._queryResultsMapping.has(query)) 
+        {
             return this._queryResultsMapping.get(query);
-        } else {
-            try {
+        }
+        else 
+        {
+            try 
+            {
                 const { data: bp }: AxiosResponse<APIBasicProfile[], object> = await axios.get<APIBasicProfile[]>(
                     this.URL + ':' + this.PORT + '/' + ENDPOINTS.SEARCHRESULTS + '/' + query,
                     {
@@ -83,7 +92,8 @@ export class SemanticScholarSource implements DataSource {
                     },
                 );
                 const basicProfiles: BasicProfile[] = new Array<BasicProfile>();
-                for (const apiBasicProfile of bp) {
+                for (const apiBasicProfile of bp) 
+                {
                     const basicProfile: BasicProfile = new BasicProfile(
                         apiBasicProfile._id,
                         apiBasicProfile._name,
@@ -96,11 +106,16 @@ export class SemanticScholarSource implements DataSource {
                 }
                 this._queryResultsMapping.set(query, basicProfiles);
                 return basicProfiles;
-            } catch (error) {
-                if (axios.isAxiosError(error)) {
+            }
+            catch (error) 
+            {
+                if (axios.isAxiosError(error)) 
+                {
                     console.log('error message: ', error.message);
                     throw new Error(error.message);
-                } else {
+                }
+                else 
+                {
                     console.log('unexpected error: ', error);
                     throw new Error('Unexpected error');
                 }
@@ -113,11 +128,16 @@ export class SemanticScholarSource implements DataSource {
      * @param profileId - profile id
      * @returns full profiles matching the given profile id
      */
-    async fetchFullProfile(profileId: string): Promise<FullProfile> {
-        if (this._profileIdFullProfileMapping.has(profileId)) {
+    async fetchFullProfile(profileId: string): Promise<FullProfile> 
+    {
+        if (this._profileIdFullProfileMapping.has(profileId)) 
+        {
             return this._profileIdFullProfileMapping.get(profileId);
-        } else {
-            try {
+        }
+        else 
+        {
+            try 
+            {
                 const { data: fp }: AxiosResponse<APIFullProfile, object> = await axios.get<APIFullProfile>(
                     this.URL + ':' + this.PORT + '/' + ENDPOINTS.FULLPROFILE + '/' + profileId,
                     {
@@ -135,9 +155,11 @@ export class SemanticScholarSource implements DataSource {
                     fp._basicProfile._pictureUrl,
                 );
                 const articles: Article[] = new Array<Article>();
-                for (const art of fp._articles) {
+                for (const art of fp._articles) 
+                {
                     const coAuthors: ArticleCoAuthor[] = new Array<ArticleCoAuthor>();
-                    for (const coAuth of art._articlesCoAuthors) {
+                    for (const coAuth of art._articlesCoAuthors) 
+                    {
                         const artCoAuthor: ArticleCoAuthor = new ArticleCoAuthor(coAuth._id, coAuth._name);
                         coAuthors.push(artCoAuthor);
                     }
@@ -155,17 +177,20 @@ export class SemanticScholarSource implements DataSource {
                     );
                 }
                 const pby: PublicationByYear[] = new Array<PublicationByYear>();
-                for (const apiPby of fp._publicationsByYear) {
+                for (const apiPby of fp._publicationsByYear) 
+                {
                     const newPby: PublicationByYear = new PublicationByYear(apiPby._year, apiPby._publicationsCount);
                     pby.push(newPby);
                 }
                 const pbv: PublicationByVenue[] = new Array<PublicationByVenue>();
-                for (const apiPbv of fp._publicationsByVenue) {
+                for (const apiPbv of fp._publicationsByVenue) 
+                {
                     const newPbv: PublicationByVenue = new PublicationByVenue(apiPbv._venue, apiPbv._publicationCount);
                     pbv.push(newPbv);
                 }
                 const cby: CitationByYear[] = new Array<CitationByYear>();
-                for (const apiCby of fp._citationsByYear) {
+                for (const apiCby of fp._citationsByYear) 
+                {
                     const newCbv: CitationByYear = new CitationByYear(
                         apiCby._year,
                         apiCby._selfCitationsCount,
@@ -175,12 +200,14 @@ export class SemanticScholarSource implements DataSource {
                     cby.push(newCbv);
                 }
                 const citedScholars: CitedScholar[] = new Array<CitedScholar>();
-                for (const apiCs of fp._citedScholars) {
+                for (const apiCs of fp._citedScholars) 
+                {
                     const newCitedScholar: CitedScholar = new CitedScholar(apiCs._name, apiCs._citationCount);
                     citedScholars.push(newCitedScholar);
                 }
                 const authors: Author[] = new Array<Author>();
-                for (const auth of fp._authors) {
+                for (const auth of fp._authors) 
+                {
                     const newAuthor: Author = new Author(auth._name, auth._jointPublicationCount, auth._hIndex);
                     authors.push(newAuthor);
                 }
@@ -204,11 +231,16 @@ export class SemanticScholarSource implements DataSource {
                 );
                 this._profileIdFullProfileMapping.set(profileId, fullProfile);
                 return fullProfile;
-            } catch (error) {
-                if (axios.isAxiosError(error)) {
+            }
+            catch (error) 
+            {
+                if (axios.isAxiosError(error)) 
+                {
                     console.log('error message: ', error.message);
                     throw new Error(error.message);
-                } else {
+                }
+                else 
+                {
                     console.log('unexpected error: ', error);
                     throw new Error(error.message);
                 }

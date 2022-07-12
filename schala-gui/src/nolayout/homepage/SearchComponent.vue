@@ -1,16 +1,30 @@
 <template>
-    <div id="searchBox">
-        <q-form @submit="handleSearch" class="q-gutter-md">
-            <q-input v-model="searchString" debounce="500" filled placeholder="Search for a name or an ID">
-                <template #append>
-                    <q-icon name="search" />
-                </template>
-            </q-input>
-            <div>
-                <q-btn id="butn" label="Search" class="float-right" type="submit" color="primary" />
-            </div>
-        </q-form>
-    </div>
+  <div id="searchBox">
+    <q-form
+      @submit="handleSearch"
+      class="q-gutter-md"
+    >
+      <q-input
+        v-model="searchString"
+        debounce="500"
+        filled
+        placeholder="Search for a name or an ID"
+      >
+        <template #append>
+          <q-icon name="search" />
+        </template>
+      </q-input>
+      <div>
+        <q-btn
+          id="butn"
+          label="Search"
+          class="float-right"
+          type="submit"
+          color="primary"
+        />
+      </div>
+    </q-form>
+  </div>
 </template>
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
@@ -22,16 +36,19 @@ const searchString = ref('');
 const router = useRouter();
 
 // Methods
-const getSearchString = (): string => {
+const getSearchString = (): string => 
+{
     return searchString.value;
 };
 
-const handleSearch = async () => {
+const handleSearch = async () => 
+{
     await getSearchPageResultsStore().setSearchString(getSearchString());
     router.push({ path: '/profile/search' });
 };
 
-const getSearchPageResultsStore = () => {
+const getSearchPageResultsStore = () => 
+{
     return searchResultsStore();
 };
 </script>

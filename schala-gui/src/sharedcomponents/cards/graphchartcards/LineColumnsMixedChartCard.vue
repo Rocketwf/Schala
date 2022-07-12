@@ -1,16 +1,16 @@
 <template>
   <simple-card :simple-card-model="cardModel">
-      <template #buttons>
-          <popup-button
-              v-for="popupBtn in cardModel.popupButtons"
-              :key="popupBtn.id"
-              :popup-button-model="popupBtn"
-              badge
-          />
-      </template>
-      <template #model>
-          <line-columns-mixed-chart :line-columns-mixed-chart-model="cardModel"/>
-      </template>
+    <template #buttons>
+      <popup-button
+        v-for="popupBtn in cardModel.popupButtons"
+        :key="popupBtn.id"
+        :popup-button-model="popupBtn"
+        badge
+      />
+    </template>
+    <template #model>
+      <line-columns-mixed-chart :line-columns-mixed-chart-model="cardModel" />
+    </template>
   </simple-card>
 </template>
 

@@ -1,25 +1,30 @@
 <template>
-    <q-input
-        rounded
-        standout
-        bottom-slots
-        v-model="filterString"
-        label="Filter Matching Profiles"
-        @update:model-value="handleFilter"
-    >
-        <template #prepend>
-            <q-icon name="school" />
-        </template>
-        <template #append>
-            <q-icon name="close" @click="removeFilter" class="cursor-pointer" />
-        </template>
-    </q-input>
+  <q-input
+    rounded
+    standout
+    bottom-slots
+    v-model="filterString"
+    label="Filter Matching Profiles"
+    @update:model-value="handleFilter"
+  >
+    <template #prepend>
+      <q-icon name="school" />
+    </template>
+    <template #append>
+      <q-icon
+        name="close"
+        @click="removeFilter"
+        class="cursor-pointer"
+      />
+    </template>
+  </q-input>
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
 import { searchResultsStore } from 'stores/searchResultsPageStore';
 
-const getSearchPageResultsStore = () => {
+const getSearchPageResultsStore = () => 
+{
     return searchResultsStore();
 };
 
@@ -27,17 +32,20 @@ const getSearchPageResultsStore = () => {
 const filterString = ref(getSearchPageResultsStore().wordsInTitleFilter.value);
 
 // Methods
-const getFilterString = (): string => {
+const getFilterString = (): string => 
+{
     return filterString.value;
 };
 
-const handleFilter = () => {
+const handleFilter = () => 
+{
     getSearchPageResultsStore().setWordsInTitleFilter(getFilterString());
     getSearchPageResultsStore().applyAllFilters();
 };
-const removeFilter = () => {
+const removeFilter = () => 
+{
     filterString.value = '';
     handleFilter();
-}
+};
 </script>
 

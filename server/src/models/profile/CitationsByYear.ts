@@ -2,7 +2,8 @@
  * This class represents a data structure for information of 
  * citations for a year
  */
-export class CitationsByYear {
+export class CitationsByYear 
+{
     /**
      * Year of citations by year
      */
@@ -32,7 +33,8 @@ export class CitationsByYear {
         _selfCitationsCount: number,
         _indirectSelfCitationsCount: number,
         _totalCitationCount: number,
-    ) {
+    ) 
+    {
         this._year = _year;
         this._selfCitationsCount = _selfCitationsCount;
         this._indirectSelfCitationsCount = _indirectSelfCitationsCount;
@@ -42,56 +44,64 @@ export class CitationsByYear {
     /**
      * Gets year
      */
-    public get year(): number {
+    public get year(): number 
+    {
         return this._year;
     }
 
     /**
      * Sets year
      */
-    public set year(_year: number) {
+    public set year(_year: number) 
+    {
         this._year = _year;
     }
 
     /**
      * Gets self citations count
      */
-    public get selfCitationsCount(): number {
+    public get selfCitationsCount(): number 
+    {
         return this._selfCitationsCount;
     }
 
     /**
      * Sets self citations count
      */
-    public set selfCitationsCount(_selfCitationsCount: number) {
+    public set selfCitationsCount(_selfCitationsCount: number) 
+    {
         this._selfCitationsCount = _selfCitationsCount;
     }
 
     /**
      * Gets indirect self citations count
      */
-    public get indirectSelfCitationsCount(): number {
+    public get indirectSelfCitationsCount(): number 
+    {
         return this._indirectSelfCitationsCount;
     }
 
     /**
      * Sets indirect self citations count
      */
-    public set indirectSelfCitationsCount(_indirectSelfCitationsCount: number) {
+    public set indirectSelfCitationsCount(_indirectSelfCitationsCount: number) 
+    {
         this._indirectSelfCitationsCount = _indirectSelfCitationsCount;
     }
 
     /**
      * Gets total citation count
      */
-    public get totalCitationCount(): number {
+    public get totalCitationCount(): number 
+    {
         return this._totalCitationCount;
     }
 
     /**
      * Sets total citation count
      */
-    public set totalCitationCount(_totalCitationCount: number) {
+    public set totalCitationCount(_totalCitationCount: number) 
+    {
         this._totalCitationCount = _totalCitationCount;
     }
 }

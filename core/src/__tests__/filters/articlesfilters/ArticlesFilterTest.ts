@@ -1,6 +1,7 @@
 //import { Article, ArticlesModel, ViewName } from '../../../models';
 
-describe('articles filter test', () => {
+describe('articles filter test', () => 
+{
     //const articles: Article[] = [];
     //let articleModel: ArticlesModel;
     //beforeEach(() => {
@@ -8,7 +9,8 @@ describe('articles filter test', () => {
     //    articleModel = new ArticlesModel(articles, 'Articles', 'SUB', ViewName.ArticlesCard, 10);
     //});
 
-    it('fetches author articles', async () => {
+    it('fetches author articles', async () => 
+    {
         expect(true).toBe(true);
     }, 30000);
     //it('fetches author articles', async () => {

@@ -1,7 +1,11 @@
 <template>
-    <q-page padding>
-        <page-row v-for="rowModel in getProfileRepresentation().rowModels" :key="rowModel.id" :row-model="rowModel" />
-    </q-page>
+  <q-page padding>
+    <page-row
+      v-for="rowModel in getProfileRepresentation().rowModels"
+      :key="rowModel.id"
+      :row-model="rowModel"
+    />
+  </q-page>
 </template>
 
 <script setup lang="ts">
@@ -13,7 +17,8 @@ const props = defineProps<{
 }>();
 
 // Methods
-const getProfileRepresentation = (): ProfileRepresentation => {
+const getProfileRepresentation = (): ProfileRepresentation => 
+{
     return props.profileRepr;
 };
 </script>

@@ -6,7 +6,8 @@ import { FullProfile } from '../models/profile/FullProfile';
 /**
  * Manages the full profile routes of the given app.
  */
-export class FullProfileRoutes extends CommonRoutesConfig {
+export class FullProfileRoutes extends CommonRoutesConfig 
+{
     /**
      * Service to get the full profile
      */
@@ -16,7 +17,8 @@ export class FullProfileRoutes extends CommonRoutesConfig {
      * Constructs the FullProfileRoutes.
      * @param app - app to configure
      */
-    constructor(app: Application) {
+    constructor(app: Application) 
+    {
         super(app, 'FullProfileRoutes');
     }
 
@@ -24,8 +26,10 @@ export class FullProfileRoutes extends CommonRoutesConfig {
      * Configures the routes of the given app.
      * @returns - application
      */
-    configureRoutes(): Application {
-        this.app.route('/' + EndPoints.FULLPROFILE + '/:authorId').get(async (req: Request, res: Response) => {
+    configureRoutes(): Application 
+    {
+        this.app.route('/' + EndPoints.FULLPROFILE + '/:authorId').get(async (req: Request, res: Response) => 
+        {
             const built: FullProfile[] = await this.fullProfileService.build(req.params.authorId);
             res.status(200).send(built[0]);
         });

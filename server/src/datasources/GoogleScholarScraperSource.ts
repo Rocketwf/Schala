@@ -7,7 +7,8 @@ type TagElement = cheerio.TagElement;
 /**
  * Class responsible for scraping information off google scholar.
  */
-export class GoogleScholarScraperSource implements DataSource {
+export class GoogleScholarScraperSource implements DataSource 
+{
     /**
      * Singleton instance of google scholar scraper source.
      */
@@ -21,7 +22,8 @@ export class GoogleScholarScraperSource implements DataSource {
      * Constructor of the GoogleScholarScraperSource used to initialize the cache data
      * structure.
      */
-    constructor() {
+    constructor() 
+    {
         this._cache = new Map<string, APIBasicAuthor[]>();
     }
 
@@ -31,12 +33,15 @@ export class GoogleScholarScraperSource implements DataSource {
      * @param query - The user profile query to search for
      * @returns search results - A promise of a list of APIBasicAuthor profiles
      */
-    public async fetchSearchResults(query: string): Promise<APIBasicAuthor[]> {
-        if (this._cache.has(query)) {
+    public async fetchSearchResults(query: string): Promise<APIBasicAuthor[]> 
+    {
+        if (this._cache.has(query)) 
+        {
             return this._cache.get(query);
         }
 
-        if (!this._cache.has(query)) {
+        if (!this._cache.has(query)) 
+        {
             this._cache.set(query, new Array<APIBasicAuthor>());
         }
 
@@ -44,17 +49,21 @@ export class GoogleScholarScraperSource implements DataSource {
             'https://scholar.google.com/citations?view_op=search_authors&mauthors=' + query,
         );
         const $: cheerio.Root = cheerio.load(searchAuthors.data);
-        $('.gs_ai.gs_scl.gs_ai_chpr').each((index: number, element: TagElement) => {
+        $('.gs_ai.gs_scl.gs_ai_chpr').each((index: number, element: TagElement) => 
+        {
             const imgChild: TagElement = (element.children as TagElement[]).find(
                 (child: TagElement) => child.attribs['class'] === 'gs_ai_pho',
             );
             const imgSpan: TagElement = imgChild.firstChild as TagElement;
             const name: string = (imgSpan.firstChild as TagElement).attribs['alt'];
             let imgSrc: string = (imgSpan.firstChild as TagElement).attribs['src'];
-            if (imgSrc.startsWith('http')) {
+            if (imgSrc.startsWith('http')) 
+            {
                 const fixedSizeImage: string = imgSrc.replace('small_photo', 'view_photo');
                 imgSrc = fixedSizeImage;
-            } else {
+            }
+            else 
+            {
                 const googlePrefix: string = 'https://scholar.google.com';
                 imgSrc = googlePrefix + imgSrc.replace('56', '128');
             }
@@ -84,12 +93,15 @@ export class GoogleScholarScraperSource implements DataSource {
      * @param authorName - The author with the ID being queried
      * @returns author - A promise of a APIAuthor profile
      */
-    public async fetchAuthor(authorName: string): Promise<APIAuthor> {
+    public async fetchAuthor(authorName: string): Promise<APIAuthor> 
+    {
         const matchList: APIBasicAuthor[] = await this.fetchSearchResults(authorName);
         const bestDistName: { name: string; dist: number } = { name: '', dist: Number.MAX_SAFE_INTEGER };
-        for (const apiBp of Array.from(matchList.values())) {
+        for (const apiBp of Array.from(matchList.values())) 
+        {
             const currentDist: number = this.levenshteinHelper(authorName, apiBp.name);
-            if (currentDist < bestDistName.dist) {
+            if (currentDist < bestDistName.dist) 
+            {
                 bestDistName.name = apiBp.name;
                 bestDistName.dist = currentDist;
             }
@@ -98,7 +110,8 @@ export class GoogleScholarScraperSource implements DataSource {
             .get(authorName)
             .find((apiBp: APIBasicAuthor) => apiBp.name === bestDistName.name);
         let apiAuthor: APIAuthor;
-        if (bestDistAPIBasicAuthor) {
+        if (bestDistAPIBasicAuthor) 
+        {
             apiAuthor = {
                 affiliations: bestDistAPIBasicAuthor.affiliations,
                 aliases: bestDistAPIBasicAuthor.aliases,
@@ -119,7 +132,9 @@ export class GoogleScholarScraperSource implements DataSource {
 
             const scrapedUrl: string = $('#gsc_prf_ivh').find('a.gsc_prf_ila').attr('href');
             if (scrapedUrl) apiAuthor.url = scrapedUrl;
-        } else {
+        }
+        else 
+        {
             apiAuthor = {
                 affiliations: null,
                 aliases: null,
@@ -142,7 +157,8 @@ export class GoogleScholarScraperSource implements DataSource {
      * @param paperIds - The papers being searched for
      * @returns papers - A promise of a list of APIPaper articles
      */
-    public async fetchPapers(paperIds: string[]): Promise<APIPaper[]> {
+    public async fetchPapers(paperIds: string[]): Promise<APIPaper[]> 
+    {
         paperIds;
         return;
     }
@@ -152,12 +168,15 @@ export class GoogleScholarScraperSource implements DataSource {
      * @param b - Second string
      * @returns The Levehenshtein distance of the two strings
      */
-    private levenshteinHelper(a: string, b: string): number {
-        if (a.length === 0) {
+    private levenshteinHelper(a: string, b: string): number 
+    {
+        if (a.length === 0) 
+        {
             return b.length;
         }
 
-        if (b.length === 0) {
+        if (b.length === 0) 
+        {
             return a.length;
         }
 
@@ -165,22 +184,29 @@ export class GoogleScholarScraperSource implements DataSource {
 
         // increment along the first column of each row
         let i: number;
-        for (i = 0; i <= b.length; i++) {
+        for (i = 0; i <= b.length; i++) 
+        {
             matrix[i] = [i];
         }
 
         // increment each column in the first row
         let j: number;
-        for (j = 0; j <= a.length; j++) {
+        for (j = 0; j <= a.length; j++) 
+        {
             matrix[0][j] = j;
         }
 
         // Fill in the rest of the matrix
-        for (i = 1; i <= b.length; i++) {
-            for (j = 1; j <= a.length; j++) {
-                if (b.charAt(i - 1) == a.charAt(j - 1)) {
+        for (i = 1; i <= b.length; i++) 
+        {
+            for (j = 1; j <= a.length; j++) 
+            {
+                if (b.charAt(i - 1) == a.charAt(j - 1)) 
+                {
                     matrix[i][j] = matrix[i - 1][j - 1];
-                } else {
+                }
+                else 
+                {
                     matrix[i][j] = Math.min(
                         matrix[i - 1][j - 1] + 1, // substitution
                         Math.min(

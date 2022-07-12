@@ -26,13 +26,15 @@ routes.push(new FullProfileRoutes(app));
 /**
  * Defines a route handler for the default home page.
  */
-app.get('/', (req: Request, res: Response) => {
+app.get('/', (req: Request, res: Response) => 
+{
     res.send('Hello world!');
 });
 
 /**
  * Starts the Express server.
  */
-app.listen(port, () => {
+app.listen(port, () => 
+{
     console.log(`server started at http://localhost:${port}`);
 });

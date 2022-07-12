@@ -1,14 +1,19 @@
 <template>
-    <div id="chart">
-        <apexchart
-            v-if="!hasNoCitations()"
-            type="bar"
-            height="350"
-            :options="chartOptions"
-            :series="getSeries()"
-        ></apexchart>
-        <div v-else class="text-body1 text-center text-grey q-mb-xl">This author has no citations</div>
+  <div id="chart">
+    <apexchart
+      v-if="!hasNoCitations()"
+      type="bar"
+      height="350"
+      :options="chartOptions"
+      :series="getSeries()"
+    />
+    <div
+      v-else
+      class="text-body1 text-center text-grey q-mb-xl"
+    >
+      This author has no citations
     </div>
+  </div>
 </template>
 
 <script charset="utf-8" lang="ts" setup>
@@ -18,21 +23,26 @@ const props = defineProps<{
     stackedColumnsChartModel: StackedColumnsChartModel;
 }>();
 
-const hasNoCitations = () => {
+const hasNoCitations = () => 
+{
     let sum = 0;
     const series = getSeries();
-    for (const ser of series) {
+    for (const ser of series) 
+    {
         sum += ser.data[0] + ser.data[1] + ser.data[0];
     }
     return sum === 0;
 };
 
-const getSeries = () => {
+const getSeries = () => 
+{
     const apexSeries: Array<{ name: string; data: Array<number> }> = new Array<{ name: string; data: Array<number> }>();
     const stackedModel: StackedColumnsChartModel = props.stackedColumnsChartModel;
-    for (let i = 0; i < stackedModel.labels.length; ++i) {
+    for (let i = 0; i < stackedModel.labels.length; ++i) 
+    {
         const convertedSeries = new Array<number>();
-        for (const series of stackedModel.series) {
+        for (const series of stackedModel.series) 
+        {
             convertedSeries.push(series.data[i]);
         }
         const apexSeriesObj = { name: stackedModel.labels[i], data: convertedSeries };
@@ -41,33 +51,40 @@ const getSeries = () => {
     return apexSeries;
 };
 
-const getLabels = computed(() => {
+const getLabels = computed(() => 
+{
     const labels: string[] = new Array<string>();
-    for (const series of props.stackedColumnsChartModel.series) {
+    for (const series of props.stackedColumnsChartModel.series) 
+    {
         labels.push(series.name);
     }
     return labels;
 });
 
-const getmaxLimit = computed(() => {
-    if (props.stackedColumnsChartModel.chartOptionsModel) {
+const getmaxLimit = computed(() => 
+{
+    if (props.stackedColumnsChartModel.chartOptionsModel) 
+    {
         return props.stackedColumnsChartModel.chartOptionsModel.maxLimit;
     }
     return 0;
 });
 
-const defaultMax = (): ((max: number) => number) => {
+const defaultMax = (): ((max: number) => number) => 
+{
     return (max: number) => max;
 };
 type ApexOptionsType = { seriesIndex: number; dataPointIndex: number; w: { config: { series: Array<Series> } } };
-const chartOptions = computed(() => {
+const chartOptions = computed(() => 
+{
     return {
         chart: {
             dataLabels: {
                 enabled: true,
                 enabledOnSeries: [4],
                 textAnchor: 'left',
-                formatter: function (_val: number, opt: ApexOptionsType) {
+                formatter: function (_val: number, opt: ApexOptionsType) 
+                {
                     let series = opt.w.config.series;
                     let idx = opt.dataPointIndex;
                     const total = series.reduce((total, self) => total + self.data[idx], 0);

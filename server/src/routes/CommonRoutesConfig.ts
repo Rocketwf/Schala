@@ -10,7 +10,8 @@ export enum EndPoints {
 /**
  * Abstract class to manage routes of an app.
  */
-export abstract class CommonRoutesConfig {
+export abstract class CommonRoutesConfig 
+{
     /**
      * Express application.
      */
@@ -26,7 +27,8 @@ export abstract class CommonRoutesConfig {
      * @param app - app to configure
      * @param name - name of the routes
      */
-    constructor(app: Application, name: string) {
+    constructor(app: Application, name: string) 
+    {
         this._app = app;
         this._name = name;
         this.configureRoutes();
@@ -40,21 +42,24 @@ export abstract class CommonRoutesConfig {
     /**
      * Getter method of the app attribute.
      */
-    public get app(): Application {
+    public get app(): Application 
+    {
         return this._app;
     }
 
     /**
      * Getter method of the name attribute.
      */
-    public get name(): string {
+    public get name(): string 
+    {
         return this._name;
     }
 
     /**
      * Setter method of the name attribute.
      */
-    public set name(newName: string) {
+    public set name(newName: string) 
+    {
         this._name = newName;
     }
 }

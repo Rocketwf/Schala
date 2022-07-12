@@ -1,13 +1,48 @@
 <template>
-    <q-tabs align="center" animated swipeable class="desktop-hide">
-            <q-route-tab to="/profile/search" label="Search Results" icon="search" />
-            <q-route-tab to="/profile/show" label="Profile" icon="person" />
-            <q-route-tab to="/profile/compare" label="Compare" icon="people" />
-    </q-tabs>
+  <q-tabs
+    align="center"
+    animated
+    swipeable
+    class="desktop-hide"
+  >
+    <q-route-tab
+      to="/profile/search"
+      label="Search Results"
+      icon="search"
+    />
+    <q-route-tab
+      to="/profile/show"
+      label="Profile"
+      icon="person"
+    />
+    <q-route-tab
+      to="/profile/compare"
+      label="Compare"
+      icon="people"
+    />
+  </q-tabs>
     
-    <q-tabs align="center" animated swipeable class="mobile-hide" inline-label>
-            <q-route-tab to="/profile/search" label="Search Results" icon="search" />
-            <q-route-tab to="/profile/show" label="Profile" icon="person" />
-            <q-route-tab to="/profile/compare" label="Compare" icon="people" />
-     </q-tabs>
+  <q-tabs
+    align="center"
+    animated
+    swipeable
+    class="mobile-hide"
+    inline-label
+  >
+    <q-route-tab
+      to="/profile/search"
+      label="Search Results"
+      icon="search"
+    />
+    <q-route-tab
+      to="/profile/show"
+      label="Profile"
+      icon="person"
+    />
+    <q-route-tab
+      to="/profile/compare"
+      label="Compare"
+      icon="people"
+    />
+  </q-tabs>
 </template>

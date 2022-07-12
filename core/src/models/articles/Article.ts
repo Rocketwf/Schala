@@ -1,4 +1,5 @@
-export class Article {
+export class Article 
+{
     /**
      * Represents the title value as a string
      */
@@ -46,7 +47,8 @@ export class Article {
         _url: string,
         _coAuthors: ArticleCoAuthor[],
         _abstract: string,
-    ) {
+    ) 
+    {
         this._title = _title;
         this._venue = _venue;
         this._publicationYear = _year;
@@ -59,90 +61,105 @@ export class Article {
     /**
      * Getter method of the publicationYear attribute
      */
-    public get publicationYear(): number {
+    public get publicationYear(): number 
+    {
         return this._publicationYear;
     }
     /**
      * Setter method of the publicationYear attribute
      */
-    public set publicationYear(publicationYear: number) {
+    public set publicationYear(publicationYear: number) 
+    {
         this._publicationYear = publicationYear;
     }
     /**
      * Getter method of the citationCount attribute
      */
-    public get citationCount(): number {
+    public get citationCount(): number 
+    {
         return this._citationsCount;
     }
     /**
      * Setter method of the citationCount attribute
      */
-    public set citationCount(newCitationCount: number) {
+    public set citationCount(newCitationCount: number) 
+    {
         this._citationsCount = newCitationCount;
     }
     /**
      * Getter method of the title attribute
      */
-    public get title(): string {
+    public get title(): string 
+    {
         return this._title;
     }
     /**
      * Setter method of the title attribute
      */
-    public set title(title: string) {
+    public set title(title: string) 
+    {
         this._title = title;
     }
     /**
      * Getter method of the venue attribute
      */
-    public get venue(): string {
+    public get venue(): string 
+    {
         return this._venue;
     }
     /**
      * Setter method of the venue attribute
      */
-    public set venue(venue: string) {
+    public set venue(venue: string) 
+    {
         this._venue = venue;
     }
     /**
      * Getter method of the coAuthors attribute
      */
-    public get coAuthors(): ArticleCoAuthor[] {
+    public get coAuthors(): ArticleCoAuthor[] 
+    {
         return this._coAuthors;
     }
     /**
      * Setter method of the coAuthors attribute
      */
-    public set coAuthors(coAuthors: ArticleCoAuthor[]) {
+    public set coAuthors(coAuthors: ArticleCoAuthor[]) 
+    {
         this._coAuthors = coAuthors;
     }
     /**
      * Getter method of the url attribute
      */
-    public get url(): string {
+    public get url(): string 
+    {
         return this._url;
     }
     /**
      * Setter method of the url attribute
      */
-    public set url(url: string) {
+    public set url(url: string) 
+    {
         this._url = url;
     }
     /**
      * Getter method of the abstract attribute
      */
-    public get abstract(): string {
+    public get abstract(): string 
+    {
         return this._abstract;
     }
     /**
      * Setter method of the abstract attribute
      */
-    public set abstract(abstract: string) {
+    public set abstract(abstract: string) 
+    {
         this._abstract = abstract;
     }
 }
 
-export class ArticleCoAuthor {
+export class ArticleCoAuthor 
+{
     /**
      * Represents the id value as a string
      */
@@ -156,32 +173,37 @@ export class ArticleCoAuthor {
      * @param _id - Represents the id value as a string
      * @param _name - Represents the name as a string
      */
-    constructor(_id: string, _name: string) {
+    constructor(_id: string, _name: string) 
+    {
         this._id = _id;
         this._name = _name;
     }
     /**
      * Getter method of the id attribute
      */
-    public get id(): string {
+    public get id(): string 
+    {
         return this._id;
     }
     /**
      * Setter method of the id attribute
      */
-    public set id(v: string) {
+    public set id(v: string) 
+    {
         this._id = v;
     }
     /**
      * Getter method of the name attribute
      */
-    public get name(): string {
+    public get name(): string 
+    {
         return this._name;
     }
     /**
      * Setter method of the name attribute
      */
-    public set name(v: string) {
+    public set name(v: string) 
+    {
         this._name = v;
     }
 }

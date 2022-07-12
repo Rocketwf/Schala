@@ -5,7 +5,8 @@ import { SimpleCardModel } from '../simplecardmodel';
 /**
  * Data structure for the basic columns chart.
  */
-export class BasicColumnsChartModel extends ObjectSeriesChartModel implements SimpleCardModel {
+export class BasicColumnsChartModel extends ObjectSeriesChartModel implements SimpleCardModel 
+{
     /**
      * Creates an instance of BasicBarsChartModel.
      * @param _title - Represents the title value as a string
@@ -26,7 +27,8 @@ export class BasicColumnsChartModel extends ObjectSeriesChartModel implements Si
         _xTitle: string,
         _yTitle: string,
         _labels: string[],
-    ) {
+    ) 
+    {
         super(_title, _sub, _viewName, _colWidth, _series, _xTitle, _yTitle, _labels);
     }
 
@@ -34,9 +36,11 @@ export class BasicColumnsChartModel extends ObjectSeriesChartModel implements Si
      * Creates a carbon copy of the model.
      * @returns the created copy as BasicColumnsChartModel
      */
-    deepCopy(): BasicColumnsChartModel {
+    deepCopy(): BasicColumnsChartModel 
+    {
         const seriesCopy: Array<Series> = new Array<Series>();
-        this.series.forEach((serie: Series) => {
+        this.series.forEach((serie: Series) => 
+        {
             seriesCopy.push(new Series(serie.name, serie.data));
         });
         return new BasicColumnsChartModel(

@@ -1,15 +1,18 @@
 <template>
-    <div id="chart">
-        <apexchart
-            v-if="!hasNoCitations()"
-            type="bar"
-            :options="chartOptions"
-            :series="getSeries()"
-        ></apexchart>
-        <div v-else class="text-body1 text-center text-grey q-mb-xl">
-            These authors have no citations
-        </div>
+  <div id="chart">
+    <apexchart
+      v-if="!hasNoCitations()"
+      type="bar"
+      :options="chartOptions"
+      :series="getSeries()"
+    />
+    <div
+      v-else
+      class="text-body1 text-center text-grey q-mb-xl"
+    >
+      These authors have no citations
     </div>
+  </div>
 </template>
 <script setup charset="utf-8" lang="ts">
 /**
@@ -24,19 +27,22 @@ const props = defineProps<{
 /**
  * Checks if the total citation count of the authors is 0. If yes, returns true.
  */
-const hasNoCitations = () => {
-  const series: Array<Series> = getSeries();
-  return series[0].data.reduce((a, b) => a + b, 0) + series[1].data.reduce((a, b) => a + b, 0) + series[2].data.reduce((a, b) => a + b, 0) === 0;
-}
+const hasNoCitations = () => 
+{
+    const series: Array<Series> = getSeries();
+    return series[0].data.reduce((a, b) => a + b, 0) + series[1].data.reduce((a, b) => a + b, 0) + series[2].data.reduce((a, b) => a + b, 0) === 0;
+};
 
 /**
  * Converts the series to the form specific to the StackedColumns100Chart.
  */
-const getSeries = () => {
+const getSeries = () => 
+{
     const apexSeries: Array<Series> = new Array<Series>();
 
     const citationData: number[] = [];
-    props.stackedColumns100ChartModel.series.forEach((serie: Series) => {
+    props.stackedColumns100ChartModel.series.forEach((serie: Series) => 
+    {
         citationData.push(
             serie.data[0],
         );
@@ -44,13 +50,15 @@ const getSeries = () => {
     apexSeries.push(new Series('citations by others', citationData));
 
     const selfCitationData: number[] = [];
-    props.stackedColumns100ChartModel.series.forEach((serie: Series) => {
+    props.stackedColumns100ChartModel.series.forEach((serie: Series) => 
+    {
         selfCitationData.push(serie.data[1]);
     });
     apexSeries.push(new Series('self-citations', selfCitationData));
 
     const indirectSelfCitationData: number[] = [];
-    props.stackedColumns100ChartModel.series.forEach((serie: Series) => {
+    props.stackedColumns100ChartModel.series.forEach((serie: Series) => 
+    {
         indirectSelfCitationData.push(serie.data[2]);
     });
     apexSeries.push(new Series('indirect self-citations', indirectSelfCitationData));
@@ -66,8 +74,9 @@ const chartOptions = {
     dataLabels: {
         enabled: true,
         enabledOnSeries: undefined,
-        formatter: function(value:number, { seriesIndex, dataPointIndex, w }: ApexOptionsType) {
-                return w.config.series[seriesIndex].data[dataPointIndex] + ' (' + Number(value).toFixed(2) + '%)'
+        formatter: function(value:number, { seriesIndex, dataPointIndex, w }: ApexOptionsType) 
+        {
+            return w.config.series[seriesIndex].data[dataPointIndex] + ' (' + Number(value).toFixed(2) + '%)';
         },
     },
     chart: {
@@ -87,10 +96,10 @@ const chartOptions = {
     responsive: [{
         breakpoint: 480,
         options: {
-        legend: {
-            position: 'bottom',
-            offsetX: -10,
-            offsetY: 0
+            legend: {
+                position: 'bottom',
+                offsetX: -10,
+                offsetY: 0
             }
         }
     }],
@@ -103,7 +112,7 @@ const chartOptions = {
         categories: props.stackedColumns100ChartModel.labels,
         labels: {
             style: {
-            fontSize: '12px'
+                fontSize: '12px'
             }
         }
     },

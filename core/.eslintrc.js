@@ -18,7 +18,7 @@ module.exports = {
 
     extends: [
         'plugin:@typescript-eslint/recommended', // Uses the recommended rules from the @typescript-eslint/eslint-plugin
-        'plugin:prettier/recommended', // Enables eslint-plugin-prettier and eslint-config-prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
+        // 'plugin:prettier/recommended', // Enables eslint-plugin-prettier and eslint-config-prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
     ],
 
     plugins: [
@@ -28,6 +28,13 @@ module.exports = {
     ],
 
     rules: {
+        indent: [2, 4, { VariableDeclarator: 0 }],
+        quotes: [2, 'single'],
+        'linebreak-style': [2, 'unix'],
+        semi: [2, 'always'],
+        'no-var': 2,
+        'brace-style': [2, 'allman'],
+        'no-unused-vars': [2, { args: 'none' }],
         'prefer-promise-reject-errors': 'off',
 
         quotes: ['warn', 'single', { avoidEscape: true }],

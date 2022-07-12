@@ -4,7 +4,8 @@ import { SimpleCardModel, ViewName } from '../simplecardmodel';
 /**
  * Data structure for the line columns mixed chart.
  */
-export class LineColumnsMixedChartModel extends ObjectSeriesChartModel implements SimpleCardModel {
+export class LineColumnsMixedChartModel extends ObjectSeriesChartModel implements SimpleCardModel 
+{
     /**
      * Creates an instance of BasicBarsChartModel.
      * @param _title - Represents the title value as a string
@@ -25,7 +26,8 @@ export class LineColumnsMixedChartModel extends ObjectSeriesChartModel implement
         _xTitle: string,
         _yTitle: string,
         _labels: string[],
-    ) {
+    ) 
+    {
         super(_title, _sub, _viewName, _colWidth, _series, _xTitle, _yTitle, _labels);
     }
 
@@ -33,9 +35,11 @@ export class LineColumnsMixedChartModel extends ObjectSeriesChartModel implement
      * Creates a carbon copy of the model.
      * @returns the created copy as LineColumnsMixedChartModel
      */
-    deepCopy(): LineColumnsMixedChartModel {
+    deepCopy(): LineColumnsMixedChartModel 
+    {
         const seriesCopy: Array<Series> = new Array<Series>();
-        this.series.forEach((serie: Series) => {
+        this.series.forEach((serie: Series) => 
+        {
             seriesCopy.push(new Series(serie.name, serie.data, serie.type));
         });
         return new LineColumnsMixedChartModel(

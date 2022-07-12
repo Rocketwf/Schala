@@ -1,7 +1,12 @@
 <template>
-    <div id="chart">
-        <apexchart type="bar" height="349" :options="chartOptions" :series="getSeries()"></apexchart>
-    </div>
+  <div id="chart">
+    <apexchart
+      type="bar"
+      height="349"
+      :options="chartOptions"
+      :series="getSeries()"
+    />
+  </div>
 </template>
 
 <script charset="utf-9" lang="ts" setup>
@@ -12,36 +17,47 @@ const props = defineProps<{
     distributedColumnsChartModel: DistributedColumnsChartModel;
 }>();
 
-const getSeries = () => {
+const getSeries = () => 
+{
     const apexSeries: number[] = [];
-    for (const series of props.distributedColumnsChartModel.series) {
+    for (const series of props.distributedColumnsChartModel.series) 
+    {
         apexSeries.push(series.data[0]);
     }
     return [{ data: apexSeries }];
 };
 
-const getLabels = computed(() => {
+const getLabels = computed(() => 
+{
     const labels: string[] = new Array<string>();
-    for (const series of props.distributedColumnsChartModel.series) {
-        if (series.name) {
+    for (const series of props.distributedColumnsChartModel.series) 
+    {
+        if (series.name) 
+        {
             labels.push(series.name);
-        } else {
+        }
+        else 
+        {
             labels.push('N/A');
         }
     }
     return labels;
 });
-const getmaxLimit = computed(() => {
-    if (props.distributedColumnsChartModel.chartOptionsModel) {
+const getmaxLimit = computed(() => 
+{
+    if (props.distributedColumnsChartModel.chartOptionsModel) 
+    {
         return props.distributedColumnsChartModel.chartOptionsModel.maxLimit;
     }
     return 0;
 });
-const defaultMax = (): ((max: number) => number) => {
+const defaultMax = (): ((max: number) => number) => 
+{
     return (max: number) => max;
 };
 
-const chartOptions = computed(() => {
+const chartOptions = computed(() => 
+{
     return {
         chart: {
             selection: {

@@ -3,7 +3,8 @@ import { ArticleCoAuthor } from './ArticleCoAuthor';
 /**
  * This class represents an article
  */
-export class Article {
+export class Article 
+{
     /**
      * Title of article
      */
@@ -58,7 +59,8 @@ export class Article {
         _url: string,
         _abstract: string,
         _articlesCoAuthors: ArticleCoAuthor[],
-    ) {
+    ) 
+    {
         this._title = _title;
         this._venue = _venue;
         this._publicationYear = _publicationYear;
@@ -72,112 +74,128 @@ export class Article {
     /**
      * Gets title
      */
-    public get title(): string {
+    public get title(): string 
+    {
         return this._title;
     }
 
     /**
      * Sets title
      */
-    public set title(_title: string) {
+    public set title(_title: string) 
+    {
         this._title = _title;
     }
 
     /**
      * Gets venue
      */
-    public get venue(): string {
+    public get venue(): string 
+    {
         return this._venue;
     }
 
     /**
      * Sets venue
      */
-    public set venue(_venue: string) {
+    public set venue(_venue: string) 
+    {
         this._venue = _venue;
     }
 
     /**
      * Gets publication year
      */
-    public get publicationYear(): number {
+    public get publicationYear(): number 
+    {
         return this._publicationYear;
     }
 
     /**
      * Sets publication year
      */
-    public set publicationYear(_publicationYear: number) {
+    public set publicationYear(_publicationYear: number) 
+    {
         this._publicationYear = _publicationYear;
     }
 
     /**
      * Gets citation count
      */
-    public get citationCount(): number {
+    public get citationCount(): number 
+    {
         return this._citationCount;
     }
 
     /**
      * Sets citation count
      */
-    public set citationCount(_citationCount: number) {
+    public set citationCount(_citationCount: number) 
+    {
         this._citationCount = _citationCount;
     }
 
     /**
      * Gets self citations count
      */
-    public get selfCitationsCount(): number {
+    public get selfCitationsCount(): number 
+    {
         return this._selfCitationsCount;
     }
 
     /**
      * Sets self citations count
      */
-    public set selfCitationsCount(_selfCitationsCount: number) {
+    public set selfCitationsCount(_selfCitationsCount: number) 
+    {
         this._selfCitationsCount = _selfCitationsCount;
     }
 
     /**
      * Gets url
      */
-    public get url(): string {
+    public get url(): string 
+    {
         return this._url;
     }
 
     /**
      * Sets url
      */
-    public set url(_url: string) {
+    public set url(_url: string) 
+    {
         this._url = _url;
     }
 
     /**
      * Gets articles co authors
      */
-    public get articlesCoAuthors(): ArticleCoAuthor[] {
+    public get articlesCoAuthors(): ArticleCoAuthor[] 
+    {
         return this._articlesCoAuthors;
     }
 
     /**
      * Sets articles co authors
      */
-    public set articlesCoAuthors(_articlesCoAuthors: ArticleCoAuthor[]) {
+    public set articlesCoAuthors(_articlesCoAuthors: ArticleCoAuthor[]) 
+    {
         this._articlesCoAuthors = _articlesCoAuthors;
     }
 
     /**
      * Gets abstract
      */
-    public get abstract(): string {
+    public get abstract(): string 
+    {
         return this._abstract;
     }
 
     /**
      * Sets abstract
      */
-    public set abstract(_abstract: string) {
+    public set abstract(_abstract: string) 
+    {
         this._abstract = _abstract;
     }
 }

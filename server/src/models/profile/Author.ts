@@ -1,7 +1,8 @@
 /**
  * This class represents an Author for the search results
  */
-export class Author {
+export class Author 
+{
     /**
      * Id of author
      */
@@ -26,7 +27,8 @@ export class Author {
      * @param _jointPublicationCount - The joint publication count of the author
      * @param _hIndex - The h-index of the author
      */
-    constructor(_id: string, _name: string, _jointPublicationCount: number, _hIndex: number) {
+    constructor(_id: string, _name: string, _jointPublicationCount: number, _hIndex: number) 
+    {
         this._id = _id;
         this._hIndex = _hIndex;
         this._jointPublicationCount = _jointPublicationCount;
@@ -36,55 +38,63 @@ export class Author {
     /**
      * Gets id
      */
-    public get id(): string {
+    public get id(): string 
+    {
         return this._id;
     }
     /**
      * Sets id
      */
-    public set id(_id: string) {
+    public set id(_id: string) 
+    {
         this._id = _id;
     }
 
     /**
      * Gets name
      */
-    public get name(): string {
+    public get name(): string 
+    {
         return this._name;
     }
 
     /**
      * Sets name
      */
-    public set name(_name: string) {
+    public set name(_name: string) 
+    {
         this._name = _name;
     }
 
     /**
      * Gets joint publication count
      */
-    public get jointPublicationCount(): number {
+    public get jointPublicationCount(): number 
+    {
         return this._jointPublicationCount;
     }
 
     /**
      * Sets joint publication count
      */
-    public set jointPublicationCount(_jointPublicationCount: number) {
+    public set jointPublicationCount(_jointPublicationCount: number) 
+    {
         this._jointPublicationCount = _jointPublicationCount;
     }
 
     /**
      * Gets whether h index
      */
-    public get hIndex(): number {
+    public get hIndex(): number 
+    {
         return this._hIndex;
     }
 
     /**
      * Sets whether h index
      */
-    public set hIndex(_hIndex: number) {
+    public set hIndex(_hIndex: number) 
+    {
         this._hIndex = _hIndex;
     }
 }
