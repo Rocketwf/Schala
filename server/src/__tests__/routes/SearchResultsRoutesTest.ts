@@ -1,4 +1,4 @@
-import { Application } from 'express';
+import express, { Application } from 'express';
 import { SearchResultsRoutes } from '../../routes/SearchResultsRoutes';
 
 
@@ -6,8 +6,8 @@ describe('SearchResultsRoutes test', () =>
 {
     it('config', () => 
     {
-        let app: Application ;
+        const app: Application = express();
         const profile: SearchResultsRoutes = new SearchResultsRoutes(app);
-        expect(profile.configureRoutes()).toBeNull();
+        expect(profile.configureRoutes()).not.toBeNull();
     }, 30000);
 });
