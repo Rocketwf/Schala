@@ -140,9 +140,9 @@ export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesC
     /**
      * Setter method of the chartOptionsModel.
      */
-    public set chartOptionsModel(chartOptionModel: ChartOptionsModel) 
+    public set chartOptionsModel(chartOptionsModel: ChartOptionsModel) 
     {
-        this._chartOptionsModel = chartOptionModel;
+        this._chartOptionsModel = chartOptionsModel;
     }
 
     /**

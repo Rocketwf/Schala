@@ -95,9 +95,9 @@ export class RangeButton implements PopupEditButton<ObjectSeriesChartModel>
     /**
      * Setter method of the id attribute
      */
-    public set id(v: string) 
+    public set id(id: string) 
     {
-        this._id = v;
+        this._id = id;
     }
     /**
      * Getter method of the inputs attribute
