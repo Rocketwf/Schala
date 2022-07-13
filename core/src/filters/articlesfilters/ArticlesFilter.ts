@@ -6,6 +6,12 @@ export abstract class ArticlesFilter<S> extends Filter<S, ArticlesModel>
 
 export class ArticlesPaginationFilter extends ArticlesFilter<number> 
 {
+    deepCopy(): ArticlesPaginationFilter 
+    {
+        const copy: ArticlesPaginationFilter = new ArticlesPaginationFilter(this._value);
+        copy.hitsPerPage = this._hitsPerPage;
+        return copy;
+    }
     /**
      * It checks if the given model is valid
      * @param model -The given ArticlesModel
@@ -68,6 +74,11 @@ export class ArticlesPaginationFilter extends ArticlesFilter<number>
 
 export class SortByFilter extends ArticlesFilter<string> 
 {
+    validate(model: ArticlesModel): boolean 
+    {
+        model;
+        return true;
+    }
     /**
      * Creates an instance of sort by filter.
      * @param value - the given filter value
@@ -75,6 +86,11 @@ export class SortByFilter extends ArticlesFilter<string>
     constructor(value: string) 
     {
         super(value);
+    }
+    deepCopy(): SortByFilter 
+    {
+        const copy: SortByFilter = new SortByFilter(this._value);
+        return copy;
     }
     /**
      * Applys sort by filter on the given model
@@ -135,6 +151,11 @@ export class CoauthorsFilter extends ArticlesFilter<string>
         super(value);
     }
 
+    deepCopy(): CoauthorsFilter 
+    {
+        const copy: CoauthorsFilter = new CoauthorsFilter(this._value);
+        return copy;
+    }
     /**
      * It checks if the given model is valid
      * @param model - the given ArticlesModel
@@ -203,6 +224,11 @@ export class WordsInArticleTitleFilter extends ArticlesFilter<string>
     {
         super(value);
     }
+    deepCopy(): WordsInArticleTitleFilter 
+    {
+        const copy: WordsInArticleTitleFilter = new WordsInArticleTitleFilter(this._value);
+        return copy;
+    }
 
     /**
      * It checks if the given model is valid
@@ -267,6 +293,11 @@ export class NumberOfCitationsFilter extends ArticlesFilter<string>
         super(value);
     }
 
+    deepCopy(): NumberOfCitationsFilter 
+    {
+        const copy: NumberOfCitationsFilter = new NumberOfCitationsFilter(this._value);
+        return copy;
+    }
     /**
      * It checks if the given model is valid
      * @param model - the given ArticlesModel
@@ -310,6 +341,11 @@ export class KeywordsFilter extends ArticlesFilter<string>
         super(value);
     }
 
+    deepCopy(): KeywordsFilter 
+    {
+        const copy: KeywordsFilter = new KeywordsFilter(this._value);
+        return copy;
+    }
     /**
      * It checks if the given model is valid
      * @param model - the given ArticlesModel

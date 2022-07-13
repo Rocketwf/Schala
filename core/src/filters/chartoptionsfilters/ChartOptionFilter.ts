@@ -12,6 +12,11 @@ export abstract class ChartOptionFilter<S> extends Filter<S, ChartOptionsModel>
 
 export class ScaleUpFilter extends ChartOptionFilter<boolean> 
 {
+    deepCopy(): ScaleUpFilter 
+    {
+        const copy: ScaleUpFilter = new ScaleUpFilter(this._value);
+        return copy;
+    }
     /**
      * It checks if the given model is valid
      * @param model -The given ChartOptionsModel
@@ -74,6 +79,11 @@ export class ScaleUpMixedFilter extends ChartOptionFilter<boolean>
     {
         super(state);
         this._type = type;
+    }
+    deepCopy(): ScaleUpMixedFilter 
+    {
+        const copy: ScaleUpMixedFilter = new ScaleUpMixedFilter(this._value, this._type);
+        return copy;
     }
 
     /**

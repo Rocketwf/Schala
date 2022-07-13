@@ -3,7 +3,6 @@
     <apexchart
       v-if="!hasNoCitations()"
       type="bar"
-      height="350"
       :options="chartOptions"
       :series="getSeries()"
     />
@@ -95,7 +94,6 @@ const chartOptions = computed(() =>
                 },
             },
             type: 'bar',
-            height: 350,
             stacked: true,
             toolbar: {
                 show: true,

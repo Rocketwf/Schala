@@ -22,6 +22,11 @@ export class AffiliationFilter extends SearchResultsFilter<string>
         model;
         return true;
     }
+    deepCopy(): AffiliationFilter 
+    {
+        const copy: AffiliationFilter = new AffiliationFilter(this._value);
+        return copy;
+    }
     /**
      * Applys affiliation filter on the given model
      * @param model - the given SearchResultsModel
@@ -61,6 +66,11 @@ export class AffiliationFilter extends SearchResultsFilter<string>
 
 export class WordsInTitleFilter extends SearchResultsFilter<string> 
 {
+    validate(model: SearchResultsModel): boolean 
+    {
+        model;
+        return true;
+    }
     /**
      * Creates an instance of words in title filter.
      * @param value - value of the filter
@@ -68,6 +78,11 @@ export class WordsInTitleFilter extends SearchResultsFilter<string>
     constructor(value: string) 
     {
         super(value);
+    }
+    deepCopy(): WordsInTitleFilter 
+    {
+        const copy: WordsInTitleFilter = new WordsInTitleFilter(this._value);
+        return copy;
     }
     /**
      * Applys words in title filter on the given model
@@ -113,6 +128,11 @@ export class SearchResultsPaginationFilter extends SearchResultsFilter<number>
     {
         super(value);
         this._hitsPerPage = hitsPerPage;
+    }
+    deepCopy(): SearchResultsPaginationFilter 
+    {
+        const copy: SearchResultsPaginationFilter = new SearchResultsPaginationFilter(this._value, this._hitsPerPage);
+        return copy;
     }
     /**
      * Setter method of the hitsPerPage attribute.

@@ -294,7 +294,7 @@ export class ProfileRepresentation
         const showingPopupEdit: ShowingButton = new ShowingButton('showing', [showingNumberField]);
         pbv.popupButtons = [showingPopupEdit];
         pbv.filters = [showingFilter];
-        showingPopupEdit.handleAll();
+        pbv.applyAllFilters();
 
         return pbv;
     }
@@ -334,7 +334,7 @@ export class ProfileRepresentation
         const showingPopupEdit: ShowingButton = new ShowingButton('showing', [showingNumberField]);
         mcs.popupButtons = [showingPopupEdit];
         mcs.filters = [showingFilter];
-        showingPopupEdit.handleAll();
+        mcs.applyAllFilters();
 
         return mcs;
     }
@@ -375,7 +375,7 @@ export class ProfileRepresentation
         const showingPopupEdit: ShowingButton = new ShowingButton('showing', [showingNumberField]);
         mfa.popupButtons = [showingPopupEdit];
         mfa.filters = [showingFilter];
-        showingPopupEdit.handleAll();
+        mfa.applyAllFilters();
 
         return mfa;
     }
@@ -588,7 +588,7 @@ export class ProfileRepresentation
         const showingPopupEdit: ShowingButton = new ShowingButton('showing', [showingNumberField]);
         awhhi.popupButtons = [showingPopupEdit];
         awhhi.filters = [showingFilter];
-        showingPopupEdit.handleAll();
+        awhhi.applyAllFilters();
 
         return awhhi;
     }
@@ -663,8 +663,8 @@ export class ProfileRepresentation
 
     /**
      * Sorts the given series according to their names in ascending order.
-     * @param a the first series to be sorted
-     * @param b the second series to be sorted
+     * @param a - the first series to be sorted
+     * @param b - the second series to be sorted
      * @returns the sorted series
      */
     private sortSeriesByName(a: Series, b: Series): number 
@@ -682,8 +682,8 @@ export class ProfileRepresentation
 
     /**
      * Sorts the given series' data in ascending order and checks if the page width is valid.
-     * @param a the first series whose data is to be sorted
-     * @param b the second series whose data is to be sorted
+     * @param a - the first series whose data is to be sorted
+     * @param b - the second series whose data is to be sorted
      * @returns the sorted series data
      */
     private sortSeriesByData(a: Series, b: Series): number 

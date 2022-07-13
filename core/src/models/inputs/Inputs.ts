@@ -26,6 +26,8 @@ export interface Input<T, S extends Filterable<S>> {
      *Defines a handler for a new input, it changes the current value of the corresponding filter object, and calls applyAllFilters on the data
      */
     handleInput(): void;
+
+    deepCopy(): Input<T, S>;
 }
 
 export class Field<T, S extends Filterable<S>> implements Input<T, S> 
@@ -152,6 +154,11 @@ export class Field<T, S extends Filterable<S>> implements Input<T, S>
     {
         this._inputValue = value;
     }
+
+    deepCopy(): Field<T, S> 
+    {
+        return new Field<T, S>(this._inputName, this._inputValue, this._filter.deepCopy(), this._data);
+    }
 }
 
 export class CheckBox<S extends Filterable<S>> implements Input<boolean, S> 
@@ -184,12 +191,12 @@ export class CheckBox<S extends Filterable<S>> implements Input<boolean, S>
      * @param inputValue - Represents the input value as a boolean
      * @param _filter - Represents the filter value as a Filter
      */
-    constructor(_inputName: string, _inputId: string, inputValue: boolean, _filter: Filter<boolean, S>) 
+    constructor(_inputName: string, inputValue: boolean, _filter: Filter<boolean, S>, _data: S[]) 
     {
         this._inputName = _inputName;
-        this._inputId = _inputId;
         this._inputValue = inputValue;
         this._filter = _filter;
+        this._data = _data;
     }
     /**
      * Getter method of data attribute
@@ -276,6 +283,10 @@ export class CheckBox<S extends Filterable<S>> implements Input<boolean, S>
     public set inputValue(value: boolean) 
     {
         this._inputValue = value;
+    }
+    deepCopy(): CheckBox<S> 
+    {
+        return new CheckBox<S>(this._inputName, this._inputValue, this._filter.deepCopy(), this._data);
     }
 }
 
@@ -416,5 +427,15 @@ export class SelectOptions<T, S extends Filterable<S>> implements Input<T, S>
     public set possibleOptions(v: T[]) 
     {
         this._possibeOptions = v;
+    }
+    deepCopy(): SelectOptions<T, S> 
+    {
+        return new SelectOptions<T, S>(
+            this._inputName,
+            this._inputValue,
+            this._possibeOptions,
+            this._filter.deepCopy(),
+            this._data,
+        );
     }
 }

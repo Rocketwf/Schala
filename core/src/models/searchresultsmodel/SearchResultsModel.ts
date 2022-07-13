@@ -7,9 +7,38 @@ export class SearchResultsModel implements Filterable<SearchResultsModel>
     private _basicProfiles: Array<BasicProfile>;
     private _filters: Filter<number, SearchResultsModel>[];
 
+    private _expandable: boolean;
+    private _isExpanded: boolean;
+
     constructor(basicProfiles: Array<BasicProfile>) 
     {
         this._basicProfiles = basicProfiles;
+    }
+
+    public get expandable(): boolean 
+    {
+        return this._expandable;
+    }
+    public set expandable(v: boolean) 
+    {
+        this._expandable = v;
+    }
+
+    public get isExpanded(): boolean 
+    {
+        return this._isExpanded;
+    }
+    public set isExpanded(v: boolean) 
+    {
+        this._isExpanded = v;
+    }
+    saveFilters(): void 
+    {
+        return;
+    }
+    restoreFilters(): void 
+    {
+        return;
     }
 
     public deepCopy(): SearchResultsModel 

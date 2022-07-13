@@ -382,11 +382,10 @@ export class ComparisonRepresentation
 
         const scalingCheckBox: CheckBox<ChartOptionsModel> = new CheckBox(
             'Scale up number of publications according to the scholar with highest entries',
-            'scale',
             false,
             scale,
+            [chartOptionsModel],
         );
-        scalingCheckBox.data = [chartOptionsModel];
         rowModel.popupButtons = [showingPopupEdit];
         rowModel.checkBoxes = [scalingCheckBox];
         showing.value = CARDS.PUBLICATIONS_BY_VENUE.CARD_DATA.DEFAULT_NUM_OF_ENTRIES;
@@ -468,11 +467,10 @@ export class ComparisonRepresentation
 
         const scalingCheckBox: CheckBox<ChartOptionsModel> = new CheckBox(
             'Scale up number of publications according to the scholar with highest entries',
-            'scale',
             false,
             scale,
+            [chartOptionsModel],
         );
-        scalingCheckBox.data = [chartOptionsModel];
 
         rowModel.popupButtons = [rangePopupEdit];
         rowModel.checkBoxes = [scalingCheckBox];
@@ -530,7 +528,7 @@ export class ComparisonRepresentation
             model.chartOptionsModel = chartOptionsModel;
         });
 
-        const showingNumberField: Field<number, BasicBarsChartModel> = new Field<number, BasicColumnsChartModel>(
+        const showingNumberField: Field<number, BasicBarsChartModel> = new Field<number, BasicBarsChartModel>(
             'showing',
             CARDS.MOST_FREQUENT_CO_AUTHORS.CARD_DATA.DEFAULT_NUM_OF_ENTRIES,
             showing,
@@ -540,11 +538,10 @@ export class ComparisonRepresentation
         const showingPopupEdit: RangeButton = new RangeButton('range', [showingNumberField]);
         const scalingCheckBox: CheckBox<ChartOptionsModel> = new CheckBox(
             'Scale up number of publications according to the scholar with highest entries',
-            'scale',
             false,
             scale,
+            [chartOptionsModel],
         );
-        scalingCheckBox.data = [chartOptionsModel];
         rowModel.popupButtons = [showingPopupEdit];
         rowModel.checkBoxes = [scalingCheckBox];
         rowModel.popupButtons = [showingPopupEdit];
@@ -607,21 +604,20 @@ export class ComparisonRepresentation
 
         const scalingPublicationCheckBox: CheckBox<ChartOptionsModel> = new CheckBox(
             'Scale up number of publications according to the scholar with highest publication count',
-            'scale',
             false,
             scalePublication,
+            [chartOptionsModel],
         );
         scalingPublicationCheckBox.data = [chartOptionsModel];
 
         const scalingHIndexCheckBox: CheckBox<ChartOptionsModel> = new CheckBox(
             'Scale up number of publications according to the scholar with highest h-index',
-            'scale',
             false,
             scaleHIndex,
+            [chartOptionsModel],
         );
-        scalingHIndexCheckBox.data = [chartOptionsModel];
 
-        const showingNumberField: Field<number, BasicBarsChartModel> = new Field<number, BasicColumnsChartModel>(
+        const showingNumberField: Field<number, LineColumnsMixedChartModel> = new Field<number, LineColumnsMixedChartModel>(
             'showing',
             CARDS.CO_AUTHORS_WITH_HIGHEST_HINDEX.CARD_DATA.DEFAULT_NUM_OF_ENTRIES,
             showing,
@@ -701,8 +697,8 @@ export class ComparisonRepresentation
 
     /**
      * Sorts the given series according to their names in ascending order.
-     * @param a the first series to be sorted
-     * @param b the second series to be sorted
+     * @param a - the first series to be sorted
+     * @param b - the second series to be sorted
      * @returns the sorted series
      */
     private sortSeries(a: Series, b: Series): number 
@@ -714,8 +710,8 @@ export class ComparisonRepresentation
 
     /**
      * Sorts the given series' data in ascending order.
-     * @param a the first series whose data is to be sorted
-     * @param b the second series whose data is to be sorted
+     * @param a - the first series whose data is to be sorted
+     * @param b - the second series whose data is to be sorted
      * @returns the sorted series data
      */
     private sortSeriesByData(a: Series, b: Series): number 

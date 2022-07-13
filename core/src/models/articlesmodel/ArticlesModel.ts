@@ -6,8 +6,9 @@ import { PopupEditButton } from '../inputs';
 import { SelectOptions } from '../inputs/Inputs';
 import { SimpleCardModel, ViewName } from '../simplecardmodel';
 import { Pagination } from '../viewmodels/Pagination';
+import { Filterable } from '../../filters/Filterable';
 
-export class ArticlesModel implements Paginable<ArticlesModel>, SimpleCardModel 
+export class ArticlesModel implements Filterable<ArticlesModel>, Paginable<ArticlesModel>, SimpleCardModel 
 {
     /**
      * Represents the id value as a string
@@ -44,7 +45,7 @@ export class ArticlesModel implements Paginable<ArticlesModel>, SimpleCardModel
     /**
      * Represents the buttons as a PopupEditButton array
      */
-    private _popupButtons: PopupEditButton<ArticlesModel>[];
+    private _popupButtons: PopupEditButton<string, ArticlesModel>[];
     /**
      * Represents the options as a SelectOptions array
      */
@@ -57,6 +58,9 @@ export class ArticlesModel implements Paginable<ArticlesModel>, SimpleCardModel
      * Represents the pagination as a Pagination
      */
     private _pagination: Pagination<ArticlesModel>;
+
+    private _expandable: boolean = false;
+    private _isExpanded: boolean = false;
 
     /**
      * Creates an instance of articles model.
@@ -74,6 +78,14 @@ export class ArticlesModel implements Paginable<ArticlesModel>, SimpleCardModel
         this._viewName = _viewName;
         this._colWidth = _colWidth;
         this.articles = this._articles;
+    }
+    saveFilters(): void 
+    {
+        throw new Error('Method not implemented.');
+    }
+    restoreFilters(): void 
+    {
+        throw new Error('Method not implemented.');
     }
 
     /**
@@ -247,7 +259,7 @@ export class ArticlesModel implements Paginable<ArticlesModel>, SimpleCardModel
     /**
      * Getter method of the popupButtons attribute.
      */
-    public get popupButtons(): PopupEditButton<ArticlesModel>[] 
+    public get popupButtons(): PopupEditButton<string, ArticlesModel>[] 
     {
         return this._popupButtons;
     }
@@ -255,7 +267,7 @@ export class ArticlesModel implements Paginable<ArticlesModel>, SimpleCardModel
     /**
      * Setter method of the popupButtons attribute.
      */
-    public set popupButtons(popupButtons: PopupEditButton<ArticlesModel>[]) 
+    public set popupButtons(popupButtons: PopupEditButton<string, ArticlesModel>[]) 
     {
         this._popupButtons = popupButtons;
     }
@@ -330,5 +342,23 @@ export class ArticlesModel implements Paginable<ArticlesModel>, SimpleCardModel
     {
         this.paginationFilter.hitsPerPage = value;
         this.applyPaginationFilter();
+    }
+
+    public get isExpanded(): boolean 
+    {
+        return this._isExpanded;
+    }
+    public set isExpanded(v: boolean) 
+    {
+        this._isExpanded = v;
+    }
+
+    public get expandable(): boolean 
+    {
+        return this._expandable;
+    }
+    public set expandable(v: boolean) 
+    {
+        this._expandable = v;
     }
 }
