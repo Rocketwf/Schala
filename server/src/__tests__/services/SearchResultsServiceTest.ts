@@ -1,17 +1,20 @@
 import { BasicProfile } from '../../models/profile/BasicProfile';
 import { SearchResultsService } from '../../services/SearchResultsService';
-
-describe('Build according to a string', () =>
+describe('Search according to a string', () =>
 {
-    it('Build Zervakis profile', async () => 
+    it('Seach for Zervakis basic profile', async () => 
     {
-        //test timeout for both profiles
         const srs: SearchResultsService= new SearchResultsService();
-        const profileNames: Array<string> = [/*'Om Prakash'*/,'Georgios Zervakis'];
-        for(const profileName in profileNames)
-            (await srs.build(profileName)).forEach((element: BasicProfile) => 
+        const profileName: string = 'Georgios Zervakis';
+        let profileIsPresent: boolean = false;
+        (await srs.build(profileName)).forEach((element:BasicProfile) => 
+        {
+            if(element.id == '50481255')
             {
-                expect(element.id != null && element.name != null).toBe(true);
-            });
+                profileIsPresent =true;
+            }         
+        });
+        expect(profileIsPresent).toBe(true);
+        profileIsPresent=false;
     }); 
 });

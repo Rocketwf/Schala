@@ -1,6 +1,6 @@
 import { GoogleScholarScraperSource } from '../../datasources/GoogleScholarScraperSource';
-
-describe('Fetch author and check for id', () =>
+// image is never '' and parameters of levensteinHelper are never 0 except them all of the lines are covered
+describe('Fetch author and check for author id', () =>
 {
     it('Georgios Zervakis ID', async () => 
     {
@@ -24,14 +24,6 @@ describe('Test empty author name for full profile', () =>
     });
 });
 
-describe('Fetch author and check for id', () =>
-{
-    it('Georgios Zervakis ID', async () => 
-    {
-        expect(await(await new GoogleScholarScraperSource().fetchAuthor('Georgios Zervakis')).authorId).toBe('hZtfPegAAAAJ');
-    }); 
-});
-
 describe('Fetch author and check for website', () =>
 {
     it('Mehdi Tahoori url', async () => 
@@ -40,9 +32,9 @@ describe('Fetch author and check for website', () =>
     }); 
 });
 
-describe('Search for Gregor Snelting', () =>
+describe('Compare two search queries length', () =>
 {
-    it('Gregor Snelting', async () => 
+    it('Gregor Snelting double search', async () => 
     {
         const gss: GoogleScholarScraperSource = new GoogleScholarScraperSource();
         const firstSearchLength: number = await (await gss.fetchSearchResults('Gregor Snelting')).length;
@@ -54,7 +46,6 @@ describe('Fetch Snelting photo', () =>
 {
     it('Expect default photo', async () => 
     {
-        console.log(await (await new GoogleScholarScraperSource().fetchSearchResults('Gregor Snelting'))[0].profilePicture);
         expect(await(await new GoogleScholarScraperSource().fetchSearchResults('Gregor Snelting'))[0].profilePicture).toBe
         ('https://scholar.google.com/citations/images/avatar_scholar_128.png');
     }); 
