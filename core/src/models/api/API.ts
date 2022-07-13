@@ -270,13 +270,3 @@ export interface APIBasicProfile {
      */
     _pictureUrl: string;
 }
-
-/**
- * The APIJournal is a data structure holding the
- * information of a journal
- */
-export interface APIJournal {
-    volume?: string;
-    pages?: string;
-    name: string;
-}
