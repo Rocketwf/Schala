@@ -9,16 +9,16 @@ describe('findOrCreate method', () =>
     {
         service = new FullProfileService();
         profiles = await service.build('1679754');
-    }, 30000);
+    }, 50000);
     
     it('builds a fullprofile array', async () => 
     {
         expect(profiles.length > 0).toBe(true);
-    }, 30000);
+    }, 50000);
     it('checks if the name is correct', async () => 
     {
         expect(profiles[0].basicProfile.name).toBe('Walter F Tichy');
-    }, 30000);
+    }, 50000);
     
 
 });
