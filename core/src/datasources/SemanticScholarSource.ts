@@ -174,6 +174,7 @@ export class SemanticScholarSource implements DataSource
                             coAuthors,
                             art._abstract,
                             art._publicationDate,
+                            art._bibtex,
                         ),
                     );
                 }

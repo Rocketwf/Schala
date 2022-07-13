@@ -33,9 +33,11 @@
 </template>
 
 <script setup charset="utf-8" lang="ts">
+import { useQuasar, copyToClipboard } from 'quasar';
 import { ref } from 'vue';
 
 let show = ref(false);
+const $q = useQuasar();
 
 const props = defineProps<{
     bibtex: string,
@@ -43,8 +45,33 @@ const props = defineProps<{
 }>();
 
 const copy = (): void => 
+{   
+    copyToClipboard(props.bibtex)
+        .then(() => 
+        {
+            triggerPositive();
+        })
+        .catch(() => 
+        {
+            triggerNegative();
+        });
+    
+};
+
+const triggerPositive = () => 
 {
-    return; //TODO: Implement me
+    $q.notify({
+        type: 'positive',
+        message: 'Copied to clipboard',
+    });
+};
+
+const triggerNegative = () => 
+{
+    $q.notify({
+        type: 'negative',
+        message: 'Failed to copy',
+    });
 };
 
 </script>

@@ -165,6 +165,8 @@ export class ArticlesModel implements Filterable<ArticlesModel>, Paginable<Artic
                 article.url,
                 article.coAuthors,
                 article.abstract,
+                article.publicationDate,
+                article.bibtex,
             );
             articlesCopy.push(art);
         });

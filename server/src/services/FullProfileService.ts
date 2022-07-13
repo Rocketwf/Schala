@@ -628,6 +628,9 @@ export class FullProfileService extends ProfileService
                 if (author.aliases) name = author.aliases[author.aliases.length - 1];
                 paperCoauthors.push(new ArticleCoAuthor(author.authorId, name));
             }
+
+            const bibtex: string = this.buildBibtex(paper);
+
             const articleToPush: Article = new Article(
                 paper.title,
                 paper.venue,
@@ -638,9 +641,47 @@ export class FullProfileService extends ProfileService
                 paper.abstract,
                 paperCoauthors,
                 paper.publicationDate,
+                bibtex,
             );
             articles.push(articleToPush);
         }
         return articles;
+    }
+
+    private buildBibtex(article: APIPaper): string
+    {
+        let bibtex: string = '';
+        const start: string = '@article{';
+        bibtex += start;
+        const key: string =  article.title.replace(/\s/g, '') + ',\n';
+        bibtex += key;
+        const authors: string = '\tauthor = {' + article.authors.map((author: APICoAuthor) => author.name).join(' and ')  + '},\n';
+        bibtex += authors;
+        const title: string = '\ttitle{' + article.title + '},\n';
+        bibtex += title;
+        if (article.journal && article.journal.name)
+        {
+            const journal: string = '\tjournal = {' + article.journal.name + '},\n';
+            bibtex += journal;
+
+            if (article.journal.volume)
+            {
+                const volume: string = '\tvolume = {' + article.journal.volume + '},\n';
+                bibtex += volume;
+            }
+        }
+        if (article.year)
+        {
+            const year: string = '\tyear = {' + article.year + '},\n';
+            bibtex += year;
+        }
+        if (article.journal && article.journal.name && article.journal.pages)
+        {
+            const pages: string = '\tpages = {' + article.journal.pages + '}\n';
+            bibtex += pages;
+        }
+        const end: string = '}';
+        bibtex += end;
+        return bibtex;
     }
 }

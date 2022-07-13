@@ -28,6 +28,7 @@ export interface APIArticle {
      */
     _articlesCoAuthors: APICoAuthor[];
     _publicationDate: string;
+    _bibtex: string;
 }
 export interface APICoAuthor {
     /**
@@ -268,4 +269,14 @@ export interface APIBasicProfile {
      * Represents the picture url of the basic profile as a string
      */
     _pictureUrl: string;
+}
+
+/**
+ * The APIJournal is a data structure holding the
+ * information of a journal
+ */
+export interface APIJournal {
+    volume?: string;
+    pages?: string;
+    name: string;
 }

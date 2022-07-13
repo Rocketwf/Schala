@@ -41,6 +41,8 @@ export class Article
 
     private _publicationDate: string;
 
+    private _bibtex: string;
+
     /**
      * Creates an instance of article.
      * @param _title - The title of the article
@@ -61,7 +63,8 @@ export class Article
         _url: string,
         _abstract: string,
         _articlesCoAuthors: ArticleCoAuthor[],
-        _publicationDate?: string,
+        _publicationDate: string,
+        _bibtex: string, 
     ) 
     {
         this._title = _title;
@@ -72,10 +75,9 @@ export class Article
         this._url = _url;
         this._abstract = _abstract;
         this._articlesCoAuthors = _articlesCoAuthors;
-        if (_publicationDate) 
-        {
-            this._publicationDate = _publicationDate;
-        }
+        this._publicationDate = _publicationDate;
+        this._bibtex = _bibtex;
+
     }
 
     /**
@@ -214,11 +216,18 @@ export class Article
         return this._publicationDate;
     }
      
-    /**
-    * Setter method of the publicationDate attribute
-    */
     public set publicationDate(_newDate: string) 
     {
         this._publicationDate = _newDate;
+    }
+
+    public get bibtex(): string 
+    {
+        return this._bibtex;
+    }
+     
+    public set bibtex(_newBibtex: string) 
+    {
+        this._bibtex = _newBibtex;
     }
 }

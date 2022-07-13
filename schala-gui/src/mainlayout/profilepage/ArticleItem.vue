@@ -33,7 +33,7 @@
           icon="menu_book"
         >
           <cite-button
-            :bibtex="props.article.url"
+            :bibtex="props.article.bibtex"
             :button-icon="slotProps.icon"
           />
         </article-item-button>
