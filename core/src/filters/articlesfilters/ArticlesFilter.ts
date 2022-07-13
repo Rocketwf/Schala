@@ -126,11 +126,11 @@ export class SortByFilter extends ArticlesFilter<string>
             }
             else if (this.value == 'self-citations') 
             {
-                if (n1.citationCount < n2.citationCount) 
+                if (n1.selfCitationsCount < n2.selfCitationsCount) 
                 {
                     return 1;
                 }
-                if (n1.citationCount > n2.citationCount) 
+                if (n1.selfCitationsCount > n2.selfCitationsCount) 
                 {
                     return -1;
                 }

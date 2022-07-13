@@ -1,17 +1,24 @@
 <template>
   <div id="chart">
+    <div
+      v-if="noEntries"
+      class="text-body1 text-center text-grey q-mb-xl"
+    >
+      Nothing to be listed
+    </div>
+    <div
+      v-else-if="badDataLength"
+      class="text-body1 text-center text-grey q-mb-xl"
+    >
+      The data is too large to fit, please use the expand button
+    </div>
     <apexchart
-      v-if="!hasNoCitations()"
+      v-else
+      :height="stackedColumnsChartModel.isExpanded ? '800px' : 340"
       type="bar"
       :options="chartOptions"
       :series="getSeries()"
     />
-    <div
-      v-else
-      class="text-body1 text-center text-grey q-mb-xl"
-    >
-      This author has no citations
-    </div>
   </div>
 </template>
 
@@ -22,16 +29,6 @@ const props = defineProps<{
     stackedColumnsChartModel: StackedColumnsChartModel;
 }>();
 
-const hasNoCitations = () => 
-{
-    let sum = 0;
-    const series = getSeries();
-    for (const ser of series) 
-    {
-        sum += ser.data[0] + ser.data[1] + ser.data[0];
-    }
-    return sum === 0;
-};
 
 const getSeries = () => 
 {
@@ -50,6 +47,18 @@ const getSeries = () =>
     return apexSeries;
 };
 
+const noEntries = computed(() => 
+{
+    let sum = 0;
+    const series = getSeries();
+    console.log(series);
+    for (const ser of series) 
+    {
+        sum += ser.data.length;
+    }
+    console.log(sum);
+    return sum === 0;
+});
 const getLabels = computed(() => 
 {
     const labels: string[] = new Array<string>();
@@ -73,6 +82,14 @@ const defaultMax = (): ((max: number) => number) =>
 {
     return (max: number) => max;
 };
+const badDataLength = computed(() => 
+{
+    return (
+        props.stackedColumnsChartModel.isShowingExpandButton &&
+        !props.stackedColumnsChartModel.isExpanded &&
+        getLabels.value.length >= 20
+    );
+});
 type ApexOptionsType = { seriesIndex: number; dataPointIndex: number; w: { config: { series: Array<Series> } } };
 const chartOptions = computed(() => 
 {

@@ -170,6 +170,7 @@ export class SemanticScholarSource implements DataSource
                             art._venue,
                             art._publicationYear,
                             art._citationCount,
+                            art._selfCitationsCount,
                             art._url,
                             coAuthors,
                             art._abstract,

@@ -8,6 +8,7 @@
         badge
       />
       <q-btn
+        v-if="cardModel.isShowingExpandButton"
         class="absolute"
         style="top: 0; transform: translateY(-40%)"
         color="primary"

@@ -1,6 +1,20 @@
 <template>
   <div id="chart">
+    <div
+      v-if="noEntries"
+      class="text-body1 text-center text-grey q-mb-xl"
+    >
+      The data is too large to fit, please use the expand button
+    </div>
+    <div
+      v-else-if="badDataLength"
+      class="text-body1 text-center text-grey q-mb-xl"
+    >
+      The data is too large to fit, please use the expand button
+    </div>
     <apexchart
+      v-else
+      :height="lineColumnsMixedChartModel.isExpanded ? '800px' : 340"
       :options="chartOptions"
       :series="getSeries()"
     />
@@ -15,6 +29,16 @@ const props = defineProps<{
     lineColumnsMixedChartModel: LineColumnsMixedChartModel;
 }>();
 
+const noEntries = computed(() => 
+{
+    let sum = 0;
+    const series = getSeries();
+    for (const ser of series) 
+    {
+        sum += ser.data.length;
+    }
+    return sum === 0;
+});
 /**
  * Converts the series to the form specific to the LineColumnsMixedChart.
  */
@@ -41,6 +65,14 @@ const getSeries = () =>
     return series;
 };
 
+const badDataLength = computed(() => 
+{
+    return (
+        props.lineColumnsMixedChartModel.isShowingExpandButton &&
+        !props.lineColumnsMixedChartModel.isExpanded &&
+        getLabels.value.length >= 20
+    );
+});
 /**
  * Getter method for LineColumnsMixedChart labels
  */
@@ -57,7 +89,7 @@ const getLabels = computed(() =>
     return labels;
 });
 
-const defaultMax = (): (max: number) => number => 
+const defaultMax = (): ((max: number) => number) => 
 {
     return (max: number) => max;
 };
@@ -118,6 +150,8 @@ const chartOptions = computed(() =>
             type: 'category',
             labels: {
                 rotate: -45,
+                position: 'top',
+                hideOverlappingLabels: false
             },
         },
         yaxis: [

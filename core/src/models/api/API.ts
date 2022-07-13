@@ -15,6 +15,7 @@ export interface APIArticle {
      * Represents the citation number of the article as a number
      */
     _citationCount: number;
+    _selfCitationsCount: number;
     /**
      * Represents the url of the article as a number
      */

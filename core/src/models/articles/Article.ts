@@ -31,6 +31,7 @@ export class Article
 
     private _publicationDate: string;
 
+    private _selfCitationsCount: number;
     /**
      * Creates an instance of article.
      * @param _title - Represents the title value as a string
@@ -46,6 +47,7 @@ export class Article
         _venue: string,
         _year: number,
         _citationsCount: number,
+        _selfCitationsCount: number,
         _url: string,
         _coAuthors: ArticleCoAuthor[],
         _abstract: string,
@@ -56,6 +58,7 @@ export class Article
         this._venue = _venue;
         this._publicationYear = _year;
         this._citationsCount = _citationsCount;
+        this._selfCitationsCount = _selfCitationsCount;
         this._url = _url;
         this._coAuthors = _coAuthors;
         this._abstract = _abstract;
@@ -171,13 +174,23 @@ export class Article
     {
         return this._publicationDate;
     }
-          
+
     /**
-    * Setter method of the publicationDate attribute
-    */
+     * Setter method of the publicationDate attribute
+     */
     public set publicationDate(_newDate: string) 
     {
         this._publicationDate = _newDate;
+    }
+
+    public get selfCitationsCount(): number 
+    {
+        return this._selfCitationsCount;
+    }
+
+    public set selfCitationsCount(v: number) 
+    {
+        this._selfCitationsCount = v;
     }
 }
 

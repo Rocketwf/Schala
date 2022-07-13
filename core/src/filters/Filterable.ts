@@ -25,6 +25,7 @@ export interface Filterable<T extends Filterable<T>> {
 export interface Expandable<T extends Filterable<T>> extends Filterable<T> {
 
     isExpanded: boolean;
+    isShowingExpandButton: boolean;
     saveFilters(): void;
     restoreFilters(): void;
 }

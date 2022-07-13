@@ -74,6 +74,7 @@ implements Filterable<ObjectSeriesChartModel>, Expandable<ObjectSeriesChartModel
     private _chartOptionsModel: ChartOptionsModel;
 
     private _isExpanded: boolean;
+    private _isShowingExpandButton: boolean;
     /**
      * Creates an instance of BasicBarsChartModel.
      * @param _title - Represents the title value as a string
@@ -108,6 +109,8 @@ implements Filterable<ObjectSeriesChartModel>, Expandable<ObjectSeriesChartModel
         this._labels = _labels;
 
         this._popupButtons = _popupButtons;
+        this._isShowingExpandButton = false;
+        this._isExpanded = false;
     }
 
     /**
@@ -381,6 +384,23 @@ implements Filterable<ObjectSeriesChartModel>, Expandable<ObjectSeriesChartModel
     public toggleExpand(): void 
     {
         this._isExpanded = !this._isExpanded;
+    }
+
+    public get isShowingExpandButton(): boolean 
+    {
+        return this._isShowingExpandButton;
+    }
+    public set isShowingExpandButton(v: boolean) 
+    {
+        this._isShowingExpandButton = v;
+    }
+    public showExpandButton(): void 
+    {
+        this._isShowingExpandButton = true;
+    }
+    public hideExpandButton(): void 
+    {
+        this._isShowingExpandButton = false;
     }
 }
 
