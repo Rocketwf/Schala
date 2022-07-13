@@ -123,7 +123,7 @@ export class FullProfileService extends ProfileService
     /**
      * Builds the expertises list of the papers being passed
      * @param apiPapers - apiPapers object array of the papers to build
-     * @returns Array of the expertises from the papers 
+     * @returns Array of the expertises from the papers
      */
     private buildExpertise(apiPapers: APIPaper[]): string[] 
     {
@@ -147,38 +147,27 @@ export class FullProfileService extends ProfileService
      */
     private calculateHIndex(apiPapers: APIPaper[]): number 
     {
-        let hIndex: number = 0;
-
-        apiPapers.sort(this.sortAPIPaper);
-
-        apiPapers.forEach((articles: APIPaper, index: number) => 
+        const citations: Array<number> = [];
+        const arrange: Array<number> = [];
+        for (let i: number = 0; i < apiPapers.length; ++i) 
         {
-            if (articles.citationCount >= index) 
-            {
-                hIndex++;
-            }
-        });
-        return hIndex;
+            citations.push(apiPapers[i].citationCount);
+            arrange.push(i + 1);
+        }
+
+
+        citations.sort((n1: number, n2: number) => n2 - n1);
+
+        return Math.max(...this.intersectMin(citations, arrange));
     }
-
-    /**
-     * Compares the two given APIPaper objects and is used for sorting the 
-     * number of citations for a paper in descending order
-     * @param a - First number to be compared
-     * @param b - Second number to be compared
-     * @returns -1 or 1 whether the first parameters citationsCount
-     * is bigger than the second parameters or not respectively
-     */
-    private sortAPIPaper(a: APIPaper, b: APIPaper): number 
+    private intersectMin(arr1: number[], arr2: number[]): number[] 
     {
-        if (a.citationCount > b.citationCount) 
+        const intesectMin: number[] = [];
+        for (let i: number = 0; i < arr1.length; ++i) 
         {
-            return -1;
+            intesectMin.push(Math.min(arr1[i], arr2[i]));
         }
-        else 
-        {
-            return 1;
-        }
+        return intesectMin;
     }
 
     /**
@@ -224,19 +213,22 @@ export class FullProfileService extends ProfileService
      * Calculates hindex without self citations for an author with the given papers
      * @param apiAuthor - APIAuthor author to check
      * @param apiPaper - The APIPaper papers to check against
-     * @returns hindex without self citations 
+     * @returns hindex without self citations
      */
-    private calculateHIndexWithoutSelfCitations(apiAuthor: APIAuthor, apiPaper: APIPaper[]): number 
+    private calculateHIndexWithoutSelfCitations(apiAuthor: APIAuthor, apiPapers: APIPaper[]): number 
     {
-        let hIndexWithoutSelfCitations: number = 0;
-        apiPaper.forEach((article: APIPaper, index: number) => 
+        const citations: Array<number> = [];
+        const arrange: Array<number> = [];
+        for (let i: number = 0; i < apiPapers.length; ++i) 
         {
-            if (article.citationCount - this.getSelfCitationsInPaper(apiAuthor, article) >= index) 
-            {
-                hIndexWithoutSelfCitations++;
-            }
-        });
-        return hIndexWithoutSelfCitations;
+            citations.push(apiPapers[i].citationCount - this.getSelfCitationsInPaper(apiAuthor, apiPapers[i]));
+            arrange.push(i + 1);
+        }
+
+
+        citations.sort((n1: number, n2: number) => n2 - n1);
+
+        return Math.max(...this.intersectMin(citations, arrange));
     }
 
     /**
@@ -318,31 +310,40 @@ export class FullProfileService extends ProfileService
             return this._fasterCitations;
         }
         const fasterCitations: Map<number, CitationsByYear> = new Map<number, CitationsByYear>();
+        // go through ppaers
         for (const article of apiPapers) 
         {
             let citations: CitationsByYear = fasterCitations.get(article.year);
 
+            //citation entry was not yet created
             if (!citations) 
             {
                 citations = new CitationsByYear(+article.year, 0, 0, 0);
                 fasterCitations.set(article.year, citations);
             }
 
+            // for each paper go through the citations
             for (const citation of article.citations) 
             {
+                // find the citation entry in the map to update it
                 let totalCite: CitationsByYear = fasterCitations.get(citation.year);
+                // not there? create it
                 if (!totalCite) 
                 {
                     totalCite = new CitationsByYear(+citation.year, 0, 0, 0);
                     fasterCitations.set(citation.year, totalCite);
                 }
+                // citation means +1 to totalCite
                 totalCite.totalCitationCount++;
+                // if self citation skip..., self citations are counted at the end
                 if (this.isOwnRefOrCit(apiAuthor, citation)) 
                 {
                     continue;
                 }
                 for (const author of citation.authors) 
                 {
+                    // if the author of one of the citations is in the authors of the original paper,
+                    // then its an indirect self citation for the author associated with the full profile
                     if (article.authors.find((e: APIAuthor) => e.authorId === author.authorId)) 
                     {
                         let indSelfCite: CitationsByYear = fasterCitations.get(citation.year);
@@ -355,9 +356,18 @@ export class FullProfileService extends ProfileService
                         break;
                     }
                 }
+                // done with ind self cite
             }
 
             citations.selfCitationsCount += this.getSelfCitationsInPaper(apiAuthor, article);
+        }
+        // delete empty entries
+        for (const [year, cbv] of fasterCitations) 
+        {
+            if (cbv.totalCitationCount === 0) 
+            {
+                fasterCitations.delete(year);
+            }
         }
         this._fasterCitations = fasterCitations;
         return this._fasterCitations;
@@ -367,7 +377,7 @@ export class FullProfileService extends ProfileService
      * Calculates number indirect self citations
      * @param apiAuthor - APIAuthor author to check
      * @param apiPapers - The APIPaper papers to check against
-     * @returns Number of indirect self citations 
+     * @returns Number of indirect self citations
      */
     private calculateIndirectSelfCitations(apiAuthor: APIAuthor, apiPapers: APIPaper[]): number 
     {
@@ -396,7 +406,7 @@ export class FullProfileService extends ProfileService
     /**
      * Builds the data for the publications by year
      * @param apiPapers - The APIPapers to check
-     * @returns Data for the publications by year 
+     * @returns Data for the publications by year
      */
     private buildPublicationsByYear(apiPapers: APIPaper[]): PublicationByYear[] 
     {
@@ -426,7 +436,7 @@ export class FullProfileService extends ProfileService
     }
 
     /**
-     * Compares the two given PublicationByYear objects and is used for sorting the 
+     * Compares the two given PublicationByYear objects and is used for sorting the
      * years for a paper in ascending order
      * @param a - First PublicationByYear to be compared
      * @param b - Second PublicationByYear to be compared
@@ -448,7 +458,7 @@ export class FullProfileService extends ProfileService
     /**
      * Builds the data for the publications by venue
      * @param apiPapers - The APIPaper papers to check
-     * @returns Data for the publications by venue 
+     * @returns Data for the publications by venue
      */
     private buildPublicationsByVenue(apiPapers: APIPaper[]): PublicationByVenue[] 
     {
@@ -474,7 +484,7 @@ export class FullProfileService extends ProfileService
     }
 
     /**
-     * Compares the two given PublicationByVenue objects and is used for sorting the 
+     * Compares the two given PublicationByVenue objects and is used for sorting the
      * publication counts for a paper in ascending order
      * @param a - First PublicationByVenue to be compared
      * @param b - Second PublicationByVenue to be compared
@@ -497,7 +507,7 @@ export class FullProfileService extends ProfileService
      * Builds he data for the cited scholars
      * @param apiAuthor - The current author being built
      * @param apiPapers - The papers of the author
-     * @returns Data for the cited scholars 
+     * @returns Data for the cited scholars
      */
     private buildCitedScholars(apiAuthor: APIAuthor, apiPapers: APIPaper[]): CitedScholar[] 
     {
@@ -537,7 +547,7 @@ export class FullProfileService extends ProfileService
     }
 
     /**
-     * Compares the two given CitedScholar objects and is used for sorting the 
+     * Compares the two given CitedScholar objects and is used for sorting the
      * citation count for a scholar in descending order
      * @param a - First CitedScholar to be compared
      * @param b - Second CitedScholar to be compared
@@ -591,7 +601,7 @@ export class FullProfileService extends ProfileService
     }
 
     /**
-     * Compares the two given Author objects and is used for sorting the 
+     * Compares the two given Author objects and is used for sorting the
      * h-index for a scholar in descending order
      * @param a1 - First Author to be compared
      * @param b1 - Second Author to be compared

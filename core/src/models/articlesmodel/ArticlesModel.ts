@@ -59,9 +59,6 @@ export class ArticlesModel implements Filterable<ArticlesModel>, Paginable<Artic
      */
     private _pagination: Pagination<ArticlesModel>;
 
-    private _expandable: boolean = false;
-    private _isExpanded: boolean = false;
-
     /**
      * Creates an instance of articles model.
      * @param _articles - Represents the articles value as a Article array
@@ -78,14 +75,6 @@ export class ArticlesModel implements Filterable<ArticlesModel>, Paginable<Artic
         this._viewName = _viewName;
         this._colWidth = _colWidth;
         this.articles = this._articles;
-    }
-    saveFilters(): void 
-    {
-        throw new Error('Method not implemented.');
-    }
-    restoreFilters(): void 
-    {
-        throw new Error('Method not implemented.');
     }
 
     /**
@@ -162,6 +151,7 @@ export class ArticlesModel implements Filterable<ArticlesModel>, Paginable<Artic
                 article.venue,
                 article.publicationYear,
                 article.citationCount,
+                article.selfCitationsCount,
                 article.url,
                 article.coAuthors,
                 article.abstract,
@@ -344,23 +334,5 @@ export class ArticlesModel implements Filterable<ArticlesModel>, Paginable<Artic
     {
         this.paginationFilter.hitsPerPage = value;
         this.applyPaginationFilter();
-    }
-
-    public get isExpanded(): boolean 
-    {
-        return this._isExpanded;
-    }
-    public set isExpanded(v: boolean) 
-    {
-        this._isExpanded = v;
-    }
-
-    public get expandable(): boolean 
-    {
-        return this._expandable;
-    }
-    public set expandable(v: boolean) 
-    {
-        this._expandable = v;
     }
 }

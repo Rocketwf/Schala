@@ -1,6 +1,9 @@
 <template>
   <q-dialog v-model="show">
-    <q-card class="my-card">
+    <q-card
+      class="my-card"
+      style="max-width: 1000vw"
+    >
       <q-card-section>
         <div class="text-h6">
           BibTex
@@ -8,7 +11,7 @@
       </q-card-section>
 
       <q-card-section class="q-px-lg">
-        {{ props.bibtex }}
+        <pre>{{ props.bibtex }}</pre>
 
         <q-card-actions align="right">
           <q-btn
@@ -40,12 +43,12 @@ let show = ref(false);
 const $q = useQuasar();
 
 const props = defineProps<{
-    bibtex: string,
-    buttonIcon: string
+    bibtex: string;
+    buttonIcon: string;
 }>();
 
 const copy = (): void => 
-{   
+{
     copyToClipboard(props.bibtex)
         .then(() => 
         {
@@ -55,7 +58,6 @@ const copy = (): void =>
         {
             triggerNegative();
         });
-    
 };
 
 const triggerPositive = () => 
@@ -73,5 +75,4 @@ const triggerNegative = () =>
         message: 'Failed to copy',
     });
 };
-
 </script>

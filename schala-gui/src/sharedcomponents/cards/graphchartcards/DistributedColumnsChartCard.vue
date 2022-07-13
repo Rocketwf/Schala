@@ -8,6 +8,7 @@
         badge
       />
       <q-btn
+        v-if="cardModel.isShowingExpandButton"
         class="absolute"
         style="top: 0; transform: translateY(-40%)"
         color="primary"
@@ -32,6 +33,7 @@ import DistributedColumnsChartDialogPluginComponentVue from 'src/sharedcomponent
 const props = defineProps<{
     cardModel: DistributedColumnsChartModel;
 }>();
+console.log(props.cardModel.isExpanded);
 const $q = useQuasar();
 const showDialog = () => 
 {
