@@ -2,7 +2,6 @@
   <div id="chart">
     <apexchart
       type="bar"
-      height="349"
       :options="chartOptions"
       :series="getSeries()"
     />
@@ -63,7 +62,6 @@ const chartOptions = computed(() =>
             selection: {
                 enabled: true,
             },
-            height: 349,
             type: 'bar',
             toolbar: {
                 tools: {

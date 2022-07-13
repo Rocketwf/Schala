@@ -33,7 +33,7 @@
 import { ArticlesModel, ObjectSeriesChartModel, PopupEditButton } from 'schala-core';
 import { ref } from 'vue';
 defineProps<{
-    popupButtonModel: PopupEditButton<ArticlesModel | ObjectSeriesChartModel>;
+    popupButtonModel: PopupEditButton<number | string , ArticlesModel | ObjectSeriesChartModel>;
     badge?: boolean;
 }>();
 

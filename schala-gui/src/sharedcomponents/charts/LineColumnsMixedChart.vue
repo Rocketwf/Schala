@@ -1,7 +1,6 @@
 <template>
   <div id="chart">
     <apexchart
-      height="350"
       :options="chartOptions"
       :series="getSeries()"
     />
@@ -93,7 +92,6 @@ const chartOptions = computed(() =>
                 enabledOnSeries: [1],
             },
 
-            height: 350,
             type: 'line',
             toolbar: {
                 offsetX: -30,

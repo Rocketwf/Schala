@@ -2,7 +2,6 @@
   <div id="chart">
     <apexchart
       type="bar"
-      height="300"
       :options="chartOptions"
       :series="getSeries()"
     />
@@ -51,6 +50,7 @@ const chartOptions = computed(() =>
 {
     return { chart: {
         type: 'bar',
+        width: '100%',
         toolbar: {
             tools: {
                 download: '<i class="q-icon notranslate material-icons" aria-hidden="true" role="presentation" style="font-size: 24px;">download</i>',

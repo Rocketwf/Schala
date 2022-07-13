@@ -81,7 +81,7 @@ export class FullProfile extends Profile
 
     /**
      * Creates an instance of full profile.
-     * @param _expertise The expertises of the scholar
+     * @param _expertise - The expertises of the scholar
      * @param _hIndex - The h-index of the scholar
      * @param _hIndexWithoutSelfCitations - The h-index without self citations of the scholar
      * @param _i10Index - The i10-index of the scholar

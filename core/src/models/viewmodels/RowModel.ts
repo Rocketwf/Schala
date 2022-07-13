@@ -10,7 +10,7 @@ export class RowModel
     private _width: number;
     private _simpleCardModels: Array<SimpleCardModel>;
 
-    private _popupButtons: PopupEditButton<ObjectSeriesChartModel>[];
+    private _popupButtons: PopupEditButton<number, ObjectSeriesChartModel>[];
     private _checkBoxes: CheckBox<ChartOptionsModel>[];
 
     constructor(_width: number) 
@@ -45,11 +45,11 @@ export class RowModel
     {
         this._simpleCardModels = v;
     }
-    public get popupButtons(): PopupEditButton<ObjectSeriesChartModel>[] 
+    public get popupButtons(): PopupEditButton<number, ObjectSeriesChartModel>[] 
     {
         return this._popupButtons;
     }
-    public set popupButtons(popupButtons: PopupEditButton<ObjectSeriesChartModel>[]) 
+    public set popupButtons(popupButtons: PopupEditButton<number, ObjectSeriesChartModel>[]) 
     {
         this._popupButtons = popupButtons;
     }

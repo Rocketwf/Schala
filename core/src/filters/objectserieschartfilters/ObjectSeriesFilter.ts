@@ -24,7 +24,7 @@ export class FromFilter extends ObjectSeriesFilter<number>
         {
             return false;
         }
-        if (this._value >= +model.series[model.series.length - 1].name) 
+        if (this._value > +model.series[model.series.length - 1].name) 
         {
             return false;
         }
@@ -33,6 +33,11 @@ export class FromFilter extends ObjectSeriesFilter<number>
             return false;
         }
         return true;
+    }
+    deepCopy(): FromFilter 
+    {
+        const copy: FromFilter = new FromFilter(this._value);
+        return copy;
     }
     /**
      * Creates an instance of from filter.
@@ -73,7 +78,7 @@ export class ToFilter extends ObjectSeriesFilter<number>
         {
             return false;
         }
-        if (this._value >= +model.series[model.series.length - 1].name) 
+        if (this._value > +model.series[model.series.length - 1].name) 
         {
             return false;
         }
@@ -90,6 +95,11 @@ export class ToFilter extends ObjectSeriesFilter<number>
     constructor(value: number) 
     {
         super(value);
+    }
+    deepCopy(): ToFilter 
+    {
+        const copy: ToFilter = new ToFilter(this._value);
+        return copy;
     }
     /**
      * Applys to filter on the given model
@@ -127,11 +137,11 @@ export class ShowingFilter extends ObjectSeriesFilter<number>
      */
     validate(model: ObjectSeriesChartModel): boolean 
     {
+        // if (!model.isExpanded && this._value >= 50)
+        // {
+        //     return new Message(STATUS.FAIL, 'Value too large');
+        // }
         if (!model.series || model.series.length === 0) 
-        {
-            return false;
-        }
-        if (this._value >= model.series.length) 
         {
             return false;
         }
@@ -141,6 +151,11 @@ export class ShowingFilter extends ObjectSeriesFilter<number>
         }
         return true;
     }
+    deepCopy(): ShowingFilter 
+    {
+        const copy: ShowingFilter = new ShowingFilter(this._value);
+        return copy;
+    }
 
     /**
      * Applys showing filter on the given filter
@@ -148,7 +163,6 @@ export class ShowingFilter extends ObjectSeriesFilter<number>
      */
     apply(model: ObjectSeriesChartModel): void 
     {
-        this.validate(model);
         const newSeries: Series[] = new Array<Series>();
         if (model.series[0].type) 
         {

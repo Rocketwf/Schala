@@ -1,7 +1,7 @@
 import { DataSource } from '../datasources';
 import { SemanticScholarSource } from '../datasources/SemanticScholarSource';
 import { APIAuthor, APICoAuthor, APIPaper } from '../models/API';
-import { APIRefCit, PaperId } from '../models/API/API';
+import { APIRefCit } from '../models/API/API';
 import { Article } from '../models/profile/Article';
 import { Author } from '../models/profile/Author';
 import { BasicProfile } from '../models/profile/BasicProfile';

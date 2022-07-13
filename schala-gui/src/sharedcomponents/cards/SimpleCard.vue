@@ -6,7 +6,7 @@
     >
       <q-card-section>
         <div class="col-md-2 col-xs-12">
-          <div class="text-h6 q-mb-xs">
+          <div class="text-h6 q-my-md">
             {{ simpleCardModel.title }}
           </div>
           <q-item-label caption>

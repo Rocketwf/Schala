@@ -6,6 +6,7 @@ export abstract class Filter<S, T extends Filterable<T>>
      * The value  of a filter
      */
     protected _value: S;
+    protected _previousValue: S = null;
 
     /**
      * Creates an instance of filter.
@@ -38,8 +39,11 @@ export abstract class Filter<S, T extends Filterable<T>>
      */
     applyValidate(model: T): void 
     {
-        console.log(this.validate(model));
-        if (this.validate(model)) this.apply(model);
+        const validate: boolean = this.validate(model);
+        if (validate)
+        {
+            this.apply(model);
+        }
     }
 
     /**
@@ -47,6 +51,7 @@ export abstract class Filter<S, T extends Filterable<T>>
      */
     public set value(newValue: S) 
     {
+        this._previousValue = this._value;
         this._value = newValue;
     }
 
@@ -57,4 +62,5 @@ export abstract class Filter<S, T extends Filterable<T>>
     {
         return this._value;
     }
+    abstract deepCopy(): Filter<S, T>;
 }

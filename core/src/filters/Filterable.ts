@@ -19,6 +19,14 @@ export interface Filterable<T extends Filterable<T>> {
      * It represents number of entries of a Filterable object
      */
     entries: number;
+
+
+}
+export interface Expandable<T extends Filterable<T>> extends Filterable<T> {
+
+    isExpanded: boolean;
+    saveFilters(): void;
+    restoreFilters(): void;
 }
 
 export interface Paginable<T extends Filterable<T>> extends Filterable<T> {
