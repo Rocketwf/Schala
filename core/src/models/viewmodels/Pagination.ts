@@ -16,7 +16,7 @@ export class Pagination<S extends Paginable<S>>
         this._currentPage = this._paginationFilter.value;
     }
 
-    public set paginationsFilter(v: ArticlesPaginationFilter) 
+    public set paginationFilter(v: ArticlesPaginationFilter) 
     {
         this._paginationFilter = v;
     }
