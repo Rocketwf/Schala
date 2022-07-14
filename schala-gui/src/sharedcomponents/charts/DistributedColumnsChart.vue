@@ -1,11 +1,18 @@
 <template>
   <div id="chart">
     <apexchart
+      v-if="!badDataLength"
+      :height="distributedColumnsChartModel.isExpanded ? '800px' : 340"
       type="bar"
-      height="349"
       :options="chartOptions"
       :series="getSeries()"
     />
+    <div
+      v-else
+      class="text-body1 text-center text-grey q-mb-xl"
+    >
+      The data is too large to fit, please use the expand button
+    </div>
   </div>
 </template>
 
@@ -55,6 +62,14 @@ const defaultMax = (): ((max: number) => number) =>
 {
     return (max: number) => max;
 };
+const badDataLength = computed(() => 
+{
+    return (
+        props.distributedColumnsChartModel.isShowingExpandButton &&
+        !props.distributedColumnsChartModel.isExpanded &&
+        getLabels.value.length >= 20
+    );
+});
 
 const chartOptions = computed(() => 
 {
@@ -63,7 +78,6 @@ const chartOptions = computed(() =>
             selection: {
                 enabled: true,
             },
-            height: 349,
             type: 'bar',
             toolbar: {
                 tools: {
@@ -83,6 +97,10 @@ const chartOptions = computed(() =>
         },
         legend: {
             show: true,
+            position: 'top',
+            onItemHover: {
+                highlightDataSeries: true,
+            },
         },
         xaxis: {
             title: {
@@ -91,10 +109,13 @@ const chartOptions = computed(() =>
             },
             categories: getLabels.value,
             labels: {
+                hideOverlappingLabels: false,
+                trim: true,
                 rotate: -45,
                 style: {
                     fontSize: '12px',
                 },
+                show: false,
             },
         },
         yaxis: {

@@ -1,6 +1,7 @@
 import {
     AffiliationFilter,
     SearchResultsPaginationFilter,
+    WordsInTitleFilter,
 } from '../../../filters/searchresultsfilters/SearchResultsFilter';
 import { BasicProfile, SearchResultsModel } from '../../../models';
 
@@ -13,13 +14,18 @@ describe('filters the search results correctly', () =>
         const testProfile3: BasicProfile = new BasicProfile('789', 'Test 3', ['TestPagination']);
         const testModel1: SearchResultsModel = new SearchResultsModel([testProfile1, testProfile2]);
         const testModel2: SearchResultsModel = new SearchResultsModel([testProfile1, testProfile2, testProfile3]);
+        const testModel3: SearchResultsModel = new SearchResultsModel([testProfile1, testProfile2, testProfile3]);
         const testFilter: AffiliationFilter = new AffiliationFilter('');
         const paginationFilter: SearchResultsPaginationFilter = new SearchResultsPaginationFilter(1, 2);
+        const wordFilter: WordsInTitleFilter = new WordsInTitleFilter('Test 3');
         testFilter.value = 'Industries';
         testFilter.apply(testModel1);
         paginationFilter.apply(testModel2);
+        wordFilter.apply(testModel3);
         expect(testModel1.basicProfiles.includes(testProfile1)).toBe(false);
         expect(testModel1.basicProfiles.includes(testProfile2)).toBe(true);
         expect(testModel2.basicProfiles.length == 2).toBe(true);
+        expect(testModel3.basicProfiles[0].name == 'Test 3').toBe(true);
+        expect(testModel3.basicProfiles.length == 1).toBe(true);
     });
 });

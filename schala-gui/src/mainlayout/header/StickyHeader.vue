@@ -6,12 +6,18 @@
   >
     <q-toolbar>
       <q-toolbar-title>
-        <q-avatar>
+        <q-avatar
+          @click="main"
+          style="cursor: pointer"
+        >
           <header-logo />
         </q-avatar>
-        schala
+        <span
+          class="q-mx-sm"
+          style="cursor: default"
+        >schala</span>
       </q-toolbar-title>
-      <q-form @submit="call">
+      <q-form @submit="search">
         <q-input
           dark
           dense
@@ -31,7 +37,7 @@
               class="cursor-pointer"
               @click="text = ''"
             />
-          </template> 
+          </template>
         </q-input>
       </q-form>
     </q-toolbar>
@@ -50,9 +56,13 @@ const router: Router = useRouter();
 const searchStore = searchResultsStore();
 const text = ref('');
 text;
-const call = () => 
+const search = () => 
 {
     searchStore.setSearchString(text.value);
     router.push({ path: '/profile/search' });
+};
+const main = () => 
+{
+    router.push({ path: '/' });
 };
 </script>

@@ -1,9 +1,10 @@
 import { Filterable } from '../../filters';
+import { Message } from '../../misc/Message';
 import { ArticlesModel } from '../articlesmodel';
 import { ObjectSeriesChartModel } from '../objectserieschartmodel';
 import { Field } from './Inputs';
 
-export interface PopupEditButton<S extends Filterable<S>> {
+export interface PopupEditButton<T, S extends Filterable<S>> {
     /**
      * Represents the id value as a string
      */
@@ -19,14 +20,16 @@ export interface PopupEditButton<S extends Filterable<S>> {
     /**
      * Represents the inputs value as a Field Array
      */
-    inputs: Field<number | string, S>[];
+    inputs: Field<T, S>[];
     /**
      * Method for handling all inputs
      */
-    handleAll(): void;
+    handleAll(): Message[];
+
+    deepCopy(): PopupEditButton<T, S>;
 }
 
-export class RangeButton implements PopupEditButton<ObjectSeriesChartModel> 
+export class RangeButton implements PopupEditButton<number, ObjectSeriesChartModel> 
 {
     /**
      * Represents the id value as a string
@@ -54,6 +57,16 @@ export class RangeButton implements PopupEditButton<ObjectSeriesChartModel>
         this._label = _label;
         this._inputs = _inputs;
     }
+    deepCopy(): RangeButton 
+    {
+        const inputCopy: Field<number, ObjectSeriesChartModel>[] = [];
+        for (const input of this._inputs) 
+        {
+            inputCopy.push(input.deepCopy());
+        }
+        const copy: RangeButton = new RangeButton(this._label, inputCopy);
+        return copy;
+    }
     /**
      * Getter method of the icon attribute
      */
@@ -64,12 +77,14 @@ export class RangeButton implements PopupEditButton<ObjectSeriesChartModel>
     /**
      * Method for hadnling all inputs
      */
-    public handleAll(): void 
+    public handleAll(): Message[] 
     {
+        const msgs: Message[] = [];
         for (const input of this._inputs) 
         {
-            input.handleInput();
+            msgs.push(...input.handleInput());
         }
+        return msgs;
     }
     /**
      * Setter method of the label attribute
@@ -115,7 +130,7 @@ export class RangeButton implements PopupEditButton<ObjectSeriesChartModel>
     }
 }
 
-export class ShowingButton implements PopupEditButton<ObjectSeriesChartModel> 
+export class ShowingButton implements PopupEditButton<number, ObjectSeriesChartModel> 
 {
     /**
      * Represents the id value as a string
@@ -125,10 +140,6 @@ export class ShowingButton implements PopupEditButton<ObjectSeriesChartModel>
      * Represents the label value as a string
      */
     private _label: string;
-    /**
-     * Represents the cached label value as a string
-     */
-    private _cachedLabel: string;
     /**
      * Represents the inputs value as a Field Array
      */
@@ -144,9 +155,8 @@ export class ShowingButton implements PopupEditButton<ObjectSeriesChartModel>
      */
     constructor(_label: string, _inputs: Field<number, ObjectSeriesChartModel>[]) 
     {
-        this._cachedLabel = _label;
         this._inputs = _inputs;
-        this._label = _label + this._inputs[0].inputValue;
+        this._label = _label;
     }
     /**
      * Getter method of the icon attribute
@@ -165,10 +175,9 @@ export class ShowingButton implements PopupEditButton<ObjectSeriesChartModel>
     /**
      * Method for handling all inputs
      */
-    public handleAll(): void 
+    public handleAll(): Message[] 
     {
-        this._label = this._cachedLabel + ': ' + this._inputs[0].inputValue;
-        this._inputs[0].handleInput();
+        return this._inputs[0].handleInput();
     }
     /**
      * Setter method of the label attribute
@@ -182,7 +191,7 @@ export class ShowingButton implements PopupEditButton<ObjectSeriesChartModel>
      */
     public get label(): string 
     {
-        return this._label;
+        return this._label + ': ' + this._inputs[0].inputValue;
     }
     /**
      * Getter method of the id attribute
@@ -212,9 +221,19 @@ export class ShowingButton implements PopupEditButton<ObjectSeriesChartModel>
     {
         this._inputs = v;
     }
+    deepCopy(): ShowingButton 
+    {
+        const inputCopy: Field<number, ObjectSeriesChartModel>[] = [];
+        for (const input of this._inputs) 
+        {
+            inputCopy.push(input.deepCopy());
+        }
+        const copy: ShowingButton = new ShowingButton(this._label, inputCopy);
+        return copy;
+    }
 }
 
-export class ArticlesFilterButton implements PopupEditButton<ArticlesModel> 
+export class ArticlesFilterButton implements PopupEditButton<string, ArticlesModel> 
 {
     /**
      * Represents the id value as a string
@@ -259,12 +278,14 @@ export class ArticlesFilterButton implements PopupEditButton<ArticlesModel>
     /**
      * Method for handling all inputs
      */
-    public handleAll(): void 
+    public handleAll(): Message[] 
     {
-        for (const input of this.inputs) 
+        let msgs: Message[];
+        for (const input of this._inputs) 
         {
-            input.handleInput();
+            msgs = input.handleInput();
         }
+        return msgs;
     }
     /**
      * Setter method of the label attribute
@@ -307,5 +328,15 @@ export class ArticlesFilterButton implements PopupEditButton<ArticlesModel>
     public set inputs(v: Field<string, ArticlesModel>[]) 
     {
         this._inputs = v;
+    }
+    deepCopy(): ArticlesFilterButton 
+    {
+        const inputCopy: Field<string, ArticlesModel>[] = [];
+        for (const input of this._inputs) 
+        {
+            inputCopy.push(input.deepCopy());
+        }
+        const copy: ArticlesFilterButton = new ArticlesFilterButton(this._label, inputCopy);
+        return copy;
     }
 }

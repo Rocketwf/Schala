@@ -38,6 +38,7 @@ export interface APIAuthor {
     hIndex: number;
     papers: APIPaper[];
     profilePicture?: string;
+    timeStamp?: number;
 }
 
 /**

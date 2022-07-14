@@ -2,6 +2,7 @@ import { DataSource } from './DataSource';
 import { APISearch, APIPaper, APIAuthor, APIBasicAuthor } from '../models/API';
 import rateLimit, { RateLimitedAxiosInstance } from 'axios-rate-limit';
 import axios, { AxiosResponse } from 'axios';
+import { Observer } from '../services/ProfileService';
 
 const http: RateLimitedAxiosInstance = rateLimit(axios.create(), { maxRequests: 99, perMilliseconds: 1000 });
 http.defaults.headers.common['x-api-key'] = process.env.SCHALA_API_KEY ? process.env.SCHALA_API_KEY : '';
@@ -9,8 +10,46 @@ http.defaults.headers.common['x-api-key'] = process.env.SCHALA_API_KEY ? process
  * Class responsible for making requests to the SemanticScholar and feching information
  * related to an author.
  */
+const INTERNAL_POLLING_INTERVAL: number = 1000;
+const PROFILE_POLLING_INTERVAL: number = 60 * 60 * 24 * 1000;
 export class SemanticScholarSource implements DataSource 
 {
+    private _pollingCache: Map<string, APIAuthor>;
+
+    private _observers: Array<Observer>;
+    private _timer: NodeJS.Timer;
+
+    private async poll(): Promise<NodeJS.Timer> 
+    {
+        this._timer = setInterval(async () => 
+        {
+            if (this._observers.length > 0) 
+            {
+                for (const authorId of Array.from(this._pollingCache.keys())) 
+                {
+                    if (Date.now() - this._pollingCache.get(authorId).timeStamp >= PROFILE_POLLING_INTERVAL) 
+                    {
+                        const newAuthor: APIAuthor = await this.fetchAuthor(authorId);
+                        if (!this.equalAuthors(newAuthor, this._pollingCache.get(authorId))) 
+                        {
+                            this.notifiy(authorId);
+                        }
+                    }
+                }
+            }
+        }, INTERNAL_POLLING_INTERVAL);
+        return this._timer;
+    }
+    constructor() 
+    {
+        this._pollingCache = new Map<string, APIAuthor>();
+        this._observers = new Array<Observer>();
+        this.poll();
+    }
+    private equalAuthors(a1: APIAuthor, a2: APIAuthor): boolean 
+    {
+        return a1.citationCount === a2.citationCount && a1.paperCount === a2.paperCount;
+    }
     /**
      * Method responsible for fetching the profiles for a given search query from
      * the SemanticScholarSource
@@ -48,7 +87,7 @@ export class SemanticScholarSource implements DataSource
         }
     }
     /**
-     * Method responsible for fetching the profiles for a given author ID from 
+     * Method responsible for fetching the profiles for a given author ID from
      * the SemanticScholarSource
      * @param authorId - The author with the ID being queried
      * @returns author - A promise of a APIAuthor profile
@@ -67,6 +106,8 @@ export class SemanticScholarSource implements DataSource
                     },
                 },
             );
+            author.timeStamp = Date.now();
+            this._pollingCache.set(authorId, author);
             return author;
         }
         catch (error) 
@@ -91,6 +132,7 @@ export class SemanticScholarSource implements DataSource
      */
     public async fetchPapers(paperIds: string[]): Promise<APIPaper[]> 
     {
+        this.destruct();
         const papers: APIPaper[] = new Array<APIPaper>();
         const promises: Promise<void | APIPaper>[] = new Array<Promise<void | APIPaper>>();
         try 
@@ -134,5 +176,20 @@ export class SemanticScholarSource implements DataSource
         }
         catch (error) 
         {}
+    }
+    public subscribe(obs: Observer): void 
+    {
+        this._observers.push(obs);
+    }
+    public notifiy(authorId: string): void 
+    {
+        for (const obs of this._observers) 
+        {
+            obs.update(authorId);
+        }
+    }
+    public destruct(): void 
+    {
+        clearInterval(this._timer);
     }
 }

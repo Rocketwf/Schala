@@ -27,7 +27,7 @@ export const comparePageStore = defineStore({
             Loading.show();
             for (const id of this.profileIds) 
             {
-                if(this.comparisonRepresentation.fullProfiles.find(fp => fp.basicProfile.id === id)) continue;
+                if (this.comparisonRepresentation.fullProfiles.find((fp) => fp.basicProfile.id === id)) continue;
                 const fullProfile: FullProfile = await SemanticScholarSource.getInstance().fetchFullProfile(id);
                 this.comparisonRepresentation.fullProfiles.push(fullProfile);
             }
@@ -42,7 +42,6 @@ export const comparePageStore = defineStore({
         async addProfile(profileId: string) 
         {
             Loading.show();
-            this.profileIds.push(profileId);
             let fullProfile: FullProfile;
             if (this.profilePageStore.profileId === profileId) 
             {
@@ -54,6 +53,7 @@ export const comparePageStore = defineStore({
             }
             this.comparisonRepresentation.fullProfiles.push(fullProfile);
             this.comparisonRepresentation.renderComparison();
+            this.profileIds.push(profileId);
             Loading.hide();
         },
 
@@ -72,13 +72,14 @@ export const comparePageStore = defineStore({
             const filteredFullProfiles: FullProfile[] = new Array<FullProfile>();
             for (const fullProfile of this.comparisonRepresentation.fullProfiles as FullProfile[]) 
             {
-                if(fullProfile.basicProfile.id !== profileId) 
+                if (fullProfile.basicProfile.id !== profileId) 
                 {
                     filteredFullProfiles.push(fullProfile);
                 }
             }
             this.comparisonRepresentation.fullProfiles = filteredFullProfiles;
             this.comparisonRepresentation.renderComparison();
+            this.profileIds.splice(this.profileIds.indexOf(profileId), 1);
         },
 
         /**
@@ -106,9 +107,9 @@ export const comparePageStore = defineStore({
          */
         isBeingCompared(profileId: string) 
         {
-            for (const profile of this.comparisonRepresentation.fullProfiles) 
+            for (const id of this.profileIds) 
             {
-                if (profile.basicProfile.id === profileId) 
+                if (id === profileId) 
                 {
                     return true;
                 }

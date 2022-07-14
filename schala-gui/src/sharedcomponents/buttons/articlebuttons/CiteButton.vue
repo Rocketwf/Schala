@@ -1,6 +1,9 @@
 <template>
   <q-dialog v-model="show">
-    <q-card class="my-card">
+    <q-card
+      class="my-card"
+      style="max-width: 1000vw"
+    >
       <q-card-section>
         <div class="text-h6">
           BibTex
@@ -8,7 +11,7 @@
       </q-card-section>
 
       <q-card-section class="q-px-lg">
-        {{ props.bibtex }}
+        <pre>{{ props.bibtex }}</pre>
 
         <q-card-actions align="right">
           <q-btn
@@ -33,18 +36,43 @@
 </template>
 
 <script setup charset="utf-8" lang="ts">
+import { useQuasar, copyToClipboard } from 'quasar';
 import { ref } from 'vue';
 
 let show = ref(false);
+const $q = useQuasar();
 
 const props = defineProps<{
-    bibtex: string,
-    buttonIcon: string
+    bibtex: string;
+    buttonIcon: string;
 }>();
 
 const copy = (): void => 
 {
-    return; //TODO: Implement me
+    copyToClipboard(props.bibtex)
+        .then(() => 
+        {
+            triggerPositive();
+        })
+        .catch(() => 
+        {
+            triggerNegative();
+        });
 };
 
+const triggerPositive = () => 
+{
+    $q.notify({
+        type: 'positive',
+        message: 'Copied to clipboard',
+    });
+};
+
+const triggerNegative = () => 
+{
+    $q.notify({
+        type: 'negative',
+        message: 'Failed to copy',
+    });
+};
 </script>

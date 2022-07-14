@@ -8,6 +8,7 @@ import BasicColumnsChartCard from './BasicColumnsChartCard.vue';
 import DistributedColumnsChartCard from './DistributedColumnsChartCard.vue';
 import BasicBarsChartCard from './BasicBarsChartCard.vue';
 import ExpertiseCard from '../ExpertiseCard.vue';
+import HeatmapChartCard from './HeatmapChartCard.vue';
 
 export const mapper = new Map<string, Component>();
 mapper.set('PieChartCard', PieChartCard);
@@ -19,3 +20,4 @@ mapper.set('BasicColumnsChartCard', BasicColumnsChartCard);
 mapper.set('DistributedColumnsChartCard', DistributedColumnsChartCard);
 mapper.set('BasicBarsChartCard', BasicBarsChartCard);
 mapper.set('ExpertiseCard', ExpertiseCard);
+mapper.set('HeatmapChartCard', HeatmapChartCard);

@@ -1,3 +1,4 @@
+import { Message, STATUS } from '../../misc/Message';
 import { Article, ArticleCoAuthor, ArticlesModel } from '../../models';
 import { Filter } from '../Filter';
 
@@ -6,15 +7,21 @@ export abstract class ArticlesFilter<S> extends Filter<S, ArticlesModel>
 
 export class ArticlesPaginationFilter extends ArticlesFilter<number> 
 {
+    deepCopy(): ArticlesPaginationFilter 
+    {
+        const copy: ArticlesPaginationFilter = new ArticlesPaginationFilter(this._value);
+        copy.hitsPerPage = this._hitsPerPage;
+        return copy;
+    }
     /**
      * It checks if the given model is valid
      * @param model -The given ArticlesModel
      * @returns true if the given model is valid
      */
-    validate(model: ArticlesModel): boolean 
+    validate(model: ArticlesModel): Message 
     {
         model;
-        return true;
+        return new Message(STATUS.OK);
     }
     /**
      *  Integer representing the number of articles per page.
@@ -68,6 +75,11 @@ export class ArticlesPaginationFilter extends ArticlesFilter<number>
 
 export class SortByFilter extends ArticlesFilter<string> 
 {
+    validate(model: ArticlesModel): Message 
+    {
+        model;
+        return new Message(STATUS.OK);
+    }
     /**
      * Creates an instance of sort by filter.
      * @param value - the given filter value
@@ -75,6 +87,11 @@ export class SortByFilter extends ArticlesFilter<string>
     constructor(value: string) 
     {
         super(value);
+    }
+    deepCopy(): SortByFilter 
+    {
+        const copy: SortByFilter = new SortByFilter(this._value);
+        return copy;
     }
     /**
      * Applys sort by filter on the given model
@@ -110,11 +127,11 @@ export class SortByFilter extends ArticlesFilter<string>
             }
             else if (this.value == 'self-citations') 
             {
-                if (n1.citationCount < n2.citationCount) 
+                if (n1.selfCitationsCount < n2.selfCitationsCount) 
                 {
                     return 1;
                 }
-                if (n1.citationCount > n2.citationCount) 
+                if (n1.selfCitationsCount > n2.selfCitationsCount) 
                 {
                     return -1;
                 }
@@ -135,15 +152,20 @@ export class CoauthorsFilter extends ArticlesFilter<string>
         super(value);
     }
 
+    deepCopy(): CoauthorsFilter 
+    {
+        const copy: CoauthorsFilter = new CoauthorsFilter(this._value);
+        return copy;
+    }
     /**
      * It checks if the given model is valid
      * @param model - the given ArticlesModel
      * @returns true if the given model is valid
      */
-    validate(model: ArticlesModel): boolean 
+    validate(model: ArticlesModel): Message 
     {
         model;
-        return true;
+        return new Message(STATUS.OK);
     }
 
     /**
@@ -203,16 +225,21 @@ export class WordsInArticleTitleFilter extends ArticlesFilter<string>
     {
         super(value);
     }
+    deepCopy(): WordsInArticleTitleFilter 
+    {
+        const copy: WordsInArticleTitleFilter = new WordsInArticleTitleFilter(this._value);
+        return copy;
+    }
 
     /**
      * It checks if the given model is valid
      * @param model - the given ArticlesModel
      * @returns true if the given model is valid
      */
-    validate(model: ArticlesModel): boolean 
+    validate(model: ArticlesModel): Message 
     {
         model;
-        return true;
+        return new Message(STATUS.OK);
     }
 
     /**
@@ -267,15 +294,20 @@ export class NumberOfCitationsFilter extends ArticlesFilter<string>
         super(value);
     }
 
+    deepCopy(): NumberOfCitationsFilter 
+    {
+        const copy: NumberOfCitationsFilter = new NumberOfCitationsFilter(this._value);
+        return copy;
+    }
     /**
      * It checks if the given model is valid
      * @param model - the given ArticlesModel
      * @returns true if the given model is valid
      */
-    validate(model: ArticlesModel): boolean 
+    validate(model: ArticlesModel): Message 
     {
         model;
-        return true;
+        return new Message(STATUS.OK);
     }
     /**
      * Applys number of citations filter
@@ -310,15 +342,20 @@ export class KeywordsFilter extends ArticlesFilter<string>
         super(value);
     }
 
+    deepCopy(): KeywordsFilter 
+    {
+        const copy: KeywordsFilter = new KeywordsFilter(this._value);
+        return copy;
+    }
     /**
      * It checks if the given model is valid
      * @param model - the given ArticlesModel
      * @returns true if the given model is valid
      */
-    validate(model: ArticlesModel): boolean 
+    validate(model: ArticlesModel): Message 
     {
         model;
-        return true;
+        return new Message(STATUS.OK);
     }
 
     /**
@@ -332,7 +369,8 @@ export class KeywordsFilter extends ArticlesFilter<string>
             return;
         }
         const newArticles: Article[] = new Array<Article>();
-        for (const x of this.value.toLowerCase().split(',')) 
+        const inputs: string[] = this.value.toLowerCase().split(',');
+        for (const x of inputs) 
         {
             for (const art of model.articles) 
             {
@@ -349,5 +387,99 @@ export class KeywordsFilter extends ArticlesFilter<string>
             }
         }
         model.articles = newArticles;
+    }
+}
+
+export class JournalFilter extends ArticlesFilter<string>
+{
+    constructor(value: string) 
+    {
+        super(value);
+    }
+
+    validate(model: ArticlesModel): Message 
+    {
+        model;
+        return new Message(STATUS.OK);
+    }
+
+    apply(model: ArticlesModel): void
+    {
+        if (this.value === '') 
+        {
+            return;
+        }
+        const newArticles: Article[] = new Array<Article>();
+        const inputs: string[] = this.value.toLowerCase().split(',');
+        for (const x of inputs) 
+        {
+            for (const art of model.articles) 
+            {
+                if (!art.journalName) 
+                {
+                    continue;
+                }
+
+                const lowerCaseName: string = art.journalName.toLowerCase();
+                if (lowerCaseName.indexOf(x) >= 0) 
+                {
+                    newArticles.push(art);
+                }
+            }
+        }
+        model.articles = newArticles;
+    }
+
+    deepCopy(): JournalFilter
+    {
+        const copy: JournalFilter = new JournalFilter(this._value);
+        return copy;
+    }
+}
+
+export class ExpertiseFilter extends ArticlesFilter<string>
+{   
+    constructor(value: string) 
+    {
+        super(value);
+    }
+
+    validate(model: ArticlesModel): Message 
+    {
+        model;
+        return new Message(STATUS.OK);
+    }
+
+    apply(model: ArticlesModel): void
+    {
+        if (this.value === '') 
+        {
+            return;
+        }
+        const newArticles: Article[] = new Array<Article>();
+        const inputs: string[] = this.value.toLowerCase().split(',');
+        for (const x of inputs) 
+        {
+            for (const art of model.articles) 
+            {
+                if (!art.fieldsOfExpertise) 
+                {
+                    continue;
+                }
+
+                const lowerCaseName: string = art.fieldsOfExpertise.join(' ').toLowerCase();
+                if (lowerCaseName.indexOf(x) >= 0) 
+                {
+                    newArticles.push(art);
+                }
+            }
+        }
+        model.articles = newArticles;
+    }
+
+    deepCopy(): ExpertiseFilter
+    {
+        const copy: ExpertiseFilter = new ExpertiseFilter(this._value);
+        return copy;
     }
 }

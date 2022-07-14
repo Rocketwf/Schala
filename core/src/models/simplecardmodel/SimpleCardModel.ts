@@ -11,6 +11,7 @@ export enum ViewName {
     StackedColumns100ChartCard = 'StackedColumns100ChartCard',
     StackedColumnsChartCard = 'StackedColumnsChartCard',
     ExpertiseCard = 'ExpertiseCard',
+    HeatmapChartCard = 'HeatmapChartCard'
 }
 
 /**

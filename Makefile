@@ -23,9 +23,9 @@ core_prepare:
 server_prepare:
 	(cd server; tsc -b --verbose)
 
-core: core_prepare gui_deps update_core_in_gui
+core: core_prepare update_core_in_gui
 
-run: server_deps server_prepare core_deps core gui_deps update_core_in_gui
+run: server_prepare core
 	(cd schala-gui;yarn all)
 
 lint:
@@ -47,4 +47,3 @@ build_skip_test: core_deps core gui_deps update_core_in_gui
 
 all: server_deps server_prepare server_test core_deps core core_test gui_deps
 	(cd schala-gui;yarn all)
-

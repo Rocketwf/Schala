@@ -1,18 +1,18 @@
 <template>
   <div id="chart">
+    <div
+      v-if="noEntries"
+      class="text-body1 text-center text-grey q-mb-xl"
+    >
+      Nothing to be listed
+    </div>
     <apexchart
-      v-if="!hasNoCitations()"
+      v-else
+      :height="stackedColumnsChartModel.isExpanded ? '800px' : 340"
       type="bar"
-      height="350"
       :options="chartOptions"
       :series="getSeries()"
     />
-    <div
-      v-else
-      class="text-body1 text-center text-grey q-mb-xl"
-    >
-      This author has no citations
-    </div>
   </div>
 </template>
 
@@ -23,16 +23,6 @@ const props = defineProps<{
     stackedColumnsChartModel: StackedColumnsChartModel;
 }>();
 
-const hasNoCitations = () => 
-{
-    let sum = 0;
-    const series = getSeries();
-    for (const ser of series) 
-    {
-        sum += ser.data[0] + ser.data[1] + ser.data[0];
-    }
-    return sum === 0;
-};
 
 const getSeries = () => 
 {
@@ -51,6 +41,16 @@ const getSeries = () =>
     return apexSeries;
 };
 
+const noEntries = computed(() => 
+{
+    let sum = 0;
+    const series = getSeries();
+    for (const ser of series) 
+    {
+        sum += ser.data.length;
+    }
+    return sum === 0;
+});
 const getLabels = computed(() => 
 {
     const labels: string[] = new Array<string>();
@@ -95,7 +95,6 @@ const chartOptions = computed(() =>
                 },
             },
             type: 'bar',
-            height: 350,
             stacked: true,
             toolbar: {
                 show: true,
@@ -108,18 +107,6 @@ const chartOptions = computed(() =>
                 enabled: true,
             },
         },
-        responsive: [
-            {
-                breakpoint: 480,
-                options: {
-                    legend: {
-                        position: 'bottom',
-                        offsetX: -10,
-                        offsetY: 0,
-                    },
-                },
-            },
-        ],
         plotOptions: {
             bar: {
                 horizontal: false,

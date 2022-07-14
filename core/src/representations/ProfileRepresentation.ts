@@ -10,6 +10,7 @@ import {
     StackedColumnsChartModel,
     Field,
     ViewName,
+    HeatmapChartModel,
 } from '../models';
 import { Expertise, ExpertiseModel } from '../models/simplecardmodel/ExpertiseModel';
 import { ArticlesFilterButton, RangeButton, ShowingButton } from '../models/inputs/PopupEditButton';
@@ -18,6 +19,8 @@ import { FromFilter, ShowingFilter, ToFilter } from '../filters/objectserieschar
 import {
     ArticlesPaginationFilter,
     CoauthorsFilter,
+    ExpertiseFilter,
+    JournalFilter,
     KeywordsFilter,
     NumberOfCitationsFilter,
     SortByFilter,
@@ -180,6 +183,7 @@ export class ProfileRepresentation
         this.createSecondRow();
         this.createThirdRow();
         this.createFourthRow();
+        this.createFifthRow();
     }
 
     /**
@@ -233,6 +237,8 @@ export class ProfileRepresentation
             years,
         );
 
+        pby.showExpandButton();
+
         const lastValue: number = +pby.series[pby.series.length - 1]?.name;
         const fromFilter: Filter<number, DistributedColumnsChartModel> = new FromFilter(
             lastValue - CARDS.CITATIONS_BY_YEAR.CARD_DATA.DEFAULT_NUM_OF_ENTRIES,
@@ -282,6 +288,7 @@ export class ProfileRepresentation
             'Number of publications',
             venues,
         );
+        pbv.showExpandButton();
 
         const showingFilter: Filter<number, DistributedColumnsChartModel> = new ShowingFilter(
             CARDS.PUBLICATIONS_BY_VENUE.CARD_DATA.DEFAULT_NUM_OF_ENTRIES,
@@ -294,7 +301,7 @@ export class ProfileRepresentation
         const showingPopupEdit: ShowingButton = new ShowingButton('showing', [showingNumberField]);
         pbv.popupButtons = [showingPopupEdit];
         pbv.filters = [showingFilter];
-        showingPopupEdit.handleAll();
+        pbv.applyAllFilters();
 
         return pbv;
     }
@@ -320,6 +327,7 @@ export class ProfileRepresentation
             '',
             [],
         );
+        mcs.showExpandButton();
 
         const showingFilter: Filter<number, BasicBarsChartModel> = new ShowingFilter(
             CARDS.MOST_CITED_SCHOLARS.CARD_DATA.DEFAULT_NUM_OF_ENTRIES,
@@ -334,7 +342,7 @@ export class ProfileRepresentation
         const showingPopupEdit: ShowingButton = new ShowingButton('showing', [showingNumberField]);
         mcs.popupButtons = [showingPopupEdit];
         mcs.filters = [showingFilter];
-        showingPopupEdit.handleAll();
+        mcs.applyAllFilters();
 
         return mcs;
     }
@@ -362,6 +370,7 @@ export class ProfileRepresentation
             [],
         );
 
+        mfa.showExpandButton();
         const showingFilter: Filter<number, BasicBarsChartModel> = new ShowingFilter(
             CARDS.MOST_FREQUENT_CO_AUTHORS.CARD_DATA.DEFAULT_NUM_OF_ENTRIES,
         );
@@ -375,7 +384,7 @@ export class ProfileRepresentation
         const showingPopupEdit: ShowingButton = new ShowingButton('showing', [showingNumberField]);
         mfa.popupButtons = [showingPopupEdit];
         mfa.filters = [showingFilter];
-        showingPopupEdit.handleAll();
+        mfa.applyAllFilters();
 
         return mfa;
     }
@@ -406,6 +415,7 @@ export class ProfileRepresentation
             ['indirect self-citations', 'self-citations', 'cited by others'],
         );
 
+        cby.showExpandButton();
         const lastValue: number = +cby.series[cby.series.length - 1]?.name;
         const fromFilter: Filter<number, StackedColumnsChartModel> = new FromFilter(
             lastValue - CARDS.CITATIONS_BY_YEAR.CARD_DATA.DEFAULT_NUM_OF_ENTRIES,
@@ -487,6 +497,22 @@ export class ProfileRepresentation
             [articlesModel],
         );
 
+        const journalFilter: Filter<string, ArticlesModel> = new JournalFilter('');
+        const journalTextField: Field<string, ArticlesModel> = new Field<string, ArticlesModel>(
+            'Journal name',
+            '',
+            journalFilter,
+            [articlesModel],
+        );
+
+        const expertiseFilter: Filter<string, ArticlesModel> = new ExpertiseFilter('');
+        const expertiseTextField: Field<string, ArticlesModel> = new Field<string, ArticlesModel>(
+            'Fields of study seperated by ,',
+            '',
+            expertiseFilter,
+            [articlesModel],
+        );
+
         const minCitationsFilter: Filter<string, ArticlesModel> = new NumberOfCitationsFilter('0');
         const minCitationsField: Field<string, ArticlesModel> = new Field<string, ArticlesModel>(
             'With a minimum number of citations',
@@ -499,6 +525,8 @@ export class ProfileRepresentation
             coAuthorTextField,
             keywordsTextField,
             wordsInTitleField,
+            journalTextField,
+            expertiseTextField,
             minCitationsField,
         ]);
         articlesModel.popupButtons = [articlesFilterPopup];
@@ -524,6 +552,8 @@ export class ProfileRepresentation
             coAuthorsFilter,
             keywordsFilter,
             wordsInTitleFilter,
+            journalFilter,
+            expertiseFilter,
             minCitationsFilter,
             articlesSortByFilter,
         ];
@@ -577,6 +607,7 @@ export class ProfileRepresentation
             ['Publications', 'h-index'],
         );
 
+        awhhi.showExpandButton();
         const showingFilter: Filter<number, LineColumnsMixedChartModel> = new ShowingFilter(
             CARDS.CO_AUTHORS_WITH_HIGHEST_HINDEX.CARD_DATA.DEFAULT_NUM_OF_ENTRIES,
         );
@@ -588,9 +619,87 @@ export class ProfileRepresentation
         const showingPopupEdit: ShowingButton = new ShowingButton('showing', [showingNumberField]);
         awhhi.popupButtons = [showingPopupEdit];
         awhhi.filters = [showingFilter];
-        showingPopupEdit.handleAll();
+        awhhi.applyAllFilters();
 
         return awhhi;
+    }
+
+    private createPublicationsByQuarterCard(): HeatmapChartModel 
+    {
+        let series: Array<Series> = new Array<Series>();
+        const tempSeries: Array<Series> = new Array<Series>();
+
+        for (const article of this._fullProfile.articles) 
+        {
+            if (article.publicationDate) 
+            {
+                const date: string[] = article.publicationDate.split('-');
+                const newSerie: Series = new Series(date[0], [+date[1]]);
+                tempSeries.push(newSerie);
+            }
+            else 
+            {
+                if (article.publicationYear) 
+                {
+                    const newSerie: Series = new Series(article.publicationYear + '', [0]);
+                    tempSeries.push(newSerie);
+                }
+            }
+        }
+
+        for (const tempSerie of tempSeries) 
+        {
+            const yearSeries: Array<Series> = tempSeries.filter((serie: Series) => serie.name === tempSerie.name);
+            if (series.filter((serie: Series) => serie.name === tempSerie.name).length > 0) 
+            {
+                continue;
+            }
+            else 
+            {
+                const newSerie: Series = new Series(tempSerie.name, new Array(5).fill(0));
+                for (const yearSerie of yearSeries) 
+                {
+                    newSerie.data[this.getQuarter(yearSerie.data[0])]++;
+                }
+                series.push(newSerie);
+            }
+        }
+
+        series = series.sort(this.sortSeriesByName);
+
+        const heatmapChartModel: HeatmapChartModel = new HeatmapChartModel(
+            'Publications by Quarter',
+            '',
+            ViewName.HeatmapChartCard,
+            12,
+            series,
+        );
+
+        return heatmapChartModel;
+    }
+
+    private getQuarter(month: number): number 
+    {
+        if (1 <= month && month <= 3) 
+        {
+            return 0;
+        }
+        else if (4 <= month && month <= 6) 
+        {
+            return 1;
+        }
+        else if (7 <= month && month <= 9) 
+        {
+            return 2;
+        }
+        else if (10 <= month && month <= 12) 
+        {
+            return 3;
+        }
+        else 
+        {
+            return 4;
+        }
     }
 
     //Creates the first row which renders the following:
@@ -602,7 +711,7 @@ export class ProfileRepresentation
         const rowModel: RowModel = new RowModel(PAGE_WIDTH);
         const pbvCard: DistributedColumnsChartModel = this.createPublicationsByYearCard();
         const pbyCard: DistributedColumnsChartModel = this.createPublicationsByVenueCard();
-        const cbyCard: DistributedColumnsChartModel = this.createCitationsByYearCard();
+        const cbyCard: StackedColumnsChartModel = this.createCitationsByYearCard();
 
         if (this.validateWidth(pbvCard.colWidth + pbvCard.colWidth + cbyCard.colWidth)) 
         {
@@ -612,22 +721,32 @@ export class ProfileRepresentation
         }
         this.rowModels.push(rowModel);
     }
+    private createSecondRow(): void 
+    {
+        const rowModel: RowModel = new RowModel(PAGE_WIDTH);
+        const heatmapCard: HeatmapChartModel = this.createPublicationsByQuarterCard();
+        if (this.validateWidth(heatmapCard.colWidth)) 
+        {
+            rowModel.simpleCardModels.push(heatmapCard);
+        }
+        this._rowModels.push(rowModel);
+    }
     //Creates the second row which renders the following:
     //Most cited scholars
     //Citation breakdown
     //Most frequent co-authors
-    private createSecondRow(): void 
+    private createThirdRow(): void 
     {
         const rowModel: RowModel = new RowModel(PAGE_WIDTH);
         const mcsCard: BasicBarsChartModel = this.createMostCitedScholarsCard();
-        const citaitonsCard: PieChartModel = this.createCitationsCard();
+        const citationsCard: PieChartModel = this.createCitationsCard();
         const mfcaCard: BasicBarsChartModel = this.createMostFrequentCoAuthorsCard();
 
-        if (this.validateWidth(mcsCard.colWidth + citaitonsCard.colWidth + mfcaCard.colWidth)) 
+        if (this.validateWidth(mcsCard.colWidth + citationsCard.colWidth + mfcaCard.colWidth)) 
         {
-            rowModel.simpleCardModels.push(this.createMostCitedScholarsCard());
-            rowModel.simpleCardModels.push(this.createCitationsCard());
-            rowModel.simpleCardModels.push(this.createMostFrequentCoAuthorsCard());
+            rowModel.simpleCardModels.push(mcsCard);
+            rowModel.simpleCardModels.push(citationsCard);
+            rowModel.simpleCardModels.push(mfcaCard);
         }
         this.rowModels.push(rowModel);
     }
@@ -635,7 +754,7 @@ export class ProfileRepresentation
     //Creates the third row which renders the following:
     //Co-Authors with highest h-index
     //Expertise
-    private createThirdRow(): void 
+    private createFourthRow(): void 
     {
         const rowModel: RowModel = new RowModel(PAGE_WIDTH);
         const awhhCard: LineColumnsMixedChartModel = this.createCoAuthorsWithHighestHIndexCard();
@@ -643,28 +762,28 @@ export class ProfileRepresentation
 
         if (this.validateWidth(expertiseCard.colWidth + awhhCard.colWidth)) 
         {
-            rowModel.simpleCardModels.push(this.createCoAuthorsWithHighestHIndexCard());
-            rowModel.simpleCardModels.push(this.createExpertiseCard());
+            rowModel.simpleCardModels.push(awhhCard);
+            rowModel.simpleCardModels.push(expertiseCard);
         }
         this._rowModels.push(rowModel);
     }
 
     //Creates the fourth row which renders the articles
-    private createFourthRow(): void 
+    private createFifthRow(): void 
     {
         const rowModel: RowModel = new RowModel(PAGE_WIDTH);
         const articlesCard: ArticlesModel = this.createArticlesCard();
         if (this.validateWidth(articlesCard.colWidth)) 
         {
-            rowModel.simpleCardModels.push(this.createArticlesCard());
+            rowModel.simpleCardModels.push(articlesCard);
         }
         this._rowModels.push(rowModel);
     }
 
     /**
      * Sorts the given series according to their names in ascending order.
-     * @param a the first series to be sorted
-     * @param b the second series to be sorted
+     * @param a - the first series to be sorted
+     * @param b - the second series to be sorted
      * @returns the sorted series
      */
     private sortSeriesByName(a: Series, b: Series): number 
@@ -682,8 +801,8 @@ export class ProfileRepresentation
 
     /**
      * Sorts the given series' data in ascending order and checks if the page width is valid.
-     * @param a the first series whose data is to be sorted
-     * @param b the second series whose data is to be sorted
+     * @param a - the first series whose data is to be sorted
+     * @param b - the second series whose data is to be sorted
      * @returns the sorted series data
      */
     private sortSeriesByData(a: Series, b: Series): number 
@@ -698,6 +817,7 @@ export class ProfileRepresentation
         }
         return 0;
     }
+
     validateWidth(value: number): boolean 
     {
         return value <= PAGE_WIDTH;

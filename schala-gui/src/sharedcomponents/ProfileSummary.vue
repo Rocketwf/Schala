@@ -1,10 +1,12 @@
 <template>
   <q-item
-    class="col-md-3 my-content"
+    class="col-md-3 my-content vertical-middle"
+    style="height: 100%;"
     v-if="profile"
   >
     <q-item-section side>
       <q-avatar
+        v-if="props.profile.basicProfile.pictureURL"
         square
         style="width: 145px; height: 180px"
       >
@@ -32,9 +34,7 @@
     </q-item-section>
     <q-item-section top>
       <q-item-label class="vertical-top text-weight-bold text-h6">
-        {{
-          getFullProfile().basicProfile.name
-        }}
+        {{ getFullProfile().basicProfile.name }}
       </q-item-label>
       <q-item-label caption>
         ID: {{ getFullProfile().basicProfile.id }}
@@ -63,7 +63,10 @@
       <q-item-label caption>
         I10-Index without self citations : {{ getFullProfile().i10IndexWithoutSelfCitations }}
       </q-item-label>
-      <q-item-label caption>
+      <q-item-label
+        caption
+        v-if="props.profile.url"
+      >
         <q-btn
           round
           color="blue"

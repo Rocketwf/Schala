@@ -1,4 +1,5 @@
 import { Filter } from '../../filters';
+import { Message, STATUS } from '../../misc/Message';
 import { ObjectSeriesChartModel } from '../../models';
 import { Series } from '../../models/objectserieschartmodel/ObjectSeriesChartModel';
 
@@ -18,21 +19,19 @@ export class FromFilter extends ObjectSeriesFilter<number>
      * @param model - the given ObjectSeriesChartModel
      * @returns true if the given model is valid
      */
-    validate(model: ObjectSeriesChartModel): boolean 
+    validate(model: ObjectSeriesChartModel): Message 
     {
-        if (!model.series || model.series.length === 0) 
+        model;
+        if (this._value < 0) 
         {
-            return false;
+            return new Message(STATUS.FAIL, 'Negative values aren\'t allowed');
         }
-        if (this._value >= +model.series[model.series.length - 1].name) 
-        {
-            return false;
-        }
-        if (this._value < +model.series[0].name) 
-        {
-            return false;
-        }
-        return true;
+        return new Message(STATUS.OK);
+    }
+    deepCopy(): FromFilter 
+    {
+        const copy: FromFilter = new FromFilter(this._value);
+        return copy;
     }
     /**
      * Creates an instance of from filter.
@@ -67,21 +66,14 @@ export class ToFilter extends ObjectSeriesFilter<number>
      * @param model - the given ObjectSeriesChartModel
      * @returns true if the given model is valid
      */
-    validate(model: ObjectSeriesChartModel): boolean 
+    validate(model: ObjectSeriesChartModel): Message 
     {
-        if (!model.series || model.series.length === 0) 
+        model;
+        if (this._value < 0) 
         {
-            return false;
+            return new Message(STATUS.FAIL, 'Negative values aren\'t allowed');
         }
-        if (this._value >= +model.series[model.series.length - 1].name) 
-        {
-            return false;
-        }
-        if (this._value < +model.series[0].name) 
-        {
-            return false;
-        }
-        return true;
+        return new Message(STATUS.OK);
     }
     /**
      * Creates an instance of to filter.
@@ -90,6 +82,11 @@ export class ToFilter extends ObjectSeriesFilter<number>
     constructor(value: number) 
     {
         super(value);
+    }
+    deepCopy(): ToFilter 
+    {
+        const copy: ToFilter = new ToFilter(this._value);
+        return copy;
     }
     /**
      * Applys to filter on the given model
@@ -125,21 +122,22 @@ export class ShowingFilter extends ObjectSeriesFilter<number>
      * @param model - the given ObjectSeriesChartModel
      * @returns true if the given model is valid
      */
-    validate(model: ObjectSeriesChartModel): boolean 
+    validate(model: ObjectSeriesChartModel): Message 
     {
-        if (!model.series || model.series.length === 0) 
+        if (model.isShowingExpandButton && !model.isExpanded && this._value >= 20)
         {
-            return false;
-        }
-        if (this._value >= model.series.length) 
-        {
-            return false;
+            return new Message(STATUS.FAIL, 'Showing value is too large, please use the expand functionality.');
         }
         if (this._value <= 0) 
         {
-            return false;
+            return new Message(STATUS.FAIL, 'Negative and 0 values aren\'t allowed');
         }
-        return true;
+        return new Message(STATUS.OK);
+    }
+    deepCopy(): ShowingFilter 
+    {
+        const copy: ShowingFilter = new ShowingFilter(this._value);
+        return copy;
     }
 
     /**
@@ -148,7 +146,7 @@ export class ShowingFilter extends ObjectSeriesFilter<number>
      */
     apply(model: ObjectSeriesChartModel): void 
     {
-        this.validate(model);
+        if(model.series.length === 0) return;
         const newSeries: Series[] = new Array<Series>();
         if (model.series[0].type) 
         {
