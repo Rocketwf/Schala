@@ -21,10 +21,7 @@ export class FromFilter extends ObjectSeriesFilter<number>
      */
     validate(model: ObjectSeriesChartModel): Message 
     {
-        if (!model.series || model.series.length === 0) 
-        {
-            return new Message(STATUS.FAIL, 'No data to be filtered');
-        }
+        model;
         if (this._value < 0) 
         {
             return new Message(STATUS.FAIL, 'Negative values aren\'t allowed');
@@ -71,10 +68,7 @@ export class ToFilter extends ObjectSeriesFilter<number>
      */
     validate(model: ObjectSeriesChartModel): Message 
     {
-        if (!model.series || model.series.length === 0) 
-        {
-            return new Message(STATUS.FAIL, 'No data to be filtered');
-        }
+        model;
         if (this._value < 0) 
         {
             return new Message(STATUS.FAIL, 'Negative values aren\'t allowed');
@@ -134,10 +128,6 @@ export class ShowingFilter extends ObjectSeriesFilter<number>
         {
             return new Message(STATUS.FAIL, 'Showing value is too large, please use the expand functionality.');
         }
-        if (!model.series || model.series.length === 0) 
-        {
-            return new Message(STATUS.FAIL, 'No data to be filtered');
-        }
         if (this._value <= 0) 
         {
             return new Message(STATUS.FAIL, 'Negative and 0 values aren\'t allowed');
@@ -156,6 +146,7 @@ export class ShowingFilter extends ObjectSeriesFilter<number>
      */
     apply(model: ObjectSeriesChartModel): void 
     {
+        if(model.series.length === 0) return;
         const newSeries: Series[] = new Array<Series>();
         if (model.series[0].type) 
         {

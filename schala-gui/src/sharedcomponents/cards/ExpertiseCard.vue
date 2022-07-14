@@ -19,6 +19,7 @@
       <q-tab-panels
         v-model="exp_tab"
         animated
+        swipeable
       >
         <q-tab-panel
           v-for="author in props.cardModel.expertise"
