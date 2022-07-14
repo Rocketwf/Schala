@@ -176,6 +176,8 @@ export class SemanticScholarSource implements DataSource
                             art._abstract,
                             art._publicationDate,
                             art._bibtex,
+                            art._journalName,
+                            art._fieldsOfExpertise,
                         ),
                     );
                 }
