@@ -18,7 +18,7 @@ const mockCardModel = new LineColumnsMixedChartModel('Title', '', ViewName.LineC
 
 describe('LineColumnsMixedChartCard', () =>
 {
-    let wrapper: VueWrapper<any>;
+    let wrapper: VueWrapper<InstanceType<typeof LineColumnsMixedChartCard>>;
     beforeEach(() =>
     {
         wrapper = mount(LineColumnsMixedChartCard, {

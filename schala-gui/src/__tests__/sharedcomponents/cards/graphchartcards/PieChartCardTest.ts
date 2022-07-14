@@ -17,7 +17,7 @@ const mockCardModel = new PieChartModel('Title', '', ViewName.PieChartCard, 10, 
 
 describe('PieChartCard', () =>
 {
-    let wrapper: VueWrapper<any>;
+    let wrapper: VueWrapper<InstanceType<typeof PieChartCard>>;
     beforeEach(() =>
     {
         wrapper = mount(PieChartCard, {

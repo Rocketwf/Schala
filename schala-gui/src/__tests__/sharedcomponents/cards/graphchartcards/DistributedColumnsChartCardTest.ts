@@ -18,7 +18,7 @@ const mockCardModel = new DistributedColumnsChartModel('Title', '', ViewName.Dis
 
 describe('DistributedColumnsChartCard', () =>
 {
-    let wrapper: VueWrapper<any>;
+    let wrapper: VueWrapper<InstanceType<typeof DistributedColumnsChartCard>>;
     beforeEach(() =>
     {
         wrapper = mount(DistributedColumnsChartCard, {

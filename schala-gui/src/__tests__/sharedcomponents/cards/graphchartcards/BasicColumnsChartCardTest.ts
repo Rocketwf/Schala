@@ -18,7 +18,7 @@ const mockCardModel = new BasicColumnsChartModel('Title', '', ViewName.BasicColu
 
 describe('BasicColumnsChartCard', () =>
 {
-    let wrapper: VueWrapper<any>;
+    let wrapper: VueWrapper<InstanceType<typeof BasicColumnsChartCard>>;
     beforeEach(() =>
     {
         wrapper = mount(BasicColumnsChartCard, {

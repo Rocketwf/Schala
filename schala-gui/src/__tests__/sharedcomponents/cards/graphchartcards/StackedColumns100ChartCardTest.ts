@@ -18,7 +18,7 @@ const mockCardModel = new StackedColumns100ChartModel('Title', '', ViewName.Stac
 
 describe('StackedColumns100ChartCard', () =>
 {
-    let wrapper: VueWrapper<any>;
+    let wrapper: VueWrapper<InstanceType<typeof StackedColumns100ChartCard>>;
     beforeEach(() =>
     {
         wrapper = mount(StackedColumns100ChartCard, {

@@ -18,7 +18,7 @@ const mockCardModel = new BasicBarsChartModel('Title', '', ViewName.BasicBarsCha
 
 describe('BasicBarsChartCard', () =>
 {
-    let wrapper: VueWrapper<any>;
+    let wrapper: VueWrapper<InstanceType<typeof BasicBarsChartCard>>;
     beforeEach(() =>
     {
         wrapper = mount(BasicBarsChartCard, {
