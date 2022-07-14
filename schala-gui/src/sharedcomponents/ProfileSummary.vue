@@ -91,62 +91,54 @@ import { FullProfile } from 'schala-core';
 import { useRouter, Router } from 'vue-router';
 import { comparePageStore } from '../stores/comparePageStore';
 import { computed } from 'vue';
-
 const $q = useQuasar();
 const router: Router = useRouter();
-const compareStore = comparePageStore();
 const props = defineProps<{
     profile: FullProfile;
 }>();
-
-const triggerNegative = () => 
+const triggerNegative = () =>
 {
     $q.notify({
         type: 'negative',
         message: "You can't add more than 4 profiles to the compare tab",
     });
 };
-const triggerPositive = () => 
+const triggerPositive = () =>
 {
     $q.notify({
         type: 'positive',
         message: 'Action was succesful',
     });
 };
-
 // Methods
-
 const getFullProfile = () => props.profile;
-
-const getComparePageStore = () => 
+const getComparePageStore = () =>
 {
-    return compareStore;
+    return comparePageStore();
 };
-
-const redirectWebsite = () => 
+const redirectWebsite = () =>
 {
     window.open(props.profile.url);
 };
 const affiliation = computed(() =>
     getFullProfile().basicProfile.affiliation?.reduce((acc: string, curr: string) => acc + ',' + curr),
 );
-
-const handleClickButton = async () => 
+const handleClickButton = async () =>
 {
-    if (compareStore.isBeingCompared(props.profile.basicProfile.id)) 
+    if (getComparePageStore().isBeingCompared(props.profile.basicProfile.id))
     {
-        compareStore.removeProfile(props.profile.basicProfile.id);
+        getComparePageStore().removeProfile(props.profile.basicProfile.id);
         triggerPositive();
         router.push({ path: '/profile/compare' });
     }
-    else if (compareStore.comparisonRepresentation.fullProfiles.length >= 4) 
+    else if (getComparePageStore().comparisonRepresentation.fullProfiles.length >= 4)
     {
         triggerNegative();
         return;
     }
-    else 
+    else
     {
-        await compareStore.addProfile(props.profile.basicProfile.id);
+        await getComparePageStore().addProfile(props.profile.basicProfile.id);
         triggerPositive();
         router.push({ path: '/profile/compare' });
     }

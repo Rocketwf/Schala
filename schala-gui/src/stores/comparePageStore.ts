@@ -3,7 +3,7 @@ import { useStorage } from '@vueuse/core';
 import { defineStore } from 'pinia';
 import { FullProfile, ComparisonRepresentation, SemanticScholarSource } from 'schala-core';
 import { profilePageStore } from './profilePageStore';
-const profileStore = profilePageStore();
+//const profileStore = profilePageStore();
 
 /**
  * Stores elements needed for ComparePage.
@@ -23,10 +23,10 @@ export const comparePageStore = defineStore({
         profilePageStore: profilePageStore(),
     }),
     actions: {
-        async renderSaved() 
+        async renderSaved()
         {
             Loading.show();
-            for (const id of this.profileIds) 
+            for (const id of this.profileIds)
             {
                 if(this.comparisonRepresentation.fullProfiles.find(fp => fp.basicProfile.id === id)) continue;
                 const fullProfile: FullProfile = await SemanticScholarSource.getInstance().fetchFullProfile(id);
@@ -40,16 +40,16 @@ export const comparePageStore = defineStore({
          * otherwise it uses the ProfileFactory from the ProfilePageStore
          * to build a FullProfile.
          */
-        async addProfile(profileId: string) 
+        async addProfile(profileId: string)
         {
             Loading.show();
             this.profileIds.push(profileId);
             let fullProfile: FullProfile;
-            if (this.profilePageStore.profileId === profileId) 
+            if (this.profilePageStore.profileId === profileId)
             {
                 fullProfile = this.profilePageStore.getFullProfile();
             }
-            else 
+            else
             {
                 fullProfile = await SemanticScholarSource.getInstance().fetchFullProfile(profileId);
             }
@@ -63,17 +63,17 @@ export const comparePageStore = defineStore({
          * @param profileId - to be removed profile's id
          * @returns null
          */
-        removeProfile(profileId: string) 
+        removeProfile(profileId: string)
         {
             this.profileIds.splice(this.profileIds.indexOf(profileId), 1);
-            if (this.comparisonRepresentation.fullProfiles.length === 0) 
+            if (this.comparisonRepresentation.fullProfiles.length === 0)
             {
                 return;
             }
             const filteredFullProfiles: FullProfile[] = new Array<FullProfile>();
-            for (const fullProfile of this.comparisonRepresentation.fullProfiles as FullProfile[]) 
+            for (const fullProfile of this.comparisonRepresentation.fullProfiles as FullProfile[])
             {
-                if(fullProfile.basicProfile.id !== profileId) 
+                if(fullProfile.basicProfile.id !== profileId)
                 {
                     filteredFullProfiles.push(fullProfile);
                 }
@@ -86,7 +86,7 @@ export const comparePageStore = defineStore({
          * Getter method of ComparisonRepresentation.
          * @returns ComparisonRepresentation
          */
-        getComparisonRepresentation() 
+        getComparisonRepresentation()
         {
             return this.comparisonRepresentation;
         },
@@ -95,9 +95,9 @@ export const comparePageStore = defineStore({
          * Getter method of ProfilePageStore.
          * @returns ProfilePageStore
          */
-        getProfilePageStore() 
+        getProfilePageStore()
         {
-            return profileStore;
+            return profilePageStore();
         },
 
         /**
@@ -105,11 +105,11 @@ export const comparePageStore = defineStore({
          * @param profileId - to be checked profile's id
          * @returns true if the profile is in comparison
          */
-        isBeingCompared(profileId: string) 
+        isBeingCompared(profileId: string)
         {
-            for (const profile of this.comparisonRepresentation.fullProfiles) 
+            for (const profile of this.comparisonRepresentation.fullProfiles)
             {
-                if (profile.basicProfile.id === profileId) 
+                if (profile.basicProfile.id === profileId)
                 {
                     return true;
                 }
