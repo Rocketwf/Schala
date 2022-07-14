@@ -1,4 +1,4 @@
-import { FromFilter, ShowingFilter, ToFilter } from '../../../filters/objectserieschartfilters/ObjectSeriesFilter';
+import { FromFilter, ToFilter } from '../../../filters/objectserieschartfilters/ObjectSeriesFilter';
 import { ViewName } from '../../../models';
 import { StackedColumnsChartModel, ObjectSeriesChartModel, Series } from '../../../models/objectserieschartmodel';
 
@@ -8,14 +8,8 @@ describe('chart options filter', () =>
     let model: ObjectSeriesChartModel;
     beforeEach(() => 
     {
-        series = [new Series('2020', [3], 'type'), new Series('2021', [5], 'type'), new Series('2022', [20], 'type'), new Series('2019', [10], 'type')];
-        model = new StackedColumnsChartModel('citations', 'ct', ViewName.PieChartCard, 5, series, '', '', ['']);
-    });
-    it('filters charts by showing value', () => 
-    {
-        const showing: ShowingFilter = new ShowingFilter(2);
-        showing.apply(model);
-        expect(model.series.length).toBe(4);
+        series = [new Series('2019', [10], 'type'), new Series('2020', [3], 'type'), new Series('2021', [5], 'type'), new Series('2022', [20], 'type')];
+        model = new StackedColumnsChartModel('citations', 'ct', ViewName.StackedColumnsChartCard, 5, series, '', '', ['']);
     });
     it('filters charts by from value', () => 
     {
