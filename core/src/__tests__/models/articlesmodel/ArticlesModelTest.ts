@@ -1,7 +1,5 @@
-import { Filter } from '../../../filters';
-import { ArticlesFilter, ArticlesPaginationFilter, SortByFilter } from '../../../filters/articlesfilters/ArticlesFilter';
-import { ToFilter } from '../../../filters/objectserieschartfilters/ObjectSeriesFilter';
-import { Article, ArticleCoAuthor, ObjectSeriesChartModel, Pagination, ViewName } from '../../../models';
+import { ArticlesPaginationFilter, SortByFilter } from '../../../filters/articlesfilters/ArticlesFilter';
+import { Article, ArticleCoAuthor, Pagination, ViewName } from '../../../models';
 import { ArticlesModel } from '../../../models/articlesmodel/ArticlesModel';
 
 let articlesModel: ArticlesModel;
