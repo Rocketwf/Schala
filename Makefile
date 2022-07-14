@@ -47,4 +47,3 @@ build_skip_test: core_deps core gui_deps update_core_in_gui
 
 all: server_deps server_prepare server_test core_deps core core_test gui_deps
 	(cd schala-gui;yarn all)
-
