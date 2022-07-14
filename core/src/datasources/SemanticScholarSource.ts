@@ -218,7 +218,6 @@ export class SemanticScholarSource implements DataSource
                 for (const exp of fp._expertise)
                 {
                     const newExpertise: ProfileExpertise = new ProfileExpertise(exp._name, exp._count);
-                    console.log(newExpertise.name, newExpertise.count);
                     expertise.push(newExpertise);
                 }
                 const fullProfile: FullProfile = new FullProfile(
