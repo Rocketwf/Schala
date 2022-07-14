@@ -6,12 +6,6 @@
     >
       The data is too large to fit, please use the expand button
     </div>
-    <div
-      v-else-if="badDataLength"
-      class="text-body1 text-center text-grey q-mb-xl"
-    >
-      The data is too large to fit, please use the expand button
-    </div>
     <apexchart
       v-else
       :height="lineColumnsMixedChartModel.isExpanded ? '800px' : 340"
@@ -65,14 +59,6 @@ const getSeries = () =>
     return series;
 };
 
-const badDataLength = computed(() => 
-{
-    return (
-        props.lineColumnsMixedChartModel.isShowingExpandButton &&
-        !props.lineColumnsMixedChartModel.isExpanded &&
-        getLabels.value.length >= 20
-    );
-});
 /**
  * Getter method for LineColumnsMixedChart labels
  */
