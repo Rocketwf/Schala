@@ -30,6 +30,8 @@ export interface APIArticle {
     _articlesCoAuthors: APICoAuthor[];
     _publicationDate: string;
     _bibtex: string;
+    _journalName: string;
+    _fieldsOfExpertise: string[];
 }
 export interface APICoAuthor {
     /**

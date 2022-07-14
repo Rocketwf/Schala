@@ -674,6 +674,19 @@ export class FullProfileService extends ProfileService
             }
 
             const bibtex: string = this.buildBibtex(paper);
+            let journalName: string;
+            if (paper.journal && paper.journal.name)
+            {
+                journalName = paper.journal.name;
+            }
+            const fieldsOfExpertise: string[] = new Array<string>();
+            if (paper.fieldsOfStudy)
+            {
+                for (const field of paper.fieldsOfStudy)
+                {
+                    fieldsOfExpertise.push(field);
+                }
+            }
 
             const articleToPush: Article = new Article(
                 paper.title,
@@ -686,6 +699,8 @@ export class FullProfileService extends ProfileService
                 paperCoauthors,
                 paper.publicationDate,
                 bibtex,
+                journalName,
+                fieldsOfExpertise,
             );
             articles.push(articleToPush);
         }
@@ -702,7 +717,7 @@ export class FullProfileService extends ProfileService
         const authors: string =
             '\tauthor = {' + article.authors.map((author: APICoAuthor) => author.name).join(' and ') + '},\n';
         bibtex += authors;
-        const title: string = '\ttitle{' + article.title + '},\n';
+        const title: string = '\ttitle = {' + article.title + '},\n';
         bibtex += title;
         if (article.journal && article.journal.name) 
         {
