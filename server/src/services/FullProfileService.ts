@@ -24,7 +24,7 @@ export class FullProfileService extends ProfileService
     /**
      * The primary data source for fetching information about a scholar
      */
-    private _dataSource: DataSource = new SemanticScholarSource();
+    private _SemanticScholarDataSource: DataSource = new SemanticScholarSource();
     /**
      * The secondary data source for fetching information about a scholar
      * if the first data source is not sufficient or does not deliver
@@ -34,6 +34,15 @@ export class FullProfileService extends ProfileService
 
     private _fasterCitations: Map<number, CitationsByYear>;
 
+    private _cachedReadyFullProfiles: Map<string, FullProfile>;
+
+    constructor() 
+    {
+        super();
+        this._cachedReadyFullProfiles = new Map<string, FullProfile>();
+
+        this._SemanticScholarDataSource.subscribe(this);
+    }
     /**
      * Method responsible for assembling the information of a scholar building the final data
      * structure containing every relevant information of a scholar
@@ -42,9 +51,13 @@ export class FullProfileService extends ProfileService
      */
     async build(authorId: string): Promise<FullProfile[]> 
     {
+        if (this._cachedReadyFullProfiles.has(authorId)) 
+        {
+            return [this._cachedReadyFullProfiles.get(authorId)];
+        }
         this._fasterCitations = null;
 
-        const apiAuthor: APIAuthor = await this._dataSource.fetchAuthor(authorId);
+        const apiAuthor: APIAuthor = await this._SemanticScholarDataSource.fetchAuthor(authorId);
 
         const authorPaperIds: string[] = new Array<string>();
 
@@ -53,7 +66,7 @@ export class FullProfileService extends ProfileService
             authorPaperIds.push(paper.paperId);
         }
 
-        const authorPapers: APIPaper[] = await this._dataSource.fetchPapers(authorPaperIds);
+        const authorPapers: APIPaper[] = await this._SemanticScholarDataSource.fetchPapers(authorPaperIds);
 
         const basicProfile: BasicProfile = this.buildBasicProfile(apiAuthor);
 
@@ -82,6 +95,8 @@ export class FullProfileService extends ProfileService
             coAuthors,
             this.buildArticles(apiAuthor, authorPapers),
         );
+
+        this._cachedReadyFullProfiles.set(authorId, fullProfile);
         return Array.of(fullProfile);
     }
 
@@ -133,24 +148,23 @@ export class FullProfileService extends ProfileService
         {
             if (!apiPaper.fieldsOfStudy) continue;
             for (const fieldOfStudy of apiPaper.fieldsOfStudy) 
-            {   
-                if (!expertise.has(fieldOfStudy))
+            {
+                if (!expertise.has(fieldOfStudy)) 
                 {
                     expertise.set(fieldOfStudy, new Expertise(fieldOfStudy, 1));
                 }
-                else
+                else 
                 {
                     const newCount: number = expertise.get(fieldOfStudy).count + 1;
                     expertise.set(fieldOfStudy, new Expertise(fieldOfStudy, newCount));
                 }
-                
             }
         }
         const sortedExpertise: Expertise[] = Array.from(expertise.values()).sort(this.sortExpertise);
         return sortedExpertise;
     }
 
-    private sortExpertise(a: Expertise, b: Expertise): number
+    private sortExpertise(a: Expertise, b: Expertise): number 
     {
         if (a.count > b.count) 
         {
@@ -176,7 +190,6 @@ export class FullProfileService extends ProfileService
             citations.push(apiPapers[i].citationCount);
             arrange.push(i + 1);
         }
-
 
         citations.sort((n1: number, n2: number) => n2 - n1);
 
@@ -246,7 +259,6 @@ export class FullProfileService extends ProfileService
             citations.push(apiPapers[i].citationCount - this.getSelfCitationsInPaper(apiAuthor, apiPapers[i]));
             arrange.push(i + 1);
         }
-
 
         citations.sort((n1: number, n2: number) => n2 - n1);
 
@@ -680,34 +692,35 @@ export class FullProfileService extends ProfileService
         return articles;
     }
 
-    private buildBibtex(article: APIPaper): string
+    private buildBibtex(article: APIPaper): string 
     {
         let bibtex: string = '';
         const start: string = '@article{';
         bibtex += start;
-        const key: string =  article.title.replace(/\s/g, '') + ',\n';
+        const key: string = article.title.replace(/\s/g, '') + ',\n';
         bibtex += key;
-        const authors: string = '\tauthor = {' + article.authors.map((author: APICoAuthor) => author.name).join(' and ')  + '},\n';
+        const authors: string =
+            '\tauthor = {' + article.authors.map((author: APICoAuthor) => author.name).join(' and ') + '},\n';
         bibtex += authors;
         const title: string = '\ttitle{' + article.title + '},\n';
         bibtex += title;
-        if (article.journal && article.journal.name)
+        if (article.journal && article.journal.name) 
         {
             const journal: string = '\tjournal = {' + article.journal.name + '},\n';
             bibtex += journal;
 
-            if (article.journal.volume)
+            if (article.journal.volume) 
             {
                 const volume: string = '\tvolume = {' + article.journal.volume + '},\n';
                 bibtex += volume;
             }
         }
-        if (article.year)
+        if (article.year) 
         {
             const year: string = '\tyear = {' + article.year + '},\n';
             bibtex += year;
         }
-        if (article.journal && article.journal.name && article.journal.pages)
+        if (article.journal && article.journal.name && article.journal.pages) 
         {
             const pages: string = '\tpages = {' + article.journal.pages + '}\n';
             bibtex += pages;
@@ -715,5 +728,12 @@ export class FullProfileService extends ProfileService
         const end: string = '}';
         bibtex += end;
         return bibtex;
+    }
+
+    async update(authorId: string): Promise<void> 
+    {
+        const updatedNewProfile: FullProfile = (await this.build(authorId))[0];
+        console.log('build profile', authorId);
+        this._cachedReadyFullProfiles.set(authorId, updatedNewProfile);
     }
 }
