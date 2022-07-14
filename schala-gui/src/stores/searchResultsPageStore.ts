@@ -28,7 +28,7 @@ export const searchResultsStore = defineStore({
          * affiliation filter
          * @param affiliationFilter -
          */
-        etAffiliationFilter(affiliationFilter: string): void 
+        setAffiliationFilter(affiliationFilter: string): void 
         {
             this.affilationFilter.value = affiliationFilter;
 

@@ -26,24 +26,14 @@
 import { ArticleCoAuthor } from 'schala-core';
 import { profilePageStore } from '../../../stores/profilePageStore';
 
-const profileStore = profilePageStore();
-//const pagination = ... TODO: Add Pagination
-
-const getProfilePageStore = () => 
-{
-    return profileStore;
-};
-
 
 defineProps<{
     coAuthors: ArticleCoAuthor[];
     buttonIcon: string;
 }>();
 
-
 const changeProfile = (value: string): void => 
 {
-    getProfilePageStore().setProfileId(value);
+    profilePageStore().setProfileId(value);
 };
-
 </script>

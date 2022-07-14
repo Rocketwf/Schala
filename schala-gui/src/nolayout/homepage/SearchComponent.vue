@@ -29,7 +29,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
-import { searchResultsStore } from 'stores/searchResultsPageStore';
+import { searchResultsStore } from '../../stores/searchResultsPageStore';
 
 // Attributes
 const searchString = ref('');

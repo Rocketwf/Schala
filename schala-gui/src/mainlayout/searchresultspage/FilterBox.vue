@@ -21,15 +21,11 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
-import { searchResultsStore } from 'stores/searchResultsPageStore';
+import { searchResultsStore } from '../../stores/searchResultsPageStore';
 
-const getSearchPageResultsStore = () => 
-{
-    return searchResultsStore();
-};
 
 // Attributes
-const filterString = ref(getSearchPageResultsStore().wordsInTitleFilter.value);
+const filterString = ref(searchResultsStore().wordsInTitleFilter.value);
 
 // Methods
 const getFilterString = (): string => 
@@ -39,8 +35,8 @@ const getFilterString = (): string =>
 
 const handleFilter = () => 
 {
-    getSearchPageResultsStore().setWordsInTitleFilter(getFilterString());
-    getSearchPageResultsStore().applyAllFilters();
+    searchResultsStore().setWordsInTitleFilter(getFilterString());
+    searchResultsStore().applyAllFilters();
 };
 const removeFilter = () => 
 {

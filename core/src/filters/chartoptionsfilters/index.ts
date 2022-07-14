@@ -1,1 +1,1 @@
-export { ChartOptionFilter } from './ChartOptionFilter';
+export { ChartOptionFilter, ScaleUpFilter, ScaleUpMixedFilter, TypeName } from './ChartOptionFilter';

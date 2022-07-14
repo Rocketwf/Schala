@@ -4,7 +4,7 @@
     color="white"
     v-model="input"
     @update:model-value="update"
-    :label="getInputName"
+    :label="getInputName()"
     dense
     autofocus
   >

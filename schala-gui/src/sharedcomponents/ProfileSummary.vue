@@ -13,7 +13,7 @@
 
       <q-item-label class="full-width self-center">
         <q-btn
-          v-if="!getComparePageStore().isBeingCompared(getFullProfile().basicProfile.id)"
+          v-if="!comparePageStore().isBeingCompared(getFullProfile().basicProfile.id)"
           unelevated
           label="Compare"
           class="full-width no-box-shadow no-border-radius"
@@ -94,7 +94,6 @@ import { computed } from 'vue';
 
 const $q = useQuasar();
 const router: Router = useRouter();
-const compareStore = comparePageStore();
 const props = defineProps<{
     profile: FullProfile;
 }>();
@@ -118,10 +117,6 @@ const triggerPositive = () =>
 
 const getFullProfile = () => props.profile;
 
-const getComparePageStore = () => 
-{
-    return compareStore;
-};
 
 const redirectWebsite = () => 
 {
@@ -133,20 +128,20 @@ const affiliation = computed(() =>
 
 const handleClickButton = async () => 
 {
-    if (compareStore.isBeingCompared(props.profile.basicProfile.id)) 
+    if (comparePageStore().isBeingCompared(props.profile.basicProfile.id)) 
     {
-        compareStore.removeProfile(props.profile.basicProfile.id);
+        comparePageStore().removeProfile(props.profile.basicProfile.id);
         triggerPositive();
         router.push({ path: '/profile/compare' });
     }
-    else if (compareStore.comparisonRepresentation.fullProfiles.length >= 4) 
+    else if (comparePageStore().comparisonRepresentation.fullProfiles.length >= 4) 
     {
         triggerNegative();
         return;
     }
     else 
     {
-        await compareStore.addProfile(props.profile.basicProfile.id);
+        await comparePageStore().addProfile(props.profile.basicProfile.id);
         triggerPositive();
         router.push({ path: '/profile/compare' });
     }

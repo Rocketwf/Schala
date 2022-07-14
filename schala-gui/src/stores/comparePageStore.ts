@@ -3,7 +3,6 @@ import { useStorage } from '@vueuse/core';
 import { defineStore } from 'pinia';
 import { FullProfile, ComparisonRepresentation, SemanticScholarSource } from 'schala-core';
 import { profilePageStore } from './profilePageStore';
-const profileStore = profilePageStore();
 
 /**
  * Stores elements needed for ComparePage.
@@ -97,7 +96,7 @@ export const comparePageStore = defineStore({
          */
         getProfilePageStore() 
         {
-            return profileStore;
+            return profilePageStore();
         },
 
         /**

@@ -1,8 +1,8 @@
 export { Filter } from './Filter';
 export { Filterable } from './Filterable';
 export { ArticlesFilter } from './articlesfilters';
-export { ChartOptionFilter } from './chartoptionsfilters';
-export { ObjectSeriesFilter } from './objectserieschartfilters';
+export { ChartOptionFilter, ScaleUpFilter, ScaleUpMixedFilter, TypeName } from './chartoptionsfilters';
+export { ObjectSeriesFilter, FromFilter, ShowingFilter, ToFilter } from './objectserieschartfilters';
 export {
     SearchResultsFilter,
     SearchResultsPaginationFilter,

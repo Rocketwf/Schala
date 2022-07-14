@@ -1,0 +1,48 @@
+import { describe, expect, it } from '@jest/globals';
+import { installQuasarPlugin } from '@quasar/quasar-app-extension-testing-unit-jest';
+import {
+    ChartOptionsModel,
+    BasicBarsChartModel,
+    Series,
+    CheckBox,
+    ScaleUpFilter,
+    RowModel,
+    ViewName,
+} from 'schala-core';
+import { shallowMount } from '@vue/test-utils';
+import PageRow from '../../sharedcomponents/PageRow.vue';
+
+installQuasarPlugin();
+
+describe('PageRow', () => 
+{
+    it('mounts without errors', () => 
+    {
+        const com: ChartOptionsModel = new ChartOptionsModel([
+            new BasicBarsChartModel(
+                'title',
+                '',
+                ViewName.BasicBarsChartCard,
+                3,
+                [new Series('test', [2], 'line')],
+                'xtitle',
+                'ytitle',
+                ['label'],
+            ),
+        ]);
+        const rm: RowModel = new RowModel(1);
+        const filter: ScaleUpFilter = new ScaleUpFilter(true);
+        com.filters = [filter];
+        const checkbox: CheckBox<ChartOptionsModel> = new CheckBox('name', Math.random().toString(32), true, filter);
+        checkbox.data = [com];
+        rm.checkBoxes = [checkbox];
+
+        const wrapper = shallowMount(PageRow, {
+            props: {
+                rowModel: rm,
+            },
+        });
+
+        expect(wrapper).toBeTruthy();
+    });
+});

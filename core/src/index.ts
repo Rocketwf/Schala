@@ -9,6 +9,12 @@ export {
     SearchResultsPaginationFilter,
     WordsInTitleFilter,
     AffiliationFilter,
+    ScaleUpFilter,
+    ScaleUpMixedFilter,
+    TypeName,
+    FromFilter,
+    ToFilter,
+    ShowingFilter,
 } from './filters';
 export {
     APIAuthor,
@@ -19,6 +25,7 @@ export {
     Field,
     PopupEditButton,
     SelectOptions,
+    CheckBox,
     Profile,
     BasicProfile,
     FullProfile,
@@ -39,5 +46,11 @@ export {
     DistributedColumnsChartModel,
     BasicBarsChartModel,
     ExpertiseModel,
+    Expertise,
+    Author,
+    CitationByYear,
+    CitedScholar,
+    PublicationByVenue,
+    PublicationByYear,
 } from './models';
 export { ProfileRepresentation, ComparisonRepresentation } from './representations';
