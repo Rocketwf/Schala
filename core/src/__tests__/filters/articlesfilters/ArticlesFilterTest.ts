@@ -35,12 +35,12 @@ describe('articles filter test', () =>
         expect(articleModel.articles[0].citationCount > articleModel.articles[1].citationCount).toBe(true);
     }, 30000);
 
-    /*it('sorts articles by citations', () => 
+    it('sorts articles by citations', () => 
     {
         const sortBy: SortByFilter = new SortByFilter('self-citations');
         sortBy.apply(articleModel);
-        expect(articleModel.articles[0].selfCitationCount > articleModel.articles[1].selfCitationCount).toBe(true);
-    }, 30000);*/
+        expect(articleModel.articles[0].selfCitationsCount > articleModel.articles[1].selfCitationsCount).toBe(true);
+    }, 30000);
 
     it('filters articles by coauthors', () => 
     {

@@ -63,7 +63,7 @@ describe('inputs test', () =>
         const scale: ScaleUpFilter = new ScaleUpFilter(false);
         chartModel.filters = [scale];
         const chartMods: ChartOptionsModel[] = [chartModel];
-        const check: CheckBox<ChartOptionsModel> = new CheckBox('first Diagram','2', true, scale);
+        const check: CheckBox<ChartOptionsModel> = new CheckBox('first Diagram', true, scale, chartMods);
         check.data = chartMods;
         check.handleInput();
         expect(chartMods[0].maxLimit).toBe(50);
@@ -74,7 +74,8 @@ describe('inputs test', () =>
         const chartModel: ChartOptionsModel = new ChartOptionsModel(mods);
         const scale: ScaleUpFilter = new ScaleUpFilter(false);
         chartModel.filters = [scale];
-        const check: CheckBox<ChartOptionsModel> = new CheckBox('first Diagram','2', true, scale);
+        const chartMods: ChartOptionsModel[] = [chartModel];
+        const check: CheckBox<ChartOptionsModel> = new CheckBox('first Diagram',true, scale, chartMods);
         check.inputName = '';
         expect(check.inputName).toBe('');
     }, 30000);
