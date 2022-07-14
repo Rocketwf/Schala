@@ -10,7 +10,8 @@ http.defaults.headers.common['x-api-key'] = process.env.SCHALA_API_KEY ? process
  * Class responsible for making requests to the SemanticScholar and feching information
  * related to an author.
  */
-const POLLING_INTERVAL: number = 60*60*24*1000;
+const INTERNAL_POLLING_INTERVAL: number = 1000;
+const PROFILE_POLLING_INTERVAL: number = 60 * 60 * 24 * 1000;
 export class SemanticScholarSource implements DataSource 
 {
     private _pollingCache: Map<string, APIAuthor>;
@@ -23,21 +24,24 @@ export class SemanticScholarSource implements DataSource
         {
             if (this._observers.length > 0) 
             {
-                console.log('subscribed', this._observers.length);
                 console.log('polling');
                 for (const authorId of Array.from(this._pollingCache.keys())) 
                 {
-                    const newAuthor: APIAuthor = await this.fetchAuthor(authorId);
-                    console.log('NEW:' ,newAuthor);
-                    console.log('OLD:' ,this._pollingCache.get(authorId));
-                    console.log('changes: ', !this.equalAuthors(newAuthor, this._pollingCache.get(authorId)));
-                    if (!this.equalAuthors(newAuthor, this._pollingCache.get(authorId))) 
+                    if (Date.now() - this._pollingCache.get(authorId).timeStamp >= PROFILE_POLLING_INTERVAL) 
                     {
-                        this.notifiy(authorId);
+                        const newAuthor: APIAuthor = await this.fetchAuthor(authorId);
+                        console.log('Profile needs polling:', newAuthor);
+                        console.log('NEW:', newAuthor);
+                        console.log('OLD:', this._pollingCache.get(authorId));
+                        console.log('changes: ', !this.equalAuthors(newAuthor, this._pollingCache.get(authorId)));
+                        if (!this.equalAuthors(newAuthor, this._pollingCache.get(authorId))) 
+                        {
+                            this.notifiy(authorId);
+                        }
                     }
                 }
             }
-        }, POLLING_INTERVAL);
+        }, INTERNAL_POLLING_INTERVAL);
     }
     constructor() 
     {
@@ -105,6 +109,7 @@ export class SemanticScholarSource implements DataSource
                     },
                 },
             );
+            author.timeStamp = Date.now();
             this._pollingCache.set(authorId, author);
             return author;
         }
