@@ -10,6 +10,7 @@ http.defaults.headers.common['x-api-key'] = process.env.SCHALA_API_KEY ? process
  * Class responsible for making requests to the SemanticScholar and feching information
  * related to an author.
  */
+const POLLING_INTERVAL: number = 60*60*24*1000;
 export class SemanticScholarSource implements DataSource 
 {
     private _pollingCache: Map<string, APIAuthor>;
@@ -36,7 +37,7 @@ export class SemanticScholarSource implements DataSource
                     }
                 }
             }
-        }, 60*60*24);
+        }, POLLING_INTERVAL);
     }
     constructor() 
     {
