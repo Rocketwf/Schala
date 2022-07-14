@@ -1,9 +1,12 @@
 import { Filter, Filterable } from '../../filters';
+import { Expandable } from '../../filters/Filterable';
+import { Message, STATUS } from '../../misc/Message';
 import { ChartOptionsModel } from '../chartoptionsmodel';
 import { PopupEditButton } from '../inputs';
 import { SimpleCardModel, ViewName } from '../simplecardmodel/SimpleCardModel';
 
-export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesChartModel>, SimpleCardModel 
+export abstract class ObjectSeriesChartModel
+implements Filterable<ObjectSeriesChartModel>, Expandable<ObjectSeriesChartModel>, SimpleCardModel
 {
     /**
      * Represents the id as a string.
@@ -58,8 +61,9 @@ export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesC
     /**
      * Contains the popup buttons to be added to the model
      */
-    private _popupButtons: PopupEditButton<ObjectSeriesChartModel>[];
+    private _popupButtons: PopupEditButton<number, ObjectSeriesChartModel>[];
 
+    private _savedButtons: PopupEditButton<number, ObjectSeriesChartModel>[];
     /**
      * Contains the filters to be applied to the model
      */
@@ -70,6 +74,8 @@ export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesC
      */
     private _chartOptionsModel: ChartOptionsModel;
 
+    private _isExpanded: boolean;
+    private _isShowingExpandButton: boolean;
     /**
      * Creates an instance of BasicBarsChartModel.
      * @param _title - Represents the title value as a string
@@ -91,7 +97,7 @@ export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesC
         _xTitle: string,
         _yTitle: string,
         _labels: string[],
-        _popupButtons?: PopupEditButton<ObjectSeriesChartModel>[],
+        _popupButtons?: PopupEditButton<number, ObjectSeriesChartModel>[],
     ) 
     {
         this._title = _title;
@@ -104,6 +110,8 @@ export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesC
         this._labels = _labels;
 
         this._popupButtons = _popupButtons;
+        this._isShowingExpandButton = false;
+        this._isExpanded = false;
     }
 
     /**
@@ -126,15 +134,27 @@ export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesC
     /**
      * Applies all the filters with the current value on the cached data.
      */
-    public applyAllFilters(): void 
+    public applyAllFilters(): Message[] 
     {
         this.persistOnce();
 
+        const persistForFailure: ObjectSeriesChartModel = this.deepCopy();
+
         this.series = this._cachedModel.series;
+
+
+        const msgs: Message[] = new Array<Message>();
         for (const filter of this._filters) 
         {
-            filter.applyValidate(this);
+            const msg: Message = filter.applyValidate(this);
+            msgs.push(msg);
+            if (msg.status === STATUS.FAIL)
+            {
+                this.series = persistForFailure.series;
+                break;
+            }
         }
+        return msgs;
     }
 
     /**
@@ -172,7 +192,7 @@ export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesC
     /**
      * Getter method of the popup buttons to be added.
      */
-    public get popupButtons(): PopupEditButton<ObjectSeriesChartModel>[] 
+    public get popupButtons(): PopupEditButton<number, ObjectSeriesChartModel>[] 
     {
         return this._popupButtons;
     }
@@ -180,7 +200,7 @@ export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesC
     /**
      * Setter method of the filters to be applied.
      */
-    public set popupButtons(popupButtons: PopupEditButton<ObjectSeriesChartModel>[]) 
+    public set popupButtons(popupButtons: PopupEditButton<number, ObjectSeriesChartModel>[]) 
     {
         this._popupButtons = popupButtons;
     }
@@ -343,6 +363,57 @@ export abstract class ObjectSeriesChartModel implements Filterable<ObjectSeriesC
     public get entries(): number 
     {
         return this._series.length;
+    }
+
+    saveFilters(): void 
+    {
+        this._savedButtons = [];
+        for (const btn of this._popupButtons) 
+        {
+            this._savedButtons.push(btn.deepCopy());
+        }
+    }
+    restoreFilters(): void 
+    {
+        this._popupButtons = this._savedButtons;
+        this._filters = [];
+        for (const btn of this._popupButtons) 
+        {
+            for (const input of btn.inputs) 
+            {
+                this._filters.push(input.filter);
+            }
+        }
+        this.applyAllFilters();
+    }
+    public get isExpanded(): boolean 
+    {
+        return this._isExpanded;
+    }
+    public set isExpanded(v: boolean) 
+    {
+        this._isExpanded = v;
+    }
+    public toggleExpand(): void 
+    {
+        this._isExpanded = !this._isExpanded;
+    }
+
+    public get isShowingExpandButton(): boolean 
+    {
+        return this._isShowingExpandButton;
+    }
+    public set isShowingExpandButton(v: boolean) 
+    {
+        this._isShowingExpandButton = v;
+    }
+    public showExpandButton(): void 
+    {
+        this._isShowingExpandButton = true;
+    }
+    public hideExpandButton(): void 
+    {
+        this._isShowingExpandButton = false;
     }
 }
 

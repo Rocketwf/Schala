@@ -1,7 +1,14 @@
 <template>
   <div id="chart">
+    <div
+      v-if="noEntries"
+      class="text-body1 text-center text-grey q-mb-xl"
+    >
+      The data is too large to fit, please use the expand button
+    </div>
     <apexchart
-      height="350"
+      v-else
+      :height="lineColumnsMixedChartModel.isExpanded ? '800px' : 340"
       :options="chartOptions"
       :series="getSeries()"
     />
@@ -16,6 +23,16 @@ const props = defineProps<{
     lineColumnsMixedChartModel: LineColumnsMixedChartModel;
 }>();
 
+const noEntries = computed(() => 
+{
+    let sum = 0;
+    const series = getSeries();
+    for (const ser of series) 
+    {
+        sum += ser.data.length;
+    }
+    return sum === 0;
+});
 /**
  * Converts the series to the form specific to the LineColumnsMixedChart.
  */
@@ -58,7 +75,7 @@ const getLabels = computed(() =>
     return labels;
 });
 
-const defaultMax = (): (max: number) => number => 
+const defaultMax = (): ((max: number) => number) => 
 {
     return (max: number) => max;
 };
@@ -93,7 +110,6 @@ const chartOptions = computed(() =>
                 enabledOnSeries: [1],
             },
 
-            height: 350,
             type: 'line',
             toolbar: {
                 offsetX: -30,
@@ -120,6 +136,8 @@ const chartOptions = computed(() =>
             type: 'category',
             labels: {
                 rotate: -45,
+                position: 'top',
+                hideOverlappingLabels: false
             },
         },
         yaxis: [

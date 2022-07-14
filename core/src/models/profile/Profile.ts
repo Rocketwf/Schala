@@ -94,7 +94,7 @@ export class BasicProfile
  */
 export class FullProfile 
 {
-    private _expertise: string[];
+    private _expertise: ProfileExpertise[];
     private _hIndex: number;
     private _hIndexWithoutSelfCitations: number;
     private _i10Index: number;
@@ -130,7 +130,7 @@ export class FullProfile
      * @param _articles -
      */
     constructor(
-        _expertise: string[],
+        _expertise: ProfileExpertise[],
         _hIndex: number,
         _hIndexWithoutSelfCitations: number,
         _i10Index: number,
@@ -224,11 +224,11 @@ export class FullProfile
     {
         this.i10Index = i10Index;
     }
-    public get expertise(): string[] 
+    public get expertise(): ProfileExpertise[] 
     {
         return this._expertise;
     }
-    public set expertise(expertise: string[]) 
+    public set expertise(expertise: ProfileExpertise[]) 
     {
         this._expertise = expertise;
     }
@@ -477,5 +477,37 @@ export class Author
     public set jointPublicationCount(v: number) 
     {
         this._jointPublicationCount = v;
+    }
+}
+
+export class ProfileExpertise
+{
+    private _name: string;
+    private _count: number;
+
+    constructor(_name: string, _count: number)
+    {
+        this._name = _name;
+        this._count = _count;
+    }
+
+    public get name(): string
+    {
+        return this._name;
+    }
+
+    public set name(_newName: string)
+    {
+        this._name = _newName;
+    }
+
+    public get count(): number
+    {
+        return this._count;
+    }
+
+    public set count(_newCount: number)
+    {
+        this._count = _newCount;
     }
 }

@@ -7,6 +7,15 @@
         :popup-button-model="popupBtn"
         badge
       />
+      <q-btn
+        v-if="cardModel.isShowingExpandButton"
+        class="absolute"
+        style="top: 0; transform: translateY(-40%)"
+        color="primary"
+        icon="add"
+        label="Expand"
+        @click="showDialog"
+      />
     </template>
     <template #model>
       <line-columns-mixed-chart :line-columns-mixed-chart-model="cardModel" />
@@ -22,8 +31,35 @@ import LineColumnsMixedChart from '../../charts/LineColumnsMixedChart.vue';
 import SimpleCard from '../SimpleCard.vue';
 import { LineColumnsMixedChartModel } from 'schala-core';
 import PopupButton from '../../buttons/popupedit/PopupButton.vue';
+import { useQuasar } from 'quasar';
+import LineColumnsMixedChartDialogPluginComponentVue from 'src/sharedcomponents/charts/LineColumnsMixedChartDialogPluginComponent.vue';
 
-defineProps<{
+const props = defineProps<{
     cardModel: LineColumnsMixedChartModel;
 }>();
+const $q = useQuasar();
+const showDialog = () => 
+{
+    props.cardModel.toggleExpand();
+    props.cardModel.saveFilters();
+    $q.dialog({
+        component: LineColumnsMixedChartDialogPluginComponentVue,
+        componentProps: {
+            lineColumnsMixedChartModel: props.cardModel,
+        },
+    })
+        .onOk(() => 
+        {
+            // console.log('OK')
+        })
+        .onCancel(() => 
+        {
+            props.cardModel.restoreFilters();
+            props.cardModel.toggleExpand();
+        })
+        .onDismiss(() => 
+        {
+            // console.log('I am triggered on both OK and Cancel')
+        });
+};
 </script>

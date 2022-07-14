@@ -1,3 +1,4 @@
+import { ProfileExpertise } from '../profile/Profile';
 import { SimpleCardModel, ViewName } from '../simplecardmodel';
 
 export class ExpertiseModel implements SimpleCardModel 
@@ -88,9 +89,9 @@ export class Expertise
 {
     private _id: string = '@' + Math.random().toString(31);
     private _name: string;
-    private _expertise: string[];
+    private _expertise: ProfileExpertise[];
 
-    constructor(_name: string, _expertise: string[]) 
+    constructor(_name: string, _expertise: ProfileExpertise[]) 
     {
         this._name = _name;
         this._expertise = _expertise;
@@ -105,11 +106,11 @@ export class Expertise
         this._name = v;
     }
 
-    public get expertise(): string[] 
+    public get expertise(): ProfileExpertise[] 
     {
         return this._expertise;
     }
-    public set expertise(v: string[]) 
+    public set expertise(v: ProfileExpertise[]) 
     {
         this._expertise = v;
     }

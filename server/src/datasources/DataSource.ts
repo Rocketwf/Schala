@@ -1,9 +1,15 @@
 import { APIBasicAuthor, APIPaper, APIAuthor } from '../models/API';
+import { Observer } from '../services/ProfileService';
+export interface Subject {
+    subscribe(obs: Observer): void;
+    notifiy(authorId: string): void;
+}
 /**
- * An interface whose users are responsible for implementing the fetching 
+ * An interface whose users are responsible for implementing the fetching
  * of scholar information from their corresponding databases or sources.
  */
-export interface DataSource {
+export interface DataSource extends Subject 
+{
     /**
      * Method responsible for fetching the profiles for a given search query
      * @param query - The user profile query to search for

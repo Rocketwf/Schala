@@ -14,13 +14,20 @@
     <div class="mobile-hide">
       <q-item class="vertical-middle">
         <q-item-section side>
-          <q-item-label>Year: <span class="text-bold inline">{{ article.publicationYear }}</span></q-item-label>
+          <q-item-label>
+            Year: <span class="text-bold inline">{{ article.publicationYear }}</span>
+          </q-item-label>
         </q-item-section>
-        <q-item-section
-          class="q-mr-xl"
-          side
-        >
-          <q-item-label>Cited: <span class="text-bold inline">{{ article.citationCount }}</span></q-item-label>
+        <q-item-section side>
+          <q-item-label>
+            Cited by: <span class="text-bold inline">{{ article.citationCount }}</span>
+          </q-item-label>
+        </q-item-section>
+        <q-item-section side>
+          <q-item-label>
+            Self-cited:
+            <span class="text-bold inline">{{ article.selfCitationsCount }}</span>
+          </q-item-label>
         </q-item-section>
       </q-item>
       <q-space />
@@ -33,7 +40,7 @@
           icon="menu_book"
         >
           <cite-button
-            :bibtex="props.article.url"
+            :bibtex="props.article.bibtex"
             :button-icon="slotProps.icon"
           />
         </article-item-button>
@@ -54,8 +61,15 @@
       </div>
 
       <div class="desktop-hide q-mx-auto q-my-none">
-        <q-item-label>Year: <span class="text-bold inline">2021</span></q-item-label>
-        <q-item-label>Cited: <span class="text-bold inline">364</span></q-item-label>
+        <q-item-label>
+          Year: <span class="text-bold inline">{{ article.publicationYear }}</span>
+        </q-item-label>
+        <q-item-label>
+          Cited by: <span class="text-bold inline">{{ article.citationCount }}</span>
+        </q-item-label>
+        <q-item-label>
+          Self-cited: <span class="text-bold inline">{{ article.selfCitationsCount }}</span>
+        </q-item-label>
       </div>
     </q-item-section>
   </q-item>
@@ -67,7 +81,6 @@
 </template>
 
 <script setup charset="utf-8" lang="ts">
-
 import ArticleItemButton from '../../sharedcomponents/buttons/articlebuttons/ArticleItemButton.vue';
 import { Article } from 'schala-core';
 import CiteButton from 'src/sharedcomponents/buttons/articlebuttons/CiteButton.vue';
@@ -75,7 +88,7 @@ import CiteButton from 'src/sharedcomponents/buttons/articlebuttons/CiteButton.v
 import CoAuthorButton from 'src/sharedcomponents/buttons/articlebuttons/CoAuthorButton.vue';
 
 const props = defineProps<{
-  article: Article,
+    article: Article;
 }>();
 
 const goToArticle = (): void => 
@@ -83,5 +96,4 @@ const goToArticle = (): void =>
     return; //TODO: Implement me
 };
 goToArticle();
-
 </script>
