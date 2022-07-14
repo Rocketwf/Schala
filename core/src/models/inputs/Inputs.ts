@@ -44,6 +44,10 @@ export class Field<T, S extends Filterable<S>> implements Input<T, S>
     /**
      *Represents the input value as the type bound to T
      */
+    private _previousInputValue: T;
+    /**
+     *Represents the input value as the type bound to T
+     */
     private _inputValue: T;
     /**
      *Represents the filter value as a Filter
@@ -88,6 +92,9 @@ export class Field<T, S extends Filterable<S>> implements Input<T, S>
      */
     handleInput(): Message[] 
     {
+        if (this._previousInputValue === this._inputValue) return [new Message(STATUS.OK)];
+        this._previousInputValue = this._inputValue;
+
         this._filter.value = this._inputValue;
         const msgs: Message[] = [];
         for (const entry of this._data) 

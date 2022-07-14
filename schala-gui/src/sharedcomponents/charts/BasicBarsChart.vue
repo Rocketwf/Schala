@@ -95,7 +95,6 @@ const chartOptions = computed(() =>
             bar: {
                 borderRadius: 4,
                 horizontal: true,
-                barHeight: '40px',
             },
         },
         dataLabels: {

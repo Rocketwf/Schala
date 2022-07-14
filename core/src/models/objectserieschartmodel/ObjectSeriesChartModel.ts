@@ -148,7 +148,7 @@ implements Filterable<ObjectSeriesChartModel>, Expandable<ObjectSeriesChartModel
         {
             const msg: Message = filter.applyValidate(this);
             msgs.push(msg);
-            if (msg.status === STATUS.FAIL) 
+            if (msg.status === STATUS.FAIL)
             {
                 this.series = persistForFailure.series;
                 break;
