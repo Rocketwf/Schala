@@ -28,8 +28,9 @@
           <q-card-section>
             <expertise-item
               v-for="exp in author.expertise"
-              :key="exp"
-              :expertise="exp"
+              :key="exp.name"
+              :expertise="exp.name"
+              :count="exp.count"
             />
           </q-card-section>
         </q-tab-panel>

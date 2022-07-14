@@ -3,6 +3,7 @@ import { Author } from './Author';
 import { BasicProfile } from './BasicProfile';
 import { CitationsByYear } from './CitationsByYear';
 import { CitedScholar } from './CitedScholar';
+import { Expertise } from './Expertise';
 import { Profile } from './Profile';
 import { PublicationByVenue } from './PublicationByVenue';
 import { PublicationByYear } from './PublicationByYear';
@@ -16,7 +17,7 @@ export class FullProfile extends Profile
     /**
      * The expertises of the scholar
      */
-    private _expertise: string[];
+    private _expertise: Expertise[];
     /**
      * The h-index of the scholar
      */
@@ -99,7 +100,7 @@ export class FullProfile extends Profile
      * @param _articles - The articles of the scholar
      */
     constructor(
-        _expertise: string[],
+        _expertise: Expertise[],
         _hIndex: number,
         _hIndexWithoutSelfCitations: number,
         _i10Index: number,
@@ -139,7 +140,7 @@ export class FullProfile extends Profile
     /**
      * Gets expertise
      */
-    public get expertise(): string[] 
+    public get expertise(): Expertise[] 
     {
         return this._expertise;
     }
@@ -147,7 +148,7 @@ export class FullProfile extends Profile
     /**
      * Sets expertises
      */
-    public set expertises(_expertise: string[]) 
+    public set expertises(_expertise: Expertise[]) 
     {
         this._expertise = _expertise;
     }

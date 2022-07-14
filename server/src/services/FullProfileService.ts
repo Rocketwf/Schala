@@ -13,6 +13,7 @@ import { ProfileService } from './ProfileService';
 import { CitationsByYear } from '../models/profile/CitationsByYear';
 import { ArticleCoAuthor } from '../models/profile/ArticleCoAuthor';
 import { GoogleScholarScraperSource } from '../datasources/GoogleScholarScraperSource';
+import { Expertise } from '../models/profile/Expertise';
 
 /**
  * Class responsible for requesting the data source for information about a particular
@@ -125,19 +126,40 @@ export class FullProfileService extends ProfileService
      * @param apiPapers - apiPapers object array of the papers to build
      * @returns Array of the expertises from the papers
      */
-    private buildExpertise(apiPapers: APIPaper[]): string[] 
+    private buildExpertise(apiPapers: APIPaper[]): Expertise[] 
     {
-        const expertise: Set<string> = new Set<string>();
+        const expertise: Map<string, Expertise> = new Map<string, Expertise>();
         for (const apiPaper of apiPapers) 
         {
             if (!apiPaper.fieldsOfStudy) continue;
             for (const fieldOfStudy of apiPaper.fieldsOfStudy) 
-            {
-                expertise.add(fieldOfStudy);
+            {   
+                if (!expertise.has(fieldOfStudy))
+                {
+                    expertise.set(fieldOfStudy, new Expertise(fieldOfStudy, 1));
+                }
+                else
+                {
+                    const newCount: number = expertise.get(fieldOfStudy).count + 1;
+                    expertise.set(fieldOfStudy, new Expertise(fieldOfStudy, newCount));
+                }
+                
             }
         }
-        const sortedExpertise: string[] = Array.from(expertise).sort();
+        const sortedExpertise: Expertise[] = Array.from(expertise.values()).sort(this.sortExpertise);
         return sortedExpertise;
+    }
+
+    private sortExpertise(a: Expertise, b: Expertise): number
+    {
+        if (a.count > b.count) 
+        {
+            return -1;
+        }
+        else 
+        {
+            return 1;
+        }
     }
 
     /**

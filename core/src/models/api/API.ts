@@ -124,7 +124,7 @@ export interface APIFullProfile {
     /**
      * Represents the expertise of the full profile as a string array
      */
-    _expertise: string[];
+    _expertise: APIExpertise[];
     /**
      * Represents the h-index of the full profile as a number
      */
@@ -270,4 +270,8 @@ export interface APIBasicProfile {
      * Represents the picture url of the basic profile as a string
      */
     _pictureUrl: string;
+}
+export interface APIExpertise {
+    _name: string;
+    _count: number;    
 }
