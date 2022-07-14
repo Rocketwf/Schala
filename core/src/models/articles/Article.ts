@@ -29,6 +29,11 @@ export class Article
      */
     private _abstract: string;
 
+    private _publicationDate: string;
+
+    private _bibtex: string;
+
+    private _selfCitationsCount: number;
     /**
      * Creates an instance of article.
      * @param _title - Represents the title value as a string
@@ -44,18 +49,24 @@ export class Article
         _venue: string,
         _year: number,
         _citationsCount: number,
+        _selfCitationsCount: number,
         _url: string,
         _coAuthors: ArticleCoAuthor[],
         _abstract: string,
+        _publicationDate: string,
+        _bibtex: string,
     ) 
     {
         this._title = _title;
         this._venue = _venue;
         this._publicationYear = _year;
         this._citationsCount = _citationsCount;
+        this._selfCitationsCount = _selfCitationsCount;
         this._url = _url;
         this._coAuthors = _coAuthors;
         this._abstract = _abstract;
+        this._publicationDate = _publicationDate;
+        this._bibtex = _bibtex;
     }
 
     /**
@@ -155,6 +166,41 @@ export class Article
     public set abstract(abstract: string) 
     {
         this._abstract = abstract;
+    }
+
+    /**
+     * Getter method of the publicationDate attribute
+     */
+    public get publicationDate(): string 
+    {
+        return this._publicationDate;
+    }
+
+    /**
+     * Setter method of the publicationDate attribute
+     */
+    public set publicationDate(_newDate: string) 
+    {
+        this._publicationDate = _newDate;
+    }
+
+    public get bibtex(): string
+    {
+        return this._bibtex;
+    }
+     
+    public set bibtex(newBibtex: string) 
+    {
+        this._bibtex = newBibtex;
+    }
+    public get selfCitationsCount(): number 
+    {
+        return this._selfCitationsCount;
+    }
+
+    public set selfCitationsCount(v: number) 
+    {
+        this._selfCitationsCount = v;
     }
 }
 

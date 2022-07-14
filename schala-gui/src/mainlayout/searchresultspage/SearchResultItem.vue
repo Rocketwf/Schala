@@ -97,7 +97,7 @@ const handleAdd = async () =>
         getComparePageStore().removeProfile(props.profile.id);
         triggerPositive();
     }
-    else if (compareStore.comparisonRepresentation.fullProfiles.length >= 4) 
+    else if (compareStore.profileIds.length >= 4) 
     {
         triggerNegative();
         return;

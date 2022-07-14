@@ -93,16 +93,6 @@ const chartOptions = {
             },
         },
     },
-    responsive: [{
-        breakpoint: 480,
-        options: {
-            legend: {
-                position: 'bottom',
-                offsetX: -10,
-                offsetY: 0
-            }
-        }
-    }],
 
     xaxis: {
         title: {

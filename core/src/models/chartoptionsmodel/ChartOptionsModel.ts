@@ -1,10 +1,12 @@
 import { Filter } from '../../filters';
-
 import { Filterable } from '../../filters/Filterable';
+import { Message } from '../../misc/Message';
 import { ObjectSeriesChartModel } from '../objectserieschartmodel';
 
 export class ChartOptionsModel implements Filterable<ChartOptionsModel> 
 {
+    private _isExpanded: boolean;
+    private _expandable: boolean;
     /**
      * Represents the max limit value as a number
      */
@@ -89,13 +91,14 @@ export class ChartOptionsModel implements Filterable<ChartOptionsModel>
     /**
      * Applies all filters on the model
      */
-    applyAllFilters(): void 
+    applyAllFilters(): Message[] 
     {
         // persist if needed
         for (const filter of this._filters) 
         {
             filter.applyValidate(this);
         }
+        return null;
     }
     /**
      * Getter method of the filters attribute
@@ -117,5 +120,30 @@ export class ChartOptionsModel implements Filterable<ChartOptionsModel>
     public get entries(): number 
     {
         return this._objectSeriesChartModels.length;
+    }
+    saveFilters(): void 
+    {
+        return;
+    }
+    restoreFilters(): void 
+    {
+        return;
+    }
+    public get isExpanded(): boolean 
+    {
+        return this._isExpanded;
+    }
+    public set isExpanded(v: boolean) 
+    {
+        this._isExpanded = v;
+    }
+
+    public get expandable(): boolean 
+    {
+        return this._expandable;
+    }
+    public set expandable(v: boolean) 
+    {
+        this._expandable = v;
     }
 }

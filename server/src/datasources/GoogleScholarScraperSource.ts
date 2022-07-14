@@ -3,6 +3,7 @@ import { APIPaper, APIAuthor, APIBasicAuthor } from '../models/API';
 import cheerio from 'cheerio';
 import axios from 'axios';
 import { AxiosResponse } from 'axios';
+import { Observer } from '../services/ProfileService';
 type TagElement = cheerio.TagElement;
 /**
  * Class responsible for scraping information off google scholar.
@@ -88,7 +89,7 @@ export class GoogleScholarScraperSource implements DataSource
         return this._cache.get(query);
     }
     /**
-     * Method responsible for fetching the profiles for a given author ID from 
+     * Method responsible for fetching the profiles for a given author ID from
      * the GoogleScholarScraperSource
      * @param authorName - The author with the ID being queried
      * @returns author - A promise of a APIAuthor profile
@@ -219,5 +220,15 @@ export class GoogleScholarScraperSource implements DataSource
         }
 
         return matrix[b.length][a.length];
+    }
+    subscribe(obs: Observer): void 
+    {
+        obs;
+        return;
+    }
+    notifiy(authorId: string): void 
+    {
+        authorId;
+        throw new Error('Method not implemented.');
     }
 }

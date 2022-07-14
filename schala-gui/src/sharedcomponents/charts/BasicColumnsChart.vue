@@ -1,11 +1,18 @@
 <template>
   <div id="chart">
     <apexchart
+      v-if="!badDataLength"
+      :height="basicColumnsChartModel.isExpanded ? '800px' : 340"
       type="bar"
-      height="350"
       :options="chartOptions"
       :series="getSeries()"
     />
+    <div
+      v-else
+      class="text-body1 text-center text-grey q-mb-xl"
+    >
+      The data is too large to fit, please use the expand button
+    </div>
   </div>
 </template>
 <script setup charset="utf-8" lang="ts">
@@ -40,6 +47,15 @@ const getLabels = computed(() =>
     return labels;
 });
 
+const badDataLength = computed(() => 
+{
+    return (
+        props.basicColumnsChartModel.isShowingExpandButton &&
+        !props.basicColumnsChartModel.isExpanded &&
+        getLabels.value.length >= 20
+    );
+});
+
 const chartOptions = computed(() => 
 {
     return {
@@ -48,7 +64,6 @@ const chartOptions = computed(() =>
             enabledOnSeries: true,
         },
         chart: {
-            height: 350,
             toolbar: {
                 offsetX: -52,
                 offsetY: -52,
@@ -96,7 +111,7 @@ const chartOptions = computed(() =>
         plotOptions: {
             bar: {
                 horizontal: false,
-                columnWidth: '55%',
+                columnWidth: '100%',
                 endingShape: 'rounded',
                 tools: {
                     download:
