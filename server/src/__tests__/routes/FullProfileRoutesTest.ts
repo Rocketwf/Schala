@@ -3,10 +3,11 @@ import { FullProfileRoutes } from '../../routes/FullProfileRoutes';
 
 describe('FullProfileRoutes test', () => 
 {
-    it('config', () => 
+    it('checks length of configureRoutes', () => 
     {
         const app: Application = express();
         const profile: FullProfileRoutes = new FullProfileRoutes(app);
-        expect(profile.configureRoutes()).not.toBeNull();
+        expect(profile.configureRoutes().length > 0).toBe(true);
+        
     }, 30000);
 });

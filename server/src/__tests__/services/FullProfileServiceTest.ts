@@ -11,9 +11,9 @@ describe('findOrCreate method', () =>
         profiles = await service.build('1679754');
     }, 50000);
     
-    it('builds a fullprofile array', async () => 
+    it('builds a fullprofile', async () => 
     {
-        expect(profiles.length > 0).toBe(true);
+        expect(profiles.length == 1).toBe(true);
     }, 50000);
     it('checks if the name is correct', async () => 
     {

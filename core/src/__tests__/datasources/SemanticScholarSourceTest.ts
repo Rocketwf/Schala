@@ -17,10 +17,10 @@ describe('findOrCreate method', () =>
         expect(authorIDs).toStrictEqual(['143732150', '1679754', '1395637352', '89914629']);
     }, 30000);
 
-    it('fetches an author', async () => 
+    it('fetches an author and checks name', async () => 
     {
         const author: FullProfile = await SemanticScholarSource.getInstance().fetchFullProfile('1679754');
-        expect(author).not.toBeNull();
+        expect(author.basicProfile.name).toBe('Walter F Tichy');
     }, 30000);
 
     //it('fetches the correct first paper', async () => {
