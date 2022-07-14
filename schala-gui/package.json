@@ -32,6 +32,7 @@
     "vue3-apexcharts": "^1.4.1"
   },
   "devDependencies": {
+    "@pinia/testing": "^0.0.12",
     "@quasar/app-webpack": "^3.0.0",
     "@quasar/quasar-app-extension-testing": "^2.0.4",
     "@quasar/quasar-app-extension-testing-unit-jest": "^3.0.0-alpha.10",
