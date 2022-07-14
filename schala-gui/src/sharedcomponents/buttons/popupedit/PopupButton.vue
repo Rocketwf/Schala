@@ -7,7 +7,7 @@
     :icon="popupButtonModel.icon"
   >
     <q-popup-edit
-      @before-hide="popupButtonModel.handleAll()"
+      @before-hide="handlerWrapper()"
       v-model="buttonModel"
       class="bg-secondary text-white"
     >
@@ -30,12 +30,29 @@
   </q-btn>
 </template>
 <script setup lang="ts">
-import { ArticlesModel, ObjectSeriesChartModel, PopupEditButton } from 'schala-core';
+import { Message, STATUS, ArticlesModel, ObjectSeriesChartModel, PopupEditButton } from 'schala-core';
 import { ref } from 'vue';
-defineProps<{
-    popupButtonModel: PopupEditButton<number | string , ArticlesModel | ObjectSeriesChartModel>;
+import { useQuasar } from 'quasar';
+const $q = useQuasar();
+
+const props = defineProps<{
+    popupButtonModel: PopupEditButton<number | string, ArticlesModel | ObjectSeriesChartModel>;
     badge?: boolean;
 }>();
 
 const buttonModel = ref('');
+const handlerWrapper = () => 
+{
+    const msgs: Message[] = props.popupButtonModel.handleAll();
+    for (const msg of msgs) 
+    {
+        if (msg.status === STATUS.FAIL) 
+        {
+            $q.notify({
+                type: 'negative',
+                message: msg.message,
+            });
+        }
+    }
+};
 </script>

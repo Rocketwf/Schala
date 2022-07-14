@@ -1,5 +1,6 @@
 import { Filter } from '../../filters';
 import { Filterable } from '../../filters/Filterable';
+import { Message } from '../../misc/Message';
 import { ObjectSeriesChartModel } from '../objectserieschartmodel';
 
 export class ChartOptionsModel implements Filterable<ChartOptionsModel> 
@@ -90,13 +91,14 @@ export class ChartOptionsModel implements Filterable<ChartOptionsModel>
     /**
      * Applies all filters on the model
      */
-    applyAllFilters(): void 
+    applyAllFilters(): Message[] 
     {
         // persist if needed
         for (const filter of this._filters) 
         {
             filter.applyValidate(this);
         }
+        return null;
     }
     /**
      * Getter method of the filters attribute

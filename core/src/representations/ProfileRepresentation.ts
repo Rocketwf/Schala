@@ -402,7 +402,6 @@ export class ProfileRepresentation
             series.push(new Series(cby.year + '', [isc, sc, cbo]));
         }
         series = series.sort(this.sortSeriesByName);
-        console.log(series);
         const cby: StackedColumnsChartModel = new StackedColumnsChartModel(
             CARDS.CITATIONS_BY_YEAR.CARD_DATA.TITLE,
             '',

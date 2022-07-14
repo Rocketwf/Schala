@@ -1,5 +1,6 @@
 import { Filter, Filterable } from '../../filters';
 import { Expandable } from '../../filters/Filterable';
+import { Message, STATUS } from '../../misc/Message';
 import { ChartOptionsModel } from '../chartoptionsmodel';
 import { PopupEditButton } from '../inputs';
 import { SimpleCardModel, ViewName } from '../simplecardmodel/SimpleCardModel';
@@ -133,15 +134,27 @@ implements Filterable<ObjectSeriesChartModel>, Expandable<ObjectSeriesChartModel
     /**
      * Applies all the filters with the current value on the cached data.
      */
-    public applyAllFilters(): void 
+    public applyAllFilters(): Message[] 
     {
         this.persistOnce();
 
+        const persistForFailure: ObjectSeriesChartModel = this.deepCopy();
+
         this.series = this._cachedModel.series;
+
+
+        const msgs: Message[] = new Array<Message>();
         for (const filter of this._filters) 
         {
-            filter.applyValidate(this);
+            const msg: Message = filter.applyValidate(this);
+            msgs.push(msg);
+            if (msg.status === STATUS.FAIL) 
+            {
+                this.series = persistForFailure.series;
+                break;
+            }
         }
+        return msgs;
     }
 
     /**

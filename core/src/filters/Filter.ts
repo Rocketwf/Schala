@@ -1,3 +1,4 @@
+import { Message, STATUS } from '../misc/Message';
 import { Filterable } from './Filterable';
 
 export abstract class Filter<S, T extends Filterable<T>> 
@@ -27,23 +28,28 @@ export abstract class Filter<S, T extends Filterable<T>>
      * @param model - the given model
      * @returns true if the given model is valid
      */
-    validate(model: T): boolean 
+    validate(model: T): Message 
     {
         model;
-        return true;
+        return new Message(STATUS.OK, '');
     }
 
     /**
      * If the model is valid it calls apply method on the moodel
      * @param model - the given model
      */
-    applyValidate(model: T): void 
+    applyValidate(model: T): Message 
     {
-        const validate: boolean = this.validate(model);
-        if (validate)
+        const validate: Message = this.validate(model);
+        if (validate.status === STATUS.OK) 
         {
             this.apply(model);
         }
+        else 
+        {
+            this._value = this._previousValue;
+        }
+        return validate;
     }
 
     /**

@@ -6,10 +6,11 @@ export class Message
 {
     private _status: STATUS;
     private _message: string;
-    constructor(_status: STATUS, _message: string) 
+    constructor(_status: STATUS, _message?: string) 
     {
         this._status = _status;
         this._message = _message;
+        console.log(this._message);
     }
 
     public get message(): string 

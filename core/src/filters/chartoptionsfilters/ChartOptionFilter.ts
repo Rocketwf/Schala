@@ -1,3 +1,4 @@
+import { Message, STATUS } from '../../misc/Message';
 import { ChartOptionsModel } from '../../models';
 import { Filter } from '../Filter';
 
@@ -22,10 +23,10 @@ export class ScaleUpFilter extends ChartOptionFilter<boolean>
      * @param model -The given ChartOptionsModel
      * @returns true if the given model is valid
      */
-    validate(model: ChartOptionsModel): boolean 
+    validate(model: ChartOptionsModel): Message 
     {
         model;
-        return true;
+        return new Message(STATUS.OK);
     }
 
     /**
@@ -91,10 +92,10 @@ export class ScaleUpMixedFilter extends ChartOptionFilter<boolean>
      * @param model -The given ChartOptionsModel
      * @returns true if the given model is valid
      */
-    validate(model: ChartOptionsModel): boolean 
+    validate(model: ChartOptionsModel): Message 
     {
         model;
-        return true;
+        return new Message(STATUS.OK);
     }
 
     /**

@@ -7,6 +7,7 @@ import { SelectOptions } from '../inputs/Inputs';
 import { SimpleCardModel, ViewName } from '../simplecardmodel';
 import { Pagination } from '../viewmodels/Pagination';
 import { Filterable } from '../../filters/Filterable';
+import { Message } from '../../misc/Message';
 
 export class ArticlesModel implements Filterable<ArticlesModel>, Paginable<ArticlesModel>, SimpleCardModel 
 {
@@ -99,7 +100,7 @@ export class ArticlesModel implements Filterable<ArticlesModel>, Paginable<Artic
     /**
      * Applies all filters on the model
      */
-    public applyAllFilters(): void 
+    public applyAllFilters(): Message[] 
     {
         this.persistOnce();
 
@@ -112,6 +113,7 @@ export class ArticlesModel implements Filterable<ArticlesModel>, Paginable<Artic
 
         this._pagination.currentPage = 1;
         this._paginationFilter.applyValidate(this);
+        return null;
     }
     /**
      * Applies all pagination filters on the model

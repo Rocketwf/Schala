@@ -6,12 +6,6 @@
     >
       Nothing to be listed
     </div>
-    <div
-      v-else-if="badDataLength"
-      class="text-body1 text-center text-grey q-mb-xl"
-    >
-      The data is too large to fit, please use the expand button
-    </div>
     <apexchart
       v-else
       :height="height"
@@ -70,16 +64,7 @@ const getmaxLimit = computed(() =>
     }
     return 0;
 });
-const badDataLength = computed(() => 
-{
-    return (
-        props.basicBarsChartModel.isShowingExpandButton &&
-        !props.basicBarsChartModel.isExpanded &&
-        getLabels.value.length >= 20
-    );
-});
 
-console.log(badDataLength.value);
 const height = computed(() => 
 {
     if (!props.basicBarsChartModel.isShowingExpandButton) 

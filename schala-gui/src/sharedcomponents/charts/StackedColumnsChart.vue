@@ -6,12 +6,6 @@
     >
       Nothing to be listed
     </div>
-    <div
-      v-else-if="badDataLength"
-      class="text-body1 text-center text-grey q-mb-xl"
-    >
-      The data is too large to fit, please use the expand button
-    </div>
     <apexchart
       v-else
       :height="stackedColumnsChartModel.isExpanded ? '800px' : 340"
@@ -51,12 +45,10 @@ const noEntries = computed(() =>
 {
     let sum = 0;
     const series = getSeries();
-    console.log(series);
     for (const ser of series) 
     {
         sum += ser.data.length;
     }
-    console.log(sum);
     return sum === 0;
 });
 const getLabels = computed(() => 
@@ -82,14 +74,6 @@ const defaultMax = (): ((max: number) => number) =>
 {
     return (max: number) => max;
 };
-const badDataLength = computed(() => 
-{
-    return (
-        props.stackedColumnsChartModel.isShowingExpandButton &&
-        !props.stackedColumnsChartModel.isExpanded &&
-        getLabels.value.length >= 20
-    );
-});
 type ApexOptionsType = { seriesIndex: number; dataPointIndex: number; w: { config: { series: Array<Series> } } };
 const chartOptions = computed(() => 
 {

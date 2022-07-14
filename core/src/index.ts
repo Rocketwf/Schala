@@ -42,3 +42,4 @@ export {
     HeatmapChartModel,
 } from './models';
 export { ProfileRepresentation, ComparisonRepresentation } from './representations';
+export { Message, STATUS } from './misc';

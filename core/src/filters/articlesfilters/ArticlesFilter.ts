@@ -1,3 +1,4 @@
+import { Message, STATUS } from '../../misc/Message';
 import { Article, ArticleCoAuthor, ArticlesModel } from '../../models';
 import { Filter } from '../Filter';
 
@@ -17,10 +18,10 @@ export class ArticlesPaginationFilter extends ArticlesFilter<number>
      * @param model -The given ArticlesModel
      * @returns true if the given model is valid
      */
-    validate(model: ArticlesModel): boolean 
+    validate(model: ArticlesModel): Message 
     {
         model;
-        return true;
+        return new Message(STATUS.OK);
     }
     /**
      *  Integer representing the number of articles per page.
@@ -74,10 +75,10 @@ export class ArticlesPaginationFilter extends ArticlesFilter<number>
 
 export class SortByFilter extends ArticlesFilter<string> 
 {
-    validate(model: ArticlesModel): boolean 
+    validate(model: ArticlesModel): Message 
     {
         model;
-        return true;
+        return new Message(STATUS.OK);
     }
     /**
      * Creates an instance of sort by filter.
@@ -161,10 +162,10 @@ export class CoauthorsFilter extends ArticlesFilter<string>
      * @param model - the given ArticlesModel
      * @returns true if the given model is valid
      */
-    validate(model: ArticlesModel): boolean 
+    validate(model: ArticlesModel): Message 
     {
         model;
-        return true;
+        return new Message(STATUS.OK);
     }
 
     /**
@@ -235,10 +236,10 @@ export class WordsInArticleTitleFilter extends ArticlesFilter<string>
      * @param model - the given ArticlesModel
      * @returns true if the given model is valid
      */
-    validate(model: ArticlesModel): boolean 
+    validate(model: ArticlesModel): Message 
     {
         model;
-        return true;
+        return new Message(STATUS.OK);
     }
 
     /**
@@ -303,10 +304,10 @@ export class NumberOfCitationsFilter extends ArticlesFilter<string>
      * @param model - the given ArticlesModel
      * @returns true if the given model is valid
      */
-    validate(model: ArticlesModel): boolean 
+    validate(model: ArticlesModel): Message 
     {
         model;
-        return true;
+        return new Message(STATUS.OK);
     }
     /**
      * Applys number of citations filter
@@ -351,10 +352,10 @@ export class KeywordsFilter extends ArticlesFilter<string>
      * @param model - the given ArticlesModel
      * @returns true if the given model is valid
      */
-    validate(model: ArticlesModel): boolean 
+    validate(model: ArticlesModel): Message 
     {
         model;
-        return true;
+        return new Message(STATUS.OK);
     }
 
     /**

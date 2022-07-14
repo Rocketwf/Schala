@@ -1,5 +1,6 @@
 import { Filter } from '../../filters';
 import { Filterable } from '../../filters/Filterable';
+import { Message } from '../../misc/Message';
 import { BasicProfile } from '../profile/Profile';
 
 export class SearchResultsModel implements Filterable<SearchResultsModel> 
@@ -60,7 +61,7 @@ export class SearchResultsModel implements Filterable<SearchResultsModel>
         return new SearchResultsModel(basicProfilesCopy);
     }
 
-    public applyAllFilters(): void 
+    public applyAllFilters(): Message[] 
     {
         return;
     }

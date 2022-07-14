@@ -1,5 +1,6 @@
 import { BasicProfile, SearchResultsModel } from '../../models';
 import { Filter } from '../';
+import { Message, STATUS } from '../../misc/Message';
 
 export abstract class SearchResultsFilter<S> extends Filter<S, SearchResultsModel> 
 {
@@ -17,10 +18,10 @@ export class AffiliationFilter extends SearchResultsFilter<string>
      * @param model - the given SearchResultsModel
      * @returns true if the given model is valid
      */
-    validate(model: SearchResultsModel): boolean 
+    validate(model: SearchResultsModel): Message 
     {
         model;
-        return true;
+        return new Message(STATUS.OK);
     }
     deepCopy(): AffiliationFilter 
     {
@@ -66,10 +67,10 @@ export class AffiliationFilter extends SearchResultsFilter<string>
 
 export class WordsInTitleFilter extends SearchResultsFilter<string> 
 {
-    validate(model: SearchResultsModel): boolean 
+    validate(model: SearchResultsModel): Message 
     {
         model;
-        return true;
+        return new Message(STATUS.OK);
     }
     /**
      * Creates an instance of words in title filter.
@@ -110,10 +111,10 @@ export class SearchResultsPaginationFilter extends SearchResultsFilter<number>
      * @param model - the given SearchResultsModel
      * @returns true if the given model is valid
      */
-    validate(model: SearchResultsModel): boolean 
+    validate(model: SearchResultsModel): Message 
     {
         model;
-        return true;
+        return new Message(STATUS.OK);
     }
     /**
      *  Integer representing the number of articles per page.

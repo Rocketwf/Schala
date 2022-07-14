@@ -33,7 +33,6 @@ import DistributedColumnsChartDialogPluginComponentVue from 'src/sharedcomponent
 const props = defineProps<{
     cardModel: DistributedColumnsChartModel;
 }>();
-console.log(props.cardModel.isExpanded);
 const $q = useQuasar();
 const showDialog = () => 
 {

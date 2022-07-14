@@ -1,4 +1,5 @@
 import { Filterable } from '../../filters';
+import { Message } from '../../misc/Message';
 import { ArticlesModel } from '../articlesmodel';
 import { ObjectSeriesChartModel } from '../objectserieschartmodel';
 import { Field } from './Inputs';
@@ -23,7 +24,7 @@ export interface PopupEditButton<T, S extends Filterable<S>> {
     /**
      * Method for handling all inputs
      */
-    handleAll(): void;
+    handleAll(): Message[];
 
     deepCopy(): PopupEditButton<T, S>;
 }
@@ -76,12 +77,14 @@ export class RangeButton implements PopupEditButton<number, ObjectSeriesChartMod
     /**
      * Method for hadnling all inputs
      */
-    public handleAll(): void 
+    public handleAll(): Message[] 
     {
+        const msgs: Message[] = [];
         for (const input of this._inputs) 
         {
-            input.handleInput();
+            msgs.push(...input.handleInput());
         }
+        return msgs;
     }
     /**
      * Setter method of the label attribute
@@ -172,9 +175,9 @@ export class ShowingButton implements PopupEditButton<number, ObjectSeriesChartM
     /**
      * Method for handling all inputs
      */
-    public handleAll(): void 
+    public handleAll(): Message[] 
     {
-        this._inputs[0].handleInput();
+        return this._inputs[0].handleInput();
     }
     /**
      * Setter method of the label attribute
@@ -275,12 +278,14 @@ export class ArticlesFilterButton implements PopupEditButton<string, ArticlesMod
     /**
      * Method for handling all inputs
      */
-    public handleAll(): void 
+    public handleAll(): Message[] 
     {
-        for (const input of this.inputs) 
+        let msgs: Message[];
+        for (const input of this._inputs) 
         {
-            input.handleInput();
+            msgs = input.handleInput();
         }
+        return msgs;
     }
     /**
      * Setter method of the label attribute

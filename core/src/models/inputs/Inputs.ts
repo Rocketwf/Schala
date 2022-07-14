@@ -1,4 +1,5 @@
 import { Filter, Filterable } from '../../filters';
+import { Message, STATUS } from '../../misc/Message';
 
 export interface Input<T, S extends Filterable<S>> {
     /**
@@ -25,7 +26,7 @@ export interface Input<T, S extends Filterable<S>> {
     /**
      *Defines a handler for a new input, it changes the current value of the corresponding filter object, and calls applyAllFilters on the data
      */
-    handleInput(): void;
+    handleInput(): Message[];
 
     deepCopy(): Input<T, S>;
 }
@@ -85,13 +86,22 @@ export class Field<T, S extends Filterable<S>> implements Input<T, S>
     /**
      *Defines a handler for a new input, it changes the current value of the corresponding filter object, and calls applyAllFilters on the data
      */
-    handleInput(): void 
+    handleInput(): Message[] 
     {
         this._filter.value = this._inputValue;
+        const msgs: Message[] = [];
         for (const entry of this._data) 
         {
-            entry.applyAllFilters();
+            msgs.push(...entry.applyAllFilters());
         }
+        for (const msg of msgs) 
+        {
+            if (msg.status === STATUS.FAIL) 
+            {
+                this._inputValue = this._filter.value;
+            }
+        }
+        return msgs;
     }
     /**
      * Getter method of filter attribute
@@ -215,13 +225,14 @@ export class CheckBox<S extends Filterable<S>> implements Input<boolean, S>
     /**
      *Defines a handler for a new input, it changes the current value of the corresponding filter object, and calls applyAllFilters on the data
      */
-    handleInput(): void 
+    handleInput(): Message[] 
     {
         this._filter.value = this._inputValue;
         for (const entry of this._data) 
         {
             entry.applyAllFilters();
         }
+        return null;
     }
     /**
      * Getter method of filter attribute
@@ -336,13 +347,14 @@ export class SelectOptions<T, S extends Filterable<S>> implements Input<T, S>
     /**
      *Defines a handler for a new input, it changes the current value of the corresponding filter object, and calls applyAllFilters on the data
      */
-    public handleInput(): void 
+    public handleInput(): Message[] 
     {
         this._filter.value = this._inputValue;
         for (const entry of this._data) 
         {
             entry.applyAllFilters();
         }
+        return null;
     }
     /**
      * Getter method of data attribute
