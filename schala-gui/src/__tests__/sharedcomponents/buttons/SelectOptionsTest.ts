@@ -10,7 +10,7 @@ const mockArticlesModel = new ArticlesModel([], 'Title', 'sub', ViewName.Article
 
 describe('SelectOptions', () =>
 {
-    let wrapper: VueWrapper<any>;
+    let wrapper: VueWrapper;
     beforeEach(() =>
     {
         wrapper = mount(SelectOptions, {

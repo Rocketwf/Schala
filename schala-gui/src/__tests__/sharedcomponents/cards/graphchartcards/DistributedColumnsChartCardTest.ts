@@ -18,7 +18,7 @@ const mockCardModel = new DistributedColumnsChartModel('Title', '', ViewName.Dis
 
 describe('DistributedColumnsChartCard', () =>
 {
-    let wrapper: VueWrapper<InstanceType<typeof DistributedColumnsChartCard>>;
+    let wrapper: VueWrapper;
     beforeEach(() =>
     {
         wrapper = mount(DistributedColumnsChartCard, {
@@ -36,11 +36,6 @@ describe('DistributedColumnsChartCard', () =>
 
     it('has correct attributes', () =>
     {
-        const wrapper = mount(DistributedColumnsChartCard, {
-            props: {
-                cardModel: mockCardModel,
-            }
-        });
         expect(wrapper.text()).toEqual('Title');
 
     });

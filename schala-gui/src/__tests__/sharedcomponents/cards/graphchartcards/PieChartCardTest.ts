@@ -17,7 +17,7 @@ const mockCardModel = new PieChartModel('Title', '', ViewName.PieChartCard, 10, 
 
 describe('PieChartCard', () =>
 {
-    let wrapper: VueWrapper<InstanceType<typeof PieChartCard>>;
+    let wrapper: VueWrapper;
     beforeEach(() =>
     {
         wrapper = mount(PieChartCard, {
@@ -35,11 +35,6 @@ describe('PieChartCard', () =>
 
     it('has correct attributes', () =>
     {
-        const wrapper = mount(PieChartCard, {
-            props: {
-                cardModel: mockCardModel,
-            }
-        });
         expect(wrapper.text()).toEqual('Title');
 
     });

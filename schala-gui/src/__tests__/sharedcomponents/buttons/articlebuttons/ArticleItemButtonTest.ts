@@ -9,7 +9,7 @@ const string = 'article';
 
 describe('ArticleItemButton', () =>
 {
-    let wrapper: VueWrapper<any>;
+    let wrapper: VueWrapper;
     beforeEach(() =>
     {
         wrapper = mount(ArticleItemButton, {

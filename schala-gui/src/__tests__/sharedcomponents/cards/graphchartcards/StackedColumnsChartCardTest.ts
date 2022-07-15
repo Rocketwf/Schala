@@ -18,7 +18,7 @@ const mockCardModel = new StackedColumnsChartModel('Title', '', ViewName.Stacked
 
 describe('StackedColumnsChartCard', () =>
 {
-    let wrapper: VueWrapper<InstanceType<typeof StackedColumnsChartCard>>;
+    let wrapper: VueWrapper;
     beforeEach(() =>
     {
         wrapper = mount(StackedColumnsChartCard, {
@@ -36,11 +36,6 @@ describe('StackedColumnsChartCard', () =>
 
     it('has correct attributes', () =>
     {
-        const wrapper = mount(StackedColumnsChartCard, {
-            props: {
-                cardModel: mockCardModel,
-            }
-        });
         expect(wrapper.text()).toEqual('Title');
 
     });

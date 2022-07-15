@@ -10,7 +10,7 @@ const mockArticlesModel = new ArticlesModel([], 'Title', 'sub', ViewName.Article
 
 describe('ExperimentalGenericPagination', () =>
 {
-    let wrapper: VueWrapper<any>;
+    let wrapper: VueWrapper;
     beforeEach(() =>
     {
         wrapper = mount(ExperimentalGenericPagination, {

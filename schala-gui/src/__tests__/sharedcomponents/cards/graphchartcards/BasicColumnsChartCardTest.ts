@@ -18,7 +18,7 @@ const mockCardModel = new BasicColumnsChartModel('Title', '', ViewName.BasicColu
 
 describe('BasicColumnsChartCard', () =>
 {
-    let wrapper: VueWrapper<InstanceType<typeof BasicColumnsChartCard>>;
+    let wrapper: VueWrapper;
     beforeEach(() =>
     {
         wrapper = mount(BasicColumnsChartCard, {
@@ -36,11 +36,6 @@ describe('BasicColumnsChartCard', () =>
 
     it('has correct attributes', () =>
     {
-        const wrapper = mount(BasicColumnsChartCard, {
-            props: {
-                cardModel: mockCardModel,
-            }
-        });
         expect(wrapper.text()).toEqual('Title');
 
     });

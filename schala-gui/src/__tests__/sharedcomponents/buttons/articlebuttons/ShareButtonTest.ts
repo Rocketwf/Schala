@@ -10,7 +10,7 @@ const iconString = 'icon';
 
 describe('ShareButton', () =>
 {
-    let wrapper: VueWrapper<any>;
+    let wrapper: VueWrapper;
     beforeEach(() =>
     {
         wrapper = mount(ShareButton, {

@@ -9,7 +9,7 @@ const exp = 'expertise';
 
 describe('ExpertiseItem', () =>
 {
-    let wrapper: VueWrapper<any>;
+    let wrapper: VueWrapper;
     beforeEach(() =>
     {
         wrapper = mount(ExpertiseItem, {
