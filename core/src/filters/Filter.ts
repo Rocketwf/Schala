@@ -1,3 +1,4 @@
+import { Message, STATUS } from '../misc/Message';
 import { Filterable } from './Filterable';
 
 export abstract class Filter<S, T extends Filterable<T>> 
@@ -6,6 +7,7 @@ export abstract class Filter<S, T extends Filterable<T>>
      * The value  of a filter
      */
     protected _value: S;
+    protected _previousValue: S = null;
 
     /**
      * Creates an instance of filter.
@@ -26,20 +28,28 @@ export abstract class Filter<S, T extends Filterable<T>>
      * @param model - the given model
      * @returns true if the given model is valid
      */
-    validate(model: T): boolean 
+    validate(model: T): Message 
     {
         model;
-        return true;
+        return new Message(STATUS.OK, '');
     }
 
     /**
      * If the model is valid it calls apply method on the moodel
      * @param model - the given model
      */
-    applyValidate(model: T): void 
+    applyValidate(model: T): Message 
     {
-        console.log(this.validate(model));
-        if (this.validate(model)) this.apply(model);
+        const validate: Message = this.validate(model);
+        if (validate.status === STATUS.OK) 
+        {
+            this.apply(model);
+        }
+        else 
+        {
+            this._value = this._previousValue;
+        }
+        return validate;
     }
 
     /**
@@ -47,6 +57,7 @@ export abstract class Filter<S, T extends Filterable<T>>
      */
     public set value(newValue: S) 
     {
+        this._previousValue = this._value;
         this._value = newValue;
     }
 
@@ -57,4 +68,5 @@ export abstract class Filter<S, T extends Filterable<T>>
     {
         return this._value;
     }
+    abstract deepCopy(): Filter<S, T>;
 }

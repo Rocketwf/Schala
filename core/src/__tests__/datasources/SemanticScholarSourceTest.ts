@@ -1,21 +1,27 @@
 // import { SemanticScholarSource } from '../../datasources';
 // import { Article } from '../../models';
 
+import { SemanticScholarSource } from '../../datasources/SemanticScholarSource';
+import { BasicProfile, FullProfile } from '../../models';
+
 describe('findOrCreate method', () => 
 {
-    // it('fetches author ids', async () => {
-    //     const basicAuthors: APIBasicAuthor[] = await SemanticScholarSource.getInstance().fetchSearchResults('walter tichy');
-    //     const authorIDs: string[] =[];
-    //     for(const basicAuthor of basicAuthors){
-    //          authorIds.push(basicAuthor.authorId)
-    //}
-    //     expect(authorsIds).toStrictEqual(['143732150', '1679754', '1395637352', '89914629']);
-    // }, 30000);
+    it('fetches author ids', async () => 
+    {
+        const basicAuthors: BasicProfile[] = await SemanticScholarSource.getInstance().fetchSearchResults('walter tichy');
+        const authorIDs: string[] =[];
+        for(const basicAuthor of basicAuthors)
+        {
+            authorIDs.push(basicAuthor.id);
+        }
+        expect(authorIDs).toStrictEqual(['143732150', '1679754', '1395637352', '89914629']);
+    }, 30000);
 
-    //it('fetches an author', async () => {
-    //const authors: APIAuthor[] = await SemanticScholarSource.getInstance().fetchAuthor('1679754');
-    //expect(auhtors.length > 0).toBe(true);
-    //}, 30000);
+    it('fetches an author and checks name', async () => 
+    {
+        const author: FullProfile = await SemanticScholarSource.getInstance().fetchFullProfile('1679754');
+        expect(author.basicProfile.name).toBe('Walter F Tichy');
+    }, 30000);
 
     //it('fetches the correct first paper', async () => {
     //const articles: APIPaper[] = await SemanticScholarSource.getInstance().fetcPapers('1679754');
@@ -56,8 +62,4 @@ describe('findOrCreate method', () =>
     //     const authors: APIAuthor[] = await SemanticScholarSource.getInstance().fetchAuthor('1679754');
     //     expect(authors[0].homepage != null).toBe(true);
     // });
-    it('fetches author articles', async () => 
-    {
-        expect(true).toBe(true);
-    }, 30000);
 });

@@ -33,11 +33,11 @@ export class BasicProfile extends Profile
     /**
      * Creates an instance of basic profile.
      * @param _id - The ID of the basic profile
-     * @param [_name] - The name of the basic profile
-     * @param [_affiliations] - The affiliations of the basic profile
-     * @param [_totalCitations] - The total citations of the basic profile
-     * @param [_paperCount] - The paper count of the basic profile
-     * @param [_pictureUrl] - The picture URL of the basic profile
+     * @param _name - The name of the basic profile
+     * @param _affiliations - The affiliations of the basic profile
+     * @param _totalCitations - The total citations of the basic profile
+     * @param _paperCount - The paper count of the basic profile
+     * @param _pictureUrl - The picture URL of the basic profile
      */
     constructor(
         _id: string,

@@ -44,4 +44,9 @@ export class SearchResultsService extends ProfileService
         }
         return basicProfiles;
     }
+    update(authorId: string): void 
+    {
+        authorId;
+        return;
+    }
 }

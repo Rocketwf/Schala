@@ -4,7 +4,9 @@
     style="100%"
   >
     <div
-      :class="'col-md-' + getComparePageStore().comparisonRepresentation.getSummaryWidth() + ' col-xs-12 self-center'"
+      :class="
+        'col-md-' + getComparePageStore().comparisonRepresentation.getSummaryWidth() + ' col-xs-12'
+      "
       v-for="profile of getComparePageStore().comparisonRepresentation.fullProfiles"
       :key="profile.basicProfile.id"
     >
@@ -50,7 +52,7 @@ onBeforeMount(() =>
     {
         $q.notify({
             type: 'negative',
-            message: 'Add a profile to the compare page first'
+            message: 'Add a profile to the compare page first',
         });
         router.push({ path: '/profile/search' });
     }

@@ -39,6 +39,14 @@ export class Article
      */
     private _articlesCoAuthors: ArticleCoAuthor[];
 
+    private _publicationDate: string;
+
+    private _bibtex: string;
+
+    private _journalName: string;
+
+    private _fieldsOfExpertise: string[];
+
     /**
      * Creates an instance of article.
      * @param _title - The title of the article
@@ -59,6 +67,10 @@ export class Article
         _url: string,
         _abstract: string,
         _articlesCoAuthors: ArticleCoAuthor[],
+        _publicationDate: string,
+        _bibtex: string,
+        _journalName: string,
+        _fieldsOfExpertise: string[],
     ) 
     {
         this._title = _title;
@@ -69,6 +81,10 @@ export class Article
         this._url = _url;
         this._abstract = _abstract;
         this._articlesCoAuthors = _articlesCoAuthors;
+        this._publicationDate = _publicationDate;
+        this._bibtex = _bibtex;
+        this._journalName = _journalName;
+        this._fieldsOfExpertise = _fieldsOfExpertise;
     }
 
     /**
@@ -197,5 +213,48 @@ export class Article
     public set abstract(_abstract: string) 
     {
         this._abstract = _abstract;
+    }
+
+    /**
+     * Getter method of the publicationDate attribute
+     */
+    public get publicationDate(): string 
+    {
+        return this._publicationDate;
+    }
+     
+    public set publicationDate(_newDate: string) 
+    {
+        this._publicationDate = _newDate;
+    }
+
+    public get bibtex(): string 
+    {
+        return this._bibtex;
+    }
+     
+    public set bibtex(_newBibtex: string) 
+    {
+        this._bibtex = _newBibtex;
+    }
+
+    public get journalName(): string 
+    {
+        return this._journalName;
+    }
+     
+    public set journalName(_newJournalName: string) 
+    {
+        this._journalName = _newJournalName;
+    }
+
+    public get fieldsOfExpertise(): string[] 
+    {
+        return this._fieldsOfExpertise;
+    }
+     
+    public set fieldsOfExpertise(_newFieldsOfExpertise: string[]) 
+    {
+        this._fieldsOfExpertise = _newFieldsOfExpertise;
     }
 }

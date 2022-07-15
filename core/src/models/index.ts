@@ -15,6 +15,6 @@ export {
 } from './objectserieschartmodel';
 export { Profile, BasicProfile, FullProfile } from './profile';
 export { SearchResultsModel } from './searchresultsmodel';
-export { SimpleCardModel, ViewName, PieChartModel, ExpertiseModel } from './simplecardmodel';
+export { SimpleCardModel, ViewName, PieChartModel, ExpertiseModel, HeatmapChartModel } from './simplecardmodel';
 export { RowModel, Tab } from './viewmodels';
 export { Pagination } from './viewmodels/Pagination';

@@ -1,5 +1,5 @@
 import { Article, ArticleCoAuthor } from '../models/articles/Article';
-import { Author, PublicationByYear, PublicationByVenue, CitedScholar, CitationByYear } from '../models/profile/Profile';
+import { Author, PublicationByYear, PublicationByVenue, CitedScholar, CitationByYear, ProfileExpertise } from '../models/profile/Profile';
 import { APIBasicProfile, APIFullProfile } from '../models/api/API';
 import { DataSource } from './DataSource';
 import axios, { AxiosResponse } from 'axios';
@@ -23,12 +23,12 @@ export class SemanticScholarSource implements DataSource
     /**
      * Represents the URL address
      */
-    private URL: string = 'http://localhost';
+    private URL: string = process.env.API_URL ? process.env.API_URL : 'http://localhost';
 
     /**
      * Represents the port number
      */
-    private PORT: number = 3000;
+    private PORT: number = process.env.API_PORT ? +process.env.API_PORT : 3000;
 
     /**
      * Represents a map for query results where key is the search string and value is an array consisting of BasicProfile objects
@@ -170,9 +170,14 @@ export class SemanticScholarSource implements DataSource
                             art._venue,
                             art._publicationYear,
                             art._citationCount,
+                            art._selfCitationsCount,
                             art._url,
                             coAuthors,
                             art._abstract,
+                            art._publicationDate,
+                            art._bibtex,
+                            art._journalName,
+                            art._fieldsOfExpertise,
                         ),
                     );
                 }
@@ -211,8 +216,14 @@ export class SemanticScholarSource implements DataSource
                     const newAuthor: Author = new Author(auth._name, auth._jointPublicationCount, auth._hIndex);
                     authors.push(newAuthor);
                 }
+                const expertise: ProfileExpertise[] = new Array<ProfileExpertise>();
+                for (const exp of fp._expertise)
+                {
+                    const newExpertise: ProfileExpertise = new ProfileExpertise(exp._name, exp._count);
+                    expertise.push(newExpertise);
+                }
                 const fullProfile: FullProfile = new FullProfile(
-                    fp._expertise,
+                    expertise,
                     fp._hIndex,
                     fp._hIndexWithoutSelfCitations,
                     fp._i10Index,
