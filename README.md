@@ -1,3 +1,20 @@
+# Documentation
+
+- [Documentation](#documentation)
+- [Contribute](#contribute)
+  - [Human language policy](#human-language-policy)
+  - [Codestyle policy](#codestyle-policy)
+  - [Workflow](#workflow)
+- [Development](#development)
+  - [Prerequisites](#prerequisites)
+    - [NodeJS >=18](#nodejs-18)
+  - [SemanticScholar API key](#semanticscholar-api-key)
+  - [Build/Install: necessary steps](#buildinstall-necessary-steps)
+  - [Build/Install: spa/electron](#buildinstall-spaelectron)
+  - [Build/Install: Android](#buildinstall-android)
+  - [Docker](#docker)
+  - [docker-compose](#docker-compose)
+
 # Contribute
 ## Human language policy
 * Try to use technical terminology in your commits
@@ -18,8 +35,8 @@
 4. repeat step.3 until you are done working on the feature
 4. create a pull request
 5. make sure your PR passes CI
-## Development
-### Prerequisites
+# Development
+## Prerequisites
 Make sure you have all the following dependencies <br />
 On Debian based systems e.g., Ubuntu and WSL: <br />
 First, update your local repos:
@@ -43,12 +60,12 @@ Using the following command install @quasar/cli and yarn:
 ```console
 sudo npm i -g @quasar/cli yarn
 ```
-### SemanticScholar API key:
+## SemanticScholar API key
 If you have an SemanticScholar API key you can use it by ecporting it as a global variable (Replace API_KEY with your key)
 ```console
 export SCHALA_API_KEY='API_KEY'
 ```
-### Build/Install: spa/electron
+## Build/Install: necessary steps
 First time you need to the following command to install all dependencies
 ```console
 make all
@@ -69,6 +86,7 @@ To run the gui tests only:
 ```console
 make core_test
 ```
+## Build/Install: spa/electron
 To build the project (SPA):
 ```console
 make build_spa
@@ -77,7 +95,7 @@ To build the project (electron):
 ```console
 make build_electron
 ```
-### Build/Install: Android
+## Build/Install: Android
 Install Java 8:
 ```console
 apt install openjdk-8-jdk
@@ -123,4 +141,42 @@ cd src-cordova
 Build using cordova:
 ```console
 cordova build android
+```
+## Docker
+You can build the docker image, by running the following:
+```console
+sudo docker build --file=schala-gui/Dockerfile -t schala-gui .
+```
+And then run the build by:
+```console
+sudo docker run -d \
+-p 8000:80 \
+-e API_URL=backend-host \
+-e API_PORT=3000 \
+schala-gui
+```
+Same goes for the backend (build):
+```console
+sudo docker build --file=server/Dockerfile -t schala-server .
+```
+And then run the build by:
+```console
+sudo docker run -d \
+-p 3000:80 \
+-e SCHALA_API_KEY=key \
+-e NODE_PORT=80 \
+schala-server
+```
+## docker-compose
+Or you can use docker-compose, with the provided docker-compose, for that create a copy of .env-example (.env), and set the environment variables:
+```console
+cp .env-example .env
+```
+Start front- and back-end with: 
+```console
+sudo docker-compose --env-file .env -f docker-compose.yml up --build --detach
+```
+Stop front- and back-end with: 
+```console
+sudo docker-compose -f docker-compose.yml down
 ```
