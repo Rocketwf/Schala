@@ -2,6 +2,7 @@
 
 clean_all:
 	rm -rf ./{core,schala-gui,server}/node_modules
+	rm -rf ./{core,schala-gui,server}/yarn.lock
 
 core_deps:
 	(cd core; yarn)
@@ -25,9 +26,6 @@ server_prepare:
 
 core: core_prepare update_core_in_gui
 
-run: server_prepare core
-	(cd schala-gui;yarn all)
-
 lint:
 	(cd server; yarn eslint ./src/ --ext .js,.jsx,.ts,.tsx --fix)
 	(cd core; yarn eslint ./src/ --ext .js,.jsx,.ts,.tsx --fix)
@@ -42,8 +40,14 @@ server_test:
 gui_test:
 	(cd schala-gui; yarn test:unit:ci)
 
-build_skip_test: core_deps core gui_deps update_core_in_gui
+build_spa_skip_test: core_deps core gui_deps update_core_in_gui
 	(cd schala-gui; yarn build)
 
-all: server_deps server_prepare server_test core_deps core core_test gui_deps
+build_electron: core_deps core gui_deps update_core_in_gui
+	(cd schala-gui; quasar build -m electron)
+
+run: server_prepare core
+	(cd schala-gui;yarn all)
+
+all: server_deps server_prepare core_deps core gui_deps
 	(cd schala-gui;yarn all)
