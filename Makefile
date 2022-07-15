@@ -40,7 +40,7 @@ server_test:
 gui_test:
 	(cd schala-gui; yarn test:unit:ci)
 
-build_spa_skip_test: core_deps core gui_deps update_core_in_gui
+build_spa: core_deps core gui_deps update_core_in_gui
 	(cd schala-gui; yarn build)
 
 build_electron: core_deps core gui_deps update_core_in_gui
@@ -50,4 +50,3 @@ run: server_prepare core
 	(cd schala-gui;yarn all)
 
 all: server_deps server_prepare core_deps core gui_deps
-	(cd schala-gui;yarn all)
