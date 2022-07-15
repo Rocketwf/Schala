@@ -37,3 +37,6 @@ yarn-error.log*
 
 # Ignore outer dir packages
 yarn.lock
+
+# Ignore .env
+.env

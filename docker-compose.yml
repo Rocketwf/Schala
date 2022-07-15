@@ -1,0 +1,22 @@
+version: '3'
+services:
+  schala-server:
+    build: 
+      context: .
+      dockerfile: server/Dockerfile
+    environment:
+      SCHALA_API_KEY: ${SCHALA_API_KEY}
+      NODE_PORT: ${NODE_PORT}
+    ports:
+      - ${API_PORT}:${NODE_PORT}
+  schala-gui:
+    build: 
+      context: .
+      dockerfile: schala-gui/Dockerfile
+    environment:
+      API_URL: ${API_URL}
+      API_PORT: ${API_PORT}
+    ports:
+      - 8000:80
+    depends_on: 
+      - schala-server

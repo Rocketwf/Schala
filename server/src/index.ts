@@ -17,7 +17,7 @@ const routes: Array<CommonRoutesConfig> = [];
 /**
  * Represents the port of the index as a number.
  */
-const port: number = 3000;
+const port: number = +process.env.NODE_PORT || 3000;
 
 app.use(cors());
 routes.push(new SearchResultsRoutes(app));
