@@ -65,6 +65,7 @@ export const comparePageStore = defineStore({
          */
         removeProfile(profileId: string) 
         {
+            this.profileIds.splice(this.profileIds.indexOf(profileId), 1);
             if (this.comparisonRepresentation.fullProfiles.length === 0) 
             {
                 return;

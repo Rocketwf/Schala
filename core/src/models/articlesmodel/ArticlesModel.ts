@@ -159,6 +159,8 @@ export class ArticlesModel implements Filterable<ArticlesModel>, Paginable<Artic
                 article.abstract,
                 article.publicationDate,
                 article.bibtex,
+                article.journalName,
+                article.fieldsOfExpertise,
             );
             articlesCopy.push(art);
         });

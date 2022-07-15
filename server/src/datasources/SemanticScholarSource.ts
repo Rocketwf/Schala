@@ -17,23 +17,19 @@ export class SemanticScholarSource implements DataSource
     private _pollingCache: Map<string, APIAuthor>;
 
     private _observers: Array<Observer>;
+    private _timer: NodeJS.Timer;
 
-    private async poll(): Promise<void> 
+    private async poll(): Promise<NodeJS.Timer> 
     {
-        setInterval(async () => 
+        this._timer = setInterval(async () => 
         {
             if (this._observers.length > 0) 
             {
-                console.log('polling');
                 for (const authorId of Array.from(this._pollingCache.keys())) 
                 {
                     if (Date.now() - this._pollingCache.get(authorId).timeStamp >= PROFILE_POLLING_INTERVAL) 
                     {
                         const newAuthor: APIAuthor = await this.fetchAuthor(authorId);
-                        console.log('Profile needs polling:', newAuthor);
-                        console.log('NEW:', newAuthor);
-                        console.log('OLD:', this._pollingCache.get(authorId));
-                        console.log('changes: ', !this.equalAuthors(newAuthor, this._pollingCache.get(authorId)));
                         if (!this.equalAuthors(newAuthor, this._pollingCache.get(authorId))) 
                         {
                             this.notifiy(authorId);
@@ -42,6 +38,7 @@ export class SemanticScholarSource implements DataSource
                 }
             }
         }, INTERNAL_POLLING_INTERVAL);
+        return this._timer;
     }
     constructor() 
     {
@@ -135,6 +132,7 @@ export class SemanticScholarSource implements DataSource
      */
     public async fetchPapers(paperIds: string[]): Promise<APIPaper[]> 
     {
+        this.destruct();
         const papers: APIPaper[] = new Array<APIPaper>();
         const promises: Promise<void | APIPaper>[] = new Array<Promise<void | APIPaper>>();
         try 
@@ -189,5 +187,9 @@ export class SemanticScholarSource implements DataSource
         {
             obs.update(authorId);
         }
+    }
+    public destruct(): void 
+    {
+        clearInterval(this._timer);
     }
 }

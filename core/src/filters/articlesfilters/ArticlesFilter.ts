@@ -369,7 +369,8 @@ export class KeywordsFilter extends ArticlesFilter<string>
             return;
         }
         const newArticles: Article[] = new Array<Article>();
-        for (const x of this.value.toLowerCase().split(',')) 
+        const inputs: string[] = this.value.toLowerCase().split(',');
+        for (const x of inputs) 
         {
             for (const art of model.articles) 
             {
@@ -386,5 +387,99 @@ export class KeywordsFilter extends ArticlesFilter<string>
             }
         }
         model.articles = newArticles;
+    }
+}
+
+export class JournalFilter extends ArticlesFilter<string>
+{
+    constructor(value: string) 
+    {
+        super(value);
+    }
+
+    validate(model: ArticlesModel): Message 
+    {
+        model;
+        return new Message(STATUS.OK);
+    }
+
+    apply(model: ArticlesModel): void
+    {
+        if (this.value === '') 
+        {
+            return;
+        }
+        const newArticles: Article[] = new Array<Article>();
+        const inputs: string[] = this.value.toLowerCase().split(',');
+        for (const x of inputs) 
+        {
+            for (const art of model.articles) 
+            {
+                if (!art.journalName) 
+                {
+                    continue;
+                }
+
+                const lowerCaseName: string = art.journalName.toLowerCase();
+                if (lowerCaseName.indexOf(x) >= 0) 
+                {
+                    newArticles.push(art);
+                }
+            }
+        }
+        model.articles = newArticles;
+    }
+
+    deepCopy(): JournalFilter
+    {
+        const copy: JournalFilter = new JournalFilter(this._value);
+        return copy;
+    }
+}
+
+export class ExpertiseFilter extends ArticlesFilter<string>
+{   
+    constructor(value: string) 
+    {
+        super(value);
+    }
+
+    validate(model: ArticlesModel): Message 
+    {
+        model;
+        return new Message(STATUS.OK);
+    }
+
+    apply(model: ArticlesModel): void
+    {
+        if (this.value === '') 
+        {
+            return;
+        }
+        const newArticles: Article[] = new Array<Article>();
+        const inputs: string[] = this.value.toLowerCase().split(',');
+        for (const x of inputs) 
+        {
+            for (const art of model.articles) 
+            {
+                if (!art.fieldsOfExpertise) 
+                {
+                    continue;
+                }
+
+                const lowerCaseName: string = art.fieldsOfExpertise.join(' ').toLowerCase();
+                if (lowerCaseName.indexOf(x) >= 0) 
+                {
+                    newArticles.push(art);
+                }
+            }
+        }
+        model.articles = newArticles;
+    }
+
+    deepCopy(): ExpertiseFilter
+    {
+        const copy: ExpertiseFilter = new ExpertiseFilter(this._value);
+        return copy;
     }
 }

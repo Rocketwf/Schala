@@ -34,6 +34,10 @@ export class Article
     private _bibtex: string;
 
     private _selfCitationsCount: number;
+
+    private _journalName: string;
+
+    private _fieldsOfExpertise: string[];
     /**
      * Creates an instance of article.
      * @param _title - Represents the title value as a string
@@ -55,6 +59,8 @@ export class Article
         _abstract: string,
         _publicationDate: string,
         _bibtex: string,
+        _journalName: string,
+        _fieldsOfExpertise: string[],
     ) 
     {
         this._title = _title;
@@ -67,6 +73,8 @@ export class Article
         this._abstract = _abstract;
         this._publicationDate = _publicationDate;
         this._bibtex = _bibtex;
+        this._journalName = _journalName;
+        this._fieldsOfExpertise = _fieldsOfExpertise;
     }
 
     /**
@@ -201,6 +209,26 @@ export class Article
     public set selfCitationsCount(v: number) 
     {
         this._selfCitationsCount = v;
+    }
+
+    public get journalName(): string 
+    {
+        return this._journalName;
+    }
+     
+    public set journalName(_newJournalName: string) 
+    {
+        this._journalName = _newJournalName;
+    }
+
+    public get fieldsOfExpertise(): string[] 
+    {
+        return this._fieldsOfExpertise;
+    }
+     
+    public set fieldsOfExpertise(_newFieldsOfExpertise: string[]) 
+    {
+        this._fieldsOfExpertise = _newFieldsOfExpertise;
     }
 }
 

@@ -19,6 +19,8 @@ import { FromFilter, ShowingFilter, ToFilter } from '../filters/objectserieschar
 import {
     ArticlesPaginationFilter,
     CoauthorsFilter,
+    ExpertiseFilter,
+    JournalFilter,
     KeywordsFilter,
     NumberOfCitationsFilter,
     SortByFilter,
@@ -495,6 +497,22 @@ export class ProfileRepresentation
             [articlesModel],
         );
 
+        const journalFilter: Filter<string, ArticlesModel> = new JournalFilter('');
+        const journalTextField: Field<string, ArticlesModel> = new Field<string, ArticlesModel>(
+            'Journal name',
+            '',
+            journalFilter,
+            [articlesModel],
+        );
+
+        const expertiseFilter: Filter<string, ArticlesModel> = new ExpertiseFilter('');
+        const expertiseTextField: Field<string, ArticlesModel> = new Field<string, ArticlesModel>(
+            'Fields of study seperated by ,',
+            '',
+            expertiseFilter,
+            [articlesModel],
+        );
+
         const minCitationsFilter: Filter<string, ArticlesModel> = new NumberOfCitationsFilter('0');
         const minCitationsField: Field<string, ArticlesModel> = new Field<string, ArticlesModel>(
             'With a minimum number of citations',
@@ -507,6 +525,8 @@ export class ProfileRepresentation
             coAuthorTextField,
             keywordsTextField,
             wordsInTitleField,
+            journalTextField,
+            expertiseTextField,
             minCitationsField,
         ]);
         articlesModel.popupButtons = [articlesFilterPopup];
@@ -532,6 +552,8 @@ export class ProfileRepresentation
             coAuthorsFilter,
             keywordsFilter,
             wordsInTitleFilter,
+            journalFilter,
+            expertiseFilter,
             minCitationsFilter,
             articlesSortByFilter,
         ];
