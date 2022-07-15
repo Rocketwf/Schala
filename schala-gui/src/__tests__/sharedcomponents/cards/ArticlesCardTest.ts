@@ -5,7 +5,7 @@ import { shallowMount } from '@vue/test-utils';
 import { ArticlesModel, Article, ViewName, ArticlesPaginationFilter } from 'schala-core';
 import ArticlesCard from '../../../sharedcomponents/cards/ArticlesCard.vue';
 
-const article = new Article('title', 'venue', 2000, 12, 'url', [], 'abstract');
+const article = new Article('title', 'venue', 2000, 12, 13, 'url', [], 'abstract', '', '', '', ['']);
 const articlesModel = new ArticlesModel([article], 'title', 'sub', ViewName.ArticlesCard, 5);
 articlesModel.paginationFilter = new ArticlesPaginationFilter(10);
 

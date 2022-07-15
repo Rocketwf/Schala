@@ -6,7 +6,7 @@ import ArticleItem from 'schala-gui/src/mainlayout/profilepage/ArticleItem.vue';
 
 installQuasarPlugin();
 
-const art = new Article('title', 'venue', 2000, 12, 'url', [], 'abstract');
+const art = new Article('title', 'venue', 2000, 12, 13, 'url', [], 'abstract', '', '', '', ['']);
 
 describe('ArticleItem', () =>
 {
