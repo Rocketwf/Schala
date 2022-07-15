@@ -3,7 +3,7 @@ import { installQuasarPlugin } from '@quasar/quasar-app-extension-testing-unit-j
 import { shallowMount } from '@vue/test-utils';
 import StackedColumnsChart from '../../../sharedcomponents/charts/StackedColumnsChart.vue';
 import { StackedColumnsChartModel, Series, ViewName } from 'schala-core';
-import VueApexCharts from "vue3-apexcharts";
+import VueApexCharts from 'vue3-apexcharts';
 
 
 installQuasarPlugin();
@@ -17,7 +17,7 @@ const testModel: StackedColumnsChartModel = new StackedColumnsChartModel(
     'xTitle',
     'yTitle',
     ['Test Label'],
-)
+);
 
 describe('StackedColumnsChart', () => 
 {

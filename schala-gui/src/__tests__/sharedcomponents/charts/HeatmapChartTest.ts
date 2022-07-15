@@ -3,7 +3,7 @@ import { installQuasarPlugin } from '@quasar/quasar-app-extension-testing-unit-j
 import { shallowMount } from '@vue/test-utils';
 import HeatmapChart from '../../../sharedcomponents/charts/HeatmapChart.vue';
 import { Series, ViewName, HeatmapChartModel } from 'schala-core';
-import VueApexCharts from "vue3-apexcharts";
+import VueApexCharts from 'vue3-apexcharts';
 
 
 installQuasarPlugin();
@@ -14,7 +14,7 @@ const testModel: HeatmapChartModel = new HeatmapChartModel(
     ViewName.HeatmapChartCard,
     10,
     [new Series('Test Series', [1])],
-)
+);
 
 describe('HeatmapChart', () => 
 {

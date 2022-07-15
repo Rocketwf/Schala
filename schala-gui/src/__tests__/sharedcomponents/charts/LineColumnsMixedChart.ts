@@ -3,7 +3,7 @@ import { installQuasarPlugin } from '@quasar/quasar-app-extension-testing-unit-j
 import { shallowMount } from '@vue/test-utils';
 import LineColumnsMixedChart from '../../../sharedcomponents/charts/LineColumnsMixedChart.vue';
 import { LineColumnsMixedChartModel, Series, ViewName } from 'schala-core';
-import VueApexCharts from "vue3-apexcharts";
+import VueApexCharts from 'vue3-apexcharts';
 
 
 installQuasarPlugin();
@@ -17,7 +17,7 @@ const testModel: LineColumnsMixedChartModel = new LineColumnsMixedChartModel(
     'xTitle',
     'yTitle',
     ['Test Label'],
-)
+);
 
 describe('LineColumnsMixedChart', () => 
 {

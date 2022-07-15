@@ -53,6 +53,7 @@ export {
     PublicationByVenue,
     PublicationByYear,
     HeatmapChartModel,
+    ProfileExpertise,
 } from './models';
 export { ProfileRepresentation, ComparisonRepresentation } from './representations';
 export { Message, STATUS } from './misc';

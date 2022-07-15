@@ -3,7 +3,7 @@ import { installQuasarPlugin } from '@quasar/quasar-app-extension-testing-unit-j
 import { shallowMount } from '@vue/test-utils';
 import PieChart from '../../../sharedcomponents/charts/PieChart.vue';
 import { PieChartModel, Series, ViewName } from 'schala-core';
-import VueApexCharts from "vue3-apexcharts";
+import VueApexCharts from 'vue3-apexcharts';
 
 
 installQuasarPlugin();
@@ -14,7 +14,7 @@ const testModel: PieChartModel = new PieChartModel(
     ViewName.PieChartCard,
     10,
     [new Series('Test Series', [1])],
-)
+);
 
 describe('PieChart', () => 
 {

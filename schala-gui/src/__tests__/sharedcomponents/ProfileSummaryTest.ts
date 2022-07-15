@@ -8,6 +8,7 @@ import {
     CitedScholar,
     PublicationByVenue,
     PublicationByYear,
+    ProfileExpertise
 } from 'schala-core';
 
 import ProfileSummary from '../../../../schala-gui/src/sharedcomponents/ProfileSummary.vue';
@@ -23,7 +24,7 @@ jest.mock('vue-router', () => ({
 }));
 
 const testProfile = new FullProfile(
-    ['a', 'b', 'c'],
+    [new ProfileExpertise('a', 2), new ProfileExpertise('b', 3), new ProfileExpertise('c', 4)],
     1000,
     1001,
     2000,

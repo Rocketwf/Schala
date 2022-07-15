@@ -33,7 +33,7 @@ describe('PageRow', () =>
         const rm: RowModel = new RowModel(1);
         const filter: ScaleUpFilter = new ScaleUpFilter(true);
         com.filters = [filter];
-        const checkbox: CheckBox<ChartOptionsModel> = new CheckBox('name', Math.random().toString(32), true, filter);
+        const checkbox: CheckBox<ChartOptionsModel> = new CheckBox('name', true, filter, [com]);
         checkbox.data = [com];
         rm.checkBoxes = [checkbox];
 

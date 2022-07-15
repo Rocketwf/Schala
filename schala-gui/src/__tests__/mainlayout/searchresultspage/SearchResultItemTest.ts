@@ -13,6 +13,7 @@ import {
     FullProfile,
     ProfileRepresentation,
 } from 'schala-core';
+import { ProfileExpertise } from 'schala-core/dist/models/profile/Profile';
 installQuasarPlugin();
 const routerPushMock = jest.fn();
 
@@ -40,7 +41,7 @@ const profileStore = profilePageStore();
 profilePageStore.$id = 'profilePage';
 profileStore.profileRepresentation = new ProfileRepresentation(
     new FullProfile(
-        ['a', 'b', 'c'],
+        [new ProfileExpertise('a', 2), new ProfileExpertise('b', 3), new ProfileExpertise('c', 4)],
         1000,
         1001,
         2000,

@@ -22,6 +22,7 @@ export {
     CitedScholar,
     PublicationByVenue,
     PublicationByYear,
+    ProfileExpertise,
 } from './profile';
 export { SearchResultsModel } from './searchresultsmodel';
 export { SimpleCardModel, ViewName, PieChartModel, Expertise, ExpertiseModel, HeatmapChartModel } from './simplecardmodel';

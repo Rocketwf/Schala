@@ -7,4 +7,5 @@ export {
     CitedScholar,
     PublicationByVenue,
     PublicationByYear,
+    ProfileExpertise,
 } from './Profile';
