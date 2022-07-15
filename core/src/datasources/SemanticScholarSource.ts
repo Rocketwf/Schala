@@ -23,12 +23,12 @@ export class SemanticScholarSource implements DataSource
     /**
      * Represents the URL address
      */
-    private URL: string = 'http://localhost';
+    private URL: string = process.env.API_URL ? process.env.API_URL : 'http://localhost';
 
     /**
      * Represents the port number
      */
-    private PORT: number = 3000;
+    private PORT: number = process.env.API_PORT ? +process.env.API_PORT : 3000;
 
     /**
      * Represents a map for query results where key is the search string and value is an array consisting of BasicProfile objects

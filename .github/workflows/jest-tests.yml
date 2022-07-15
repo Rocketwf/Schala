@@ -4,9 +4,12 @@ on:
   push
 
 jobs:
-  run-linters:
-    name: Run core and server test units
+  run-jest-tests:
+    name: Run core and gui tests
     runs-on: ubuntu-latest
+    env:
+      API_URL: "http://70.34.209.19"
+      API_PORT: "3000"
 
     steps:
       - name: Check out Git repository
@@ -19,14 +22,6 @@ jobs:
       - name: Run core tests
         run: yarn test
         working-directory: core
-
-      - name: Install server dependencies
-        run: yarn
-        working-directory: server
-        
-      - name: Run server tests
-        run: yarn test
-        working-directory: server
 
       - name: Install gui dependencies
         run: yarn
