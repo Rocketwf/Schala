@@ -1,26 +1,28 @@
 import { installQuasarPlugin } from '@quasar/quasar-app-extension-testing-unit-jest';
 import { beforeEach, describe, expect, it } from '@jest/globals';
 import { mount, VueWrapper } from '@vue/test-utils';
-import { ArticlesModel, ViewName } from 'schala-core';
+import { ArticlesModel, ArticlesPaginationFilter, Pagination, ViewName } from 'schala-core';
 import ExperimentalGenericPagination from '../../sharedcomponents/ExperimentalGenericPagination.vue';
 
 installQuasarPlugin();
 
-const mockArticlesModel = new ArticlesModel([], 'Title', 'sub', ViewName.ArticlesCard, 5);
+const paginationFilter: ArticlesPaginationFilter = new ArticlesPaginationFilter(3) as ArticlesPaginationFilter;
+const artModel: ArticlesModel = new ArticlesModel([], 'Title', 'sub', ViewName.ArticlesCard, 5) as ArticlesModel;
+const mockArticlesModel = new Pagination<ArticlesModel>(paginationFilter, artModel) as Pagination<ArticlesModel>;
 
-describe('ExperimentalGenericPagination', () =>
+describe('ExperimentalGenericPagination', () => 
 {
     let wrapper: VueWrapper;
-    beforeEach(() =>
+    beforeEach(() => 
     {
         wrapper = mount(ExperimentalGenericPagination, {
             props: {
                 paginationModel: [mockArticlesModel],
-            }
+            },
         });
     });
 
-    it('renders', () =>
+    it('renders', () => 
     {
         expect(wrapper.exists()).toBe(true);
     });

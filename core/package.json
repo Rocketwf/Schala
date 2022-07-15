@@ -28,6 +28,6 @@
     "typescript": "^4.7.4"
   },
   "scripts": {
-    "test": "jest --config jestconfig.json"
+    "test": "jest --config jestconfig.json --silent"
   }
 }

@@ -33,7 +33,7 @@
   },
   "scripts": {
     "server": "node dist/index.js",
-    "test": "jest --config jestconfig.json --passWithNoTests",
+    "test": "jest --config jestconfig.json --passWithNoTests --silent",
     "lint": "eslint --ext .js,.ts ./"
   }
 }

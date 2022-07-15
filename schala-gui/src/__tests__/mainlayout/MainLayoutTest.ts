@@ -3,20 +3,23 @@ import { installQuasarPlugin } from '@quasar/quasar-app-extension-testing-unit-j
 import { shallowMount } from '@vue/test-utils';
 import MainLayout from '../../mainlayout/MainLayout.vue';
 import { createTestingPinia } from '@pinia/testing';
+import { RouterView } from 'vue-router';
 
 installQuasarPlugin();
 
 const wrapper = shallowMount(MainLayout, {
     global: {
         plugins: [createTestingPinia()],
+        components: {
+            'router-view': RouterView,
+        },
     },
 });
 
-describe('MainLayout Test', () =>
+describe('MainLayout Test', () => 
 {
-    it('mounts without errors', () =>
+    it('mounts without errors', () => 
     {
         expect(wrapper).toBeTruthy();
     });
-
 });

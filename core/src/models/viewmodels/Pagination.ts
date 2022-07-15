@@ -13,7 +13,8 @@ export class Pagination<S extends Paginable<S>>
         this._paginationFilter = _paginationFilter;
         this._model = _model;
 
-        this._currentPage = this._paginationFilter.value;
+        this._currentPage = this._paginationFilter.value || 1;
+        this.maxPage = 0;
     }
 
     public set paginationFilter(v: ArticlesPaginationFilter) 

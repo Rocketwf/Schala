@@ -5,7 +5,7 @@
   >
     <q-pagination
       v-for="pagination of [paginationModel]"
-      :key="pagination.currentPage + Math.random().toString(22)"
+      :key="pagination + Math.random().toString()"
       v-model="pagination.currentPage"
       :max="paginationModel.maxPage"
       :max-pages="5"
@@ -18,7 +18,6 @@ import { ArticlesModel, Pagination } from 'schala-core';
 const props = defineProps<{
     paginationModel: Pagination<ArticlesModel>;
 }>();
-
 
 const switchPage = () => 
 {

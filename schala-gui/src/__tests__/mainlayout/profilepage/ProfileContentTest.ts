@@ -10,14 +10,14 @@ const basic = new BasicProfile('id', 'name', [''], 12, 12, 'url');
 const fullPr = new FullProfile([], 12, 11, 11, 11, 11, 11, 11, 'url', basic, [], [], [], [], [], []);
 const comp = new ProfileRepresentation(fullPr);
 
-describe('ProfileContent', () =>
+describe('ProfileContent', () => 
 {
-    it('mounts without errors', () =>
+    it('mounts without errors', () => 
     {
         const wrapper = shallowMount(ProfileContent, {
             props: {
-                ProfileRepr: comp,
-            }
+                profileRepr: comp as ProfileRepresentation,
+            },
         });
 
         expect(wrapper).toBeTruthy();

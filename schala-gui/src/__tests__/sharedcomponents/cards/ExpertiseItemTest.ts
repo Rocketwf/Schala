@@ -15,6 +15,7 @@ describe('ExpertiseItem', () =>
         wrapper = mount(ExpertiseItem, {
             props: {
                 expertise: exp,
+                count: 2
             }
         });
     });
