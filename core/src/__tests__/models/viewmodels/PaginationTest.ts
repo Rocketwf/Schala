@@ -17,7 +17,9 @@ beforeAll( () =>
         [coAuthors],
         'My proof is perfect',
         '2022',
-        ''
+        '',
+        'MIT Journal',
+        ['Theoretical Computer Science'],
     );
     const articles:Article[] = new Array<Article>();
     articles.push(article);

@@ -21,6 +21,8 @@ beforeEach(() =>
         '',
         'Tichy is cool',
         '1985',
+        'KIT Journal',
+        ['Computer science','Mathematics','Physics']
     );
     
     const artmod: ArticlesModel = new ArticlesModel(
