@@ -1,8 +1,10 @@
 <template>
-  <div id="searchBox">
-    <q-form
-      @submit="handleSearch"
-      class="q-gutter-md"
+  <q-form
+    @submit="handleSearch"
+    class="q-gutter-md"
+  >
+    <div
+      class="q-gutter-y-md col-2"
     >
       <q-input
         v-model="searchString"
@@ -14,17 +16,15 @@
           <q-icon name="search" />
         </template>
       </q-input>
-      <div>
-        <q-btn
-          id="butn"
-          label="Search"
-          class="float-right"
-          type="submit"
-          color="primary"
-        />
-      </div>
-    </q-form>
-  </div>
+      <q-btn
+        id="butn"
+        label="Search"
+        class="float-right"
+        type="submit"
+        color="primary"
+      />
+    </div>
+  </q-form>
 </template>
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
@@ -52,8 +52,3 @@ const getSearchPageResultsStore = () =>
     return searchResultsStore();
 };
 </script>
-<style type="text/css" media="screen" scoped>
-#butn {
-    margin-top: 10px;
-}
-</style>

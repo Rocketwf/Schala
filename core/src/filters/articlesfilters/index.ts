@@ -1,1 +1,1 @@
-export { ArticlesFilter } from './ArticlesFilter';
+export { ArticlesFilter, ArticlesPaginationFilter } from './ArticlesFilter';

@@ -1,0 +1,49 @@
+import { installQuasarPlugin } from '@quasar/quasar-app-extension-testing-unit-jest';
+import { beforeEach, describe, expect, it } from '@jest/globals';
+import { shallowMount, VueWrapper } from '@vue/test-utils';
+import StackedColumns100ChartCard from '../../../../sharedcomponents/cards/graphchartcards/StackedColumns100ChartCard.vue';
+import { StackedColumns100ChartModel, Series, ViewName } from 'schala-core';
+import SimpleCard from '../../../../sharedcomponents/cards/SimpleCard.vue';
+
+installQuasarPlugin();
+
+const labels = ['label1', 'label2'];
+const series: Series[] = [
+    new Series('2020', [3, 5, 50]),
+    new Series('2021', [5, 70]),
+    new Series('2022', [20, 35]),
+    new Series('2019', [10, 3, 6, 22, 14]),
+];
+const mockCardModel = new StackedColumns100ChartModel(
+    'Title',
+    '',
+    ViewName.StackedColumns100ChartCard,
+    10,
+    series,
+    'x-title',
+    'y-title',
+    labels);
+
+describe('StackedColumns100ChartCard', () =>
+{
+    let wrapper: VueWrapper;
+    beforeEach(() =>
+    {
+        wrapper = shallowMount(StackedColumns100ChartCard, {
+            props: {
+                cardModel: mockCardModel,
+            }
+        });
+    });
+
+    it('renders', () =>
+    {
+        expect(wrapper.exists()).toBe(true);
+    });
+
+    it('does simple card exist', () =>
+    {
+        const simpleCard = wrapper.findComponent(SimpleCard);
+        expect(simpleCard.exists()).toBe(true);
+    }) ;
+});

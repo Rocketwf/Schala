@@ -4,7 +4,7 @@ on:
   push
 
 jobs:
-  run-linters:
+  build-app:
     name: Build spa
     runs-on: ubuntu-latest
 

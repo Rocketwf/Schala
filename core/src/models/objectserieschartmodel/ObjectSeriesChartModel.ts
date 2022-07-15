@@ -160,9 +160,9 @@ implements Filterable<ObjectSeriesChartModel>, Expandable<ObjectSeriesChartModel
     /**
      * Setter method of the chartOptionsModel.
      */
-    public set chartOptionsModel(chartOptionModel: ChartOptionsModel) 
+    public set chartOptionsModel(chartOptionsModel: ChartOptionsModel) 
     {
-        this._chartOptionsModel = chartOptionModel;
+        this._chartOptionsModel = chartOptionsModel;
     }
 
     /**

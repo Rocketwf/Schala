@@ -53,6 +53,10 @@ module.exports = configure(function (ctx)
         // Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-build
         build: {
             vueRouterMode: 'history', // available values: 'hash', 'history'
+            env: {
+                API_URL: ctx.dev ? 'http://localhost' : 'http://70.34.209.19',
+                API_PORT: ctx.dev ? '3000' : '3000',
+            },
 
             // transpile: false,
             // publicPath: '/',
@@ -100,12 +104,7 @@ module.exports = configure(function (ctx)
             // directives: [],
 
             // Quasar plugins
-            plugins: [
-                'LocalStorage',
-                'Notify',
-                'Loading',
-                'Dialog'
-            ],
+            plugins: ['LocalStorage', 'Notify', 'Loading', 'Dialog'],
         },
 
         // animations: 'all', // --- includes all animations
