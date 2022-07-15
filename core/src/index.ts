@@ -3,6 +3,7 @@ export {
     Filter,
     Filterable,
     ArticlesFilter,
+    ArticlesPaginationFilter,
     ChartOptionFilter,
     ObjectSeriesFilter,
     SearchResultsFilter,
