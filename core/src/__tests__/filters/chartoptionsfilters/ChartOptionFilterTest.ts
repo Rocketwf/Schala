@@ -1,5 +1,7 @@
 import { ScaleUpFilter, ScaleUpMixedFilter, TypeName } from '../../../filters/chartoptionsfilters/ChartOptionFilter';
+import { Message, STATUS } from '../../../misc';
 import { ChartOptionsModel, Series, StackedColumnsChartModel, ViewName, LineColumnsMixedChartModel } from '../../../models';
+
 describe('chart options filter', () => 
 {
     it('limits y axis of a chart to highest value ', () => 
@@ -22,9 +24,9 @@ describe('chart options filter', () =>
         );
         const objects: StackedColumnsChartModel[] = [obj1];
         const model: ChartOptionsModel = new ChartOptionsModel(objects);
-        const chart: ScaleUpFilter = new ScaleUpFilter(true);
-        chart.apply(model);
-        expect(model.maxLimit == 75 && chart.validate(model)).toBe(true);
+        const chartFilter: ScaleUpFilter = new ScaleUpFilter(true);
+        chartFilter.apply(model);
+        expect(model.maxLimit == 75 && chartFilter.validate(model).status == new Message(STATUS.OK).status).toBe(true);
     });
 });
 
@@ -54,8 +56,8 @@ describe('mixed chart options filter', () =>
         );
         const objects: LineColumnsMixedChartModel[] = [obj2];
         const model: ChartOptionsModel = new ChartOptionsModel(objects);
-        const chart: ScaleUpMixedFilter = new ScaleUpMixedFilter(true,TypeName.Line);
-        chart.apply(model);
-        expect(model.maxLimitTwo == 65 && chart.validate(model)).toBe(true);
+        const chartFilter: ScaleUpMixedFilter = new ScaleUpMixedFilter(true,TypeName.Line);
+        chartFilter.apply(model);
+        expect(model.maxLimitTwo == 65 && chartFilter.validate(model).status == new Message(STATUS.OK).status).toBe(true);
     });
 });

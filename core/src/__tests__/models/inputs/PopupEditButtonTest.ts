@@ -60,6 +60,11 @@ describe('Range Button Filter Test', () =>
         expect(rangeButton.id).toBe('123321');
     }
     );
+    it('Check id difference', () =>
+    {
+        expect(rangeButton.deepCopy().id).not.toBe(rangeButton.id);
+    }
+    );
 });
 
 describe('Article Filter Button Test', () =>
@@ -94,6 +99,7 @@ describe('Article Filter Button Test', () =>
         const showingPopupEdit: ShowingButton = new ShowingButton('range', [showingNumberField]);
         console.log(showingPopupEdit.label);
         showingPopupEdit.id='321123';
+        showingPopupEdit.label='';
         showingButton = showingPopupEdit;
         showingButton.handleAll();
         showingButton.inputs;
@@ -113,6 +119,11 @@ describe('Article Filter Button Test', () =>
     it('Check id', () =>
     {
         expect(showingButton.id).toBe('321123');
+    }
+    );
+    it('Check id difference', () =>
+    {
+        expect(showingButton.deepCopy().id).not.toBe(showingButton.id);
     }
     );
 });

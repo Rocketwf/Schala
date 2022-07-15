@@ -1,5 +1,5 @@
 import { FullProfile, BasicProfile, Article, ArticleCoAuthor, RowModel, SimpleCardModel } from '../../models';
-import { Author, CitationByYear, CitedScholar, PublicationByVenue, PublicationByYear } from '../../models/profile/Profile';
+import { Author, CitationByYear, CitedScholar, ProfileExpertise, PublicationByVenue, PublicationByYear } from '../../models/profile/Profile';
 import { ProfileRepresentation } from '../../representations/ProfileRepresentation';
 
 let profileRepresentation: ProfileRepresentation;
@@ -32,9 +32,13 @@ beforeAll(() =>
     const articles:Array<Article> = new Array<Article>();
     const coAuthors: Array<ArticleCoAuthor> = new Array<ArticleCoAuthor>();
     coAuthors.push(new ArticleCoAuthor('4242422','Georgios Zervakis'));
-    articles.push(new Article('Turing machine simulator','KIT',1977,15,'',coAuthors,'Alan Turing is genius'));
+    const expertises: ProfileExpertise[] = [];
+    expertises.push(new ProfileExpertise('Computer Science',100));
+    expertises.push(new ProfileExpertise('Mathematics',30));
+    expertises.push(new ProfileExpertise('Engineering',20));
+    articles.push(new Article('Turing machine simulator','KIT',1977,15,1,'',coAuthors,'Alan Turing is genius','',''));
     const fp: FullProfile = new FullProfile(
-        ['Computer Science','Mathematics','Engineering'],
+        expertises,
         31,
         22,
         118,

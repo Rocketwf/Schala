@@ -15,18 +15,12 @@ describe('chart options filter', () =>
     {
         const from: FromFilter = new FromFilter(2021);
         from.apply(model);
-        expect(model.series[0].name == '2021' && from.validate(model)).toBe(true);
+        expect(model.series[0].name).toBe('2021');
     });
     it('filters charts by to value', () => 
     {
         const to: ToFilter = new ToFilter(2019);
         to.apply(model);
         expect(model.series.length).toBe(1);
-    });
-    it('filters charts by from value', () =>
-    {
-        const from: FromFilter = new FromFilter(3000);
-        from.apply(model);
-        expect(from.validate(model)).toBe(false);
     });
 });

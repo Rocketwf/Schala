@@ -21,6 +21,9 @@ beforeAll(() =>
     );
     const cop:ChartOptionsModel = new ChartOptionsModel([oscm]);
     const showingFilter: ShowingFilter = new ShowingFilter(2);
+    cop.expandable=true;
+    cop.saveFilters();
+    cop.restoreFilters();
     showingFilter.apply(oscm);
     objectSeriesChartModel=oscm;
     chartOptionsModel=cop;
@@ -31,7 +34,7 @@ describe('check deep copy', () =>
 {
     it('deep copy', () => 
     {
-        expect(chartOptionsModel.deepCopy()).toEqual(chartOptionsModel);        
+        expect(chartOptionsModel.deepCopy().objectSeriesChartModels).toEqual(chartOptionsModel.objectSeriesChartModels);        
     });
 });
 
@@ -49,6 +52,16 @@ describe('check showing filter', () =>
     it('toBe 2', () =>
     {
         expect(objectSeriesChartModel.series.length).toBe(2);
+    }
+    );
+});
+
+describe('set expand', () =>
+{
+    it('expand true', () =>
+    {
+        chartOptionsModel.isExpanded=true;
+        expect(chartOptionsModel.expandable && chartOptionsModel.isExpanded).toBe(true);
     }
     );
 });

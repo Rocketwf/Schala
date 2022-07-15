@@ -29,7 +29,9 @@ beforeAll(()=>
     const chartOptionsModel:ChartOptionsModel = new ChartOptionsModel([objectSeriesChartModel]);
     objectSeriesChartModel.chartOptionsModel=chartOptionsModel;
     objectSeriesChartModel.applyAllFilters();
-    
+    objectSeriesChartModel.title = 'Cool title';
+    objectSeriesChartModel.id = '424242';
+    objectSeriesChartModel.sub= 'Cool subtitle';
     cop=chartOptionsModel;
     oscm=objectSeriesChartModel;
 });
@@ -43,5 +45,27 @@ describe('object series chart model test', () =>
     it('test options model equality', () =>
     {
         expect(cop).toBe(oscm.chartOptionsModel);
+    });
+    it('test set and get (sub)title', () =>
+    {
+        expect(oscm.title == 'Cool title' && oscm.sub == 'Cool subtitle').toBe(true);
+    });
+    it('test empty popup buttons', () =>
+    {
+        expect(oscm.popupButtons).toBeFalsy;
+    });
+    it('test changing colwidth', () =>
+    {
+        oscm.colWidth=8;
+        expect(oscm.colWidth).toBe(8);
+    });
+    it('test changing id', () =>
+    {
+        oscm.id = '123456';
+        expect(oscm.id).not.toBe('424242');
+    });
+    it('test filters length', () =>
+    {
+        expect(oscm.filters.length).toBe(1);
     });
 });

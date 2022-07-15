@@ -1,5 +1,4 @@
-import { Filter } from '../../../filters';
-import { ArticlesFilter, ArticlesPaginationFilter, SortByFilter } from '../../../filters/articlesfilters/ArticlesFilter';
+import {  ArticlesPaginationFilter, SortByFilter } from '../../../filters/articlesfilters/ArticlesFilter';
 import { Article, ArticleCoAuthor, ArticlesModel, Pagination, ViewName } from '../../../models';
 
 let articlePagination: Pagination<ArticlesModel>;
@@ -13,9 +12,12 @@ beforeAll( () =>
         'Karlsruhe Institute of Technology',
         2022,
         12,
+        2,
         '',
         [coAuthors],
-        'My proof is perfect'
+        'My proof is perfect',
+        '2022',
+        ''
     );
     const articles:Article[] = new Array<Article>();
     articles.push(article);

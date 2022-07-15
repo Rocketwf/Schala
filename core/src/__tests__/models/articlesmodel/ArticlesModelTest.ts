@@ -15,9 +15,12 @@ beforeEach(() =>
         '',
         2000,
         30,
+        2,
         '',
         [coAuthor],
-        ''
+        '',
+        'Tichy is cool',
+        '1985',
     );
     
     const artmod: ArticlesModel = new ArticlesModel(
