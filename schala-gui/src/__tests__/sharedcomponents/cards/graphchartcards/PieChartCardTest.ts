@@ -37,13 +37,6 @@ describe('PieChartCard', () =>
         expect(wrapper.exists()).toBe(true);
     });
 
-
-    it('has correct attributes', () =>
-    {
-        expect(wrapper.text()).toEqual('Title');
-
-    });
-
     it('does simple card exist', () =>
     {
         const simpleCard = wrapper.findComponent(SimpleCard);
