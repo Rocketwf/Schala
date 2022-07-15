@@ -1,6 +1,6 @@
 import { installQuasarPlugin } from '@quasar/quasar-app-extension-testing-unit-jest';
 import { beforeEach, describe, expect, it } from '@jest/globals';
-import { mount, VueWrapper } from '@vue/test-utils';
+import { shallowMount, VueWrapper } from '@vue/test-utils';
 import BasicColumnsChartCard from '../../../../sharedcomponents/cards/graphchartcards/BasicColumnsChartCard.vue';
 import { BasicColumnsChartModel, Series, ViewName } from 'schala-core';
 import SimpleCard from '../../../../sharedcomponents/cards/SimpleCard.vue';
@@ -14,14 +14,23 @@ const series: Series[] = [
     new Series('2022', [20, 35]),
     new Series('2019', [10, 3, 6, 22, 14]),
 ];
-const mockCardModel = new BasicColumnsChartModel('Title', '', ViewName.BasicColumnsChartCard, 10, series, 'x-title', 'y-title', labels);
+const mockCardModel = new BasicColumnsChartModel(
+    'Title',
+    '',
+    ViewName.BasicColumnsChartCard,
+    10,
+    series,
+    'x-title',
+    'y-title',
+    labels
+);
 
 describe('BasicColumnsChartCard', () =>
 {
     let wrapper: VueWrapper;
     beforeEach(() =>
     {
-        wrapper = mount(BasicColumnsChartCard, {
+        wrapper = shallowMount(BasicColumnsChartCard, {
             props: {
                 cardModel: mockCardModel,
             }

@@ -1,6 +1,6 @@
 import { installQuasarPlugin } from '@quasar/quasar-app-extension-testing-unit-jest';
 import { beforeEach, describe, expect, it } from '@jest/globals';
-import { mount, VueWrapper } from '@vue/test-utils';
+import { shallowMount, VueWrapper } from '@vue/test-utils';
 import PieChartCard from '../../../../sharedcomponents/cards/graphchartcards/PieChartCard.vue';
 import { PieChartModel, Series, ViewName } from 'schala-core';
 import SimpleCard from '../../../../sharedcomponents/cards/SimpleCard.vue';
@@ -13,14 +13,19 @@ const series: Series[] = [
     new Series('2022', [20, 35]),
     new Series('2019', [10, 3, 6, 22, 14]),
 ];
-const mockCardModel = new PieChartModel('Title', '', ViewName.PieChartCard, 10, series);
+const mockCardModel = new PieChartModel(
+    'Title',
+    '',
+    ViewName.PieChartCard,
+    10,
+    series);
 
 describe('PieChartCard', () =>
 {
     let wrapper: VueWrapper;
     beforeEach(() =>
     {
-        wrapper = mount(PieChartCard, {
+        wrapper = shallowMount(PieChartCard, {
             props: {
                 cardModel: mockCardModel,
             }

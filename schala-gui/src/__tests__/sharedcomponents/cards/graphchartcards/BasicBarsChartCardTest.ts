@@ -1,5 +1,5 @@
 import { installQuasarPlugin } from '@quasar/quasar-app-extension-testing-unit-jest';
-import { jest, beforeEach, describe, expect, it } from '@jest/globals';
+import { beforeEach, describe, expect, it } from '@jest/globals';
 import { shallowMount, VueWrapper } from '@vue/test-utils';
 import BasicBarsChartCard from '../../../../sharedcomponents/cards/graphchartcards/BasicBarsChartCard.vue';
 import { BasicBarsChartModel, Series, ViewName } from 'schala-core';
@@ -27,10 +27,10 @@ const mockCardModel = new BasicBarsChartModel(
 
 
 
-describe('BasicBarsChartCard', () => 
+describe('BasicBarsChartCard', () =>
 {
     let wrapper: VueWrapper;
-    beforeEach(() => 
+    beforeEach(() =>
     {
         wrapper = shallowMount(BasicBarsChartCard, {
             props: {
@@ -39,17 +39,17 @@ describe('BasicBarsChartCard', () =>
         });
     });
 
-    it('renders', () => 
+    it('renders', () =>
     {
         expect(wrapper.exists()).toBe(true);
     });
 
-    it('has correct attributes', () => 
+    it('has correct attributes', () =>
     {
         expect(wrapper.text()).toEqual('Title');
     });
 
-    it('does simple card exist', () => 
+    it('does simple card exist', () =>
     {
         const simpleCard = wrapper.findComponent(SimpleCard);
         expect(simpleCard.exists()).toBe(true);
