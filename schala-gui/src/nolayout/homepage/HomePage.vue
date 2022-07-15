@@ -1,26 +1,23 @@
 <template>
-  <div id="mainPageContainer">
-    <div id="logoSearch">
-      <img src="../../assets/logo.png">
+  <q-layout view="hHh lpR fFf">
+    <div class="q-pa-md row justify-center">
+      <div
+        class="col-8 col-xs-12 text-center"
+        style="margin: 0 auto"
+      >
+        <q-img
+          src="../../assets/logo.png"
+          style="height: 220px; max-width: 400px"
+        />
+      </div>
     </div>
-    <search-component />
-  </div>
+    <div class="row justify-center">
+      <div class="col-8 col-xs-10">
+        <search-component />
+      </div>
+    </div>
+  </q-layout>
 </template>
 <script setup lang="ts">
 import SearchComponent from './SearchComponent.vue';
 </script>
-<style type="text/css" media="screen" scoped>
-#mainPageContainer {
-    width: 1200px;
-    margin: 0 auto;
-    margin-top: 10%;
-}
-#logoSearch {
-    margin: 0 auto;
-    text-align: center;
-}
-#logoSearch img {
-    height: 220px;
-    width: 400px;
-}
-</style>
