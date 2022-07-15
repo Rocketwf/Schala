@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "vue3-apexcharts": "^1.4.1"
+  }
+}
