@@ -1,10 +1,11 @@
 FROM node:16-alpine3.15 as build
 RUN mkdir -p /schala /schala/core /schala/schala-gui
-RUN npm i --location=global @quasar/cli
+RUN npm i --location=global @quasar/cli typescript
 
 WORKDIR /schala/core
 COPY core/ .
 RUN yarn
+RUN tsc
 
 WORKDIR /schala/schala-gui
 COPY schala-gui/ .
