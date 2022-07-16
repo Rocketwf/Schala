@@ -2,6 +2,9 @@ FROM node:16-alpine3.15 as build
 RUN mkdir -p /schala /schala/core /schala/schala-gui
 RUN npm i --location=global @quasar/cli typescript
 
+ARG API_URL
+ARG API_PORT
+
 WORKDIR /schala/core
 COPY core/ .
 RUN yarn

@@ -13,9 +13,9 @@ services:
     build: 
       context: .
       dockerfile: schala-gui/Dockerfile
-    environment:
-      API_URL: ${API_URL}
-      API_PORT: ${API_PORT}
+      args:
+        API_URL: ${API_URL}
+        API_PORT: ${API_PORT}
     ports:
       - 8000:80
     depends_on: 

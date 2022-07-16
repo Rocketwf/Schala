@@ -156,8 +156,8 @@ And then run the build by:
 ```console
 sudo docker run -d \
 -p 8000:80 \
--e API_URL=backend-host \
--e API_PORT=3000 \
+--build-arg API_URL=backend-host \
+--build-arg API_PORT=3000 \
 schala-gui
 ```
 Same goes for the backend (build):
