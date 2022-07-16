@@ -30,8 +30,15 @@ export class FullProfileRoutes extends CommonRoutesConfig
     {
         this.app.route('/' + EndPoints.FULLPROFILE + '/:authorId').get(async (req: Request, res: Response) => 
         {
-            const built: FullProfile[] = await this.fullProfileService.build(req.params.authorId);
-            res.status(200).send(built[0]);
+            try 
+            {
+                const built: FullProfile[] = await this.fullProfileService.build(req.params.authorId);
+                res.status(200).send(built[0]);
+            }
+            catch (e) 
+            {
+                res.status(404).send('profile with given id was not found');
+            }
         });
         return this.app;
     }

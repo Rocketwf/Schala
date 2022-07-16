@@ -30,8 +30,15 @@ export class SearchResultsRoutes extends CommonRoutesConfig
     {
         this.app.route('/' + EndPoints.SEARCHRESULTS + '/:query').get(async (req: Request, res: Response) => 
         {
-            const bp: BasicProfile[] = await this.searchResultsService.build(req.params.query);
-            res.status(200).send(bp);
+            try 
+            {
+                const bp: BasicProfile[] = await this.searchResultsService.build(req.params.query);
+                res.status(200).send(bp);
+            }
+            catch (e) 
+            {
+                res.status(404).send('No matching profiles were found');
+            }
         });
         return this.app;
     }

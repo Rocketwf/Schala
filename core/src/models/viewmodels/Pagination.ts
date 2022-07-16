@@ -1,14 +1,14 @@
-import { ArticlesPaginationFilter } from '../../filters/articlesfilters/ArticlesFilter';
+import { Filter } from '../../filters';
 import { Paginable } from '../../filters/Filterable';
 
 export class Pagination<S extends Paginable<S>> 
 {
     private _currentPage: number;
     private _maxPage: number;
-    private _paginationFilter: ArticlesPaginationFilter;
+    private _paginationFilter: Filter<number, S>;
     private _model: S;
 
-    constructor(_paginationFilter: ArticlesPaginationFilter, _model: S) 
+    constructor(_paginationFilter: Filter<number, S>, _model: S) 
     {
         this._paginationFilter = _paginationFilter;
         this._model = _model;
@@ -17,12 +17,12 @@ export class Pagination<S extends Paginable<S>>
         this.maxPage = 0;
     }
 
-    public set paginationFilter(v: ArticlesPaginationFilter) 
+    public set paginationFilter(v: Filter<number, S>) 
     {
         this._paginationFilter = v;
     }
 
-    public get paginationFilter(): ArticlesPaginationFilter 
+    public get paginationFilter(): Filter<number, S>
     {
         return this._paginationFilter;
     }

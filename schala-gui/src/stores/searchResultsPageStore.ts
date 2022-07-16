@@ -4,7 +4,6 @@ import {
     SemanticScholarSource,
     SearchResultsPaginationFilter,
     WordsInTitleFilter,
-    AffiliationFilter,
 } from 'schala-core';
 import { BasicProfile, SearchResultsModel } from 'schala-core';
 import { defineStore } from 'pinia';
@@ -14,81 +13,38 @@ export const searchResultsStore = defineStore({
     state: () => ({
         searchString: useStorage('searchString', ''),
         maxPage: 0,
-        searchResultsShowingModel: new SearchResultsModel(new Array<BasicProfile>()),
-        searchResultsCachedModel: new SearchResultsModel(new Array<BasicProfile>()),
-        paginationFilter: new SearchResultsPaginationFilter(1, 15),
-        affilationFilter: new AffiliationFilter(''),
-        wordsInTitleFilter: new WordsInTitleFilter(''),
+        searchResultsModel: new SearchResultsModel(new Array<BasicProfile>(), new SearchResultsPaginationFilter(1, 15), [new WordsInTitleFilter('')]),
     }),
     getters: {
-        getSearchResultsShowingModel: (state) => state.searchResultsShowingModel as SearchResultsModel,
+        getSearchResultsShowingModel: (state) => state.searchResultsModel as SearchResultsModel,
     },
     actions: {
-        /**
-         * affiliation filter
-         * @param affiliationFilter -
-         */
-        setAffiliationFilter(affiliationFilter: string): void 
-        {
-            this.affilationFilter.value = affiliationFilter;
-
-            this.applyAllFilters();
-        },
         setWordsInTitleFilter(wordsInTitleFilter: string): void 
         {
-            this.wordsInTitleFilter.value = wordsInTitleFilter;
-            this.paginationFilter.value = 1;
+            this.searchResultsModel.filters[0].value = wordsInTitleFilter;
+            this.searchResultsModel.paginationFilter.value = 1;
 
-            this.applyAllFilters();
+            this.searchResultsModel.applyAllFilters();
         },
         async setSearchString(passedSearchString: string) 
         {
             Loading.show();
+            this.searchResultsModel.filters[0].value = '';
             this.searchString = passedSearchString;
             const basicProfiles: BasicProfile[] = await SemanticScholarSource.getInstance().fetchSearchResults(
                 passedSearchString,
             );
-            this.searchResultsCachedModel.basicProfiles = basicProfiles;
-            this.searchResultsShowingModel = this.searchResultsCachedModel.deepCopy();
+            this.searchResultsModel.basicProfiles = basicProfiles;
+            this.searchResultsModel.query = passedSearchString;
 
-            this.fixNumberOfPages();
+            this.searchResultsModel.paginationFilter.value = 1;
 
-            this.setPaginationFilter(1);
-
-            this.applyAllFilters();
+            this.searchResultsModel.applyAllFilters();
             Loading.hide();
-        },
-        fixNumberOfPages(): void 
-        {
-            this.maxPage = Math.ceil(this.searchResultsShowingModel.basicProfiles.length / 15);
-        },
-        setPaginationFilter(value: number): void 
-        {
-            this.paginationFilter.value = value;
-
-            this.applyAllFilters();
         },
         setSearchResultsShowingModel(model: SearchResultsModel) 
         {
-            this.searchResultsShowingModel = model;
-        },
-        setSearchResultsCachedModel(model: SearchResultsModel) 
-        {
-            this.searchResultsCachedModel = model;
-        },
-        resetFromCache(): void 
-        {
-            this.searchResultsShowingModel = this.searchResultsCachedModel.deepCopy();
-        },
-        applyAllFilters(): void 
-        {
-            this.resetFromCache();
-            this.wordsInTitleFilter.apply(this.getSearchResultsShowingModel);
-
-            //
-            // Fix the number of pages before you run the pagination filter
-            this.fixNumberOfPages();
-            this.paginationFilter.apply(this.getSearchResultsShowingModel);
+            this.searchResultsModel = model;
         },
     },
 });

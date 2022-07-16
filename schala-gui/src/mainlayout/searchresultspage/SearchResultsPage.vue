@@ -21,9 +21,7 @@
         </q-list>
         <div class="q-pa-lg flex flex-center">
           <generic-pagination
-            :handle-switch="handleSwitch"
-            :max-value="getMaxPage()"
-            :current-page="getCurrentPage()"
+            :pagination-model="(searchStore.searchResultsModel.pagination as Pagination<SearchResultsModel|ArticlesModel>)"
           />
         </div>
       </q-page>
@@ -32,14 +30,17 @@
 </template>
 <script setup charset="utf-8" lang="ts">
 import FilterBox from './FilterBox.vue';
-import GenericPagination from '../../sharedcomponents/GenericPagination.vue';
 import { searchResultsStore } from '../../stores/searchResultsPageStore';
 import SearchResultsItem from './SearchResultItem.vue';
-import { BasicProfile } from 'schala-core';
+import { Pagination, SearchResultsModel, ArticlesModel, BasicProfile } from 'schala-core';
 import { onBeforeMount, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
+import GenericPagination from 'src/sharedcomponents/GenericPagination.vue';
 BasicProfile;
+Pagination;
+SearchResultsModel;
+ArticlesModel;
 const router = useRouter();
 const $q = useQuasar();
 
@@ -50,24 +51,12 @@ const getSearchResultsPageStore = () =>
     return searchStore;
 };
 
-const getCurrentPage = () => 
-{
-    return getSearchResultsPageStore().paginationFilter.value;
-};
-const getMaxPage = () => 
-{
-    return getSearchResultsPageStore().maxPage;
-};
 
 const getBasicProfiles = () => 
 {
-    return getSearchResultsPageStore().searchResultsShowingModel.basicProfiles;
+    return getSearchResultsPageStore().searchResultsModel.basicProfiles;
 };
 
-const handleSwitch = (value: number) => 
-{
-    getSearchResultsPageStore().setPaginationFilter(value);
-};
 const mount = ref(false);
 onBeforeMount(async () => 
 {

@@ -78,7 +78,7 @@ describe('SearchResultsModel tests', () =>
     it('checks if getter and setter of filter works right', () => 
     {
         const paginationFilter: SearchResultsPaginationFilter = new SearchResultsPaginationFilter(1, 2);
-        searchResultsModel.filters = [paginationFilter];
+        searchResultsModel.paginationFilter = paginationFilter;
         expect(searchResultsModel.filters).toStrictEqual([paginationFilter]);
     });
     it('checks if getter and setter of expandable works right', () => 

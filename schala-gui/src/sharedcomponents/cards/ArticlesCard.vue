@@ -28,7 +28,7 @@
       />
     </template>
     <template #pagination>
-      <experimental-generic-pagination :pagination-model="cardModel.pagination" />
+      <generic-pagination :pagination-model="cardModel.pagination" />
     </template>
   </simple-card>
 </template>
@@ -39,7 +39,7 @@ import { ArticlesModel } from 'schala-core';
 import ArticleItem from '../../mainlayout/profilepage/ArticleItem.vue';
 import SimpleCard from './SimpleCard.vue';
 import PopupButton from '../buttons/popupedit/PopupButton.vue';
-import ExperimentalGenericPagination from '../ExperimentalGenericPagination.vue';
+import GenericPagination from '../GenericPagination.vue';
 import SelectOptions from '../buttons/SelectOptions.vue';
 
 const props = defineProps<{

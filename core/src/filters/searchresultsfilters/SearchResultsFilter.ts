@@ -135,6 +135,11 @@ export class SearchResultsPaginationFilter extends SearchResultsFilter<number>
         const copy: SearchResultsPaginationFilter = new SearchResultsPaginationFilter(this._value, this._hitsPerPage);
         return copy;
     }
+    public get hitsPerPage(): number 
+    {
+        return this._hitsPerPage;
+    }
+
     /**
      * Setter method of the hitsPerPage attribute.
      */

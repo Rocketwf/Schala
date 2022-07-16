@@ -25,7 +25,7 @@ import { searchResultsStore } from '../../stores/searchResultsPageStore';
 
 
 // Attributes
-const filterString = ref(searchResultsStore().wordsInTitleFilter.value);
+const filterString = ref(searchResultsStore().searchResultsModel.filters[0].value);
 
 // Methods
 const getFilterString = (): string => 
@@ -36,7 +36,6 @@ const getFilterString = (): string =>
 const handleFilter = () => 
 {
     searchResultsStore().setWordsInTitleFilter(getFilterString());
-    searchResultsStore().applyAllFilters();
 };
 const removeFilter = () => 
 {
