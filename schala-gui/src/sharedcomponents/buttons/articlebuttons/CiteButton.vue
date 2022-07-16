@@ -29,9 +29,9 @@
     size="12px"
     flat
     dense
-    round
     @click="show = true"
     :icon="buttonIcon"
+    :label="text ? 'bibtex' : ''"
   />
 </template>
 
@@ -45,6 +45,7 @@ const $q = useQuasar();
 const props = defineProps<{
     bibtex: string;
     buttonIcon: string;
+    text?: boolean;
 }>();
 
 const copy = (): void => 

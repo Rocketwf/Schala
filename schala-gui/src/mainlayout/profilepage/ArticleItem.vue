@@ -1,13 +1,13 @@
 <template>
   <q-item clickable>
-    <q-item-section>
+    <q-item-section @click="showDialog">
       <q-item-label>{{ article.title }}</q-item-label>
       <q-item-label
         v-if="article.venue"
         caption
         lines="2"
       >
-        Published at {{ article.venue }}
+        Published in {{ article.venue }}
       </q-item-label>
     </q-item-section>
 
@@ -82,18 +82,37 @@
 
 <script setup charset="utf-8" lang="ts">
 import ArticleItemButton from '../../sharedcomponents/buttons/articlebuttons/ArticleItemButton.vue';
+import ArticlesItemDialogPluginComponent from './ArticlesItemDialogPluginComponent.vue';
 import { Article } from 'schala-core';
 import CiteButton from 'src/sharedcomponents/buttons/articlebuttons/CiteButton.vue';
 // import ShareButton from 'src/sharedcomponents/buttons/articlebuttons/ShareButton.vue';
 import CoAuthorButton from 'src/sharedcomponents/buttons/articlebuttons/CoAuthorButton.vue';
+import { useQuasar } from 'quasar';
 
 const props = defineProps<{
     article: Article;
 }>();
 
-const goToArticle = (): void => 
+const $q = useQuasar();
+const showDialog = () => 
 {
-    return; //TODO: Implement me
+    $q.dialog({
+        component: ArticlesItemDialogPluginComponent,
+        componentProps: {
+            article: props.article,
+        },
+    })
+        .onOk(() => 
+        {
+            // console.log('OK')
+        })
+        .onCancel(() => 
+        {
+            //
+        })
+        .onDismiss(() => 
+        {
+            // console.log('I am triggered on both OK and Cancel')
+        });
 };
-goToArticle();
 </script>
