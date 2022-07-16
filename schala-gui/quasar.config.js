@@ -202,11 +202,15 @@ module.exports = configure(function (ctx)
                 // protocol: 'myapp://path',
                 // Windows only
                 // win32metadata: { ... }
+                // platform: 'win32',
             },
 
             builder: {
                 // https://www.electron.build/configuration/configuration
 
+                win: {
+                    target: 'portable',
+                },
                 appId: 'schala-gui',
             },
             // optional; add/remove/change properties

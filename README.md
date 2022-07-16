@@ -66,7 +66,12 @@ If you have an SemanticScholar API key you can use it by ecporting it as a globa
 export SCHALA_API_KEY='API_KEY'
 ```
 ## Build/Install: necessary steps
-First time you need to the following command to install all dependencies
+Export back-end url/port:
+```console
+export API_URL=url
+export API_PORT=port
+```
+First time you need to the following command to install all dependencies:
 ```console
 make all
 ```

@@ -1,4 +1,4 @@
-import { app, BrowserWindow, nativeTheme } from 'electron';
+import { Menu, app, BrowserWindow, nativeTheme } from 'electron';
 import path from 'path';
 import os from 'os';
 
@@ -73,3 +73,5 @@ app.on('activate', () =>
         createWindow();
     }
 });
+
+Menu.setApplicationMenu(false);
