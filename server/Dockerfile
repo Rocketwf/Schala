@@ -1,6 +1,6 @@
 FROM node:16-alpine3.15 as build
 RUN mkdir -p /schala/server
-RUN npm i --location=global typescript
+RUN npm i --loglevel=error --location=global typescript
 
 WORKDIR /schala/server
 COPY server/ .

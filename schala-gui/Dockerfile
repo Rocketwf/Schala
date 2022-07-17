@@ -1,6 +1,6 @@
 FROM node:16-alpine3.15 as build
 RUN mkdir -p /schala /schala/core /schala/schala-gui
-RUN npm i --location=global @quasar/cli typescript
+RUN npm i --loglevel=error --location=global @quasar/cli typescript
 
 ARG API_URL
 ARG API_PORT
