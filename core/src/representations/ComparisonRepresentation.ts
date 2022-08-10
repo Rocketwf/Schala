@@ -365,7 +365,7 @@ export class ComparisonRepresentation
 
         const showingNumberField: Field<number, BasicColumnsChartModel> = new Field<number, BasicColumnsChartModel>(
             'showing',
-            10,
+            CARDS.PUBLICATIONS_BY_VENUE.CARD_DATA.DEFAULT_NUM_OF_ENTRIES,
             showing,
             models,
         );
