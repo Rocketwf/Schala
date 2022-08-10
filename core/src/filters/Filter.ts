@@ -32,6 +32,7 @@ export abstract class Filter<S, T extends Filterable<T>>
     {
         model;
         return new Message(STATUS.OK, '');
+        
     }
 
     /**
@@ -41,15 +42,33 @@ export abstract class Filter<S, T extends Filterable<T>>
     applyValidate(model: T): Message 
     {
         const validate: Message = this.validate(model);
-        if (validate.status === STATUS.OK) 
+        if(model.filters.length == 2)
         {
-            this.apply(model);
-        }
+            if (validate.status === STATUS.OK && model.filters[0].value <= model.filters[1].value) 
+            {
+                this.apply(model);
+                return validate;
+            }
+            else 
+            {
+                this._value = this._previousValue;
+                return new Message(STATUS.FAIL, 'From value can not be higher than To value');
+            }
+            
+        } 
         else 
         {
-            this._value = this._previousValue;
+            if (validate.status === STATUS.OK) 
+            {
+                this.apply(model);
+            }
+            else 
+            {
+                this._value = this._previousValue;
+            }
+            return validate;
         }
-        return validate;
+        
     }
 
     /**
