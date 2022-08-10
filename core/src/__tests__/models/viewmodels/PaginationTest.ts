@@ -75,6 +75,6 @@ describe('Current page', () =>
 {
     it('Model current page', () =>
     {
-        expect(artModel.pagination.currentPage).toBe(15);
+        expect(artModel.pagination.currentPage).toBe(1);
     });
 });
