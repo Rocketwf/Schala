@@ -7,18 +7,12 @@
       Nothing to be listed
     </div>
     <apexchart
-      v-else-if="!badDataLength"
+      v-else
       :height="height"
       type="bar"
       :options="chartOptions"
       :series="getSeries()"
     />
-    <div
-      v-else
-      class="text-body1 text-center text-grey q-mb-xl"
-    >
-      The data is too large to fit, please use the expand button
-    </div>
   </div>
 </template>
 <script setup charset="utf-8" lang="ts">
@@ -52,15 +46,6 @@ const getSeries = () =>
         },
     ];
 };
-
-const badDataLength = computed(() => 
-{
-    return (
-        props.basicBarsChartModel.isShowingExpandButton &&
-        !props.basicBarsChartModel.isExpanded &&
-        getLabels.value.length >= 20
-    );
-});
 
 const getLabels = computed(() => 
 {
