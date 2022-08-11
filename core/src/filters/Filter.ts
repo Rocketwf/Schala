@@ -32,7 +32,6 @@ export abstract class Filter<S, T extends Filterable<T>>
     {
         model;
         return new Message(STATUS.OK, '');
-        
     }
 
     /**
@@ -51,8 +50,6 @@ export abstract class Filter<S, T extends Filterable<T>>
             this._value = this._previousValue;
         }
         return validate;
-        
-        
     }
 
     /**
