@@ -21,9 +21,7 @@ export class FromFilter extends ObjectSeriesFilter<number>
      */
     validate(model: ObjectSeriesChartModel): Message 
     {
-        console.log('calisiyon');
-        console.log(model.filters[0].value);
-        console.log(model.filters[1].value);
+
         if (this._value < 0) 
         {
             return new Message(STATUS.FAIL, 'Negative values aren\'t allowed');
