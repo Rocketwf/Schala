@@ -20,7 +20,7 @@
         v-model="input.inputValue"
         dense
         autofocus
-        @blur="handlerWrapper()"
+        @focus="handlerWrapper()"
       >
         <template #append>
           <q-icon name="edit" />
