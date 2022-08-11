@@ -21,10 +21,16 @@ export class FromFilter extends ObjectSeriesFilter<number>
      */
     validate(model: ObjectSeriesChartModel): Message 
     {
-        model;
+        console.log('calisiyon');
+        console.log(model.filters[0].value);
+        console.log(model.filters[1].value);
         if (this._value < 0) 
         {
             return new Message(STATUS.FAIL, 'Negative values aren\'t allowed');
+        } 
+        else if(model.filters[0].value > model.filters[1].value)
+        {
+            return new Message(STATUS.FAIL, 'From value can not be higher than To value');
         }
         return new Message(STATUS.OK);
     }
@@ -68,10 +74,13 @@ export class ToFilter extends ObjectSeriesFilter<number>
      */
     validate(model: ObjectSeriesChartModel): Message 
     {
-        model;
         if (this._value < 0) 
         {
             return new Message(STATUS.FAIL, 'Negative values aren\'t allowed');
+        }
+        else if(model.filters[0].value > model.filters[1].value)
+        {
+            return new Message(STATUS.FAIL, 'From value can not be higher than To value');
         }
         return new Message(STATUS.OK);
     }
