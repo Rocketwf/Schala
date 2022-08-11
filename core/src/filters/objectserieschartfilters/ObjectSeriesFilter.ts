@@ -124,10 +124,7 @@ export class ShowingFilter extends ObjectSeriesFilter<number>
      */
     validate(model: ObjectSeriesChartModel): Message 
     {
-        if (model.isShowingExpandButton && !model.isExpanded && this._value >= 20)
-        {
-            return new Message(STATUS.FAIL, 'Showing value is too large, please use the expand functionality.');
-        }
+        model;
         if (this._value <= 0) 
         {
             return new Message(STATUS.FAIL, 'Negative and 0 values aren\'t allowed');
