@@ -4,14 +4,20 @@
       v-if="noEntries"
       class="text-body1 text-center text-grey q-mb-xl"
     >
-      The data is too large to fit, please use the expand button
+      Nothing to be listed
     </div>
     <apexchart
-      v-else
+      v-else-if="!badDataLength"
       :height="lineColumnsMixedChartModel.isExpanded ? '800px' : 340"
       :options="chartOptions"
       :series="getSeries()"
     />
+    <div
+      v-else
+      class="text-body1 text-center text-grey q-mb-xl"
+    >
+      The data is too large to fit, please use the expand button
+    </div>
   </div>
 </template>
 
@@ -22,6 +28,15 @@ import { computed } from 'vue';
 const props = defineProps<{
     lineColumnsMixedChartModel: LineColumnsMixedChartModel;
 }>();
+
+const badDataLength = computed(() => 
+{
+    return (
+        props.lineColumnsMixedChartModel.isShowingExpandButton &&
+        !props.lineColumnsMixedChartModel.isExpanded &&
+        getLabels.value.length >= 20
+    );
+});
 
 const noEntries = computed(() => 
 {
