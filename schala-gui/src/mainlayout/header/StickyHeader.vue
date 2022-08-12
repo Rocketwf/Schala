@@ -13,6 +13,7 @@
           <header-logo />
         </q-avatar>
         <span
+          @click="main"
           class="q-mx-sm"
           style="cursor: default"
         >schala</span>
