@@ -42,6 +42,12 @@ export class SearchResultsService extends ProfileService
                 ),
             );
         }
+        
+        basicProfiles.sort((a: BasicProfile, b: BasicProfile) => 
+        {
+            return  b.paperCount - a.paperCount;
+        });
+          
         return basicProfiles;
     }
     update(authorId: string): void 

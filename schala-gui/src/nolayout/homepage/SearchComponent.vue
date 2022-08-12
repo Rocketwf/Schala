@@ -30,6 +30,8 @@
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 import { searchResultsStore } from '../../stores/searchResultsPageStore';
+import { useQuasar } from 'quasar';
+const $q = useQuasar();
 
 // Attributes
 const searchString = ref('');
@@ -44,6 +46,15 @@ const getSearchString = (): string =>
 const handleSearch = async () => 
 {
     await getSearchPageResultsStore().setSearchString(getSearchString());
+    if (!/[\x00-\xFF]/.test(getSearchString()))
+    {
+        $q.notify({
+            type: 'negative',
+            message: 'Only ASCII characters are allowed',
+        });
+        searchString.value = '';
+        return;
+    }
     router.push({ path: '/profile/search' });
 };
 
