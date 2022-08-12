@@ -4,7 +4,7 @@
       v-if="noEntries"
       class="text-body1 text-center text-grey q-mb-xl"
     >
-      The data is too large to fit, please use the expand button
+      Nothing to be listed
     </div>
     <apexchart
       v-else

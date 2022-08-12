@@ -26,7 +26,6 @@
 import { ArticleCoAuthor } from 'schala-core';
 import { profilePageStore } from '../../../stores/profilePageStore';
 
-
 defineProps<{
     coAuthors: ArticleCoAuthor[];
     buttonIcon: string;
@@ -34,6 +33,7 @@ defineProps<{
 
 const changeProfile = (value: string): void => 
 {
+    window.scrollTo(0,0);
     profilePageStore().setProfileId(value);
 };
 </script>

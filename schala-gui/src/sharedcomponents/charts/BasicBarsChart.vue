@@ -56,6 +56,7 @@ const getLabels = computed(() =>
     }
     return labels;
 });
+
 const getmaxLimit = computed(() => 
 {
     if (props.basicBarsChartModel.chartOptionsModel) 
