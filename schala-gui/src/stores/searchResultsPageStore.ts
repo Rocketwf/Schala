@@ -19,21 +19,31 @@ export const searchResultsStore = defineStore({
         getSearchResultsShowingModel: (state) => state.searchResultsModel as SearchResultsModel,
     },
     actions: {
-        setWordsInTitleFilter(wordsInTitleFilter: string): void 
+        setWordsInTitleFilter(wordsInTitleFilter: string): void
         {
             this.searchResultsModel.filters[0].value = wordsInTitleFilter;
             this.searchResultsModel.paginationFilter.value = 1;
 
             this.searchResultsModel.applyAllFilters();
         },
-        async setSearchString(passedSearchString: string) 
+        async setSearchString(passedSearchString: string)
         {
             Loading.show();
             this.searchResultsModel.filters[0].value = '';
             this.searchString = passedSearchString;
-            const basicProfiles: BasicProfile[] = await SemanticScholarSource.getInstance().fetchSearchResults(
-                passedSearchString,
-            );
+            let basicProfiles: BasicProfile[] = [];
+            try
+            {
+                basicProfiles = await SemanticScholarSource.getInstance().fetchSearchResults(
+                    passedSearchString,
+                );
+            }
+            catch (error)
+            {
+                Loading.hide();
+                return;
+            }
+
             this.searchResultsModel.basicProfiles = basicProfiles;
             this.searchResultsModel.query = passedSearchString;
 
@@ -42,7 +52,7 @@ export const searchResultsStore = defineStore({
             this.searchResultsModel.applyAllFilters();
             Loading.hide();
         },
-        setSearchResultsShowingModel(model: SearchResultsModel) 
+        setSearchResultsShowingModel(model: SearchResultsModel)
         {
             this.searchResultsModel = model;
         },
