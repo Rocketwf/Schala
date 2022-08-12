@@ -20,7 +20,6 @@ export class SearchResultsService extends ProfileService
      */
     async build(query: string): Promise<BasicProfile[]> 
     {
-        query = query.replace(/[^\x21-\xFF]/g, '');
         const apiBasicAuthors: APIBasicAuthor[] = await this.dataSource.fetchSearchResults(query);
         const basicProfiles: BasicProfile[] = new Array<BasicProfile>();
 
