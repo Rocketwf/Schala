@@ -337,6 +337,7 @@ export class ArticlesModel implements Filterable<ArticlesModel>, Paginable<Artic
     public updateHitsPerPage(value: number): void 
     {
         this.paginationFilter.hitsPerPage = value;
+        this._pagination.currentPage = 1;
         this.applyPaginationFilter();
     }
 }
