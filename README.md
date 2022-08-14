@@ -50,7 +50,7 @@ sudo apt upgrade
 ### NodeJS >=18
 ```console
 curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-sudo apt install nodejs npm
+sudo apt install nodejs
 ```
 Next, install make:
 ```console
@@ -58,7 +58,7 @@ sudo apt install make
 ```
 Using the following command install @quasar/cli and yarn:
 ```console
-sudo npm i -g @quasar/cli yarn
+sudo npm i -g @quasar/cli yarn typescript
 ```
 ## SemanticScholar API key
 If you have an SemanticScholar API key you can use it by ecporting it as a global variable (Replace API_KEY with your key)
