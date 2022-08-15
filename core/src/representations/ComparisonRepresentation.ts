@@ -112,14 +112,14 @@ const CARDS: cards = {
         CARD_DATA: {
             TITLE: 'Most frequent co-authors',
             ROW: 2,
-            DEFAULT_NUM_OF_ENTRIES: 10,
+            DEFAULT_NUM_OF_ENTRIES: 5,
         },
     },
     CO_AUTHORS_WITH_HIGHEST_HINDEX: {
         CARD_DATA: {
             TITLE: 'Co-authors with highest h-index',
             ROW: 3,
-            DEFAULT_NUM_OF_ENTRIES: 10,
+            DEFAULT_NUM_OF_ENTRIES: 5,
         },
     },
     EXPERTISE: {
