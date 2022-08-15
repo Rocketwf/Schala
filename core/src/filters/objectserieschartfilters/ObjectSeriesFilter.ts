@@ -21,6 +21,10 @@ export class FromFilter extends ObjectSeriesFilter<number>
      */
     validate(model: ObjectSeriesChartModel): Message 
     {
+        if(isNaN(this._value ))
+        {
+            return new Message(STATUS.FAIL, 'Filter must be a number');
+        }
         if (this._value < 0) 
         {
             return new Message(STATUS.FAIL, 'Negative values aren\'t allowed');
@@ -75,6 +79,10 @@ export class ToFilter extends ObjectSeriesFilter<number>
      */
     validate(model: ObjectSeriesChartModel): Message 
     {
+        if(isNaN(this._value ))
+        {
+            return new Message(STATUS.FAIL, 'Filter must be a number');
+        }
         if (this._value < 0) 
         {
             return new Message(STATUS.FAIL, 'Negative values aren\'t allowed');
@@ -138,6 +146,10 @@ export class ShowingFilter extends ObjectSeriesFilter<number>
      */
     validate(model: ObjectSeriesChartModel): Message 
     {
+        if(isNaN(this._value ))
+        {
+            return new Message(STATUS.FAIL, 'Filter must be a number');
+        }
         if (model.isShowingExpandButton && !model.isExpanded && this._value >= 20)
         {
             return new Message(STATUS.FAIL, 'Showing value is too large, please use the expand functionality.');
