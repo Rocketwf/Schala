@@ -17,7 +17,7 @@ import {
     ViewName,
 } from '../models';
 import { CheckBox } from '../models/inputs/Inputs';
-import { RangeButton } from '../models/inputs/PopupEditButton';
+import { RangeButton, ShowingButton } from '../models/inputs/PopupEditButton';
 import { PublicationByYear } from '../models/profile/Profile';
 import { Expertise, ExpertiseModel } from '../models/simplecardmodel/ExpertiseModel';
 
@@ -623,7 +623,7 @@ export class ComparisonRepresentation
             showing,
             models,
         );
-        const showingPopupEdit: RangeButton = new RangeButton('showing', [showingNumberField]);
+        const showingPopupEdit: ShowingButton = new ShowingButton('showing', [showingNumberField]);
 
         rowModel.popupButtons = [showingPopupEdit];
         rowModel.checkBoxes = [scalingPublicationCheckBox, scalingHIndexCheckBox];
