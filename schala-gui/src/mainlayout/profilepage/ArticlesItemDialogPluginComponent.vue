@@ -37,7 +37,7 @@
       <q-card-section v-if="article.citationCount !== 0">
         <div>
           <span class="text-weight-bold">Cited by:</span> {{ article.citationCount }} paper{{
-            article.selfCitationsCount > 1 ? 's' : ''
+            article.citationCount > 1 ? 's' : ''
           }}.
         </div>
       </q-card-section>
@@ -62,7 +62,9 @@
       </q-card-section>
       <q-card-section v-if="article.selfCitationsCount">
         <div>
-          <span class="text-weight-bold">This author cited in this paper {{ article.selfCitationsCount }} of their other papers.</span>
+          <span class="text-weight-bold">This author cited in this paper {{ article.selfCitationsCount }} of their other paper{{
+            article.selfCitationsCount > 1 ? 's' : ''
+          }}.</span>
         </div>
       </q-card-section>
       <!-- buttons example -->
