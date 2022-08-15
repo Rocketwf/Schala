@@ -42,6 +42,7 @@ const getSeries = () =>
     }
     return [
         {
+            name: '#',
             data: apexSeries,
         },
     ];

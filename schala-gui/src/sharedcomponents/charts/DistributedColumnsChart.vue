@@ -31,7 +31,9 @@ const getSeries = () =>
     {
         apexSeries.push(series.data[0]);
     }
-    return [{ data: apexSeries }];
+    return [{
+        name: '#', 
+        data: apexSeries }];
 };
 
 const getLabels = computed(() => 

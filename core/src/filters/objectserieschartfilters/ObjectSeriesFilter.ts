@@ -21,7 +21,6 @@ export class FromFilter extends ObjectSeriesFilter<number>
      */
     validate(model: ObjectSeriesChartModel): Message 
     {
-
         if (this._value < 0) 
         {
             return new Message(STATUS.FAIL, 'Negative values aren\'t allowed');
