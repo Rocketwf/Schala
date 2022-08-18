@@ -1,8 +1,7 @@
 //import { Article, ArticlesModel, ViewName } from '../../../models';
 
 
-import { SemanticScholarSource } from '../../../datasources';
-import { ArticlesPaginationFilter, CoauthorsFilter, KeywordsFilter, NumberOfCitationsFilter, SortByFilter, WordsInArticleTitleFilter } from '../../../filters/articlesfilters/ArticlesFilter';
+import { ArticlesPaginationFilter, CoauthorsFilter, ExpertiseFilter, JournalFilter, KeywordsFilter, NumberOfCitationsFilter, SortByFilter, WordsInArticleTitleFilter } from '../../../filters/articlesfilters/ArticlesFilter';
 import { Article, ArticleCoAuthor, ArticlesModel, BasicProfile, FullProfile, ViewName } from '../../../models';
 import { Author, CitationByYear, CitedScholar, ProfileExpertise, PublicationByVenue, PublicationByYear } from '../../../models/profile/Profile';
 
@@ -42,15 +41,17 @@ beforeEach(() =>
     expertises.push(new ProfileExpertise('Mathematics',30));
     expertises.push(new ProfileExpertise('Engineering',20));
     articles.push(new Article('Turing machine simulator','KIT',1977,15,11,'',coAuthors,'Alan Turing is genius','','','KIT Journal',['Engineering']));
-    articles.push(new Article('Turing machine simulator2','MIT',1978,14,10,'',coAuthors,'Alan Turing is genius','','','KIT Journal',['Physics']));
+    articles.push(new Article('Turing machine simulator2','MIT',1978,14,10,'',coAuthors,'Alan Turing is genius','','','MIT Journal',['Physics']));
     articles.push(new Article('Turing machine simulator3','KIT',1979,13,9,'',coAuthors,'Alan Turing is genius','','','KIT Journal',['Computer Science']));
     articles.push(new Article('Turing machine simulator4','MIT',1980,12,8,'',coAuthors,'Alan Turing is genius','','','KIT Journal',['Engineering']));
     articles.push(new Article('Turing machine simulator5','KIT',1981,11,7,'',coAuthors,'Alan Turing is genius','','','KIT Journal',['Physics']));
-    articles.push(new Article('Turing machine simulator6','MIT',1982,10,6,'',coAuthors,'Alan Turing is genius','','','KIT Journal',['Computer Science']));
+    articles.push(new Article('Turing machine simulatorX','MIT',1975,3,4,'',coAuthors,'Alan Turing is genius','','','MIT Journal',['Computer Science']));
+    articles.push(new Article('Turing machine simulatorX','MIT',1975,3,4,'',coAuthors,'Alan Turing is genius','','','MIT Journal',['Computer Science']));
+    articles.push(new Article('Turing machine simulator6','MIT',1982,10,6,'',coAuthors,'Alan Turing is genius','','','MIT Journal',['Computer Science']));
     articles.push(new Article('Turing machine simulator7','KIT',1983,9,5,'',coAuthors,'Alan Turing is genius','','','KIT Journal',['Engineering']));
-    articles.push(new Article('Turing machine simulator8','MIT',1984,8,4,'',coAuthors,'Alan Turing is genius','','','KIT Journal',['Physics']));
+    articles.push(new Article('Turing machine simulator8','MIT',1984,8,4,'',coAuthors,'Alan Turing is genius','','','MIT Journal',['Physics']));
     articles.push(new Article('Turing machine simulator9','KIT',1985,7,3,'',coAuthors,'Alan Turing is genius','','','KIT Journal',['Engineering']));
-    articles.push(new Article('Turing machine simulator10','MIT',1986,6,2,'',coAuthors,'Alan Turing is genius','','','KIT Journal',['Mathematics']));
+    articles.push(new Article('Turing machine simulator10','MIT',1986,6,2,'',coAuthors,'Alan Turing is genius','','','MIT Journal',['Mathematics']));
     articles.push(new Article('Turing machine simulator11','KIT',1987,5,1,'',coAuthors,'Alan Turing is genius','','','KIT Journal',['Engineering']));
     const fp: FullProfile = new FullProfile(
         expertises,
@@ -89,19 +90,27 @@ describe('articles filter test', () =>
         expect(articleModel.articles[0].publicationYear > articleModel.articles[10].publicationYear).toBe(true);
     }, 30000);
 
-    it('sorts articles by year', () => 
+    it('sorts articles by citations', () => 
     {
         const sortBy: SortByFilter = new SortByFilter('citations');
         sortBy.apply(articleModel);
 
         expect(articleModel.articles[0].citationCount > articleModel.articles[1].citationCount).toBe(true);
+        expect(articleModel.articles[2].citationCount > articleModel.articles[1].citationCount).toBe(false);
     }, 30000);
 
-    it('sorts articles by citations', () => 
+    it('sorts articles by self citations', () => 
     {
         const sortBy: SortByFilter = new SortByFilter('self-citations');
         sortBy.apply(articleModel);
         expect(articleModel.articles[0].selfCitationsCount > articleModel.articles[1].selfCitationsCount).toBe(true);
+    }, 30000);
+
+    it('sortBy deep copy', () => 
+    {
+        const sortBy: SortByFilter = new SortByFilter('self-citations');
+        const sort: SortByFilter = sortBy.deepCopy();
+        expect(sort).toStrictEqual(sortBy);
     }, 30000);
 
     it('filters articles by coauthors', () => 
@@ -122,6 +131,15 @@ describe('articles filter test', () =>
        
     }, 30000);
 
+    it('copies coAuthor filter', () => 
+    {
+        const coAuthor: CoauthorsFilter = new CoauthorsFilter('D. Garlan');
+        const co: CoauthorsFilter = coAuthor.deepCopy();
+        expect(co).toStrictEqual(coAuthor);
+
+       
+    }, 30000);
+
     it('filters articles by words in the title', () => 
     {
         const words: WordsInArticleTitleFilter = new WordsInArticleTitleFilter('COVID');
@@ -132,11 +150,24 @@ describe('articles filter test', () =>
         }
     }, 30000);
 
+    it('copies words in the title filter', () => 
+    {
+        const words: WordsInArticleTitleFilter = new WordsInArticleTitleFilter('COVID');
+        const w: WordsInArticleTitleFilter = words.deepCopy();
+        expect(w).toStrictEqual(words);
+    }, 30000);
+
     it('filters articles by number of citations', () => 
     {
         const number: NumberOfCitationsFilter = new NumberOfCitationsFilter('2');
         number.apply(articleModel);
         expect(articleModel.articles[0].citationCount > articleModel.articles[1].citationCount ).toBe(true);
+    }, 30000);
+    it('copies number of citations filter', () => 
+    {
+        const number: NumberOfCitationsFilter = new NumberOfCitationsFilter('2');
+        const n: NumberOfCitationsFilter = number.deepCopy();
+        expect(n ).toStrictEqual(number);
     }, 30000);
 
     it('filters articles by keywords', () => 
@@ -148,12 +179,48 @@ describe('articles filter test', () =>
         {
             expect(article.abstract.indexOf('understanding') > -1 || article.abstract.indexOf('Understanding') > -1).toBe(true);
         }
-    //);
+    }, 30000);
+
+    it('it copies keywords filter', () => 
+    {
+        const keywords: KeywordsFilter = new KeywordsFilter('understanding');
+        const k: KeywordsFilter = keywords.deepCopy();
+        expect(k).toStrictEqual(keywords);
+    }, 30000);
+    it('it copies pagination filter', () => 
+    {
+        const page: ArticlesPaginationFilter = new ArticlesPaginationFilter(10);
+        const p: ArticlesPaginationFilter = page.deepCopy();
+        expect(p).toStrictEqual(page);
+    }, 30000);
+    it('filters articles by journal name', () => 
+    {
+        const journal: JournalFilter = new JournalFilter('KIT');
+        journal.apply(articleModel);
+        expect(articleModel.articles.length).toBe(7);
+    }, 30000);
+    it('it copies journal filter', () => 
+    {
+        const journal: JournalFilter = new JournalFilter('KIT');
+        const j: JournalFilter = journal.deepCopy();
+        expect(j).toStrictEqual(journal);
+    }, 30000);
+    it('filters articles by expertise', () => 
+    {
+        const expertise: ExpertiseFilter = new ExpertiseFilter('Computer Science');
+        expertise.apply(articleModel);
+        expect(articleModel.articles.length).toBe(4);
+    }, 30000);
+    it('it copies expertise filter', () => 
+    {
+        const expertise: ExpertiseFilter = new ExpertiseFilter('Computer Science');
+        const ex: ExpertiseFilter = expertise.deepCopy();
+        expect(ex).toStrictEqual(expertise);
     }, 30000);
     /*it('paginates articles', () => 
     {
         const page: ArticlesPaginationFilter = new ArticlesPaginationFilter(10);
-        console.log(articleModel.articles.length);
+        console.log(articleModel.articles.length +'fgfgfhgf');
         page.apply(articleModel);
         expect(articleModel.articles.length).toBe(10);
     }, 30000);*/
