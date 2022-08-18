@@ -1,4 +1,5 @@
 import { SearchResultsPaginationFilter } from '../../../filters';
+import { STATUS } from '../../../misc';
 import { Article, ArticleCoAuthor, BasicProfile, FullProfile, SearchResultsModel } from '../../../models';
 import { Author, CitationByYear, CitedScholar, ProfileExpertise, PublicationByVenue, PublicationByYear } from '../../../models/profile/Profile';
 
@@ -86,4 +87,17 @@ describe('SearchResultsModel tests', () =>
         searchResultsModel.expandable = true;
         expect(searchResultsModel.expandable).toBe(true);
     });
+    it('checks if query is being set correctly', () => {
+        const testQuery: string = 'Test Query';
+        searchResultsModel.query = testQuery;
+        expect(searchResultsModel.query).toBe('Test Query')
+    })
+    it('checks if isExpanded is being set correctly', () => {
+        var testIsExpanded = true;
+        searchResultsModel.isExpanded = testIsExpanded;
+        expect(searchResultsModel.isExpanded).toBe(true)
+        testIsExpanded = false;
+        searchResultsModel.isExpanded = testIsExpanded;
+        expect(searchResultsModel.isExpanded).toBe(false)
+    })
 });

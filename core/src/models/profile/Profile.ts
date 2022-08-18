@@ -222,7 +222,7 @@ export class FullProfile
     }
     public set i10Index(i10Index: number) 
     {
-        this.i10Index = i10Index;
+        this._i10Index = i10Index;
     }
     public get expertise(): ProfileExpertise[] 
     {
@@ -238,7 +238,7 @@ export class FullProfile
     }
     public set hIndex(hIndex: number) 
     {
-        this.hIndex = hIndex;
+        this._hIndex = hIndex;
     }
     public get hIndexWithoutSelfCitations(): number 
     {
@@ -254,7 +254,7 @@ export class FullProfile
     }
     public set basicProfile(basicProfile: BasicProfile) 
     {
-        this.basicProfile = basicProfile;
+        this._basicProfile = basicProfile;
     }
 
     public get selfCitationsCount(): number 
