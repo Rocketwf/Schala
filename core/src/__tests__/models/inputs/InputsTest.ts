@@ -1,6 +1,7 @@
 
 import { ScaleUpFilter } from '../../../filters/chartoptionsfilters/ChartOptionFilter';
 import { FromFilter, ShowingFilter } from '../../../filters/objectserieschartfilters/ObjectSeriesFilter';
+import { Message, STATUS } from '../../../misc/Message';
 import { ChartOptionsModel, Field, ObjectSeriesChartModel, Series, StackedColumnsChartModel, ViewName } from '../../../models';
 import { CheckBox, SelectOptions } from '../../../models/inputs/Inputs';
 
@@ -56,6 +57,15 @@ describe('inputs test', () =>
         field.inputName = '';
         expect(field.inputName).toBe('');
     }, 30000);
+    it('checks inputId of Field', async () => 
+    {
+        const showing: ShowingFilter = new ShowingFilter(2);
+        model1.filters = [showing];
+        const models: ObjectSeriesChartModel[] = [model1];
+        const field: Field<number, ObjectSeriesChartModel> = new Field('first Article',2, showing, models);
+        field.inputId = '';
+        expect(field.inputId).toBe('');
+    }, 30000);
     it('checks handleInput of Checkbox', async () => 
     {
         const mods: ObjectSeriesChartModel[] = [model1, model2];
@@ -78,6 +88,40 @@ describe('inputs test', () =>
         const check: CheckBox<ChartOptionsModel> = new CheckBox('first Diagram',true, scale, chartMods);
         check.inputName = '';
         expect(check.inputName).toBe('');
+    }, 30000);
+    it('checks inputValue of Checkbox', async () => 
+    {
+        const mods: ObjectSeriesChartModel[] = [model1, model2];
+        const chartModel: ChartOptionsModel = new ChartOptionsModel(mods);
+        const scale: ScaleUpFilter = new ScaleUpFilter(false);
+        chartModel.filters = [scale];
+        const chartMods: ChartOptionsModel[] = [chartModel];
+        const check: CheckBox<ChartOptionsModel> = new CheckBox('first Diagram',true, scale, chartMods);
+        check.inputValue = false;
+        expect(check.inputValue).toBe(false);
+    }, 30000);
+    it('checks inputName of Checkbox', async () => 
+    {
+        const mods: ObjectSeriesChartModel[] = [model1, model2];
+        const chartModel: ChartOptionsModel = new ChartOptionsModel(mods);
+        const scale: ScaleUpFilter = new ScaleUpFilter(false);
+        chartModel.filters = [scale];
+        const chartMods: ChartOptionsModel[] = [chartModel];
+        const check: CheckBox<ChartOptionsModel> = new CheckBox('first Diagram',true, scale, chartMods);
+        check.inputId = '';
+        expect(check.inputId).toBe('');
+    }, 30000);
+    it('checks filter of Checkbox', async () => 
+    {
+        const mods: ObjectSeriesChartModel[] = [model1, model2];
+        const chartModel: ChartOptionsModel = new ChartOptionsModel(mods);
+        const scale1: ScaleUpFilter = new ScaleUpFilter(true);
+        const scale2: ScaleUpFilter = new ScaleUpFilter(false);
+        chartModel.filters = [scale1];
+        const chartMods: ChartOptionsModel[] = [chartModel];
+        const check: CheckBox<ChartOptionsModel> = new CheckBox('first Article',true, scale1, chartMods);
+        check.filter = scale2;
+        expect(check.filter).toBe(scale2);
     }, 30000);
     it('checks handleInput of SelectOptions', async () => 
     {
@@ -116,5 +160,34 @@ describe('inputs test', () =>
         const select: SelectOptions<number, ObjectSeriesChartModel> = new SelectOptions('first Article',2, [2,3],showing, models);
         select.inputName = '';
         expect(select.inputName).toBe('');
+    }, 30000);
+    it('checks inputId of SelectOptions', async () => 
+    {
+        const showing: ShowingFilter = new ShowingFilter(2);
+        model1.filters = [showing];
+        const models: ObjectSeriesChartModel[] = [model1];
+        const select: SelectOptions<number, ObjectSeriesChartModel> = new SelectOptions('first Article',2, [2,3],showing, models);
+        select.inputId = '';
+        expect(select.inputId).toBe('');
+    }, 30000);
+    it('checks inputValue of SelectOptions', async () => 
+    {
+        const showing: ShowingFilter = new ShowingFilter(2);
+        model1.filters = [showing];
+        const models: ObjectSeriesChartModel[] = [model1];
+        const select: SelectOptions<number, ObjectSeriesChartModel> = new SelectOptions('first Article',2, [2,3],showing, models);
+        select.inputValue = 1;
+        expect(select.inputValue).toBe(1);
+    }, 30000);
+    it('checks if previous value equal to current value of Field', async () => 
+    {
+        const showing: ShowingFilter = new ShowingFilter(2);
+        model1.filters = [showing];
+        const models: ObjectSeriesChartModel[] = [model1];
+        const field: Field<number, ObjectSeriesChartModel> = new Field('first Article',2, showing, models);
+        field.handleInput();
+        field.inputValue = 2;
+        const msg: Message[] = field.handleInput();
+        expect(msg[0].status).toBe(STATUS.OK);
     }, 30000);
 });
