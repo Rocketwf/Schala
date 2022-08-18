@@ -1,7 +1,6 @@
 //import { Article, ArticlesModel, ViewName } from '../../../models';
 
 
-import { SemanticScholarSource } from '../../../datasources';
 import { ArticlesPaginationFilter, CoauthorsFilter, ExpertiseFilter, JournalFilter, KeywordsFilter, NumberOfCitationsFilter, SortByFilter, WordsInArticleTitleFilter } from '../../../filters/articlesfilters/ArticlesFilter';
 import { Article, ArticleCoAuthor, ArticlesModel, BasicProfile, FullProfile, ViewName } from '../../../models';
 import { Author, CitationByYear, CitedScholar, ProfileExpertise, PublicationByVenue, PublicationByYear } from '../../../models/profile/Profile';
