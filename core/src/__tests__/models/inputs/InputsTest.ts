@@ -187,7 +187,11 @@ describe('inputs test', () =>
         const field: Field<number, ObjectSeriesChartModel> = new Field('first Article',2, showing, models);
         field.handleInput();
         field.inputValue = 2;
-        const msg: Message[] = field.handleInput();
-        expect(msg[0].status).toBe(STATUS.OK);
+        const msg: Message = new Message(0);
+        msg.message = 'g';
+        msg.status = 1;
+        let msgs: Message[] =[msg];
+        msgs = field.handleInput();
+        expect(msgs[0].status).toBe(STATUS.OK);
     }, 30000);
 });
