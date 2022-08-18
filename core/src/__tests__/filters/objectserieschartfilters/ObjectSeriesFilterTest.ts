@@ -1,4 +1,5 @@
 import { FromFilter, ToFilter } from '../../../filters/objectserieschartfilters/ObjectSeriesFilter';
+import { Message } from '../../../misc/Message';
 import { ViewName } from '../../../models';
 import { StackedColumnsChartModel, ObjectSeriesChartModel, Series } from '../../../models/objectserieschartmodel';
 
@@ -22,5 +23,12 @@ describe('chart options filter', () =>
         const to: ToFilter = new ToFilter(2019);
         to.apply(model);
         expect(model.series.length).toBe(1);
+    });
+    it('validates from filter model', () => 
+    {
+        const from: FromFilter = new FromFilter(2021);
+        from.value = -1;
+        const msg : Message = from.validate(model);
+        expect(msg.message).toBe('Negative values aren\'t allowed');
     });
 });
