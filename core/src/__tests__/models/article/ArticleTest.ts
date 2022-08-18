@@ -1,4 +1,4 @@
-import { Article, ArticleCoAuthor } from "../../../models";
+import { Article, ArticleCoAuthor } from '../../../models';
 
 describe('checks article', () => 
 {
