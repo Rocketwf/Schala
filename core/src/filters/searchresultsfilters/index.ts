@@ -3,4 +3,5 @@ export {
     SearchResultsPaginationFilter,
     WordsInTitleFilter,
     AffiliationFilter,
+    StudyFieldsFilter,
 } from './SearchResultsFilter';

@@ -24,7 +24,7 @@ export {
     PublicationByYear,
     ProfileExpertise,
 } from './profile';
-export { SearchResultsModel } from './searchresultsmodel';
+export { SearchResultsModel, SearchFieldsOfStudy } from './searchresultsmodel';
 export { SimpleCardModel, ViewName, PieChartModel, Expertise, ExpertiseModel, HeatmapChartModel } from './simplecardmodel';
 export { RowModel, Tab } from './viewmodels';
 export { Pagination } from './viewmodels/Pagination';

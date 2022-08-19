@@ -73,11 +73,11 @@ export class FullProfileService extends ProfileService
         const googleProfile: APIAuthor = await this._scraperDataSource.fetchAuthor(basicProfile.name);
         basicProfile.pictureUrl = googleProfile.profilePicture;
         basicProfile.affiliations = googleProfile.affiliations;
+        basicProfile.expertise = this.buildExpertise(authorPapers);
 
         const coAuthors: Author[] = this.buildAuthors(apiAuthor, authorPapers);
 
         const fullProfile: FullProfile = new FullProfile(
-            this.buildExpertise(authorPapers),
             this.calculateHIndex(authorPapers),
             this.calculateHIndexWithoutSelfCitations(apiAuthor, authorPapers),
             this.calculateI10Index(authorPapers),
@@ -134,46 +134,6 @@ export class FullProfileService extends ProfileService
             apiAuthor.citationCount,
         );
         return basicProfile;
-    }
-
-    /**
-     * Builds the expertises list of the papers being passed
-     * @param apiPapers - apiPapers object array of the papers to build
-     * @returns Array of the expertises from the papers
-     */
-    private buildExpertise(apiPapers: APIPaper[]): Expertise[] 
-    {
-        const expertise: Map<string, Expertise> = new Map<string, Expertise>();
-        for (const apiPaper of apiPapers) 
-        {
-            if (!apiPaper.fieldsOfStudy) continue;
-            for (const fieldOfStudy of apiPaper.fieldsOfStudy) 
-            {
-                if (!expertise.has(fieldOfStudy)) 
-                {
-                    expertise.set(fieldOfStudy, new Expertise(fieldOfStudy, 1));
-                }
-                else 
-                {
-                    const newCount: number = expertise.get(fieldOfStudy).count + 1;
-                    expertise.set(fieldOfStudy, new Expertise(fieldOfStudy, newCount));
-                }
-            }
-        }
-        const sortedExpertise: Expertise[] = Array.from(expertise.values()).sort(this.sortExpertise);
-        return sortedExpertise;
-    }
-
-    private sortExpertise(a: Expertise, b: Expertise): number 
-    {
-        if (a.count > b.count) 
-        {
-            return -1;
-        }
-        else 
-        {
-            return 1;
-        }
     }
 
     /**
@@ -750,5 +710,44 @@ export class FullProfileService extends ProfileService
         const updatedNewProfile: FullProfile = (await this.build(authorId))[0];
         console.log('build profile', authorId);
         this._cachedReadyFullProfiles.set(authorId, updatedNewProfile);
+    }
+    /**
+     * Builds the expertises list of the papers being passed
+     * @param apiPapers - apiPapers object array of the papers to build
+     * @returns Array of the expertises from the papers
+     */
+    private buildExpertise(apiPapers: APIPaper[]): Expertise[] 
+    {
+        const expertise: Map<string, Expertise> = new Map<string, Expertise>();
+        for (const apiPaper of apiPapers) 
+        {
+            if (!apiPaper.fieldsOfStudy) continue;
+            for (const fieldOfStudy of apiPaper.fieldsOfStudy) 
+            {
+                if (!expertise.has(fieldOfStudy)) 
+                {
+                    expertise.set(fieldOfStudy, new Expertise(fieldOfStudy, 1));
+                }
+                else 
+                {
+                    const newCount: number = expertise.get(fieldOfStudy).count + 1;
+                    expertise.set(fieldOfStudy, new Expertise(fieldOfStudy, newCount));
+                }
+            }
+        }
+        const sortedExpertise: Expertise[] = Array.from(expertise.values()).sort(this.sortExpertise);
+        return sortedExpertise;
+    }
+
+    private sortExpertise(a: Expertise, b: Expertise): number 
+    {
+        if (a.count > b.count) 
+        {
+            return -1;
+        }
+        else 
+        {
+            return 1;
+        }
     }
 }

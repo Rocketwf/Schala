@@ -450,7 +450,7 @@ export class ProfileRepresentation
      */
     private createExpertiseCard(): ExpertiseModel 
     {
-        const expertise: Expertise = new Expertise(this._fullProfile.basicProfile.name, this._fullProfile.expertise);
+        const expertise: Expertise = new Expertise(this._fullProfile.basicProfile.name, this._fullProfile.basicProfile.expertise);
         return new ExpertiseModel(
             [expertise],
             CARDS.EXPERTISE.CARD_DATA.TITLE,

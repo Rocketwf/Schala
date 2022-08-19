@@ -3,7 +3,6 @@ import { Author } from './Author';
 import { BasicProfile } from './BasicProfile';
 import { CitationsByYear } from './CitationsByYear';
 import { CitedScholar } from './CitedScholar';
-import { Expertise } from './Expertise';
 import { Profile } from './Profile';
 import { PublicationByVenue } from './PublicationByVenue';
 import { PublicationByYear } from './PublicationByYear';
@@ -14,10 +13,6 @@ import { PublicationByYear } from './PublicationByYear';
  */
 export class FullProfile extends Profile 
 {
-    /**
-     * The expertises of the scholar
-     */
-    private _expertise: Expertise[];
     /**
      * The h-index of the scholar
      */
@@ -100,7 +95,6 @@ export class FullProfile extends Profile
      * @param _articles - The articles of the scholar
      */
     constructor(
-        _expertise: Expertise[],
         _hIndex: number,
         _hIndexWithoutSelfCitations: number,
         _i10Index: number,
@@ -119,7 +113,6 @@ export class FullProfile extends Profile
     ) 
     {
         super();
-        this._expertise = _expertise;
         this._hIndex = _hIndex;
         this._hIndexWithoutSelfCitations = _hIndexWithoutSelfCitations;
         this._i10Index = _i10Index;
@@ -136,21 +129,6 @@ export class FullProfile extends Profile
         this._citedScholars = _citedScholars;
         this._authors = _authors;
         this._articles = _articles;
-    }
-    /**
-     * Gets expertise
-     */
-    public get expertise(): Expertise[] 
-    {
-        return this._expertise;
-    }
-
-    /**
-     * Sets expertises
-     */
-    public set expertises(_expertise: Expertise[]) 
-    {
-        this._expertise = _expertise;
     }
 
     /**

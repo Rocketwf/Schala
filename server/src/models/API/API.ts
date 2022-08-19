@@ -20,8 +20,10 @@ export interface APIBasicAuthor {
     affiliations: string[];
     paperCount: string;
     citationCount: string;
+    papers?: APIPaper[];
     profilePicture?: string;
 }
+
 /**
  * The APIAuthor is a datastructure holding the complete information
  * of a scholar

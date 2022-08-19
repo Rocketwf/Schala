@@ -1,13 +1,47 @@
-import { Filter, SearchResultsPaginationFilter } from '../../filters';
+import { Filter, SearchResultsPaginationFilter, StudyFieldsFilter } from '../../filters';
 import { Filterable, Paginable } from '../../filters/Filterable';
 import { Message, STATUS } from '../../misc/Message';
 import { BasicProfile } from '../profile/Profile';
 import { Pagination } from '../viewmodels/Pagination';
 
+export class SearchFieldsOfStudy 
+{
+    private _fieldOfStudy: string;
+    private _isActive: boolean;
+    constructor(_fieldOfStudy: string) 
+    {
+        this._fieldOfStudy = _fieldOfStudy;
+        this._isActive = true;
+    }
+
+    public get fieldOfStudy(): string 
+    {
+        return this._fieldOfStudy;
+    }
+
+    public set fieldOfStudy(newFieldOfStudy: string) 
+    {
+        this._fieldOfStudy = newFieldOfStudy;
+    }
+    public get isActive(): boolean 
+    {
+        return this._isActive;
+    }
+
+    public set isActive(newIsActive: boolean) 
+    {
+        this._isActive = newIsActive;
+    }
+    public toggle(): void 
+    {
+        this._isActive = !this._isActive;
+    }
+}
 export class SearchResultsModel implements Filterable<SearchResultsModel>, Paginable<SearchResultsModel> 
 {
     private _basicProfiles: Array<BasicProfile>;
     private _filters: Filter<string, SearchResultsModel>[];
+    private _studyFieldsFilter: StudyFieldsFilter;
 
     private _paginationFilter: SearchResultsPaginationFilter;
     private _pagination: Pagination<SearchResultsModel>;
@@ -18,14 +52,18 @@ export class SearchResultsModel implements Filterable<SearchResultsModel>, Pagin
     private _cachedModel: SearchResultsModel;
     private _query: string;
 
+    private _relatedFieldsOfStudy: SearchFieldsOfStudy[];
+
     constructor(
         basicProfiles: Array<BasicProfile>,
         paginationFilter?: SearchResultsPaginationFilter,
+        studyFieldsFilter?: StudyFieldsFilter,
         filters?: Filter<string, SearchResultsModel>[],
     ) 
     {
         this._basicProfiles = basicProfiles;
         this._paginationFilter = paginationFilter;
+        this._studyFieldsFilter = studyFieldsFilter;
         if (this._paginationFilter) 
         {
             this._pagination = new Pagination<SearchResultsModel>(this._paginationFilter, this);
@@ -33,6 +71,24 @@ export class SearchResultsModel implements Filterable<SearchResultsModel>, Pagin
         this._filters = filters;
     }
 
+    public get studyFieldsFilter(): StudyFieldsFilter 
+    {
+        return this._studyFieldsFilter;
+    }
+    public set studyFieldsFilter(newStudyFieldsFilter: StudyFieldsFilter) 
+    {
+        this._studyFieldsFilter = newStudyFieldsFilter;
+    }
+
+    public get relatedFieldsOfStudy(): SearchFieldsOfStudy[] 
+    {
+        return this._relatedFieldsOfStudy;
+    }
+
+    public set relatedFieldsOfStudy(newRelatedFieldsOfStudy: SearchFieldsOfStudy[]) 
+    {
+        this._relatedFieldsOfStudy = newRelatedFieldsOfStudy;
+    }
     public get query(): string 
     {
         return this._query;
@@ -143,6 +199,7 @@ export class SearchResultsModel implements Filterable<SearchResultsModel>, Pagin
         {
             filter.applyValidate(this);
         }
+        this.studyFieldsFilter.applyValidate(this);
         this.fixMaxPages();
 
         this._pagination.currentPage = 1;

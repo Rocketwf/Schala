@@ -8,4 +8,5 @@ export {
     SearchResultsPaginationFilter,
     WordsInTitleFilter,
     AffiliationFilter,
+    StudyFieldsFilter,
 } from './searchresultsfilters';

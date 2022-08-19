@@ -94,6 +94,13 @@ export class SemanticScholarSource implements DataSource
                 const basicProfiles: BasicProfile[] = new Array<BasicProfile>();
                 for (const apiBasicProfile of bp) 
                 {
+                    const expertise: ProfileExpertise[] = new Array<ProfileExpertise>();
+                    for (const exp of apiBasicProfile._expertise)
+                    {
+                        const newExpertise: ProfileExpertise = new ProfileExpertise(exp._name, exp._count);
+                        expertise.push(newExpertise);
+                    }
+                    console.log(expertise);
                     const basicProfile: BasicProfile = new BasicProfile(
                         apiBasicProfile._id,
                         apiBasicProfile._name,
@@ -101,6 +108,7 @@ export class SemanticScholarSource implements DataSource
                         apiBasicProfile._totalCitations,
                         apiBasicProfile._paperCount,
                         apiBasicProfile._pictureUrl,
+                        expertise,
                     );
                     basicProfiles.push(basicProfile);
                 }
@@ -154,6 +162,14 @@ export class SemanticScholarSource implements DataSource
                     fp._basicProfile._paperCount,
                     fp._basicProfile._pictureUrl,
                 );
+                const expertise: ProfileExpertise[] = new Array<ProfileExpertise>();
+                for (const exp of fp._basicProfile._expertise)
+                {
+                    const newExpertise: ProfileExpertise = new ProfileExpertise(exp._name, exp._count);
+                    expertise.push(newExpertise);
+                }
+                basicProfile.expertise = expertise;
+
                 const articles: Article[] = new Array<Article>();
                 for (const art of fp._articles) 
                 {
@@ -216,14 +232,7 @@ export class SemanticScholarSource implements DataSource
                     const newAuthor: Author = new Author(auth._name, auth._jointPublicationCount, auth._hIndex);
                     authors.push(newAuthor);
                 }
-                const expertise: ProfileExpertise[] = new Array<ProfileExpertise>();
-                for (const exp of fp._expertise)
-                {
-                    const newExpertise: ProfileExpertise = new ProfileExpertise(exp._name, exp._count);
-                    expertise.push(newExpertise);
-                }
                 const fullProfile: FullProfile = new FullProfile(
-                    expertise,
                     fp._hIndex,
                     fp._hIndexWithoutSelfCitations,
                     fp._i10Index,

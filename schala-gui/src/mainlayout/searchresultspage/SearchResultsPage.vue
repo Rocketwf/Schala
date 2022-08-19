@@ -6,6 +6,17 @@
     <div class="col-xs-12 col-md-8">
       <q-page padding>
         <filter-box />
+        <div class="q-pa-md">
+          <div class="q-gutter-sm">
+            <q-checkbox
+              v-for="sfos in (searchStore.searchResultsModel.relatedFieldsOfStudy as SearchFieldsOfStudy[])"
+              :key="sfos.fieldOfStudy"
+              v-model="sfos.isActive"
+              :label="sfos.fieldOfStudy"
+              @update:model-value="handleFilter"
+            />
+          </div>
+        </div>
         <q-list
           bordered
           class="rounded-borders q-mt-lg"
@@ -32,7 +43,7 @@
 import FilterBox from './FilterBox.vue';
 import { searchResultsStore } from '../../stores/searchResultsPageStore';
 import SearchResultsItem from './SearchResultItem.vue';
-import { Pagination, SearchResultsModel, ArticlesModel, BasicProfile } from 'schala-core';
+import { Pagination, SearchResultsModel, SearchFieldsOfStudy, ArticlesModel, BasicProfile } from 'schala-core';
 import { onBeforeMount, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
@@ -50,7 +61,6 @@ const getSearchResultsPageStore = () =>
 {
     return searchStore;
 };
-
 
 const getBasicProfiles = () => 
 {
@@ -74,4 +84,8 @@ onBeforeMount(async () =>
         await searchStore.setSearchString(searchStore.searchString);
     }
 });
+const handleFilter = () => 
+{
+    searchStore.updateFieldsOfStudy();
+};
 </script>

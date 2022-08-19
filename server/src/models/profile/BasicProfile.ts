@@ -1,10 +1,15 @@
 import { Profile } from './Profile';
+import { Expertise } from './Expertise';
 
 /**
  * This class represents a basic profile containing the basic information of a scholar
  */
 export class BasicProfile extends Profile 
 {
+    /**
+     * The expertises of the scholar
+     */
+    private _expertise: Expertise[];
     /**
      * Id of the basic profile
      */
@@ -46,15 +51,26 @@ export class BasicProfile extends Profile
         _totalCitations?: number,
         _paperCount?: number,
         _pictureUrl?: string,
+        _expertise?: Expertise[],
     ) 
     {
         super();
+        this._expertise = _expertise;
         this._id = _id;
         this._name = _name;
         this._affiliations = _affiliations;
         this._totalCitations = _totalCitations;
         this._paperCount = _paperCount;
         this._pictureUrl = _pictureUrl;
+    }
+
+    public get expertise(): Expertise[] 
+    {
+        return this._expertise;
+    }
+    public set expertise(_expertise: Expertise[]) 
+    {
+        this._expertise = _expertise; 
     }
 
     /**

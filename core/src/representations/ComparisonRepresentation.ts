@@ -680,7 +680,7 @@ export class ComparisonRepresentation
         const expertise: Expertise[] = new Array<Expertise>();
         for (const fp of this._fullProfiles) 
         {
-            expertise.push(new Expertise(fp.basicProfile.name, fp.expertise));
+            expertise.push(new Expertise(fp.basicProfile.name, fp.basicProfile.expertise));
         }
 
         const expertiseModel: ExpertiseModel = new ExpertiseModel(
