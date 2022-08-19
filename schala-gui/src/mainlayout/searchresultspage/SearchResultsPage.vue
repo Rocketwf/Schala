@@ -15,6 +15,19 @@
               :label="sfos.fieldOfStudy"
               @update:model-value="handleFilter"
             />
+            <div class="row justify-end">
+              <q-btn
+                color="primary"
+                label="Check all"
+                @click="allFields"
+                class="q-mx-md"
+              />
+              <q-btn
+                color="red"
+                label="Clear all"
+                @click="noFields"
+              />
+            </div>
           </div>
         </div>
         <q-list
@@ -86,6 +99,16 @@ onBeforeMount(async () =>
 });
 const handleFilter = () => 
 {
+    searchStore.updateFieldsOfStudy();
+};
+const allFields = () => 
+{
+    searchStore.searchResultsModel.relatedFieldsOfStudy.forEach((rfos) => (rfos.isActive = true));
+    searchStore.updateFieldsOfStudy();
+};
+const noFields = () => 
+{
+    searchStore.searchResultsModel.relatedFieldsOfStudy.forEach((rfos) => (rfos.isActive = false));
     searchStore.updateFieldsOfStudy();
 };
 </script>

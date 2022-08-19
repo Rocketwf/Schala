@@ -140,6 +140,7 @@ export class SearchResultsModel implements Filterable<SearchResultsModel>, Pagin
         {
             filter.applyValidate(this);
         }
+        this.studyFieldsFilter.applyValidate(this);
         this.fixMaxPages();
 
         this._paginationFilter.applyValidate(this);
@@ -184,6 +185,7 @@ export class SearchResultsModel implements Filterable<SearchResultsModel>, Pagin
                     basicProfile.totalCitations,
                     basicProfile.paperCount,
                     basicProfile.pictureURL,
+                    basicProfile.expertise,
                 ),
             );
         });

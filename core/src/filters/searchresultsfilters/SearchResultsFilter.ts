@@ -22,13 +22,9 @@ export class StudyFieldsFilter extends SearchResultsFilter<string[]>
     {
         for (const bp of model.basicProfiles) 
         {
-            if(!bp.expertise) continue;
-            if(bp.expertise.find((pe: ProfileExpertise) => this.value.find((str: string) =>  pe.name === str))) 
-            {
-                return new Message(STATUS.OK);
-            }
+            if (bp.expertise && bp.expertise.length != 0) return new Message(STATUS.OK);
         }
-        return new Message(STATUS.FAIL, 'Field of study not found');
+        return new Message(STATUS.FAIL);
     }
     deepCopy(): StudyFieldsFilter 
     {
@@ -41,12 +37,12 @@ export class StudyFieldsFilter extends SearchResultsFilter<string[]>
      */
     apply(model: SearchResultsModel): void 
     {
-        if(!this.value) return;
+        if (!this.value) return;
         const filtered: Array<BasicProfile> = new Array<BasicProfile>();
         for (const bp of model.basicProfiles) 
         {
-            if(!bp.expertise) continue;
-            if (bp.expertise.find((pe: ProfileExpertise) => this.value.find((str: string) =>  pe.name === str))) 
+            if (!bp.expertise) continue;
+            if (this.value.find((exp: string) => bp.expertise[0]?.name === exp)) 
             {
                 filtered.push(bp);
             }

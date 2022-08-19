@@ -100,7 +100,6 @@ export class SemanticScholarSource implements DataSource
                         const newExpertise: ProfileExpertise = new ProfileExpertise(exp._name, exp._count);
                         expertise.push(newExpertise);
                     }
-                    console.log(expertise);
                     const basicProfile: BasicProfile = new BasicProfile(
                         apiBasicProfile._id,
                         apiBasicProfile._name,

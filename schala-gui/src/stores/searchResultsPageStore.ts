@@ -65,6 +65,7 @@ export const searchResultsStore = defineStore({
                     }
                 }
                 this.searchResultsModel.relatedFieldsOfStudy = relatedFieldsOfStudy;
+                this.searchResultsModel.studyFieldsFilter.value = relatedFieldsOfStudy.map((rfos: SearchFieldsOfStudy) => rfos.fieldOfStudy);
             }
             catch (error) 
             {
