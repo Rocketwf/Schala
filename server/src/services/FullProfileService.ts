@@ -191,10 +191,16 @@ export class FullProfileService extends ProfileService
      * @param paper - The APIPaper paper to check against
      * @returns Number of self citations for the paper
      */
+    /**
+     * Calculates the number of self citations of a paper
+     * @param apiAuthor - APIAuthor author to check
+     * @param paper - The APIPaper paper to check against
+     * @returns Number of self citations for the paper
+     */
     private getSelfCitationsInPaper(apiAuthor: APIAuthor, paper: APIPaper): number 
     {
         let selfCitationCount: number = 0;
-        paper.references.forEach((refOrCit: APIRefCit) => 
+        paper.citations.forEach((refOrCit: APIRefCit) => 
         {
             if (this.isOwnRefOrCit(apiAuthor, refOrCit)) 
             {
@@ -203,6 +209,25 @@ export class FullProfileService extends ProfileService
         });
 
         return selfCitationCount;
+    }
+    /**
+     * Calculates the number of self citations of a paper
+     * @param apiAuthor - APIAuthor author to check
+     * @param paper - The APIPaper paper to check against
+     * @returns Number of self citations for the paper
+     */
+    private getSelfRefInPaper(apiAuthor: APIAuthor, paper: APIPaper): number 
+    {
+        let selfRefCount: number = 0;
+        paper.references.forEach((refOrCit: APIRefCit) => 
+        {
+            if (this.isOwnRefOrCit(apiAuthor, refOrCit)) 
+            {
+                ++selfRefCount;
+            }
+        });
+
+        return selfRefCount;
     }
     /**
      * Calculates hindex without self citations for an author with the given papers
@@ -216,7 +241,7 @@ export class FullProfileService extends ProfileService
         const arrange: Array<number> = [];
         for (let i: number = 0; i < apiPapers.length; ++i) 
         {
-            citations.push(apiPapers[i].citationCount - this.getSelfCitationsInPaper(apiAuthor, apiPapers[i]));
+            citations.push(apiPapers[i].citationCount - this.getSelfRefInPaper(apiAuthor, apiPapers[i]));
             arrange.push(i + 1);
         }
 
@@ -253,7 +278,7 @@ export class FullProfileService extends ProfileService
         let i10IndexWithoutSelfCitations: number = 0;
         for (const article of apiPapers) 
         {
-            if (article.citationCount - this.getSelfCitationsInPaper(apiAuthor, article) >= 10) 
+            if (article.citationCount - this.getSelfRefInPaper(apiAuthor, article) >= 10) 
             {
                 i10IndexWithoutSelfCitations++;
             }
@@ -353,7 +378,7 @@ export class FullProfileService extends ProfileService
                 // done with ind self cite
             }
 
-            citations.selfCitationsCount += this.getSelfCitationsInPaper(apiAuthor, article);
+            citations.selfCitationsCount += this.getSelfRefInPaper(apiAuthor, article);
         }
         // delete empty entries
         for (const [year, cbv] of fasterCitations) 
