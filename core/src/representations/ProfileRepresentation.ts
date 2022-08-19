@@ -11,6 +11,7 @@ import {
     Field,
     ViewName,
     HeatmapChartModel,
+    BasicColumnsChartModel,
 } from '../models';
 import { Expertise, ExpertiseModel } from '../models/simplecardmodel/ExpertiseModel';
 import { ArticlesFilterButton, RangeButton, ShowingButton } from '../models/inputs/PopupEditButton';
@@ -214,7 +215,7 @@ export class ProfileRepresentation
      * Creates publications by year card with from, to and range filters.
      * @returns publications by year card as DistributedColumnsChartModel
      */
-    private createPublicationsByYearCard(): DistributedColumnsChartModel 
+    private createPublicationsByYearCard(): BasicColumnsChartModel 
     {
         const series: Array<Series> = new Array<Series>();
         for (const pby of this._fullProfile.publicationsByYear) 
@@ -226,10 +227,10 @@ export class ProfileRepresentation
         {
             years.push(pby.year + '');
         }
-        const pby: DistributedColumnsChartModel = new DistributedColumnsChartModel(
+        const pby: BasicColumnsChartModel = new BasicColumnsChartModel(
             CARDS.PUBLICATIONS_BY_YEAR.CARD_DATA.TITLE,
             '',
-            ViewName.DistributedColumnsChartCard,
+            ViewName.BasicColumnsChartCard,
             CARDS.PUBLICATIONS_BY_YEAR.CARD_DATA.COLS,
             series,
             'Years',
@@ -240,18 +241,18 @@ export class ProfileRepresentation
         pby.showExpandButton();
 
         const lastValue: number = +pby.series[pby.series.length - 1]?.name;
-        const fromFilter: Filter<number, DistributedColumnsChartModel> = new FromFilter(
+        const fromFilter: Filter<number, BasicColumnsChartModel> = new FromFilter(
             lastValue - CARDS.CITATIONS_BY_YEAR.CARD_DATA.DEFAULT_NUM_OF_ENTRIES,
         );
-        const fromNumberField: Field<number, DistributedColumnsChartModel> = new Field<
+        const fromNumberField: Field<number, BasicColumnsChartModel> = new Field<
             number,
-            DistributedColumnsChartModel
+            BasicColumnsChartModel
         >('from', lastValue - CARDS.PUBLICATIONS_BY_YEAR.CARD_DATA.DEFAULT_NUM_OF_ENTRIES, fromFilter, [pby]);
 
-        const toFilter: Filter<number, DistributedColumnsChartModel> = new ToFilter(lastValue);
-        const toNumberField: Field<number, DistributedColumnsChartModel> = new Field<
+        const toFilter: Filter<number, BasicColumnsChartModel> = new ToFilter(lastValue);
+        const toNumberField: Field<number, BasicColumnsChartModel> = new Field<
             number,
-            DistributedColumnsChartModel
+            BasicColumnsChartModel
         >('to', lastValue, toFilter, [pby]);
 
         const rangePopupEdit: RangeButton = new RangeButton('range', [fromNumberField, toNumberField]);
@@ -265,7 +266,7 @@ export class ProfileRepresentation
      * Creates publications by venue card with a showing filter.
      * @returns publications by venue card as DistributedColumnsChartModel
      */
-    private createPublicationsByVenueCard(): DistributedColumnsChartModel 
+    private createPublicationsByVenueCard(): DistributedColumnsChartModel
     {
         const series: Array<Series> = new Array<Series>();
         for (const pbv of this._fullProfile.publicationsByVenue) 
@@ -709,14 +710,14 @@ export class ProfileRepresentation
     private createFirstRow(): void 
     {
         const rowModel: RowModel = new RowModel(PAGE_WIDTH);
-        const pbvCard: DistributedColumnsChartModel = this.createPublicationsByYearCard();
-        const pbyCard: DistributedColumnsChartModel = this.createPublicationsByVenueCard();
+        const pbyCard: BasicColumnsChartModel = this.createPublicationsByYearCard();
+        const pbvCard: DistributedColumnsChartModel = this.createPublicationsByVenueCard();
         const cbyCard: StackedColumnsChartModel = this.createCitationsByYearCard();
 
         if (this.validateWidth(pbvCard.colWidth + pbvCard.colWidth + cbyCard.colWidth)) 
         {
-            rowModel.simpleCardModels.push(pbvCard);
             rowModel.simpleCardModels.push(pbyCard);
+            rowModel.simpleCardModels.push(pbvCard);
             rowModel.simpleCardModels.push(cbyCard);
         }
         this.rowModels.push(rowModel);
