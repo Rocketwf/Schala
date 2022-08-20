@@ -71,4 +71,12 @@ describe('ComparisonRepresentation tests', () =>
         rep.renderComparison();
         expect(rep.rowModels.length > 0).toEqual(true);
     });
+    it('checks rowModel setter and getter', () => 
+    {
+        rep.renderComparison();
+        rep.rowModels[0].id = 'first';
+        rep.rowModels[0].width = 5;
+        expect(rep.rowModels[0].id).toBe('first');
+        expect(rep.rowModels[0].width).toBe(5);
+    });
 });
