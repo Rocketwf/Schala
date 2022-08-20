@@ -1,4 +1,4 @@
-import { SearchResultsPaginationFilter } from '../../../filters';
+import { SearchResultsPaginationFilter, WordsInTitleFilter } from '../../../filters';
 import { STATUS } from '../../../misc';
 import { Article, ArticleCoAuthor, BasicProfile, FullProfile, SearchResultsModel } from '../../../models';
 import { Author, CitationByYear, CitedScholar, ProfileExpertise, PublicationByVenue, PublicationByYear } from '../../../models/profile/Profile';
@@ -79,25 +79,43 @@ describe('SearchResultsModel tests', () =>
     it('checks if getter and setter of filter works right', () => 
     {
         const paginationFilter: SearchResultsPaginationFilter = new SearchResultsPaginationFilter(1, 2);
-        searchResultsModel.paginationFilter = paginationFilter;
-        expect(searchResultsModel.filters).toStrictEqual([paginationFilter]);
+        const wordFilter: WordsInTitleFilter = new WordsInTitleFilter('Test 1');
+        searchResultsModel.filters= [wordFilter];
+        expect(searchResultsModel.filters[0]).toStrictEqual(wordFilter);
+    });
+    it('checks if getter and setter of paginationfilter works right', () => 
+    {
+        const paginationFilter: SearchResultsPaginationFilter = new SearchResultsPaginationFilter(1, 2);
+        searchResultsModel.paginationFilter= paginationFilter;
+        expect(searchResultsModel.paginationFilter).toStrictEqual(paginationFilter);
     });
     it('checks if getter and setter of expandable works right', () => 
     {
         searchResultsModel.expandable = true;
         expect(searchResultsModel.expandable).toBe(true);
     });
-    it('checks if query is being set correctly', () => {
+    it('checks if query is being set correctly', () => 
+    {
         const testQuery: string = 'Test Query';
         searchResultsModel.query = testQuery;
-        expect(searchResultsModel.query).toBe('Test Query')
-    })
-    it('checks if isExpanded is being set correctly', () => {
-        var testIsExpanded = true;
+        expect(searchResultsModel.query).toBe('Test Query');
+    });
+    it('checks if isExpanded is being set correctly', () => 
+    {
+        let testIsExpanded: boolean = true;
         searchResultsModel.isExpanded = testIsExpanded;
-        expect(searchResultsModel.isExpanded).toBe(true)
+        expect(searchResultsModel.isExpanded).toBe(true);
         testIsExpanded = false;
         searchResultsModel.isExpanded = testIsExpanded;
-        expect(searchResultsModel.isExpanded).toBe(false)
-    })
+        expect(searchResultsModel.isExpanded).toBe(false);
+    });
+    it('checks if isExpanded is being set correctly', () => 
+    {
+        let testIsExpanded: boolean = true;
+        searchResultsModel.isExpanded = testIsExpanded;
+        expect(searchResultsModel.isExpanded).toBe(true);
+        testIsExpanded = false;
+        searchResultsModel.isExpanded = testIsExpanded;
+        expect(searchResultsModel.isExpanded).toBe(false);
+    });
 });
