@@ -1,11 +1,11 @@
-import { CitedScholar } from '../../models/profile/CitedScholar';
-import { PublicationByVenue } from '../../models/profile/PublicationByVenue';
-import { FullProfile } from '../../models/profile/FullProfile';
-import { BasicProfile } from '../../models/profile/BasicProfile';
-import { Article } from '../../models/profile/Article';
-import { Author } from '../../models/profile/Author';
-import { PublicationByYear } from '../../models/profile/PublicationByYear';
-import { CitationsByYear } from '../../models/profile/CitationsByYear';
+import { CitedScholar } from '../../../models/profile/CitedScholar';
+import { PublicationByVenue } from '../../../models/profile/PublicationByVenue';
+import { FullProfile } from '../../../models/profile/FullProfile';
+import { BasicProfile } from '../../../models/profile/BasicProfile';
+import { Article } from '../../../models/profile/Article';
+import { Author } from '../../../models/profile/Author';
+import { PublicationByYear } from '../../../models/profile/PublicationByYear';
+import { CitationsByYear } from '../../../models/profile/CitationsByYear';
  
 const basicProfile: BasicProfile = new BasicProfile('', '', [], 1, 1, '');
 const fullProfile: FullProfile = new FullProfile(1,1,1,1,1,1,1,'', basicProfile,[],[],[],[],[],[]);

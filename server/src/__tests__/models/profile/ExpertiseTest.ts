@@ -1,4 +1,4 @@
-import { Expertise } from '../../models/profile/Expertise';
+import { Expertise } from '../../../models/profile/Expertise';
  
 const expertise: Expertise = new Expertise('exampleExpertise', 2);
 

@@ -1,4 +1,4 @@
-import { PublicationByVenue } from '../../models/profile/PublicationByVenue';
+import { PublicationByVenue } from '../../../models/profile/PublicationByVenue';
 
 const publicationByVenue: PublicationByVenue = new PublicationByVenue('', 1);
 

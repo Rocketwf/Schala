@@ -1,4 +1,4 @@
-import { CitedScholar } from '../../models/profile/CitedScholar';
+import { CitedScholar } from '../../../models/profile/CitedScholar';
 
 const citedScholar:CitedScholar = new CitedScholar('tichy', 200);
 

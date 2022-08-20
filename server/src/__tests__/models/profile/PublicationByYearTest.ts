@@ -1,4 +1,4 @@
-import { PublicationByYear } from '../../models/profile/PublicationByYear';
+import { PublicationByYear } from '../../../models/profile/PublicationByYear';
 
 const publicationByYear: PublicationByYear = new PublicationByYear(1, 1);
 
