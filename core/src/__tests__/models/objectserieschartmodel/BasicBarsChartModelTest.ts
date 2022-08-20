@@ -1,8 +1,8 @@
 import { ShowingFilter } from '../../../filters/objectserieschartfilters/ObjectSeriesFilter';
-import { ChartOptionsModel, ObjectSeriesChartModel, Series, ViewName } from '../../../models';
+import { ChartOptionsModel, Series, ViewName } from '../../../models';
 import { BasicBarsChartModel } from '../../../models/objectserieschartmodel/BasicBarsChartModel';
 
-let cop: ChartOptionsModel;
+//let cop: ChartOptionsModel;
 let model: BasicBarsChartModel;
 
 beforeAll(()=>
@@ -30,7 +30,7 @@ beforeAll(()=>
     objectSeriesChartModel.chartOptionsModel=chartOptionsModel;
     objectSeriesChartModel.applyAllFilters();
     
-    cop=chartOptionsModel;
+    //cop=chartOptionsModel;
     model=objectSeriesChartModel;
 });
 

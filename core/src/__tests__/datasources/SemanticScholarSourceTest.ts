@@ -1,10 +1,8 @@
 // import { SemanticScholarSource } from '../../datasources';
 // import { Article } from '../../models';
 
-import { SemanticScholarSource } from '../../datasources/SemanticScholarSource';
 import { Article, ArticleCoAuthor, BasicProfile, FullProfile } from '../../models';
 import { Author, CitationByYear, CitedScholar, ProfileExpertise, PublicationByVenue, PublicationByYear } from '../../models/profile/Profile';
-import { ComparisonRepresentation } from '../../representations';
 
 let fullProfile: FullProfile;
 beforeAll(() => 
