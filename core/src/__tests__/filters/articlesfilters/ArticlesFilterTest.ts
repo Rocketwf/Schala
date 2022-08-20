@@ -54,7 +54,6 @@ beforeEach(() =>
     articles.push(new Article('Turing machine simulator10','MIT',1986,6,2,'',coAuthors,'Alan Turing is genius','','','MIT Journal',['Mathematics']));
     articles.push(new Article('Turing machine simulator11','KIT',1987,5,1,'',coAuthors,'Alan Turing is genius','','','KIT Journal',['Engineering']));
     const fp: FullProfile = new FullProfile(
-        expertises,
         31,
         22,
         118,

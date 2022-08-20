@@ -13,7 +13,6 @@ beforeAll(() =>
 {
     basicProfile = new BasicProfile('');
     fullProfile = new FullProfile(
-        [],
         0,
         0,
         0,
@@ -134,12 +133,6 @@ describe('Full Profile tests', () =>
         const testi10: number = 10;
         fullProfile.i10Index = testi10;
         expect(fullProfile.i10Index).toBe(10);
-    });
-    it('sets and returns correct profile expertise', () => 
-    {
-        const testExpertise: ProfileExpertise[] = [new ProfileExpertise('A', 10)];
-        fullProfile.expertise = testExpertise;
-        expect(testExpertise).toMatchObject(testExpertise);
     });
     it('sets and returns correct h-index', () => 
     {

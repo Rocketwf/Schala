@@ -38,7 +38,6 @@ beforeAll(() =>
     expertises.push(new ProfileExpertise('Engineering',20));
     articles.push(new Article('Turing machine simulator','KIT',1977,15,1,'',coAuthors,'Alan Turing is genius','','','KIT Journal',['Engineering']));
     const fp: FullProfile = new FullProfile(
-        expertises,
         31,
         22,
         118,
@@ -77,7 +76,7 @@ describe('SearchResultsModel tests', () =>
     });
     it('checks if getter and setter of filter works right', () => 
     {
-        const paginationFilter: SearchResultsPaginationFilter = new SearchResultsPaginationFilter(1, 2);
+        //const paginationFilter: SearchResultsPaginationFilter = new SearchResultsPaginationFilter(1, 2);
         const wordFilter: WordsInTitleFilter = new WordsInTitleFilter('Test 1');
         searchResultsModel.filters= [wordFilter];
         expect(searchResultsModel.filters[0]).toStrictEqual(wordFilter);

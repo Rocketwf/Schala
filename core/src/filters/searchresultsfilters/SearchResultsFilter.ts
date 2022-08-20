@@ -1,4 +1,4 @@
-import { BasicProfile, SearchResultsModel, ProfileExpertise } from '../../models';
+import { BasicProfile, SearchResultsModel } from '../../models';
 import { Filter } from '../';
 import { Message, STATUS } from '../../misc/Message';
 

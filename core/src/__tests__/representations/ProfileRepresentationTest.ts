@@ -38,7 +38,6 @@ beforeAll(() =>
     expertises.push(new ProfileExpertise('Engineering',20));
     articles.push(new Article('Turing machine simulator','KIT',1977,15,1,'',coAuthors,'Alan Turing is genius','','','KIT Journal',['Engineering']));
     const fp: FullProfile = new FullProfile(
-        expertises,
         31,
         22,
         118,
