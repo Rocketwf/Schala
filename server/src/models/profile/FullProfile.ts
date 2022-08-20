@@ -148,7 +148,7 @@ export class FullProfile extends Profile
     /**
      * Sets expertises
      */
-    public set expertises(_expertise: Expertise[]) 
+    public set expertise(_expertise: Expertise[]) 
     {
         this._expertise = _expertise;
     }
