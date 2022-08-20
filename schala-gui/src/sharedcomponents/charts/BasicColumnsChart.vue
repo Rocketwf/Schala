@@ -111,7 +111,6 @@ const chartOptions = computed(() =>
         plotOptions: {
             bar: {
                 horizontal: false,
-                columnWidth: '100%',
                 endingShape: 'rounded',
                 tools: {
                     download:

@@ -1,4 +1,4 @@
-import { BasicProfile, SearchResultsModel } from '../../models';
+import { BasicProfile, SearchResultsModel, ProfileExpertise } from '../../models';
 import { Filter } from '../';
 import { Message, STATUS } from '../../misc/Message';
 
@@ -9,6 +9,46 @@ export abstract class SearchResultsFilter<S> extends Filter<S, SearchResultsMode
      * @param model - the given SearchResultsModel
      */
     abstract apply(model: SearchResultsModel): void;
+}
+
+export class StudyFieldsFilter extends SearchResultsFilter<string[]> 
+{
+    /**
+     * It checks if the given model is valid
+     * @param model - the given SearchResultsModel
+     * @returns true if the given model is valid
+     */
+    validate(model: SearchResultsModel): Message 
+    {
+        for (const bp of model.basicProfiles) 
+        {
+            if (bp.expertise && bp.expertise.length != 0) return new Message(STATUS.OK);
+        }
+        return new Message(STATUS.FAIL);
+    }
+    deepCopy(): StudyFieldsFilter 
+    {
+        const copy: StudyFieldsFilter = new StudyFieldsFilter(this._value);
+        return copy;
+    }
+    /**
+     * Applys fieldsOfStudy filter on the given model
+     * @param model - the given SearchResultsModel
+     */
+    apply(model: SearchResultsModel): void 
+    {
+        if (!this.value) return;
+        const filtered: Array<BasicProfile> = new Array<BasicProfile>();
+        for (const bp of model.basicProfiles) 
+        {
+            if (!bp.expertise) continue;
+            if (this.value.find((exp: string) => bp.expertise[0]?.name === exp)) 
+            {
+                filtered.push(bp);
+            }
+        }
+        model.basicProfiles = filtered;
+    }
 }
 
 export class AffiliationFilter extends SearchResultsFilter<string> 

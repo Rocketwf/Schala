@@ -63,13 +63,17 @@ export class SemanticScholarSource implements DataSource
             const { data: searchResults }: AxiosResponse<APISearch, object> = await http.get<APISearch>(
                 'https://api.semanticscholar.org/graph/v1/author/search?query=' +
                     query +
-                    '&fields=authorId,name,aliases,affiliations,paperCount,citationCount&limit=1000',
+                    '&fields=authorId,name,aliases,affiliations,paperCount,citationCount,papers.fieldsOfStudy&limit=100',
                 {
                     headers: {
                         Accept: 'application/json',
                     },
                 },
             );
+            for (const bp of searchResults.data) 
+            {
+                console.log(bp.papers);
+            }
             return searchResults.data;
         }
         catch (error) 

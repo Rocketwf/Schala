@@ -23,6 +23,13 @@
       >
         Cited by {{ getBasicProfile().totalCitations }}
       </q-item-label>
+      <q-item-label
+        caption
+        lines="2"
+        v-if="getBasicProfile().expertise && getBasicProfile().expertise[0]"
+      >
+        Field Of Study: {{ getBasicProfile().expertise[0].name }}
+      </q-item-label>
     </q-item-section>
 
     <q-item-section

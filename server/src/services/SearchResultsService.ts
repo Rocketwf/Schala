@@ -3,6 +3,8 @@ import { SemanticScholarSource } from '../datasources/SemanticScholarSource';
 import { APIBasicAuthor } from '../models/API';
 import { BasicProfile } from '../models/profile/BasicProfile';
 import { ProfileService } from './ProfileService';
+import { Expertise } from '../models/profile/Expertise';
+import { APIPaper } from '../models/API/API';
 
 /**
  * This class is responsible for building the search results for a given query
@@ -32,27 +34,68 @@ export class SearchResultsService extends ProfileService
                 name = basicAuthor.aliases[basicAuthor.aliases.length - 1];
             }
 
-            basicProfiles.push(
-                new BasicProfile(
-                    basicAuthor.authorId,
-                    name,
-                    basicAuthor.affiliations,
-                    +basicAuthor.citationCount,
-                    +basicAuthor.paperCount,
-                ),
+            const bp: BasicProfile = new BasicProfile(
+                basicAuthor.authorId,
+                name,
+                basicAuthor.affiliations,
+                +basicAuthor.citationCount,
+                +basicAuthor.paperCount,
+                '',
+                this.buildExpertise(basicAuthor.papers),
             );
+
+            basicProfiles.push(bp);
         }
-        
+
         basicProfiles.sort((a: BasicProfile, b: BasicProfile) => 
         {
-            return  b.paperCount - a.paperCount;
+            return b.paperCount - a.paperCount;
         });
-          
+
         return basicProfiles;
     }
     update(authorId: string): void 
     {
         authorId;
         return;
+    }
+    /**
+     * Builds the expertises list of the papers being passed
+     * @param apiPapers - apiPapers object array of the papers to build
+     * @returns Array of the expertises from the papers
+     */
+    private buildExpertise(apiPapers: APIPaper[]): Expertise[] 
+    {
+        const expertise: Map<string, Expertise> = new Map<string, Expertise>();
+        for (const apiPaper of apiPapers) 
+        {
+            if (!apiPaper.fieldsOfStudy) continue;
+            for (const fieldOfStudy of apiPaper.fieldsOfStudy) 
+            {
+                if (!expertise.has(fieldOfStudy)) 
+                {
+                    expertise.set(fieldOfStudy, new Expertise(fieldOfStudy, 1));
+                }
+                else 
+                {
+                    const newCount: number = expertise.get(fieldOfStudy).count + 1;
+                    expertise.set(fieldOfStudy, new Expertise(fieldOfStudy, newCount));
+                }
+            }
+        }
+        const sortedExpertise: Expertise[] = Array.from(expertise.values()).sort(this.sortExpertise);
+        return sortedExpertise;
+    }
+
+    private sortExpertise(a: Expertise, b: Expertise): number 
+    {
+        if (a.count > b.count) 
+        {
+            return -1;
+        }
+        else 
+        {
+            return 1;
+        }
     }
 }

@@ -10,6 +10,7 @@ export class BasicProfile
     private _totalCitations: number;
     private _paperCount: number;
     private _pictureURL: string;
+    private _expertise: ProfileExpertise[];
 
     constructor(
         _id: string,
@@ -18,6 +19,7 @@ export class BasicProfile
         _totalCitations?: number,
         _paperCount?: number,
         _pictureURL?: string,
+        _expertise?: ProfileExpertise[],
     ) 
     {
         this._id = _id;
@@ -26,6 +28,7 @@ export class BasicProfile
         this._totalCitations = _totalCitations;
         this._paperCount = _paperCount;
         this._pictureURL = _pictureURL;
+        this._expertise = _expertise;
     }
 
     public get id(): string 
@@ -87,6 +90,14 @@ export class BasicProfile
     {
         this._paperCount = v;
     }
+    public get expertise(): ProfileExpertise[] 
+    {
+        return this._expertise;
+    }
+    public set expertise(expertise: ProfileExpertise[]) 
+    {
+        this._expertise = expertise;
+    }
 }
 
 /**
@@ -94,7 +105,6 @@ export class BasicProfile
  */
 export class FullProfile 
 {
-    private _expertise: ProfileExpertise[];
     private _hIndex: number;
     private _hIndexWithoutSelfCitations: number;
     private _i10Index: number;
@@ -130,7 +140,6 @@ export class FullProfile
      * @param _articles -
      */
     constructor(
-        _expertise: ProfileExpertise[],
         _hIndex: number,
         _hIndexWithoutSelfCitations: number,
         _i10Index: number,
@@ -148,7 +157,6 @@ export class FullProfile
         _articles: Article[],
     ) 
     {
-        this._expertise = _expertise;
         this._hIndex = _hIndex;
         this._hIndexWithoutSelfCitations = _hIndexWithoutSelfCitations;
         this._i10Index = _i10Index;
@@ -223,14 +231,6 @@ export class FullProfile
     public set i10Index(i10Index: number) 
     {
         this._i10Index = i10Index;
-    }
-    public get expertise(): ProfileExpertise[] 
-    {
-        return this._expertise;
-    }
-    public set expertise(expertise: ProfileExpertise[]) 
-    {
-        this._expertise = expertise;
     }
     public get hIndex(): number 
     {

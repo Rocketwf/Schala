@@ -39,7 +39,10 @@
       <q-item-label caption>
         ID: {{ getFullProfile().basicProfile.id }}
       </q-item-label>
-      <q-item-label caption>
+      <q-item-label 
+        caption 
+        v-if="affiliation"
+      > 
         Affiliation: {{ affiliation }}
       </q-item-label>
       <q-item-label caption>

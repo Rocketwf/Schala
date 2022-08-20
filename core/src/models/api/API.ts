@@ -124,10 +124,6 @@ export interface APIPublicationByYear {
 
 export interface APIFullProfile {
     /**
-     * Represents the expertise of the full profile as a string array
-     */
-    _expertise: APIExpertise[];
-    /**
      * Represents the h-index of the full profile as a number
      */
     _hIndex: number;
@@ -248,6 +244,7 @@ export interface APICitationByYear {
     _totalCitationsCount: number;
 }
 export interface APIBasicProfile {
+    _expertise: APIExpertise[];
     /**
      * Represents the id of the basic profile as a string
      */

@@ -37,7 +37,8 @@ export class SearchResultsRoutes extends CommonRoutesConfig
             }
             catch (e) 
             {
-                res.status(404).send('No matching profiles were found');
+                console.log(e);
+                res.status(404).send('No matching profiles were found' + e.message);
             }
         });
         return this.app;
