@@ -2,20 +2,18 @@ import { CitedScholar } from '../../models/profile/CitedScholar';
 import { PublicationByVenue } from '../../models/profile/PublicationByVenue';
 import { FullProfile } from '../../models/profile/FullProfile';
 import { BasicProfile } from '../../models/profile/BasicProfile';
-import { Expertise } from '../../models/profile/Expertise';
 import { Article } from '../../models/profile/Article';
 import { Author } from '../../models/profile/Author';
 import { PublicationByYear } from '../../models/profile/PublicationByYear';
 import { CitationsByYear } from '../../models/profile/CitationsByYear';
  
 const basicProfile: BasicProfile = new BasicProfile('', '', [], 1, 1, '');
-const fullProfile: FullProfile = new FullProfile([],1,1,1,1,1,1,1,'', basicProfile,[],[],[],[],[],[]);
+const fullProfile: FullProfile = new FullProfile(1,1,1,1,1,1,1,'', basicProfile,[],[],[],[],[],[]);
 
 describe('Full profile test', () => 
     it('test full profile correct attributes', () =>
     {
         expect(fullProfile.basicProfile).toEqual(basicProfile);
-        expect(fullProfile.expertise).toEqual([]);
         expect(fullProfile.articles).toEqual([]);
         expect(fullProfile.authors).toEqual([]);
         expect(fullProfile.publicationsByVenue).toEqual([]);
@@ -47,8 +45,6 @@ describe('FullProfile test', () =>
         const tempPublicationByYear: PublicationByYear = new PublicationByYear(0,0);
         const tempCitedScholar: CitedScholar = new CitedScholar('', 0);
         const tempCitationsByYear: CitationsByYear = new CitationsByYear(0,0,0,0);
-        const tempExpertise: Expertise = new Expertise('expertise', 22);
-        tempFullProfile.expertise = [tempExpertise];
         tempFullProfile.basicProfile = tempBasicProfile;
         tempFullProfile.articles = [tempArticle];
         tempFullProfile.authors = [tempAuthor];

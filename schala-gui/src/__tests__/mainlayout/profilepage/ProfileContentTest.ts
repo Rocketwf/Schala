@@ -7,7 +7,7 @@ import ProfileContent from 'schala-gui/src/mainlayout/profilepage/ProfileContent
 installQuasarPlugin();
 
 const basic = new BasicProfile('id', 'name', [''], 12, 12, 'url');
-const fullPr = new FullProfile([], 12, 11, 11, 11, 11, 11, 11, 'url', basic, [], [], [], [], [], []);
+const fullPr = new FullProfile(12, 11, 11, 11, 11, 11, 11, 'url', basic, [], [], [], [], [], []);
 const comp = new ProfileRepresentation(fullPr);
 
 describe('ProfileContent', () => 

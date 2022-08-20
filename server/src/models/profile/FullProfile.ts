@@ -130,21 +130,7 @@ export class FullProfile extends Profile
         this._authors = _authors;
         this._articles = _articles;
     }
-    /**
-     * Gets expertise
-     */
-    public get expertise(): Expertise[] 
-    {
-        return this._expertise;
-    }
 
-    /**
-     * Sets expertises
-     */
-    public set expertise(_expertise: Expertise[]) 
-    {
-        this._expertise = _expertise;
-    }
 
     /**
      * Gets whether h index

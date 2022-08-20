@@ -5,7 +5,6 @@ import {
     CitedScholar,
     PublicationByVenue,
     PublicationByYear,
-    ProfileExpertise
 } from 'schala-core/dist/models/profile/Profile';
 import { createPinia, setActivePinia } from 'pinia';
 import { ProfileRepresentation } from 'schala-core';
@@ -29,7 +28,6 @@ describe('comparePageStore', () =>
     {
         const store = profilePageStore();
         const testProfile: FullProfile = new FullProfile(
-            [new ProfileExpertise('a', 2), new ProfileExpertise('b', 3), new ProfileExpertise('c', 4)],
             1000,
             1001,
             2000,
