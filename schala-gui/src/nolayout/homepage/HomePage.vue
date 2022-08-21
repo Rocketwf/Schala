@@ -14,7 +14,7 @@
               class="text-h5 text-weight-bold absolute-bottom text-subtitle2 bg-white text-center"
               style="color: grey;"
             >
-              Scholar Profile Analyzer
+              A Scholar Profile Analyzer
             </div>
           </q-img>
         </div>

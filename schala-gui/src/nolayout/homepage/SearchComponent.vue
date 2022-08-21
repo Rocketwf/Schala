@@ -10,7 +10,7 @@
         v-model="searchString"
         debounce="500"
         filled
-        placeholder="Search for a name or an ID"
+        placeholder="Search for a name or an ID of a scholar"
       >
         <template #append>
           <q-icon name="search" />
