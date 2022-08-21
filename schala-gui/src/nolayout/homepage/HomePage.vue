@@ -5,10 +5,19 @@
         class="col-8 col-xs-12 text-center"
         style="margin: 0 auto"
       >
-        <q-img
-          src="../../assets/logo.png"
-          style="height: 220px; max-width: 400px"
-        />
+        <div>
+          <q-img
+            src="../../assets/logo.png"
+            style="height: 220px; max-width: 400px"
+          >
+            <div
+              class="text-h5 text-weight-bold absolute-bottom text-subtitle2 bg-white text-center"
+              style="color: grey-1;"
+            >
+              Scholar Profile Analyzer
+            </div>
+          </q-img>
+        </div>
       </div>
     </div>
     <div class="row justify-center">
