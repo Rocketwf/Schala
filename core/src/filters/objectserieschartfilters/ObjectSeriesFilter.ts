@@ -29,11 +29,11 @@ export class FromFilter extends ObjectSeriesFilter<number>
         {
             return new Message(STATUS.FAIL, 'Negative values aren\'t allowed');
         } 
-        else if(model.filters[0].value > model.filters[1].value)
+        if(!model.isExpanded && model.filters[0].value > model.filters[1].value)
         {
             return new Message(STATUS.FAIL, 'From value can not be higher than To value');
         }
-        else if(model.filters[1].value - model.filters[0].value > 20)
+        if(!model.isExpanded && model.filters[1].value - model.filters[0].value > 20)
         {
             return new Message(STATUS.FAIL, 'Data too large to fit, please use the expand functionality');
         }
@@ -87,11 +87,11 @@ export class ToFilter extends ObjectSeriesFilter<number>
         {
             return new Message(STATUS.FAIL, 'Negative values aren\'t allowed');
         }
-        else if(model.filters[0].value > model.filters[1].value)
+        if(!model.isExpanded && model.filters[0].value > model.filters[1].value)
         {
             return new Message(STATUS.FAIL, 'From value can not be higher than To value');
         }
-        else if(model.filters[1].value - model.filters[0].value > 20)
+        if(!model.isExpanded && model.filters[1].value - model.filters[0].value > 20)
         {
             return new Message(STATUS.FAIL, 'Data too large to fit, please use the expand functionality');
         }
