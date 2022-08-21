@@ -90,4 +90,8 @@ describe('check cards for width validity', () =>
         }
         expect(isInvalid).toBe(false);
     });
+
+    it('delivers quarter correctly', () => {
+        //profileRepresentation.
+    });
 });

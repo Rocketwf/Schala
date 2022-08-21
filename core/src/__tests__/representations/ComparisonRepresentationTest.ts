@@ -78,4 +78,7 @@ describe('ComparisonRepresentation tests', () =>
         expect(rep.rowModels[0].id).toBe('first');
         expect(rep.rowModels[0].width).toBe(5);
     });
+    it('gets correct summary width', () => {
+        expect(rep.getSummaryWidth()).toBe(12);
+    });
 });

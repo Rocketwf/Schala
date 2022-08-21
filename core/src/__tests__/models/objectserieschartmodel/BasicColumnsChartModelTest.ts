@@ -29,4 +29,43 @@ describe('chart options filter', () =>
     {
         expect(model.series.length).toBe(3);
     });
+    it('sets and gets ViewName correctly', () =>
+    {
+        const testViewName: ViewName = ViewName.BasicBarsChartCard;
+        model.viewName = testViewName;
+        expect(model.viewName).toBe(ViewName.BasicBarsChartCard);
+    });
+    it('sets and gets xTitle correctly', () =>
+    {
+        const testXTitle: string = 'Test XTitle';
+        model.xTitle = testXTitle;
+        expect(model.xTitle).toBe('Test XTitle');
+    });
+    it('sets and gets yTitle correctly', () =>
+    {
+        const testYTitle: string = 'Test YTitle';
+        model.yTitle = testYTitle;
+        expect(model.yTitle).toBe('Test YTitle');
+    });
+    it('returns correct labels', () =>
+    {
+        expect(model.entries).toBe(3);
+    });
+    it('sets and gets isExpanded correctly', () =>
+    {
+        const testIsExpanded: boolean = false;
+        model.isExpanded = testIsExpanded;
+        expect(model.isExpanded).toBe(false);
+        model.toggleExpand();
+        expect(model.isExpanded).toBe(true);
+    });
+    it('handles isShowingExpandButton correctly', () =>
+    {
+        const testIsShowingExpanded: boolean = true;
+        model.isShowingExpandButton = testIsShowingExpanded;
+        expect(model.isShowingExpandButton).toBe(true);
+        model.hideExpandButton();
+        expect(model.isShowingExpandButton).toBe(false);
+        model.toggleExpand();
+    });
 });

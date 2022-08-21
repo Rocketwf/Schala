@@ -1,10 +1,14 @@
-import { BasicBarsChartModel, Field, Series, StackedColumnsChartModel, ViewName } from '../../../models';
-import { RangeButton, ShowingButton } from '../../../models/inputs/PopupEditButton';
+import { Article, BasicBarsChartModel, Field, Series, StackedColumnsChartModel, ViewName } from '../../../models';
+import { ArticlesFilterButton, RangeButton, ShowingButton } from '../../../models/inputs/PopupEditButton';
 import { FromFilter, ShowingFilter, ToFilter } from '../../../filters/objectserieschartfilters/ObjectSeriesFilter';
 import { Filter } from '../../../filters/Filter';
 
 let rangeButton: RangeButton;
 let showingButton: ShowingButton;
+let articleFilterButton: ArticlesFilterButton;
+beforeAll(() => {
+    articleFilterButton = new ArticlesFilterButton('', []);
+})
 
 describe('Range Button Filter Test', () => 
 {
@@ -127,3 +131,21 @@ describe('Article Filter Button Test', () =>
     }
     );
 });
+
+describe('Article filter button tests', () => {
+    it('sets and gets correct label', () => {
+        const testLabel: string = 'Test Label';
+        articleFilterButton.label = testLabel;
+        expect(articleFilterButton.label).toBe('Test Label');
+    });
+    it('sets and gets correct id', () => {
+        const testID: string = 'ABC123';
+        articleFilterButton.id = testID;
+        expect(articleFilterButton.id).toBe('ABC123');
+    });
+    it('sets and gets correct icon', () => {
+        const testIcon: string = 'Test Icon';
+        articleFilterButton.icon = testIcon;
+        expect(articleFilterButton.icon).toBe('Test Icon');
+    });
+})
