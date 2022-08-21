@@ -5,7 +5,7 @@
   >
     <div class="col-xs-12 col-md-8">
       <q-page padding>
-        <filter-box />
+        <filter-box class="hidden" />
         <div class="q-pa-md">
           <div class="q-gutter-sm">
             <q-checkbox
