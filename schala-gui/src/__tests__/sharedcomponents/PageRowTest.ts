@@ -11,12 +11,13 @@ import {
 } from 'schala-core';
 import { shallowMount } from '@vue/test-utils';
 import PageRow from '../../sharedcomponents/PageRow.vue';
+import { mapper } from '../../sharedcomponents/cards/graphchartcards/SimpleCardMapper';
 
 installQuasarPlugin();
 
-describe('PageRow', () => 
+describe('PageRow', () =>
 {
-    it('mounts without errors', () => 
+    it('mounts without errors', () =>
     {
         const com: ChartOptionsModel = new ChartOptionsModel([
             new BasicBarsChartModel(
@@ -45,4 +46,18 @@ describe('PageRow', () =>
 
         expect(wrapper).toBeTruthy();
     });
+
+    it('returns view name correctly', () =>
+    {
+        const rm: RowModel = new RowModel(1);
+        const viewName = 'view';
+        const wrapper = shallowMount(PageRow, {
+            props: {
+                rowModel: rm,
+            }
+        });
+
+        expect(wrapper.vm.getView()).toBe(mapper.get(viewName));
+    });
+
 });
