@@ -17,7 +17,6 @@ describe('ArticleItem', () =>
                 article: art,
             }
         });
-
         expect(wrapper).toBeTruthy();
     });
 });

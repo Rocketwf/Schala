@@ -19,10 +19,11 @@ const wrapper = shallowMount(StickyHeader, {
     },
 });
 
-describe('StickyHeader Tests', () => 
+describe('StickyHeader Tests', () =>
 {
-    it('mounts without errors', () => 
+    it('mounts without errors', () =>
     {
+        expect(wrapper.vm.search()).toBeUndefined();
         expect(wrapper).toBeTruthy();
     });
 });

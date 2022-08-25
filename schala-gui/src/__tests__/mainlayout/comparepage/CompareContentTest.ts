@@ -17,7 +17,7 @@ describe('CompareContent', () =>
                 comparisonRepr: comp,
             }
         });
-
+        expect(wrapper.vm.getComparisonRepresentation()).toBeTruthy();
         expect(wrapper).toBeTruthy();
     });
 });
