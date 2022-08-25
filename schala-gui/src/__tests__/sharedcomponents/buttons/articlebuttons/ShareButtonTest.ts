@@ -10,19 +10,27 @@ const iconString = 'icon';
 
 describe('ShareButton', () =>
 {
-    let wrapper: VueWrapper;
-    beforeEach(() =>
-    {
-        wrapper = mount(ShareButton, {
+    it('renders', () =>
+    {   
+        const wrapper = mount(ShareButton, {
             props: {
                 url: urlString,
                 buttonIcon: iconString,
             }
         });
+        expect(wrapper.exists()).toBe(true);
     });
 
-    it('renders', () =>
+    it('opens window', () =>
     {
+        const wrapper = mount(ShareButton, {
+            props: {
+                url: urlString,
+                buttonIcon: iconString,
+            }
+        });
+
+        wrapper.vm.share();
         expect(wrapper.exists()).toBe(true);
     });
 });
