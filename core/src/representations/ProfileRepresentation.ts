@@ -222,7 +222,7 @@ export class ProfileRepresentation
         for (const pby of this._fullProfile.publicationsByYear) 
         {
             series.push(new Series(pby.year + '', [pby.publicationsCount]));
-            years.push(pby.year + '');
+            years.push('#');
         }
         const pby: BasicColumnsChartModel = new BasicColumnsChartModel(
             CARDS.PUBLICATIONS_BY_YEAR.CARD_DATA.TITLE,
