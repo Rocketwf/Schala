@@ -96,9 +96,11 @@ export class FullProfileService extends ProfileService
             this.buildArticles(apiAuthor, authorPapers),
         );
 
-        console.log(
-            fullProfile.articles.filter((art: Article) => art.venue === '').map((art: Article) => art.journalName),
-        );
+        console.log('Number of empty venues');
+        console.log(fullProfile.articles.filter((art: Article) => art.venue !== '').map((art: Article) => art.venue));
+
+        console.log('Number of empty journal names');
+        console.log(fullProfile.articles.filter((art: Article) => art.journalName === '').length);
 
         this._cachedReadyFullProfiles.set(authorId, fullProfile);
         return Array.of(fullProfile);
@@ -490,10 +492,11 @@ export class FullProfileService extends ProfileService
         for (const paper of apiPapers) 
         {
             let venue: string = paper.venue;
-            if (venue === '') 
+            if (venue === '' && paper.journal) 
             {
                 venue = paper.journal.name;
             }
+            if (venue === '') continue;
             if (publicationMap.has(venue)) 
             {
                 publicationMap.set(venue, publicationMap.get(venue) + 1);
@@ -668,7 +671,7 @@ export class FullProfileService extends ProfileService
             }
 
             const bibtex: string = this.buildBibtex(paper);
-            let journalName: string;
+            let journalName: string = '';
             if (paper.journal && paper.journal.name) 
             {
                 journalName = paper.journal.name;
@@ -684,7 +687,7 @@ export class FullProfileService extends ProfileService
 
             const articleToPush: Article = new Article(
                 paper.title,
-                paper.venue !== '' ? paper.venue : paper.journal.name,
+                paper.venue !== '' ? paper.venue : journalName,
                 paper.year,
                 paper.citationCount,
                 this.getSelfCitationsInPaper(apiAuthor, paper),

@@ -218,13 +218,10 @@ export class ProfileRepresentation
     private createPublicationsByYearCard(): BasicColumnsChartModel 
     {
         const series: Array<Series> = new Array<Series>();
-        for (const pby of this._fullProfile.publicationsByYear) 
-        {
-            series.push(new Series(pby.year + '', [pby.publicationsCount]));
-        }
         const years: string[] = new Array<string>();
         for (const pby of this._fullProfile.publicationsByYear) 
         {
+            series.push(new Series(pby.year + '', [pby.publicationsCount]));
             years.push(pby.year + '');
         }
         const pby: BasicColumnsChartModel = new BasicColumnsChartModel(
@@ -237,8 +234,8 @@ export class ProfileRepresentation
             'Number of publications',
             years,
         );
-
         pby.showExpandButton();
+
 
         const lastValue: number = +pby.series[pby.series.length - 1]?.name;
         const fromFilter: Filter<number, BasicColumnsChartModel> = new FromFilter(
