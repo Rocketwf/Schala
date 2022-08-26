@@ -6,37 +6,62 @@
     <div class="col-xs-12 col-md-8">
       <q-page padding>
         <filter-box class="hidden" />
-        <div class="q-pa-md">
-          <div class="q-gutter-sm">
-            <q-checkbox
-              v-for="sfos in (searchStore.searchResultsModel.relatedFieldsOfStudy as SearchFieldsOfStudy[])"
-              :key="sfos.fieldOfStudy"
-              v-model="sfos.isActive"
-              :label="sfos.fieldOfStudy"
-              @update:model-value="handleFilter"
-            />
-            <div class="row justify-end">
-              <q-btn
-                color="primary"
-                label="Check all"
-                @click="allFields"
-                class="q-mx-md"
-              />
-              <q-btn
-                color="red"
-                label="Clear all"
-                @click="noFields"
-              />
-            </div>
-          </div>
-        </div>
         <q-list
           bordered
           class="rounded-borders q-mt-lg"
         >
-          <q-item-label header>
-            Matching profiles
-          </q-item-label>
+          <q-toolbar header>
+            <q-toolbar-title
+              class="text-subtitle1 text-body2"
+              style="color: grey"
+            >
+              Matching profiles
+            </q-toolbar-title>
+            <q-space />
+            <q-item-label>
+              <div class="q-pa-md">
+                <div class="q-gutter-sm">
+                  <q-btn
+                    label="Fields of Study"
+                    class="q-px-md q-py-none"
+                    color="primary"
+                  >
+                    <q-menu>
+                      <q-item>
+                        <q-item-section avatar>
+                          <q-btn
+                            color="primary"
+                            label="Check all"
+                            @click="allFields"
+                            class="q-mx-md"
+                          />
+                        </q-item-section>
+                        <q-item-section>
+                          <q-btn
+                            color="red"
+                            label="Clear all"
+                            @click="noFields"
+                          />
+                        </q-item-section>
+                      </q-item>
+                      <q-list>
+                        <q-item
+                          v-for="sfos in (searchStore.searchResultsModel.relatedFieldsOfStudy as SearchFieldsOfStudy[])"
+                          :key="sfos.fieldOfStudy"
+                        >
+                          <q-checkbox
+                            v-model="sfos.isActive"
+                            :label="sfos.fieldOfStudy"
+                            @update:model-value="handleFilter"
+                          />
+                        </q-item>
+                      </q-list>
+                    </q-menu>
+                  </q-btn>
+                </div>
+              </div>
+            </q-item-label>
+          </q-toolbar>
           <search-results-item
             v-for="pro in getBasicProfiles()"
             :key="pro.id"
