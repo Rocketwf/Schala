@@ -590,19 +590,19 @@ export class ProfileRepresentation
 
         for (const author of this._fullProfile.authors) 
         {
-            series.push(new Series(author.name, [author.hIndex], 'line'));
-            series.push(new Series(author.name, [author.jointPublicationCount], 'column'));
+            series.push(new Series(author.name, [author.jointPublicationCount], 'line'));
+            series.push(new Series(author.name, [author.hIndex], 'column'));
         }
 
         const awhhi: LineColumnsMixedChartModel = new LineColumnsMixedChartModel(
             CARDS.CO_AUTHORS_WITH_HIGHEST_HINDEX.CARD_DATA.TITLE,
-            '',
+            '* the publication count indicates the number of co-authored papers',
             ViewName.LineColumnsMixedChartCard,
             CARDS.CO_AUTHORS_WITH_HIGHEST_HINDEX.CARD_DATA.COLS,
             series,
+            'Publications*',
             'h-index',
-            'Publications',
-            ['Publications', 'h-index'],
+            ['h-index', 'Publications*'],
         );
 
         awhhi.showExpandButton();
