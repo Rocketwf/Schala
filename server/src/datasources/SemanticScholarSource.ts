@@ -70,10 +70,6 @@ export class SemanticScholarSource implements DataSource
                     },
                 },
             );
-            for (const bp of searchResults.data) 
-            {
-                console.log(bp.papers);
-            }
             return searchResults.data;
         }
         catch (error) 

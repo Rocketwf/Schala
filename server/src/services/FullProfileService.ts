@@ -96,11 +96,6 @@ export class FullProfileService extends ProfileService
             this.buildArticles(apiAuthor, authorPapers),
         );
 
-        console.log('Number of empty venues');
-        console.log(fullProfile.articles.filter((art: Article) => art.venue !== '').map((art: Article) => art.venue));
-
-        console.log('Number of empty journal names');
-        console.log(fullProfile.articles.filter((art: Article) => art.journalName === '').length);
 
         this._cachedReadyFullProfiles.set(authorId, fullProfile);
         return Array.of(fullProfile);
