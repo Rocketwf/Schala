@@ -12,8 +12,8 @@ describe('CiteButton', () =>
         const wrapper = shallowMount(CiteButton, {
             props: {
                 bibtex: 'Test Bibtex',
-                buttonIcon: 'Test Icon'
-            }
+                buttonIcon: 'Test Icon',
+            },
         });
 
         expect(wrapper).toBeTruthy();
