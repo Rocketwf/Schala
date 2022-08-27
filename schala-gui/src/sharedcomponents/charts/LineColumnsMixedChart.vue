@@ -137,7 +137,8 @@ const chartOptions = computed(() =>
             labels: {
                 rotate: -45,
                 position: 'top',
-                hideOverlappingLabels: false
+                hideOverlappingLabels: false,
+                rotateAlways: true
             },
         },
         yaxis: [

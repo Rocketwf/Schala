@@ -96,6 +96,7 @@ export class FullProfileService extends ProfileService
             this.buildArticles(apiAuthor, authorPapers),
         );
 
+
         this._cachedReadyFullProfiles.set(authorId, fullProfile);
         return Array.of(fullProfile);
     }
@@ -485,13 +486,19 @@ export class FullProfileService extends ProfileService
         const publicationMap: Map<string, number> = new Map<string, number>(); //Pairs of venues and publication counts
         for (const paper of apiPapers) 
         {
-            if (publicationMap.has(paper.venue)) 
+            let venue: string = paper.venue;
+            if (venue === '' && paper.journal) 
             {
-                publicationMap.set(paper.venue, publicationMap.get(paper.venue) + 1);
+                venue = paper.journal.name;
+            }
+            if (venue === '') continue;
+            if (publicationMap.has(venue)) 
+            {
+                publicationMap.set(venue, publicationMap.get(venue) + 1);
             }
             else 
             {
-                publicationMap.set(paper.venue, 1);
+                publicationMap.set(venue, 1);
             }
         }
         publicationMap.forEach((value_count: number, key_year: string) => 
@@ -659,15 +666,15 @@ export class FullProfileService extends ProfileService
             }
 
             const bibtex: string = this.buildBibtex(paper);
-            let journalName: string;
-            if (paper.journal && paper.journal.name)
+            let journalName: string = '';
+            if (paper.journal && paper.journal.name) 
             {
                 journalName = paper.journal.name;
             }
             const fieldsOfExpertise: string[] = new Array<string>();
-            if (paper.fieldsOfStudy)
+            if (paper.fieldsOfStudy) 
             {
-                for (const field of paper.fieldsOfStudy)
+                for (const field of paper.fieldsOfStudy) 
                 {
                     fieldsOfExpertise.push(field);
                 }
@@ -675,7 +682,7 @@ export class FullProfileService extends ProfileService
 
             const articleToPush: Article = new Article(
                 paper.title,
-                paper.venue,
+                paper.venue !== '' ? paper.venue : journalName,
                 paper.year,
                 paper.citationCount,
                 this.getSelfCitationsInPaper(apiAuthor, paper),

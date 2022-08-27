@@ -218,14 +218,11 @@ export class ProfileRepresentation
     private createPublicationsByYearCard(): BasicColumnsChartModel 
     {
         const series: Array<Series> = new Array<Series>();
-        for (const pby of this._fullProfile.publicationsByYear) 
-        {
-            series.push(new Series(pby.year + '', [pby.publicationsCount]));
-        }
         const years: string[] = new Array<string>();
         for (const pby of this._fullProfile.publicationsByYear) 
         {
-            years.push(pby.year + '');
+            series.push(new Series(pby.year + '', [pby.publicationsCount]));
+            years.push('#');
         }
         const pby: BasicColumnsChartModel = new BasicColumnsChartModel(
             CARDS.PUBLICATIONS_BY_YEAR.CARD_DATA.TITLE,
@@ -237,8 +234,8 @@ export class ProfileRepresentation
             'Number of publications',
             years,
         );
-
         pby.showExpandButton();
+
 
         const lastValue: number = +pby.series[pby.series.length - 1]?.name;
         const fromFilter: Filter<number, BasicColumnsChartModel> = new FromFilter(
@@ -593,19 +590,19 @@ export class ProfileRepresentation
 
         for (const author of this._fullProfile.authors) 
         {
-            series.push(new Series(author.name, [author.hIndex], 'line'));
-            series.push(new Series(author.name, [author.jointPublicationCount], 'column'));
+            series.push(new Series(author.name, [author.jointPublicationCount], 'line'));
+            series.push(new Series(author.name, [author.hIndex], 'column'));
         }
 
         const awhhi: LineColumnsMixedChartModel = new LineColumnsMixedChartModel(
             CARDS.CO_AUTHORS_WITH_HIGHEST_HINDEX.CARD_DATA.TITLE,
-            '',
+            '* the publication count indicates the number of co-authored papers',
             ViewName.LineColumnsMixedChartCard,
             CARDS.CO_AUTHORS_WITH_HIGHEST_HINDEX.CARD_DATA.COLS,
             series,
+            'Publications*',
             'h-index',
-            'Publications',
-            ['Publications', 'h-index'],
+            ['h-index', 'Publications*'],
         );
 
         awhhi.showExpandButton();

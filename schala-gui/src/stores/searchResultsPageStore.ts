@@ -56,16 +56,20 @@ export const searchResultsStore = defineStore({
                 const relatedFieldsOfStudy: SearchFieldsOfStudy[] = new Array<SearchFieldsOfStudy>();
                 for (const bp of basicProfiles) 
                 {
-                    for (const exp of bp.expertise) 
+                    if (bp.expertise.length === 0) continue;
+                    if (
+                        !relatedFieldsOfStudy.find(
+                            (sfos: SearchFieldsOfStudy) => bp.expertise[0].name === sfos.fieldOfStudy,
+                        )
+                    ) 
                     {
-                        if (!relatedFieldsOfStudy.find((sfos: SearchFieldsOfStudy) => exp.name === sfos.fieldOfStudy)) 
-                        {
-                            relatedFieldsOfStudy.push(new SearchFieldsOfStudy(exp.name));
-                        }
+                        relatedFieldsOfStudy.push(new SearchFieldsOfStudy(bp.expertise[0].name));
                     }
                 }
                 this.searchResultsModel.relatedFieldsOfStudy = relatedFieldsOfStudy;
-                this.searchResultsModel.studyFieldsFilter.value = relatedFieldsOfStudy.map((rfos: SearchFieldsOfStudy) => rfos.fieldOfStudy);
+                this.searchResultsModel.studyFieldsFilter.value = relatedFieldsOfStudy.map(
+                    (rfos: SearchFieldsOfStudy) => rfos.fieldOfStudy,
+                );
             }
             catch (error) 
             {
