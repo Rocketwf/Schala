@@ -37,9 +37,18 @@ export const profilePageStore = defineStore({
             if (newId !== this.profileId) 
             {
                 this.profileId = newId;
-                const profile: FullProfile = await SemanticScholarSource.getInstance().fetchFullProfile(this.profileId);
-                this.profileRepresentation = new ProfileRepresentation(profile);
-                this.profileRepresentation.renderProfile();
+                try 
+                {
+                    const profile: FullProfile = await SemanticScholarSource.getInstance().fetchFullProfile(this.profileId);
+                    this.profileRepresentation = new ProfileRepresentation(profile);
+                    this.profileRepresentation.renderProfile();
+                } 
+                catch (error) 
+                {
+                    console.log(error);
+                    return;
+                }
+                
             }
             Loading.hide();
         },

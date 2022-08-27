@@ -50,6 +50,14 @@ onBeforeMount(() =>
     else 
     {
         mount.value = true;
+        try 
+        {
+            profileStore.renderSaved();         
+        } 
+        catch (error) 
+        {
+            error;
+        }
         profileStore.renderSaved();
     }
 });
