@@ -1,5 +1,4 @@
 import { describe, expect, it } from '@jest/globals';
-import { createTestingPinia } from '@pinia/testing';
 import { installQuasarPlugin } from '@quasar/quasar-app-extension-testing-unit-jest';
 import { shallowMount } from '@vue/test-utils';
 import { ArticleCoAuthor } from 'schala-core';
@@ -18,24 +17,6 @@ describe('CoAuthorButton', () =>
             }
         });
 
-        expect(wrapper).toBeTruthy();
-    });
-
-    it('changes profile', () => 
-    {
-        const wrapper = shallowMount(CoAuthorButton, {
-            props: {
-                coAuthors: [new ArticleCoAuthor('TestID', 'TestAuthor')],
-                buttonIcon: 'Test Icon',
-            },
-            global: {
-                plugins: [
-                    createTestingPinia(),
-                ],
-            },
-        });
-
-        wrapper.vm.changeProfile();
         expect(wrapper).toBeTruthy();
     });
 });

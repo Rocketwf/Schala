@@ -38,30 +38,5 @@ describe('PopupEditInput', () =>
 
         expect(wrapper).toBeTruthy();
     });
-
-    it('returns input id correctly', () => 
-    {
-        const wrapper = shallowMount(PopupEditInput, {
-            props: {
-                textField: testField,
-                models: [testModel],
-            }
-        });
-
-        expect(wrapper.vm.getInputId()).toBe(testField.inputId);
-    });
-
-    it('handles input correctly', () => 
-    {
-        const wrapper = shallowMount(PopupEditInput, {
-            props: {
-                textField: testField,
-                models: [testModel],
-            }
-        });
-
-        wrapper.vm.update();
-        expect(wrapper).toBeTruthy();
-    });
 });
 
