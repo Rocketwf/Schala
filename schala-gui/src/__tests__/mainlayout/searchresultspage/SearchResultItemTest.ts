@@ -35,19 +35,20 @@ const wrapper = shallowMount(SearchResultItem, {
         profile: new BasicProfile('10'),
     },
 });
-
+const testBasicProfile = new BasicProfile('100', 'Test Person', [], 50, 51);
 const profileStore = profilePageStore();
 profilePageStore.$id = 'profilePage';
 profileStore.profileRepresentation = new ProfileRepresentation(
     new FullProfile(
-        1000,
-        1001,
-        2000,
-        2001,
-        3000,
-        3001,
+        [],
         4000,
-        '4001',
+        4000,
+        4000,
+        4000,
+        4000,
+        4000,
+        4000,
+        '4000',
         new BasicProfile('100', 'Test Person', [], 50, 51),
         [new PublicationByYear(2022, 10)],
         [new PublicationByVenue('KIT', 11)],
@@ -59,10 +60,41 @@ profileStore.profileRepresentation = new ProfileRepresentation(
 );
 //const searchStore = searchResultsStore();
 
-describe('TestX', () => 
+describe('Search Result Item', () =>
 {
-    it('mounts without errors', () => 
+    it('mounts without errors', async () =>
     {
         expect(wrapper).toBeTruthy();
+    });
+    it('handle click works correctly', async () =>
+    {
+        expect(await wrapper.vm.handleClick()).toBeUndefined();
+    });
+
+    it('returns basic profile correctly', () =>
+    {
+        const wrapper = shallowMount(SearchResultItem, {
+            props: {
+                profile: testBasicProfile,
+            }
+        });
+
+        expect(wrapper.vm.getBasicProfile()).toEqual(testBasicProfile);
+    });
+
+    it('returns profile store correctly', () =>
+    {
+        const wrapper = shallowMount(SearchResultItem, {
+            props: {
+                profile: new BasicProfile('10'),
+            }
+        });
+
+        expect(wrapper.vm.getProfileStore()).toEqual(profileStore);
+    });
+
+    it('returns compare page store correctly', () =>
+    {
+        expect(wrapper.vm.getComparePageStore()).toBeDefined();
     });
 });

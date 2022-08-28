@@ -23,6 +23,7 @@ jest.mock('vue-router', () => ({
 }));
 
 const testProfile = new FullProfile(
+    [],
     1000,
     1001,
     2000,
@@ -40,9 +41,9 @@ const testProfile = new FullProfile(
     [],
 );
 
-describe('ExpertiseCard', () => 
+describe('ExpertiseCard', () =>
 {
-    it('mounts without errors', () => 
+    it('mounts without errors', () =>
     {
         const wrapper = shallowMount(ProfileSummary, {
             props: {
@@ -51,5 +52,9 @@ describe('ExpertiseCard', () =>
         });
 
         expect(wrapper).toBeTruthy();
+        expect(wrapper.vm.redirectWebsite()).toBeUndefined();
+        expect(wrapper.vm.affiliation()).toBeDefined();
+
     });
+
 });
