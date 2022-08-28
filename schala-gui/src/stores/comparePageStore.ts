@@ -28,6 +28,14 @@ export const comparePageStore = defineStore({
             for (const id of this.profileIds)
             {
                 if (this.comparisonRepresentation.fullProfiles.find((fp) => fp.basicProfile.id === id)) continue;
+                try 
+                {
+                    await SemanticScholarSource.getInstance().fetchFullProfile(id);
+                } 
+                catch (error) 
+                {
+                    error;    
+                }
                 const fullProfile: FullProfile = await SemanticScholarSource.getInstance().fetchFullProfile(id);
                 this.comparisonRepresentation.fullProfiles.push(fullProfile);
             }
@@ -49,11 +57,11 @@ export const comparePageStore = defineStore({
             }
             else
             {
-                fullProfile = await SemanticScholarSource.getInstance().fetchFullProfile(profileId);
+                fullProfile = await SemanticScholarSource.getInstance().fetchFullProfile(profileId);    
             }
             this.comparisonRepresentation.fullProfiles.push(fullProfile);
             this.comparisonRepresentation.renderComparison();
-            this.profileIds.push(profileId);
+            this.profileIds.push(profileId);              
             Loading.hide();
         },
 

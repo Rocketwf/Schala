@@ -25,7 +25,9 @@
 <script setup charset="utf-8" lang="ts">
 import { ArticleCoAuthor } from 'schala-core';
 import { profilePageStore } from '../../../stores/profilePageStore';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 defineProps<{
     coAuthors: ArticleCoAuthor[];
     buttonIcon: string;
@@ -35,5 +37,9 @@ const changeProfile = (value: string): void =>
 {
     window.scrollTo(0,0);
     profilePageStore().setProfileId(value);
+    if(/^[\u0000-\u007f]*$/.test(profilePageStore().getFullProfile().basicProfile.name))
+    {
+        router.go(0);
+    }
 };
 </script>
