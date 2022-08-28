@@ -20,18 +20,5 @@ describe('ShareButton', () =>
         });
         expect(wrapper.exists()).toBe(true);
     });
-
-    it('opens window', () =>
-    {
-        const wrapper = mount(ShareButton, {
-            props: {
-                url: urlString,
-                buttonIcon: iconString,
-            }
-        });
-
-        wrapper.vm.share();
-        expect(wrapper.exists()).toBe(true);
-    });
 });
 
