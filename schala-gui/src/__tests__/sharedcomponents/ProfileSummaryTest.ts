@@ -23,7 +23,6 @@ jest.mock('vue-router', () => ({
 }));
 
 const testProfile = new FullProfile(
-    [],
     1000,
     1001,
     2000,
@@ -32,7 +31,7 @@ const testProfile = new FullProfile(
     3001,
     4000,
     '4001',
-    new BasicProfile('100', 'Test Person', [], 50, 51),
+    new BasicProfile('100', 'Test Person', ['Aff1', 'Aff2'], 50, 51),
     [new PublicationByYear(2022, 10)],
     [new PublicationByVenue('KIT', 11)],
     [new CitationByYear(2022, 20, 21, 22)],
@@ -52,8 +51,8 @@ describe('ExpertiseCard', () =>
         });
 
         expect(wrapper).toBeTruthy();
-        expect(wrapper.vm.redirectWebsite()).toBeUndefined();
-        expect(wrapper.vm.affiliation()).toBeDefined();
+        expect(wrapper.vm.redirectWebsite).toBeDefined();
+        expect(wrapper.vm.affiliation).toBeDefined();
 
     });
 

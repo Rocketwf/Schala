@@ -17,7 +17,7 @@ describe('GenericPagination', () =>
     {
         wrapper = mount(GenericPagination, {
             props: {
-                paginationModel: [mockArticlesModel],
+                paginationModel: mockArticlesModel,
             },
         });
     });
@@ -31,11 +31,11 @@ describe('GenericPagination', () =>
     {
         const wrapper = mount(GenericPagination, {
             props: {
-                paginationModel: [mockArticlesModel],
+                paginationModel: mockArticlesModel,
             }
         });
 
-        wrapper.vm.switchPage();
+        wrapper.vm.switchPage;
         expect(wrapper.exists()).toBe(true);
 
     });

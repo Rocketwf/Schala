@@ -40,7 +40,6 @@ const profileStore = profilePageStore();
 profilePageStore.$id = 'profilePage';
 profileStore.profileRepresentation = new ProfileRepresentation(
     new FullProfile(
-        [],
         4000,
         4000,
         4000,
