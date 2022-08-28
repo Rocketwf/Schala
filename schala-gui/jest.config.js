@@ -24,7 +24,7 @@ module.exports = {
     // watch: true,
     collectCoverage: true,
     coverageDirectory: '<rootDir>/coverage',
-    collectCoverageFrom: ['<rootDir>/src/**/*.vue', '<rootDir>/src/**/*.ts', '!<rootDir>/src/**/index.ts'],
+    collectCoverageFrom: ['<rootDir>/src/**/*.vue', '<rootDir>/src/**/*.ts', '!<rootDir>/src/**/index.ts', "!<rootDir>/src/router/routes.ts"],
     coveragePathIgnorePatterns: [
         '/node_modules/',
         '.d.ts$',
