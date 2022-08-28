@@ -17,14 +17,14 @@ describe('comparePageStore', () =>
         setActivePinia(createPinia());
     });
 
-    it('sets profile', () => 
+    it('sets profile', async () => 
     {
         const store = profilePageStore();
-        store.setProfileId('1');
-        expect(store.getProfileId()).toEqual('1');
+        store.setProfileId('1679754');
+        expect(store.getProfileId()).toEqual('1679754');
     });
 
-    it('sets profileRespresentation', () => 
+    it('sets profileRespresentation', async () => 
     {
         const store = profilePageStore();
         const testProfile: FullProfile = new FullProfile(
