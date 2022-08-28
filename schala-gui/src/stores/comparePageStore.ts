@@ -57,15 +57,7 @@ export const comparePageStore = defineStore({
             }
             else
             {
-                try 
-                {
-                    await SemanticScholarSource.getInstance().fetchFullProfile(profileId);    
-                } 
-                catch (error) 
-                {
-                    await SemanticScholarSource.getInstance().fetchFullProfile(profileId);    
-                }
-                fullProfile = await SemanticScholarSource.getInstance().fetchFullProfile(profileId);       
+                fullProfile = await SemanticScholarSource.getInstance().fetchFullProfile(profileId);    
             }
             this.comparisonRepresentation.fullProfiles.push(fullProfile);
             this.comparisonRepresentation.renderComparison();
