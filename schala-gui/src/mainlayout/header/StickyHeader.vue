@@ -15,12 +15,13 @@
         <span
           @click="main"
           class="q-mx-sm"
-          style="cursor: default"
+          style="cursor: pointer"
         >schala</span>
       </q-toolbar-title>
       <q-form @submit="search">
         <q-input
-          dark
+          outlined
+          bg-color="white"
           dense
           standout
           v-model="text"
