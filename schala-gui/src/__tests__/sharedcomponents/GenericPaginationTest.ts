@@ -35,7 +35,7 @@ describe('GenericPagination', () =>
             }
         });
 
-        wrapper.vm.switchPage;
+        //wrapper.vm.switchPage;
         expect(wrapper.exists()).toBe(true);
 
     });
