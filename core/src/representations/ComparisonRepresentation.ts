@@ -371,7 +371,7 @@ export class ComparisonRepresentation
         );
 
         const scale: Filter<boolean, ChartOptionsModel> = new ScaleUpFilter(false);
-        const showingPopupEdit: RangeButton = new RangeButton('range', [showingNumberField]);
+        const showingPopupEdit: ShowingButton = new ShowingButton('showing', [showingNumberField]);
         const chartOptionsModel: ChartOptionsModel = new ChartOptionsModel(models);
         chartOptionsModel.filters = [scale];
 
@@ -535,7 +535,7 @@ export class ComparisonRepresentation
             models,
         );
 
-        const showingPopupEdit: RangeButton = new RangeButton('range', [showingNumberField]);
+        const showingPopupEdit: ShowingButton = new ShowingButton('showing', [showingNumberField]);
         const scalingCheckBox: CheckBox<ChartOptionsModel> = new CheckBox(
             'Scale up number of publications according to the scholar with highest entries',
             false,
@@ -571,8 +571,8 @@ export class ComparisonRepresentation
             const series: Array<Series> = new Array<Series>();
             for (const author of profile.authors) 
             {
-                series.push(new Series(author.name, [author.hIndex], 'line'));
-                series.push(new Series(author.name, [author.jointPublicationCount], 'column'));
+                series.push(new Series(author.name, [author.hIndex], 'column'));
+                series.push(new Series(author.name, [author.jointPublicationCount], 'line'));
                 if (author.hIndex < min) min = author.hIndex;
                 if (author.hIndex > max) max = author.hIndex;
             }
@@ -583,9 +583,9 @@ export class ComparisonRepresentation
                 ViewName.LineColumnsMixedChartCard,
                 PAGE_WIDTH / this._fullProfiles.length,
                 series,
-                'h-index',
                 'Publications',
-                ['Publications', 'h-index'],
+                'h-index',
+                ['h-index', 'Publications'],
             );
             models.push(model);
         });
