@@ -85,11 +85,11 @@ make core_test
 ```
 To run the server tests only:
 ```console
-make core_test
+make server_test
 ```
-To run the gui tests only:
+To run the gui tests only (backend should be up and running):
 ```console
-make core_test
+make gui_test
 ```
 ## Build/Install: spa/electron
 To build the project (SPA):
