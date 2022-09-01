@@ -73,7 +73,6 @@ export const searchResultsStore = defineStore({
             }
             catch (error) 
             {
-                Loading.hide();
                 return;
             }
 

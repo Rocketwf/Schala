@@ -42,6 +42,7 @@ export const profilePageStore = defineStore({
                     const profile: FullProfile = await SemanticScholarSource.getInstance().fetchFullProfile(this.profileId);
                     this.profileRepresentation = new ProfileRepresentation(profile);
                     this.profileRepresentation.renderProfile();
+                    Loading.hide();
                 } 
                 catch (error) 
                 {
@@ -50,7 +51,6 @@ export const profilePageStore = defineStore({
                 }
                 
             }
-            Loading.hide();
         },
 
         getFullProfile() 
