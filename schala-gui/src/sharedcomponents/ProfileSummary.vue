@@ -125,8 +125,8 @@ const redirectWebsite = () =>
 };
 const affiliation = computed(() => 
 {
-    if (getFullProfile().basicProfile.affiliation.length > 0)
-        return getFullProfile().basicProfile.affiliation?.reduce((acc: string, curr: string) => acc + ',' + curr);
+    if (getFullProfile().basicProfile.affiliation && getFullProfile().basicProfile.affiliation.length > 0)
+        return getFullProfile().basicProfile.affiliation.reduce((acc: string, curr: string) => acc + ',' + curr);
     return '';
 });
 const handleClickButton = async () => 
