@@ -10,7 +10,7 @@ export class Message
     {
         this._status = _status;
         this._message = _message;
-        console.log(this._message);
+        // console.log(this._message);
     }
 
     public get message(): string 

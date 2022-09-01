@@ -99,8 +99,10 @@ export class FullProfileService extends ProfileService
             this.buildArticles(apiAuthor, authorPapers),
         );
         if (
-            googleProfile.citationCount != 0 &&
-            this.withinInterval(apiAuthor.citationCount, googleProfile.citationCount, 0.3)
+            (googleProfile.hIndex != 0 &&
+                this.withinInterval(apiAuthor.citationCount, googleProfile.citationCount, 0.3)) ||
+            (googleProfile.hIndex == 0 &&
+                this.withinInterval(apiAuthor.citationCount, googleProfile.citationCount, 0.7))
         ) 
         {
             basicProfile.pictureUrl = googleProfile.profilePicture;
@@ -139,6 +141,10 @@ export class FullProfileService extends ProfileService
     {
         let name: string = apiAuthor.name;
         if (apiAuthor.aliases) name = apiAuthor.aliases[apiAuthor.aliases.length - 1];
+
+        let alias: string = apiAuthor.name;
+        if (apiAuthor.aliases) alias = apiAuthor.aliases[apiAuthor.aliases.length - 1];
+
         const basicProfile: BasicProfile = new BasicProfile(
             apiAuthor.authorId,
             name,
@@ -147,7 +153,7 @@ export class FullProfileService extends ProfileService
             0,
             '',
             [],
-            apiAuthor.name
+            alias
         );
         return basicProfile;
     }

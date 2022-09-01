@@ -99,13 +99,21 @@ export class GoogleScholarScraperSource implements DataSource
     {
         const matchList: APIBasicAuthor[] = await this.fetchSearchResults(authorName);
         const bestDistName: { name: string; dist: number } = { name: '', dist: Number.MAX_SAFE_INTEGER };
+        const bestMatches: string[] = [];
         for (const apiBp of Array.from(matchList.values())) 
         {
             const currentDist: number = this.levenshteinHelper(authorName, apiBp.name);
+            if (currentDist > 5) continue;
             if (currentDist < bestDistName.dist) 
             {
                 bestDistName.name = apiBp.name;
                 bestDistName.dist = currentDist;
+                bestMatches.length = 0;
+                bestMatches.push(bestDistName.name);
+            }
+            else if (currentDist == bestDistName.dist) 
+            {
+                bestMatches.push(bestDistName.name);
             }
         }
         const bestDistAPIBasicAuthor: APIBasicAuthor = this._cache
@@ -119,7 +127,7 @@ export class GoogleScholarScraperSource implements DataSource
                 aliases: bestDistAPIBasicAuthor.aliases,
                 authorId: bestDistAPIBasicAuthor.authorId,
                 citationCount: +bestDistAPIBasicAuthor.citationCount,
-                hIndex: null,
+                hIndex: bestMatches.length == 1 ? 0 : +bestDistAPIBasicAuthor.citationCount,
                 homepage: null,
                 name: bestDistAPIBasicAuthor.name,
                 paperCount: +bestDistAPIBasicAuthor.paperCount,

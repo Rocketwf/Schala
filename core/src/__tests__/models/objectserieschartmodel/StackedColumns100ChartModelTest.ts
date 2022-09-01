@@ -20,7 +20,7 @@ describe('chart options filter', () =>
             '',
             ['2018','2019','2020','2021','2022']
         );
-        console.log(stackedColumns100ChartModel.deepCopy());
+        // console.log(stackedColumns100ChartModel.deepCopy());
         expect(stackedColumns100ChartModel.deepCopy()).toEqual(stackedColumns100ChartModel);
     });
 });

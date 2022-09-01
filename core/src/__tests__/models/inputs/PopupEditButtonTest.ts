@@ -1,4 +1,4 @@
-import { Article, BasicBarsChartModel, Field, Series, StackedColumnsChartModel, ViewName } from '../../../models';
+import { BasicBarsChartModel, Field, Series, StackedColumnsChartModel, ViewName } from '../../../models';
 import { ArticlesFilterButton, RangeButton, ShowingButton } from '../../../models/inputs/PopupEditButton';
 import { FromFilter, ShowingFilter, ToFilter } from '../../../filters/objectserieschartfilters/ObjectSeriesFilter';
 import { Filter } from '../../../filters/Filter';
@@ -6,9 +6,10 @@ import { Filter } from '../../../filters/Filter';
 let rangeButton: RangeButton;
 let showingButton: ShowingButton;
 let articleFilterButton: ArticlesFilterButton;
-beforeAll(() => {
+beforeAll(() => 
+{
     articleFilterButton = new ArticlesFilterButton('', []);
-})
+});
 
 describe('Range Button Filter Test', () => 
 {
@@ -32,7 +33,7 @@ describe('Range Button Filter Test', () =>
             'Number of citations',
             ['indirect self-citations', 'self-citations', 'cited by others'],
         );
-        objectSeriesChartModel.filters = [fromFilter,toFilter];
+        objectSeriesChartModel.filters = [fromFilter, toFilter];
         const fromNumberField: Field<number, StackedColumnsChartModel> = new Field<number, StackedColumnsChartModel>(
             'from',
             2018,
@@ -42,38 +43,35 @@ describe('Range Button Filter Test', () =>
         const toNumberField: Field<number, StackedColumnsChartModel> = new Field<number, StackedColumnsChartModel>(
             'to',
             2020,
-            toFilter, 
-            [objectSeriesChartModel]
+            toFilter,
+            [objectSeriesChartModel],
         );
         const rangePopupEdit: RangeButton = new RangeButton('range', [fromNumberField, toNumberField]);
-        console.log(rangePopupEdit.label);
-        rangePopupEdit.label='';
-        rangePopupEdit.id='123321';
-        rangeButton=rangePopupEdit;
+        // console.log(rangePopupEdit.label);
+        rangePopupEdit.label = '';
+        rangePopupEdit.id = '123321';
+        rangeButton = rangePopupEdit;
         rangePopupEdit.inputs;
         rangeButton.handleAll();
         expect(objectSeriesChartModel.series.length).toBe(3);
     });
-    it('Check icon', () =>
+    it('Check icon', () => 
     {
         expect(rangeButton.icon).toBe('event');
-    }
-    );
-    it('Check id', () =>
+    });
+    it('Check id', () => 
     {
         expect(rangeButton.id).toBe('123321');
-    }
-    );
-    it('Check id difference', () =>
+    });
+    it('Check id difference', () => 
     {
         expect(rangeButton.deepCopy().id).not.toBe(rangeButton.id);
-    }
-    );
+    });
 });
 
-describe('Article Filter Button Test', () =>
+describe('Article Filter Button Test', () => 
 {
-    it('Filter Test', () =>
+    it('Filter Test', () => 
     {
         const series: Array<Series> = new Array<Series>();
         series.push(new Series('Gregor Snelting', [100]));
@@ -93,7 +91,7 @@ describe('Article Filter Button Test', () =>
             'Number of citations',
             ['indirect self-citations', 'self-citations', 'cited by others'],
         );
-        objectSeriesChartModel.filters=[showingFilter];
+        objectSeriesChartModel.filters = [showingFilter];
         const showingNumberField: Field<number, BasicBarsChartModel> = new Field<number, BasicBarsChartModel>(
             'showing',
             5,
@@ -101,51 +99,51 @@ describe('Article Filter Button Test', () =>
             [objectSeriesChartModel],
         );
         const showingPopupEdit: ShowingButton = new ShowingButton('range', [showingNumberField]);
-        console.log(showingPopupEdit.label);
-        showingPopupEdit.id='321123';
-        showingPopupEdit.label='';
+        // console.log(showingPopupEdit.label);
+        showingPopupEdit.id = '321123';
+        showingPopupEdit.label = '';
         showingButton = showingPopupEdit;
         showingButton.handleAll();
         showingButton.inputs;
         expect(objectSeriesChartModel.series.length).toBe(5);
     });
-    it('Check icon', () =>
+    it('Check icon', () => 
     {
         expect(showingButton.icon).toBe('people');
-    }
-    );
-    it('Showing icon', () =>
+    });
+    it('Showing icon', () => 
     {
-        showingButton.icon='event';
+        showingButton.icon = 'event';
         expect(showingButton.icon).toBe('event');
-    }
-    );
-    it('Check id', () =>
+    });
+    it('Check id', () => 
     {
         expect(showingButton.id).toBe('321123');
-    }
-    );
-    it('Check id difference', () =>
+    });
+    it('Check id difference', () => 
     {
         expect(showingButton.deepCopy().id).not.toBe(showingButton.id);
-    }
-    );
+    });
 });
 
-describe('Article filter button tests', () => {
-    it('sets and gets correct label', () => {
+describe('Article filter button tests', () => 
+{
+    it('sets and gets correct label', () => 
+    {
         const testLabel: string = 'Test Label';
         articleFilterButton.label = testLabel;
         expect(articleFilterButton.label).toBe('Test Label');
     });
-    it('sets and gets correct id', () => {
+    it('sets and gets correct id', () => 
+    {
         const testID: string = 'ABC123';
         articleFilterButton.id = testID;
         expect(articleFilterButton.id).toBe('ABC123');
     });
-    it('sets and gets correct icon', () => {
+    it('sets and gets correct icon', () => 
+    {
         const testIcon: string = 'Test Icon';
         articleFilterButton.icon = testIcon;
         expect(articleFilterButton.icon).toBe('Test Icon');
     });
-})
+});
