@@ -43,6 +43,10 @@ export class FullProfileService extends ProfileService
 
         this._SemanticScholarDataSource.subscribe(this);
     }
+    private withinInterval(value: number, target: number, percentage: number): boolean 
+    {
+        return value >= target - target * percentage && value <= target + target * percentage;
+    }
     /**
      * Method responsible for assembling the information of a scholar building the final data
      * structure containing every relevant information of a scholar
@@ -70,9 +74,16 @@ export class FullProfileService extends ProfileService
 
         const basicProfile: BasicProfile = this.buildBasicProfile(apiAuthor);
 
-        const googleProfile: APIAuthor = await this._scraperDataSource.fetchAuthor(basicProfile.name);
-        basicProfile.pictureUrl = googleProfile.profilePicture;
-        basicProfile.affiliations = googleProfile.affiliations;
+        const googleProfile: APIAuthor = await this._scraperDataSource.fetchAuthor(basicProfile.alias);
+        if (
+            googleProfile.citationCount != 0 &&
+            this.withinInterval(googleProfile.citationCount, apiAuthor.citationCount, 0.3)
+        ) 
+        {
+            basicProfile.pictureUrl = googleProfile.profilePicture;
+            basicProfile.affiliations = googleProfile.affiliations;
+        }
+
         basicProfile.expertise = this.buildExpertise(authorPapers);
 
         const coAuthors: Author[] = this.buildAuthors(apiAuthor, authorPapers);
@@ -95,7 +106,6 @@ export class FullProfileService extends ProfileService
             coAuthors,
             this.buildArticles(apiAuthor, authorPapers),
         );
-
 
         this._cachedReadyFullProfiles.set(authorId, fullProfile);
         return Array.of(fullProfile);
@@ -127,12 +137,16 @@ export class FullProfileService extends ProfileService
     private buildBasicProfile(apiAuthor: APIAuthor): BasicProfile 
     {
         let name: string = apiAuthor.name;
-        if (apiAuthor.aliases) name = apiAuthor.aliases[apiAuthor.aliases.length - 1];
+        if (apiAuthor.aliases) name = apiAuthor.aliases[apiAuthor.aliases.length > 1 ? 1 : 0];
         const basicProfile: BasicProfile = new BasicProfile(
             apiAuthor.authorId,
             name,
             apiAuthor.affiliations,
             apiAuthor.citationCount,
+            0,
+            '',
+            [],
+            apiAuthor.name
         );
         return basicProfile;
     }

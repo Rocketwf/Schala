@@ -31,7 +31,7 @@ export class SearchResultsService extends ProfileService
 
             if (basicAuthor.aliases) 
             {
-                name = basicAuthor.aliases[basicAuthor.aliases.length - 1];
+                name = basicAuthor.aliases[basicAuthor.aliases.length > 1 ? 1 : 0];
             }
 
             const bp: BasicProfile = new BasicProfile(
@@ -42,6 +42,7 @@ export class SearchResultsService extends ProfileService
                 +basicAuthor.paperCount,
                 '',
                 this.buildExpertise(basicAuthor.papers),
+                basicAuthor.name
             );
 
             basicProfiles.push(bp);

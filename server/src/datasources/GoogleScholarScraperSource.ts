@@ -73,6 +73,7 @@ export class GoogleScholarScraperSource implements DataSource
                 (child: TagElement) => child.attribs['class'] === 'gs_ai_t',
             );
             const affiliation: string = $(infoChild).find('.gs_ai_aff').text();
+            const citationCount: string = $(infoChild).find('.gs_ai_cby').text().replace(/\D/g, '');
             if (!imgSrc) imgSrc = '';
             const googleAuthorId: string = imgSrc.split('&user=')[1]?.split('&citpi')[0];
 
@@ -81,7 +82,7 @@ export class GoogleScholarScraperSource implements DataSource
                 affiliations: [affiliation],
                 aliases: [''],
                 authorId: googleAuthorId,
-                citationCount: '',
+                citationCount: citationCount,
                 paperCount: '',
                 profilePicture: imgSrc,
             });

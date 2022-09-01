@@ -35,6 +35,8 @@ export class BasicProfile extends Profile
      */
     private _paperCount: number;
 
+    private _alias: string;
+
     /**
      * Creates an instance of basic profile.
      * @param _id - The ID of the basic profile
@@ -52,6 +54,7 @@ export class BasicProfile extends Profile
         _paperCount?: number,
         _pictureUrl?: string,
         _expertise?: Expertise[],
+        _alias?: string,
     ) 
     {
         super();
@@ -62,6 +65,7 @@ export class BasicProfile extends Profile
         this._totalCitations = _totalCitations;
         this._paperCount = _paperCount;
         this._pictureUrl = _pictureUrl;
+        this._alias = _alias;
     }
 
     public get expertise(): Expertise[] 
@@ -70,7 +74,7 @@ export class BasicProfile extends Profile
     }
     public set expertise(_expertise: Expertise[]) 
     {
-        this._expertise = _expertise; 
+        this._expertise = _expertise;
     }
 
     /**
@@ -87,6 +91,15 @@ export class BasicProfile extends Profile
     public set id(newId: string) 
     {
         this._id = newId;
+    }
+
+    public get alias(): string 
+    {
+        return this._alias;
+    }
+    public set alias(newAlias: string) 
+    {
+        this._alias = newAlias;
     }
 
     /**
