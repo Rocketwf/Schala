@@ -1,7 +1,7 @@
 <template>
   <q-item
     class="col-md-3 my-content vertical-middle"
-    style="height: 100%;"
+    style="height: 100%"
     v-if="profile"
   >
     <q-item-section side>
@@ -39,10 +39,10 @@
       <q-item-label caption>
         ID: {{ getFullProfile().basicProfile.id }}
       </q-item-label>
-      <q-item-label 
-        caption 
+      <q-item-label
+        caption
         v-if="affiliation"
-      > 
+      >
         Affiliation: {{ affiliation }}
       </q-item-label>
       <q-item-label caption>
@@ -102,14 +102,14 @@ const router: Router = useRouter();
 const props = defineProps<{
     profile: FullProfile;
 }>();
-const triggerNegative = () =>
+const triggerNegative = () => 
 {
     $q.notify({
         type: 'negative',
         message: "You can't add more than 4 profiles to the compare tab",
     });
 };
-const triggerPositive = () =>
+const triggerPositive = () => 
 {
     $q.notify({
         type: 'positive',
@@ -119,15 +119,17 @@ const triggerPositive = () =>
 // Methods
 const getFullProfile = () => props.profile;
 
-
 const redirectWebsite = () => 
 {
     window.open(props.profile.url);
 };
-const affiliation = computed(() =>
-    getFullProfile().basicProfile.affiliation?.reduce((acc: string, curr: string) => acc + ',' + curr),
-);
-const handleClickButton = async () =>
+const affiliation = computed(() => 
+{
+    if (getFullProfile().basicProfile.affiliation.length > 0)
+        return getFullProfile().basicProfile.affiliation?.reduce((acc: string, curr: string) => acc + ',' + curr);
+    return '';
+});
+const handleClickButton = async () => 
 {
     if (comparePageStore().isBeingCompared(props.profile.basicProfile.id)) 
     {
@@ -140,7 +142,7 @@ const handleClickButton = async () =>
         triggerNegative();
         return;
     }
-    else
+    else 
     {
         await comparePageStore().addProfile(props.profile.basicProfile.id);
         triggerPositive();

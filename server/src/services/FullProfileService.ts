@@ -75,14 +75,6 @@ export class FullProfileService extends ProfileService
         const basicProfile: BasicProfile = this.buildBasicProfile(apiAuthor);
 
         const googleProfile: APIAuthor = await this._scraperDataSource.fetchAuthor(basicProfile.alias);
-        if (
-            googleProfile.citationCount != 0 &&
-            this.withinInterval(googleProfile.citationCount, apiAuthor.citationCount, 0.3)
-        ) 
-        {
-            basicProfile.pictureUrl = googleProfile.profilePicture;
-            basicProfile.affiliations = googleProfile.affiliations;
-        }
 
         basicProfile.expertise = this.buildExpertise(authorPapers);
 
@@ -96,7 +88,7 @@ export class FullProfileService extends ProfileService
             this.calculateSelfCitations(apiAuthor, authorPapers),
             this.calculateIndirectSelfCitations(apiAuthor, authorPapers),
             basicProfile.totalCitations,
-            googleProfile.url,
+            '',
 
             basicProfile,
             this.buildPublicationsByYear(authorPapers),
@@ -106,6 +98,15 @@ export class FullProfileService extends ProfileService
             coAuthors,
             this.buildArticles(apiAuthor, authorPapers),
         );
+        if (
+            googleProfile.citationCount != 0 &&
+            this.withinInterval(apiAuthor.citationCount, googleProfile.citationCount, 0.3)
+        ) 
+        {
+            basicProfile.pictureUrl = googleProfile.profilePicture;
+            basicProfile.affiliations = googleProfile.affiliations;
+            fullProfile.url = googleProfile.url;
+        }
 
         this._cachedReadyFullProfiles.set(authorId, fullProfile);
         return Array.of(fullProfile);
@@ -137,7 +138,7 @@ export class FullProfileService extends ProfileService
     private buildBasicProfile(apiAuthor: APIAuthor): BasicProfile 
     {
         let name: string = apiAuthor.name;
-        if (apiAuthor.aliases) name = apiAuthor.aliases[apiAuthor.aliases.length > 1 ? 1 : 0];
+        if (apiAuthor.aliases) name = apiAuthor.aliases[apiAuthor.aliases.length - 1];
         const basicProfile: BasicProfile = new BasicProfile(
             apiAuthor.authorId,
             name,
@@ -500,10 +501,10 @@ export class FullProfileService extends ProfileService
         const publicationMap: Map<string, number> = new Map<string, number>(); //Pairs of venues and publication counts
         for (const paper of apiPapers) 
         {
-            let venue: string = paper.venue;
+            let venue: string = paper.venue?.replace(/\d+/g, '');
             if (venue === '' && paper.journal) 
             {
-                venue = paper.journal.name;
+                venue = paper.journal.name?.replace(/\d+/g, '');
             }
             if (venue === '') continue;
             if (publicationMap.has(venue)) 

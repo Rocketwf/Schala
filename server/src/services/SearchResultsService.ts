@@ -31,7 +31,7 @@ export class SearchResultsService extends ProfileService
 
             if (basicAuthor.aliases) 
             {
-                name = basicAuthor.aliases[basicAuthor.aliases.length > 1 ? 1 : 0];
+                name = basicAuthor.aliases[basicAuthor.aliases.length - 1];
             }
 
             const bp: BasicProfile = new BasicProfile(
